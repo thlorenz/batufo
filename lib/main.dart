@@ -18,7 +18,6 @@ void main() async {
     width: GameProps.tileSize,
     height: GameProps.tileSize,
   );
-  debugPrint('playerSprite: $playerSprite');
 
   final tilemap = Tilemap.build(Levels.simple);
   debugPrint('$tilemap');
@@ -70,10 +69,15 @@ class CanvasPainter extends CustomPainter {
   }
 
   void _drawPlayer(Canvas canvas) {
-    final playerTilePosition = gameModel.player.tilePosition;
+    final player = gameModel.player;
+    final playerTilePosition = player.tilePosition;
     final center = WorldPosition.fromTilePosition(playerTilePosition);
-    playerSprite.render(canvas, center.toOffset());
-    canvas.drawCircle(center.toOffset(), 5, _circlePaint);
+    canvas.save();
+    canvas.translate(center.x, center.y);
+    canvas.rotate(player.angle);
+    playerSprite.render(canvas, Offset.zero);
+    canvas.drawCircle(Offset.zero, 5, _circlePaint);
+    canvas.restore();
   }
 
   void _lowerLeftCanvas(Canvas canvas, double height) {

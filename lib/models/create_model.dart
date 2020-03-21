@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/levels/tilemap.dart';
 import 'package:batufo/models/game_model.dart';
@@ -16,6 +18,7 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
       if (tile == Tile.Player) {
         player = PlayerModel(
           tilePosition: TilePosition(col, row, center, center),
+          angle: pi / 2,
         );
       }
     }
