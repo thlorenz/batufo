@@ -35,5 +35,7 @@ class GameProps {
   static const playerThrustAcceleration =
       keyboardPlayerThrustForce / playerMass; // m/s2
 
+  static const playerThrustAnimationDurationMs = 200.0;
+
   static Assets get assets => Assets();
 }

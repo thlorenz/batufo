@@ -20,7 +20,7 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
           tilePosition: TilePosition(col, row, center, center),
           angle: 0,
           velocity: Offset.zero,
-          appliedThrust: true,
+          appliedThrust: false,
         );
       }
     }

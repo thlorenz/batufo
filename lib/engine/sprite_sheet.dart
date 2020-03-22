@@ -28,6 +28,8 @@ class SpriteSheet {
     }
   }
 
+  int get framesCount => _sprites.length;
+
   static SpriteSheet fromImageAsset(ImageAsset asset) {
     final spriteWidth = asset.width ~/ asset.cols;
     final spriteHeight = asset.height ~/ asset.rows;

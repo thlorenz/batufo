@@ -17,14 +17,18 @@ class Player {
   final double keyboardRotationFactor;
   final double keyboardThrustForce;
   final double tileSize;
-  Player({
-    String playerImagePath,
-    @required this.keyboardRotationFactor,
-    @required this.keyboardThrustForce,
-    @required this.tileSize,
-  }) {
+  Player(
+      {String playerImagePath,
+      @required this.keyboardRotationFactor,
+      @required this.keyboardThrustForce,
+      @required this.tileSize,
+      @required double thrustAnimationDurationMs}) {
     playerSprite = Sprite(playerImagePath);
-    thrustSprite = ThrustSprite(width: tileSize / 2, height: tileSize / 2);
+    thrustSprite = ThrustSprite(
+      width: tileSize / 2,
+      height: tileSize / 2,
+      animationDurationMs: thrustAnimationDurationMs,
+    );
   }
 
   PlayerModel update(
@@ -32,6 +36,7 @@ class Player {
     Set<GameKey> keys,
     PlayerModel model,
   ) {
+    model.appliedThrust = false;
     model.tilePosition = _move(model.tilePosition, model.velocity);
 
     if (keys.contains(GameKey.Left)) {
@@ -42,7 +47,11 @@ class Player {
     }
     if (keys.contains(GameKey.Up)) {
       model.velocity = _increaseVelocity(model.velocity, model.angle, dt);
+      model.appliedThrust = true;
     }
+    if (model.appliedThrust) thrustSprite.reset();
+    thrustSprite.update(dt);
+
     return model;
   }
 
@@ -53,9 +62,7 @@ class Player {
     canvas.translate(center.x, center.y);
     canvas.rotate(player.angle);
     playerSprite.render(canvas, Offset.zero, width: tileSize, height: tileSize);
-    if (player.appliedThrust) {
-      thrustSprite.render(canvas, Offset.zero, tileSize);
-    }
+    thrustSprite.render(canvas, Offset.zero, tileSize);
     canvas.restore();
   }
 
