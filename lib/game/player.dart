@@ -14,13 +14,14 @@ class Player {
   Sprite playerSprite;
   final double keyboardRotationFactor;
   final double keyboardThrustForce;
+  final double tileSize;
   Player(
     String imagePath, {
     @required this.keyboardRotationFactor,
     @required this.keyboardThrustForce,
-    double tileSize,
+    @required this.tileSize,
   }) {
-    playerSprite = Sprite(imagePath, width: tileSize, height: tileSize);
+    playerSprite = Sprite(imagePath);
   }
 
   PlayerModel update(
@@ -37,7 +38,7 @@ class Player {
       model.angle = _increasAngle(model.angle, -dt * keyboardRotationFactor);
     }
     if (keys.contains(GameKey.Up)) {
-      model.velocity = _increaseVelocity(model.velocity, model.angle);
+      model.velocity = _increaseVelocity(model.velocity, model.angle, dt);
     }
     return model;
   }
@@ -48,7 +49,7 @@ class Player {
     canvas.save();
     canvas.translate(center.x, center.y);
     canvas.rotate(player.angle);
-    playerSprite.render(canvas, Offset.zero);
+    playerSprite.render(canvas, Offset.zero, width: tileSize, height: tileSize);
     canvas.restore();
   }
 
@@ -57,10 +58,9 @@ class Player {
     return res > twopi ? res - twopi : res;
   }
 
-  Offset _increaseVelocity(Offset velocity, double angle) {
-    debugPrint('increasing $velocity');
-    final xa = cos(angle);
-    final ya = sin(angle);
+  Offset _increaseVelocity(Offset velocity, double angle, double dt) {
+    final xa = cos(angle) * dt;
+    final ya = sin(angle) * dt;
     return velocity.translate(
         xa * keyboardThrustForce, ya * keyboardThrustForce);
   }

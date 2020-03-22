@@ -6,7 +6,7 @@ class GameProps {
   static const tileSize = 40.0;
 
   static const keyboardPlayerRotationFactor = 0.004;
-  static const keyboardPlayerThrustForce = 0.1; // Newton
+  static const keyboardPlayerThrustForce = 0.01; // Newton
 
   static const playerMass = 4000.0; // kg
   static const playerThrustAcceleration =
