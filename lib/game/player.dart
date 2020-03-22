@@ -24,7 +24,7 @@ class Player {
     @required this.tileSize,
   }) {
     playerSprite = Sprite(playerImagePath);
-    thrustSprite = ThrustSprite();
+    thrustSprite = ThrustSprite(width: tileSize / 2, height: tileSize / 2);
   }
 
   PlayerModel update(
@@ -54,7 +54,7 @@ class Player {
     canvas.rotate(player.angle);
     playerSprite.render(canvas, Offset.zero, width: tileSize, height: tileSize);
     if (player.appliedThrust) {
-      canvas.translate(center.x - tileSize / 2, center.y);
+      thrustSprite.render(canvas, Offset.zero, tileSize);
     }
     canvas.restore();
   }

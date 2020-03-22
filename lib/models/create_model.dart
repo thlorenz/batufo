@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui' show Offset;
 
 import 'package:batufo/engine/tile_position.dart';
@@ -19,7 +18,7 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
       if (tile == Tile.Player) {
         player = PlayerModel(
           tilePosition: TilePosition(col, row, center, center),
-          angle: pi / 2,
+          angle: 0,
           velocity: Offset.zero,
           appliedThrust: true,
         );
