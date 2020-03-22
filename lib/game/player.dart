@@ -6,22 +6,25 @@ import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/inputs/keyboard.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/sprites/thrust_sprite.dart';
 import 'package:flutter/foundation.dart';
 
 const twopi = 2 * pi;
 
 class Player {
   Sprite playerSprite;
+  ThrustSprite thrustSprite;
   final double keyboardRotationFactor;
   final double keyboardThrustForce;
   final double tileSize;
-  Player(
-    String imagePath, {
+  Player({
+    String playerImagePath,
     @required this.keyboardRotationFactor,
     @required this.keyboardThrustForce,
     @required this.tileSize,
   }) {
-    playerSprite = Sprite(imagePath);
+    playerSprite = Sprite(playerImagePath);
+    thrustSprite = ThrustSprite();
   }
 
   PlayerModel update(
@@ -50,6 +53,9 @@ class Player {
     canvas.translate(center.x, center.y);
     canvas.rotate(player.angle);
     playerSprite.render(canvas, Offset.zero, width: tileSize, height: tileSize);
+    if (player.appliedThrust) {
+      canvas.translate(center.x - tileSize / 2, center.y);
+    }
     canvas.restore();
   }
 

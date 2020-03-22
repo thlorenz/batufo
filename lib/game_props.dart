@@ -1,5 +1,28 @@
+class ImageAsset {
+  final String imagePath;
+  final int width;
+  final int height;
+  final int cols;
+  final int rows;
+
+  ImageAsset(
+    this.imagePath,
+    this.width,
+    this.height, {
+    this.cols = 1,
+    this.rows = 1,
+  });
+}
+
 class Assets {
-  final player = 'assets/images/sprites/player.png';
+  final player = ImageAsset('assets/images/sprites/player.png', 536, 534);
+  final thrust = ImageAsset(
+    'assets/images/sprites/thrust.png',
+    7700,
+    442,
+    rows: 1,
+    cols: 50,
+  );
 }
 
 class GameProps {

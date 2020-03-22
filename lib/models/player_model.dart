@@ -7,10 +7,12 @@ class PlayerModel {
   TilePosition tilePosition;
   Offset velocity;
   double angle;
+  bool appliedThrust;
   PlayerModel({
     @required this.tilePosition,
     @required this.angle,
     @required this.velocity,
+    @required this.appliedThrust,
   });
 
   String toString() {
@@ -18,6 +20,7 @@ class PlayerModel {
      tilePosition: $tilePosition
      angle: $angle
      velocity: $velocity
+     appliedThrust: $appliedThrust
    }''';
   }
 }
