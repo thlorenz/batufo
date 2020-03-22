@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 class PlayerModel {
   final TilePosition tilePosition;
-  final double angle;
+  double angle;
   PlayerModel({
     @required this.tilePosition,
     @required this.angle,
