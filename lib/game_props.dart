@@ -4,5 +4,7 @@ class Assets {
 
 class GameProps {
   static const tileSize = 40.0;
+
+  static const keyboardPlayerRotationFactor = 0.004;
   static Assets get assets => Assets();
 }

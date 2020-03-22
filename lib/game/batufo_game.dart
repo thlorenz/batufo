@@ -4,6 +4,7 @@ import 'package:batufo/engine/game.dart';
 import 'package:batufo/game/grid.dart';
 import 'package:batufo/game/player.dart';
 import 'package:batufo/game_props.dart';
+import 'package:batufo/inputs/keyboard.dart';
 import 'package:batufo/models/game_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -14,11 +15,16 @@ class BatufoGame extends Game {
   Size _size;
 
   BatufoGame(this._game)
-      : _player = Player(GameProps.assets.player, tileSize: GameProps.tileSize),
+      : _player = Player(
+          GameProps.assets.player,
+          tileSize: GameProps.tileSize,
+          keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
+        ),
         _grid = Grid(GameProps.tileSize);
 
   void update(double dt, double ts) {
-    final playerModel = _player.update(dt, _game.player);
+    final pressedKeys = GameKeyboard.pressedKeys;
+    final playerModel = _player.update(dt, pressedKeys, _game.player);
     _game.player = playerModel;
   }
 
