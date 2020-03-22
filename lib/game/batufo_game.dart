@@ -19,6 +19,7 @@ class BatufoGame extends Game {
           GameProps.assets.player,
           tileSize: GameProps.tileSize,
           keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
+          keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
         ),
         _grid = Grid(GameProps.tileSize);
 

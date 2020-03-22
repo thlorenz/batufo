@@ -1,3 +1,4 @@
+import 'package:batufo/engine/world_position.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -11,6 +12,8 @@ class TilePosition {
 
   bool isSameTileAs(TilePosition other) =>
       other.col == this.col && other.row == this.row;
+
+  WorldPosition toWorldPosition() => WorldPosition.fromTilePosition(this);
 
   @override
   String toString() {

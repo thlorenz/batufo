@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui' show Offset;
 
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/levels/tilemap.dart';
@@ -19,6 +20,7 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
         player = PlayerModel(
           tilePosition: TilePosition(col, row, center, center),
           angle: pi / 2,
+          velocity: Offset.zero,
         );
       }
     }
