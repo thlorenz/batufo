@@ -42,6 +42,15 @@ class Sprite {
     return Sprite.fromImage(img, width: width, height: height);
   }
 
+  void renderRect(Canvas canvas, Rect rect) {
+    render(
+      canvas,
+      rect.center,
+      width: rect.size.width,
+      height: rect.size.height,
+    );
+  }
+
   void render(Canvas canvas, Offset center,
       {@required double width, @required double height}) {
     if (!_loaded) return;

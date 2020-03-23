@@ -28,7 +28,7 @@ class SpriteSheet {
     }
   }
 
-  int get framesCount => _sprites.length;
+  int get spritesCount => _sprites.length;
 
   static SpriteSheet fromImageAsset(ImageAsset asset) {
     final spriteWidth = asset.width ~/ asset.cols;
@@ -45,5 +45,10 @@ class SpriteSheet {
   Sprite getIndex(int idx) {
     assert(idx < _sprites.length, '$idx is larger than ${_sprites.length}');
     return _sprites[idx];
+  }
+
+  getRowCol(int row, int col) {
+    final idx = row * cols + col;
+    return getIndex(idx);
   }
 }

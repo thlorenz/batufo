@@ -20,5 +20,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/sprites/player.png
-    - assets/images/sprites/thrust.png
+    - assets/images/bg/
+    - assets/images/sprites/

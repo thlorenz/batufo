@@ -95,6 +95,22 @@ $_tilesString
   ----------------------
 ''';
   }
+
+  static bool coversBackground(Tile tile) {
+    switch (tile) {
+      case Tile.OutOfBounds:
+      case Tile.Boundary:
+      case Tile.Wall:
+        return true;
+      case Tile.Empty:
+      case Tile.Player:
+      case Tile.Diamond:
+      case Tile.Medkit:
+        return false;
+      default:
+        throw Exception('Unknown tile type $tile');
+    }
+  }
 }
 
 final terrain = ('''

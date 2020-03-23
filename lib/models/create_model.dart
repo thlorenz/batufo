@@ -11,10 +11,14 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
   final center = tileSize / 2;
 
   PlayerModel player;
+  final floorTiles = List<TilePosition>();
 
   for (int row = 0; row < nrows; row++) {
     for (int col = 0; col < ncols; col++) {
       final tile = tilemap.tiles[row * ncols + col];
+      if (!Tilemap.coversBackground(tile)) {
+        floorTiles.add(TilePosition(col, row, center, center));
+      }
       if (tile == Tile.Player) {
         player = PlayerModel(
           tilePosition: TilePosition(col, row, center, center),
@@ -26,5 +30,5 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
     }
   }
 
-  return GameModel(player: player);
+  return GameModel(player: player, floorTiles: floorTiles);
 }

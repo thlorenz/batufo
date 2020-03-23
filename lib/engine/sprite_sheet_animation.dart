@@ -16,8 +16,8 @@ class SpriteSheetAnimation {
     this.durationMs, {
     this.loop = false,
   })  : _clock = 0.0,
-        _framesCount = _spriteSheet.framesCount,
-        _frameMs = durationMs / _spriteSheet.framesCount {
+        _framesCount = _spriteSheet.spritesCount,
+        _frameMs = durationMs / _spriteSheet.spritesCount {
     reset();
   }
 

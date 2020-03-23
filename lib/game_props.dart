@@ -23,6 +23,13 @@ class Assets {
     rows: 1,
     cols: 50,
   );
+  final floorTiles = ImageAsset(
+    'assets/images/bg/floor-tiles.png',
+    1024,
+    1024,
+    rows: 8,
+    cols: 8,
+  );
 }
 
 class GameProps {
