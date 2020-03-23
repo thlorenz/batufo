@@ -30,6 +30,13 @@ class Assets {
     rows: 8,
     cols: 8,
   );
+  final wallMetal = ImageAsset(
+    'assets/images/static/wall-metal.png',
+    66,
+    66,
+    rows: 1,
+    cols: 1,
+  );
 }
 
 class GameProps {

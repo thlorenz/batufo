@@ -12,6 +12,7 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
 
   PlayerModel player;
   final floorTiles = List<TilePosition>();
+  final walls = List<TilePosition>();
 
   for (int row = 0; row < nrows; row++) {
     for (int col = 0; col < ncols; col++) {
@@ -27,8 +28,15 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
           appliedThrust: false,
         );
       }
+      if (tile == Tile.Wall || tile == Tile.Boundary) {
+        walls.add(TilePosition(col, row, center, center));
+      }
     }
   }
 
-  return GameModel(player: player, floorTiles: floorTiles);
+  return GameModel(
+    player: player,
+    floorTiles: floorTiles,
+    walls: walls,
+  );
 }

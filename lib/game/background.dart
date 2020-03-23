@@ -20,7 +20,8 @@ class Background {
   final SpriteSheet _spriteSheet;
   final List<TilePosition> _floorTiles;
   final List<BackgroundSprite> _backgroundSprites;
-  Background(this._floorTiles)
+  final double _tileSize;
+  Background(this._floorTiles, this._tileSize)
       : _spriteSheet = SpriteSheet.fromImageAsset(GameProps.assets.floorTiles),
         _backgroundSprites = List<BackgroundSprite>() {
     _initTiles();
@@ -35,7 +36,7 @@ class Background {
   void _initTiles() {
     _backgroundSprites.clear();
 
-    final w = GameProps.tileSize;
+    final w = _tileSize;
     for (int i = 0; i < _floorTiles.length; i++) {
       final tile = _floorTiles[i];
       final wp = tile.toWorldPosition();

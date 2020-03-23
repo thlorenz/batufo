@@ -1,6 +1,7 @@
 import 'dart:ui' show Canvas, Offset, Paint, Rect, Image;
 
 import 'package:batufo/engine/images.dart';
+import 'package:batufo/game_props.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors;
 
@@ -66,5 +67,17 @@ class Sprite {
     height ??= img.height.toDouble();
     src = Rect.fromLTWH(x, y, width, height);
     _loaded = true;
+  }
+
+  static Sprite fromImageAsset(ImageAsset asset) {
+    assert(asset.rows == 1, 'needs to have one row exactly');
+    assert(asset.cols == 1, 'needs to have one col exactly');
+    return Sprite(
+      asset.imagePath,
+      x: 0,
+      y: 0,
+      width: asset.width.toDouble(),
+      height: asset.height.toDouble(),
+    );
   }
 }

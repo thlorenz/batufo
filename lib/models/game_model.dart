@@ -5,7 +5,12 @@ import 'package:flutter/foundation.dart';
 class GameModel {
   PlayerModel player;
   List<TilePosition> floorTiles;
-  GameModel({@required this.player, this.floorTiles});
+  List<TilePosition> walls;
+  GameModel({
+    @required this.player,
+    @required this.floorTiles,
+    @required this.walls,
+  });
 
   String toString() {
     return '''GameModel {
