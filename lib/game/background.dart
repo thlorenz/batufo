@@ -21,19 +21,23 @@ class Background {
   final List<TilePosition> _floorTiles;
   final List<BackgroundSprite> _backgroundSprites;
   final double _tileSize;
-  Background(this._floorTiles, this._tileSize)
+  final bool _isActive;
+  Background(this._floorTiles, this._tileSize, this._isActive)
       : _spriteSheet = SpriteSheet.fromImageAsset(GameProps.assets.floorTiles),
         _backgroundSprites = List<BackgroundSprite>() {
     _initTiles();
   }
 
   void render(Canvas canvas) {
+    if (!_isActive) return;
     for (final bs in _backgroundSprites) {
       bs.render(canvas);
     }
   }
 
   void _initTiles() {
+    if (!_isActive) return;
+
     _backgroundSprites.clear();
 
     final w = _tileSize;

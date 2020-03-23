@@ -27,7 +27,11 @@ class BatufoGame extends Game {
           thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
         ),
         _grid = Grid(GameProps.tileSize),
-        _background = Background(_game.floorTiles, GameProps.tileSize),
+        _background = Background(
+          _game.floorTiles,
+          GameProps.tileSize,
+          GameProps.renderBackground,
+        ),
         _walls = Walls(_game.walls, GameProps.tileSize);
 
   void update(double dt, double ts) {

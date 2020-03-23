@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class ImageAsset {
   final String imagePath;
   final int width;
@@ -50,6 +52,8 @@ class GameProps {
       keyboardPlayerThrustForce / playerMass; // m/s2
 
   static const playerThrustAnimationDurationMs = 200.0;
+
+  static bool renderBackground = !kIsWeb;
 
   static Assets get assets => Assets();
 }
