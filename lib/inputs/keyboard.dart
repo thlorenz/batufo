@@ -4,19 +4,19 @@ enum GameKey { Left, Right, Up }
 
 class GameKeyboard {
   static Set<GameKey> get pressedKeys {
-    return Set.from(RawKeyboard.instance.physicalKeysPressed
+    return Set.from(RawKeyboard.instance.keysPressed
         .map(_toGameKey)
         .where((x) => x != null));
   }
 
-  static GameKey _toGameKey(PhysicalKeyboardKey e) {
-    if (e == PhysicalKeyboardKey.arrowLeft || e == PhysicalKeyboardKey.keyA) {
+  static GameKey _toGameKey(LogicalKeyboardKey e) {
+    if (e == LogicalKeyboardKey.arrowLeft || e == LogicalKeyboardKey.keyA) {
       return GameKey.Left;
     }
-    if (e == PhysicalKeyboardKey.arrowRight || e == PhysicalKeyboardKey.keyD) {
+    if (e == LogicalKeyboardKey.arrowRight || e == LogicalKeyboardKey.keyD) {
       return GameKey.Right;
     }
-    if (e == PhysicalKeyboardKey.arrowUp || e == PhysicalKeyboardKey.keyW) {
+    if (e == LogicalKeyboardKey.arrowUp || e == LogicalKeyboardKey.keyW) {
       return GameKey.Up;
     }
     return null;
