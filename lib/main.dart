@@ -3,6 +3,7 @@ import 'package:batufo/engine/images.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/batufo_game.dart';
 import 'package:batufo/game_props.dart';
+import 'package:batufo/inputs/gestures.dart';
 import 'package:batufo/levels/levels.dart';
 import 'package:batufo/levels/tilemap.dart';
 import 'package:batufo/models/create_model.dart';
@@ -26,9 +27,12 @@ class MyApp extends StatelessWidget {
   MyApp({@required this.game});
 
   Widget build(BuildContext context) {
-    return GameWidget(
-      game,
-      background: Colors.tealAccent,
+    return GestureDetector(
+      onPanUpdate: GameGestures.instance.onPanUpdate,
+      child: GameWidget(
+        game,
+        background: Colors.tealAccent,
+      ),
     );
   }
 }

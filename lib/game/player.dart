@@ -4,6 +4,7 @@ import 'dart:ui' show Canvas, Offset;
 import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/engine/world_position.dart';
+import 'package:batufo/inputs/gestures.dart';
 import 'package:batufo/inputs/keyboard.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/sprites/thrust_sprite.dart';
@@ -34,19 +35,37 @@ class Player {
   PlayerModel update(
     double dt,
     Set<GameKey> keys,
+    AggregatedGestures gestures,
     PlayerModel model,
   ) {
     model.appliedThrust = false;
     model.tilePosition = _move(model.tilePosition, model.velocity);
 
+    // rotation
     if (keys.contains(GameKey.Left)) {
       model.angle = _increasAngle(model.angle, dt * keyboardRotationFactor);
     }
     if (keys.contains(GameKey.Right)) {
       model.angle = _increasAngle(model.angle, -dt * keyboardRotationFactor);
     }
+    if (gestures.rotation != 0.0) {
+      model.angle = _increasAngle(model.angle, gestures.rotation);
+    }
+    // thrust
     if (keys.contains(GameKey.Up)) {
-      model.velocity = _increaseVelocity(model.velocity, model.angle, dt);
+      model.velocity = _increaseVelocity(
+        model.velocity,
+        model.angle,
+        keyboardThrustForce * dt,
+      );
+      model.appliedThrust = true;
+    }
+    if (gestures.thrust != 0.0) {
+      model.velocity = _increaseVelocity(
+        model.velocity,
+        model.angle,
+        gestures.thrust,
+      );
       model.appliedThrust = true;
     }
     if (model.appliedThrust) thrustSprite.reset();
@@ -71,11 +90,14 @@ class Player {
     return res > twopi ? res - twopi : res;
   }
 
-  Offset _increaseVelocity(Offset velocity, double angle, double dt) {
-    final xa = cos(angle) * dt;
-    final ya = sin(angle) * dt;
-    return velocity.translate(
-        xa * keyboardThrustForce, ya * keyboardThrustForce);
+  Offset _increaseVelocity(
+    Offset velocity,
+    double angle,
+    double thrustForce,
+  ) {
+    final xa = cos(angle);
+    final ya = sin(angle);
+    return velocity.translate(xa * thrustForce, ya * thrustForce);
   }
 
   TilePosition _move(TilePosition tilePosition, Offset velocity) {

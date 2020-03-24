@@ -44,6 +44,10 @@ class Assets {
 class GameProps {
   static const tileSize = 40.0;
 
+  static const gesturePlayerRotationFactor = 0.04;
+  static const gesturePlayerThrustFactor = 0.04;
+  static const gesturePlayerMinThrustDelta = 2.2;
+
   static const keyboardPlayerRotationFactor = 0.004;
   static const keyboardPlayerThrustForce = 0.01; // Newton
 
