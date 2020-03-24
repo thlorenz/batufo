@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' show Canvas, Offset;
 
+import 'package:batufo/engine/hit_tiles.dart';
 import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/engine/world_position.dart';
@@ -12,18 +13,26 @@ import 'package:flutter/foundation.dart';
 
 const twopi = 2 * pi;
 
+typedef TilePositionPredicate = bool Function(TilePosition);
+
 class Player {
   Sprite playerSprite;
   ThrustSprite thrustSprite;
   final double keyboardRotationFactor;
   final double keyboardThrustForce;
   final double tileSize;
-  Player(
-      {String playerImagePath,
-      @required this.keyboardRotationFactor,
-      @required this.keyboardThrustForce,
-      @required this.tileSize,
-      @required double thrustAnimationDurationMs}) {
+  final double wallHitSlowdown;
+  final TilePositionPredicate colliderAt;
+
+  Player({
+    String playerImagePath,
+    @required this.keyboardRotationFactor,
+    @required this.keyboardThrustForce,
+    @required this.tileSize,
+    @required this.wallHitSlowdown,
+    @required double thrustAnimationDurationMs,
+    @required this.colliderAt,
+  }) {
     playerSprite = Sprite(playerImagePath);
     thrustSprite = ThrustSprite(
       width: tileSize / 2,
@@ -39,6 +48,7 @@ class Player {
     PlayerModel model,
   ) {
     model.appliedThrust = false;
+    model.velocity = _checkWallCollision(model);
     model.tilePosition = _move(model.tilePosition, model.velocity);
 
     // rotation
@@ -105,5 +115,42 @@ class Player {
     final wp = tilePosition.toWorldPosition();
     final newWp = WorldPosition(wp.x + velocity.dx, wp.y + velocity.dy);
     return newWp.toTilePosition();
+  }
+
+  Offset _checkWallCollision(PlayerModel playerModel) {
+    final next = _move(playerModel.tilePosition, playerModel.velocity);
+    final hit =
+        getHitTiles(playerModel.tilePosition.toWorldPosition(), tileSize);
+    final nextHit = getHitTiles(next.toWorldPosition(), tileSize);
+
+    final hitOnAxisX = () {
+      return playerModel.velocity.scale(-wallHitSlowdown, wallHitSlowdown);
+    };
+    final hitOnAxisY = () {
+      return playerModel.velocity.scale(wallHitSlowdown, -wallHitSlowdown);
+    };
+    final handleHit = (TilePosition tp, TilePosition nextTp) {
+      return tp.col == nextTp.col ? hitOnAxisY() : hitOnAxisX();
+    };
+
+    if (colliderAt(nextHit.bottomRight)) {
+      if (colliderAt(nextHit.bottomLeft)) return hitOnAxisY();
+      if (colliderAt(nextHit.topRight)) return hitOnAxisX();
+      return handleHit(hit.bottomRight, nextHit.bottomRight);
+    }
+    if (colliderAt(nextHit.topRight)) {
+      if (colliderAt(nextHit.topLeft)) return hitOnAxisY();
+      return handleHit(hit.topRight, nextHit.topRight);
+    }
+    if (colliderAt(nextHit.bottomLeft)) {
+      if (colliderAt(nextHit.topLeft)) return hitOnAxisX();
+      return handleHit(hit.bottomLeft, nextHit.bottomLeft);
+    }
+
+    if (colliderAt(nextHit.topLeft)) {
+      return handleHit(hit.topLeft, nextHit.topLeft);
+    }
+
+    return playerModel.velocity;
   }
 }

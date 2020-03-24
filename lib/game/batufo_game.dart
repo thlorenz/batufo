@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:batufo/engine/game.dart';
 import 'package:batufo/game/background.dart';
+import 'package:batufo/game/colliders.dart';
 import 'package:batufo/game/grid.dart';
 import 'package:batufo/game/player.dart';
 import 'package:batufo/game/walls.dart';
@@ -13,27 +14,35 @@ import 'package:flutter/cupertino.dart';
 
 class BatufoGame extends Game {
   final GameModel _game;
-  final Player _player;
+  Player _player;
   final Background _background;
   final Grid _grid;
   final Walls _walls;
   Size _size;
 
   BatufoGame(this._game)
-      : _player = Player(
-          playerImagePath: GameProps.assets.player.imagePath,
-          tileSize: GameProps.tileSize,
-          keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
-          keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
-          thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
-        ),
-        _grid = Grid(GameProps.tileSize),
+      : _grid = Grid(GameProps.tileSize),
         _background = Background(
           _game.floorTiles,
           GameProps.tileSize,
           GameProps.renderBackground,
         ),
-        _walls = Walls(_game.walls, GameProps.tileSize);
+        _walls = Walls(_game.walls, GameProps.tileSize) {
+    final colliders = Colliders(
+      _game.nrows,
+      _game.ncols,
+      walls: _game.walls,
+    );
+    _player = Player(
+      playerImagePath: GameProps.assets.player.imagePath,
+      tileSize: GameProps.tileSize,
+      keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
+      keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
+      wallHitSlowdown: GameProps.playerHitsWallSlowdown,
+      thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
+      colliderAt: colliders.colliderAt,
+    );
+  }
 
   void update(double dt, double ts) {
     final pressedKeys = GameKeyboard.pressedKeys;

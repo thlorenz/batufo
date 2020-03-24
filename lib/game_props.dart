@@ -54,6 +54,7 @@ class GameProps {
   static const playerMass = 4000.0; // kg
   static const playerThrustAcceleration =
       keyboardPlayerThrustForce / playerMass; // m/s2
+  static const playerHitsWallSlowdown = 0.7;
 
   static const playerThrustAnimationDurationMs = 200.0;
 

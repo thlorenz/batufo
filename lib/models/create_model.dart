@@ -38,5 +38,7 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
     player: player,
     floorTiles: floorTiles,
     walls: walls,
+    nrows: nrows,
+    ncols: ncols,
   );
 }
