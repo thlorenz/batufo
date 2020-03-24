@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Images.instance.loadAll([
+  await Images.instance.load([
     GameProps.assets.floorTiles.imagePath,
     GameProps.assets.player.imagePath,
     GameProps.assets.thrust.imagePath,

@@ -7,17 +7,22 @@ import 'package:flutter/services.dart';
 class Images {
   final loaded = Map<String, Image>();
 
-  Future<List<Image>> loadAll(List<String> paths) {
-    final loaders = paths.map(load);
+  Future<void> load(List<String> paths) {
+    final loaders = paths.map(_load);
     return Future.wait(loaders);
   }
 
-  Future<Image> load(String path) async {
-    if (!loaded.containsKey(path)) {
-      final image = await _fetchFromMemory(path);
-      loaded[path] = image;
-    }
+  Image getImage(String path) {
+    assert(
+      loaded.containsKey(path),
+      'Must load all images at game start [$path] was not.',
+    );
     return loaded[path];
+  }
+
+  Future<void> _load(String path) async {
+    final image = await _fetchFromMemory(path);
+    loaded[path] = image;
   }
 
   Future<Image> _fetchFromMemory(String path) async {

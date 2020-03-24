@@ -19,9 +19,8 @@ class Sprite {
     double width,
     double height,
   }) : _loaded = false {
-    Images.instance.load(path).then((img) {
-      _init(img, x, y, width, height);
-    });
+    final img = Images.instance.getImage(path);
+    _init(img, x, y, width, height);
   }
 
   Sprite.fromImage(
@@ -34,12 +33,12 @@ class Sprite {
     _init(img, x, y, width, height);
   }
 
-  static Future<Sprite> fromPath(
+  static Sprite fromPath(
     String path, {
     double width,
     double height,
-  }) async {
-    final img = await Images.instance.load(path);
+  }) {
+    final img = Images.instance.getImage(path);
     return Sprite.fromImage(img, width: width, height: height);
   }
 
