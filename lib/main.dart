@@ -11,8 +11,12 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Images.instance.loadAll(['assets/images/sprites/player.png']);
+  await Images.instance.loadAll([
+    GameProps.assets.floorTiles.imagePath,
+    GameProps.assets.player.imagePath,
+    GameProps.assets.thrust.imagePath,
+    GameProps.assets.wallMetal.imagePath,
+  ]);
 
   final tilemap = Tilemap.build(Levels.simple);
   debugPrint('$tilemap');
