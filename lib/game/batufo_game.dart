@@ -1,6 +1,8 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:batufo/engine/game.dart';
+import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/background.dart';
 import 'package:batufo/game/colliders.dart';
 import 'package:batufo/game/grid.dart';
@@ -18,6 +20,7 @@ class BatufoGame extends Game {
   final Background _background;
   final Grid _grid;
   final Walls _walls;
+  Offset _camera;
   Size _size;
 
   BatufoGame(this._game)
@@ -27,7 +30,8 @@ class BatufoGame extends Game {
           GameProps.tileSize,
           GameProps.renderBackground,
         ),
-        _walls = Walls(_game.walls, GameProps.tileSize) {
+        _walls = Walls(_game.walls, GameProps.tileSize),
+        _camera = Offset.zero {
     final colliders = Colliders(
       _game.nrows,
       _game.ncols,
@@ -54,11 +58,16 @@ class BatufoGame extends Game {
       _game.player,
     );
     _game.player = playerModel;
+    this._cameraFollow(
+      _game.player.tilePosition.toWorldPosition(),
+      dt,
+    );
   }
 
   void render(Canvas canvas) {
     _lowerLeftCanvas(canvas, _size.height);
     _grid.render(canvas, _size);
+    canvas.translate(-_camera.dx, -_camera.dy);
     _background.render(canvas);
     _walls.render(canvas);
     _player.render(canvas, _game.player);
@@ -66,6 +75,18 @@ class BatufoGame extends Game {
 
   void resize(Size size) {
     _size = size;
+  }
+
+  void _cameraFollow(WorldPosition wp, double dt) {
+    if (_size == null) return;
+    final pos = wp.toOffset();
+    final centerScreen = Offset(_size.width / 2, _size.height / 2);
+    final moved = Offset(pos.dx - centerScreen.dx, pos.dy - centerScreen.dy);
+
+    final lerp = min(0.0025 * dt, 1.0);
+    final dx = (moved.dx - _camera.dx) * lerp;
+    final dy = (moved.dy - _camera.dy) * lerp;
+    _camera = _camera.translate(dx, dy);
   }
 
   void _lowerLeftCanvas(Canvas canvas, double height) {
