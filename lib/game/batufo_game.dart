@@ -44,6 +44,7 @@ class BatufoGame extends Game {
       keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
       keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,
+      wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
       colliderAt: colliders.colliderAt,
     );
@@ -52,13 +53,13 @@ class BatufoGame extends Game {
   void update(double dt, double ts) {
     final pressedKeys = GameKeyboard.pressedKeys;
     final gestures = GameGestures.instance.aggregatedGestures;
-    final playerModel = _player.update(
+    _player.update(
       dt,
       pressedKeys,
       gestures,
       _game.player,
+      _game.stats,
     );
-    _game.player = playerModel;
     this._cameraFollow(
       _game.player.tilePosition.toWorldPosition(),
       dt,

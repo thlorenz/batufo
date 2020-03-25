@@ -56,6 +56,8 @@ class GameProps {
   static const playerSize = tileSize * 0.75;
   static const playerTotalHealth = 100.0;
 
+  static const playerHitsWallHealthFactor = 0.5;
+
   static const playerThrustAnimationDurationMs = 200.0;
 
   static bool get debugPlayerHitTile => false;

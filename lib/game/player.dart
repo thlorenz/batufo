@@ -9,7 +9,9 @@ import 'package:batufo/game_props.dart';
 import 'package:batufo/inputs/gestures.dart';
 import 'package:batufo/inputs/keyboard.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/models/stats_model.dart';
 import 'package:batufo/sprites/thrust_sprite.dart';
+import 'package:batufo/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +32,7 @@ class Player {
   final double tileSize;
   final double hitSize;
   final double wallHitSlowdown;
+  final double wallHitHealthTollFactor;
   final TilePositionPredicate colliderAt;
 
   Player({
@@ -39,6 +42,7 @@ class Player {
     @required this.tileSize,
     @required this.hitSize,
     @required this.wallHitSlowdown,
+    @required this.wallHitHealthTollFactor,
     @required double thrustAnimationDurationMs,
     @required this.colliderAt,
   }) {
@@ -50,47 +54,51 @@ class Player {
     );
   }
 
-  PlayerModel update(
+  void update(
     double dt,
     Set<GameKey> keys,
     AggregatedGestures gestures,
-    PlayerModel model,
+    PlayerModel player,
+    StatsModel stats,
   ) {
-    model.appliedThrust = false;
-    model.velocity = _checkWallCollision(model);
-    model.tilePosition = _move(model.tilePosition, model.velocity);
+    player.appliedThrust = false;
+    final check = _checkWallCollision(player);
+    player.velocity = check.first;
+    if (check.second > 0) {
+      stats.playerHealth -= check.second;
+      debugPrint('health: ${stats.playerHealth}');
+    }
+    player.tilePosition = _move(player.tilePosition, player.velocity);
 
     // rotation
     if (keys.contains(GameKey.Left)) {
-      model.angle = _increasAngle(model.angle, dt * keyboardRotationFactor);
+      player.angle = _increasAngle(player.angle, dt * keyboardRotationFactor);
     }
     if (keys.contains(GameKey.Right)) {
-      model.angle = _increasAngle(model.angle, -dt * keyboardRotationFactor);
+      player.angle = _increasAngle(player.angle, -dt * keyboardRotationFactor);
     }
     if (gestures.rotation != 0.0) {
-      model.angle = _increasAngle(model.angle, gestures.rotation);
+      player.angle = _increasAngle(player.angle, gestures.rotation);
     }
     // thrust
     if (keys.contains(GameKey.Up)) {
-      model.velocity = _increaseVelocity(
-        model.velocity,
-        model.angle,
+      player.velocity = _increaseVelocity(
+        player.velocity,
+        player.angle,
         keyboardThrustForce * dt,
       );
-      model.appliedThrust = true;
+      player.appliedThrust = true;
     }
     if (gestures.thrust != 0.0) {
-      model.velocity = _increaseVelocity(
-        model.velocity,
-        model.angle,
+      player.velocity = _increaseVelocity(
+        player.velocity,
+        player.angle,
         gestures.thrust,
       );
-      model.appliedThrust = true;
+      player.appliedThrust = true;
     }
-    if (model.appliedThrust) thrustSprite.reset();
+    if (player.appliedThrust) thrustSprite.reset();
     thrustSprite.update(dt);
-
-    return model;
   }
 
   void render(Canvas canvas, PlayerModel player) {
@@ -134,17 +142,27 @@ class Player {
     return newWp.toTilePosition();
   }
 
-  Offset _checkWallCollision(PlayerModel playerModel) {
+  Tuple<Offset, double> _checkWallCollision(PlayerModel playerModel) {
     final next = _move(playerModel.tilePosition, playerModel.velocity);
     final hit =
         getHitTiles(playerModel.tilePosition.toWorldPosition(), hitSize);
     final nextHit = getHitTiles(next.toWorldPosition(), hitSize);
 
     final hitOnAxisX = () {
-      return playerModel.velocity.scale(-wallHitSlowdown, wallHitSlowdown);
+      final healthToll =
+          playerModel.velocity.dx.abs() * wallHitHealthTollFactor;
+      return Tuple(
+        playerModel.velocity.scale(-wallHitSlowdown, wallHitSlowdown),
+        healthToll,
+      );
     };
     final hitOnAxisY = () {
-      return playerModel.velocity.scale(wallHitSlowdown, -wallHitSlowdown);
+      final healthToll =
+          playerModel.velocity.dy.abs() * wallHitHealthTollFactor;
+      return Tuple(
+        playerModel.velocity.scale(wallHitSlowdown, -wallHitSlowdown),
+        healthToll,
+      );
     };
     final handleHit = (TilePosition tp, TilePosition nextTp) {
       return tp.col == nextTp.col ? hitOnAxisY() : hitOnAxisX();
@@ -168,6 +186,6 @@ class Player {
       return handleHit(hit.topLeft, nextHit.topLeft);
     }
 
-    return playerModel.velocity;
+    return Tuple(playerModel.velocity, 0.0);
   }
 }
