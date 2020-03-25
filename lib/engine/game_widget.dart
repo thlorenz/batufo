@@ -71,7 +71,9 @@ class _GameRenderBox extends RenderBox with WidgetsBindingObserver {
   }
 
   void paint(PaintingContext context, Offset offset) {
+    context.canvas.save();
     game.render(context.canvas);
+    context.canvas.restore();
   }
 
   void _scheduleTick() {

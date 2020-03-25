@@ -7,6 +7,8 @@ import 'package:batufo/inputs/gestures.dart';
 import 'package:batufo/levels/levels.dart';
 import 'package:batufo/levels/tilemap.dart';
 import 'package:batufo/models/create_model.dart';
+import 'package:batufo/models/game_model.dart';
+import 'package:batufo/widgets/hud/hud_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -23,19 +25,31 @@ void main() async {
   WorldPosition.tileSize = GameProps.tileSize;
   final gameModel = createModel(tilemap, GameProps.tileSize);
   final game = BatufoGame(gameModel);
-  runApp(MyApp(game: game));
+  runApp(MyApp(
+    game: game,
+    gameModel: gameModel,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   final BatufoGame game;
-  MyApp({@required this.game});
+  final GameModel gameModel;
+  MyApp({@required this.game, this.gameModel});
 
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onPanUpdate: GameGestures.instance.onPanUpdate,
-      child: GameWidget(
-        game,
-        background: Colors.tealAccent,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Stack(children: [
+          GestureDetector(
+            onPanUpdate: GameGestures.instance.onPanUpdate,
+            child: GameWidget(
+              game,
+              background: Colors.tealAccent,
+            ),
+          ),
+          HudWidget(model: gameModel.stats)
+        ]),
       ),
     );
   }
