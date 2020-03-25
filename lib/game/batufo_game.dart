@@ -40,6 +40,7 @@ class BatufoGame extends Game {
     _player = Player(
       playerImagePath: GameProps.assets.player.imagePath,
       tileSize: GameProps.tileSize,
+      hitSize: GameProps.playerSize,
       keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
       keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,

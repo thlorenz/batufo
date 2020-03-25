@@ -1,19 +1,26 @@
 import 'dart:math';
-import 'dart:ui' show Canvas, Offset;
+import 'dart:ui' show Canvas, Offset, Paint;
 
 import 'package:batufo/engine/hit_tiles.dart';
 import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/engine/world_position.dart';
+import 'package:batufo/game_props.dart';
 import 'package:batufo/inputs/gestures.dart';
 import 'package:batufo/inputs/keyboard.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/sprites/thrust_sprite.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 const twopi = 2 * pi;
 
 typedef TilePositionPredicate = bool Function(TilePosition);
+
+Paint _debugHitTilePaint = Paint()
+  ..color = Colors.amberAccent
+  ..strokeWidth = 0.5
+  ..style = PaintingStyle.stroke;
 
 class Player {
   Sprite playerSprite;
@@ -21,6 +28,7 @@ class Player {
   final double keyboardRotationFactor;
   final double keyboardThrustForce;
   final double tileSize;
+  final double hitSize;
   final double wallHitSlowdown;
   final TilePositionPredicate colliderAt;
 
@@ -29,6 +37,7 @@ class Player {
     @required this.keyboardRotationFactor,
     @required this.keyboardThrustForce,
     @required this.tileSize,
+    @required this.hitSize,
     @required this.wallHitSlowdown,
     @required double thrustAnimationDurationMs,
     @required this.colliderAt,
@@ -92,7 +101,15 @@ class Player {
     canvas.rotate(player.angle);
     playerSprite.render(canvas, Offset.zero, width: tileSize, height: tileSize);
     thrustSprite.render(canvas, Offset.zero, tileSize);
+    _renderDebugHitTile(canvas, player);
     canvas.restore();
+  }
+
+  void _renderDebugHitTile(Canvas canvas, PlayerModel player) {
+    if (!GameProps.debugPlayerHitTile) return;
+    final radius = hitSize / 2;
+    final rect = Rect.fromLTWH(-radius, -radius, hitSize, hitSize);
+    canvas.drawRect(rect, _debugHitTilePaint);
   }
 
   double _increasAngle(double angle, double delta) {
@@ -120,8 +137,8 @@ class Player {
   Offset _checkWallCollision(PlayerModel playerModel) {
     final next = _move(playerModel.tilePosition, playerModel.velocity);
     final hit =
-        getHitTiles(playerModel.tilePosition.toWorldPosition(), tileSize);
-    final nextHit = getHitTiles(next.toWorldPosition(), tileSize);
+        getHitTiles(playerModel.tilePosition.toWorldPosition(), hitSize);
+    final nextHit = getHitTiles(next.toWorldPosition(), hitSize);
 
     final hitOnAxisX = () {
       return playerModel.velocity.scale(-wallHitSlowdown, wallHitSlowdown);

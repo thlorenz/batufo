@@ -53,8 +53,11 @@ class GameProps {
   static const playerThrustAcceleration =
       keyboardPlayerThrustForce / playerMass; // m/s2
   static const playerHitsWallSlowdown = 0.7;
+  static const playerSize = tileSize * 0.75;
 
   static const playerThrustAnimationDurationMs = 200.0;
+
+  static bool get debugPlayerHitTile => true;
 
   static bool get renderBackground => true;
 
