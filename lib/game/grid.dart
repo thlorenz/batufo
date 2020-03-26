@@ -8,7 +8,7 @@ class Grid {
   final double marginRows;
 
   final Paint _gridPaint;
-  Grid(this._tileSize, {this.marginRows = 20.0, this.marginCols = 20.0})
+  Grid(this._tileSize, {this.marginRows = 5.0, this.marginCols = 5.0})
       : _gridPaint = Paint()
           ..color = Colors.black
           ..style = PaintingStyle.stroke

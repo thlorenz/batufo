@@ -22,6 +22,7 @@ class BatufoGame extends Game {
   final Walls _walls;
 
   Offset _camera;
+  Offset _backgroundCamera;
   Size _size;
 
   BatufoGame(this._game)
@@ -32,7 +33,8 @@ class BatufoGame extends Game {
           GameProps.renderBackground,
         ),
         _walls = Walls(_game.walls, GameProps.tileSize),
-        _camera = Offset.zero {
+        _camera = Offset.zero,
+        _backgroundCamera = Offset.zero {
     final colliders = Colliders(
       _game.nrows,
       _game.ncols,
@@ -69,8 +71,13 @@ class BatufoGame extends Game {
 
   void render(Canvas canvas) {
     _lowerLeftCanvas(canvas, _size.height);
-    canvas.translate(-_camera.dx, -_camera.dy);
+
+    canvas.save();
+    canvas.translate(-_backgroundCamera.dx, -_backgroundCamera.dy);
     _grid.render(canvas, _game.nrows, _game.ncols);
+    canvas.restore();
+
+    canvas.translate(-_camera.dx, -_camera.dy);
     _background.render(canvas);
     _walls.render(canvas);
     _player.render(canvas, _game.player);
@@ -87,9 +94,14 @@ class BatufoGame extends Game {
     final moved = Offset(pos.dx - centerScreen.dx, pos.dy - centerScreen.dy);
 
     final lerp = min(0.0025 * dt, 1.0);
+    final backgroundLerp = 0.8;
     final dx = (moved.dx - _camera.dx) * lerp;
     final dy = (moved.dy - _camera.dy) * lerp;
     _camera = _camera.translate(dx, dy);
+    _backgroundCamera = _backgroundCamera.translate(
+      dx * backgroundLerp,
+      dy * backgroundLerp,
+    );
   }
 
   void _lowerLeftCanvas(Canvas canvas, double height) {
