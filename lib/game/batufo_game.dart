@@ -20,6 +20,7 @@ class BatufoGame extends Game {
   final Background _background;
   final Grid _grid;
   final Walls _walls;
+
   Offset _camera;
   Size _size;
 
@@ -68,8 +69,8 @@ class BatufoGame extends Game {
 
   void render(Canvas canvas) {
     _lowerLeftCanvas(canvas, _size.height);
-    _grid.render(canvas, _size);
     canvas.translate(-_camera.dx, -_camera.dy);
+    _grid.render(canvas, _game.nrows, _game.ncols);
     _background.render(canvas);
     _walls.render(canvas);
     _player.render(canvas, _game.player);

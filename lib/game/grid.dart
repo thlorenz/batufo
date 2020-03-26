@@ -1,24 +1,35 @@
-import 'dart:ui' show Canvas, Offset, Paint, Size;
+import 'dart:ui' show Canvas, Offset, Paint;
 
 import 'package:flutter/material.dart' show Colors, PaintingStyle;
 
 class Grid {
   final double _tileSize;
+  final double marginCols;
+  final double marginRows;
 
   final Paint _gridPaint;
-  Grid(this._tileSize)
+  Grid(this._tileSize, {this.marginRows = 20.0, this.marginCols = 20.0})
       : _gridPaint = Paint()
           ..color = Colors.black
           ..style = PaintingStyle.stroke
           ..strokeWidth = 0.2;
 
-  void render(Canvas canvas, Size size) {
+  void render(Canvas canvas, int nrows, int ncols) {
     final delta = _tileSize;
-    for (double col = 0.0; col < size.width; col += delta) {
-      canvas.drawLine(Offset(col, 0), Offset(col, size.height), _gridPaint);
+    final gameWidth = ncols * delta;
+    final gameHeight = nrows * delta;
+    final marginX = this.marginCols * delta;
+    final marginY = this.marginRows * delta;
+    final startX = -marginX;
+    final endX = gameWidth + marginX;
+    final startY = -marginY;
+    final endY = gameHeight + marginY;
+
+    for (double col = startX; col <= endX; col += delta) {
+      canvas.drawLine(Offset(col, startY), Offset(col, endY), _gridPaint);
     }
-    for (double row = 0.0; row < size.height; row += delta) {
-      canvas.drawLine(Offset(0, row), Offset(size.width, row), _gridPaint);
+    for (double row = startY; row <= endY; row += delta) {
+      canvas.drawLine(Offset(startX, row), Offset(endX, row), _gridPaint);
     }
   }
 }
