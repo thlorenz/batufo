@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-enum GameKey { Left, Right, Up }
+enum GameKey { Left, Right, Up, Fire }
 
 class GameKeyboard {
   static Set<GameKey> get pressedKeys {
@@ -18,6 +18,9 @@ class GameKeyboard {
     }
     if (e == LogicalKeyboardKey.arrowUp || e == LogicalKeyboardKey.keyW) {
       return GameKey.Up;
+    }
+    if (e == LogicalKeyboardKey.space) {
+      return GameKey.Fire;
     }
     return null;
   }

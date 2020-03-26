@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:batufo/engine/game.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/background.dart';
+import 'package:batufo/game/bullets.dart';
 import 'package:batufo/game/colliders.dart';
 import 'package:batufo/game/grid.dart';
 import 'package:batufo/game/player.dart';
@@ -11,6 +12,7 @@ import 'package:batufo/game/walls.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/inputs/gestures.dart';
 import 'package:batufo/inputs/keyboard.dart';
+import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/game_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -20,6 +22,7 @@ class BatufoGame extends Game {
   final Background _background;
   final Grid _grid;
   final Walls _walls;
+  final Bullets _bullets;
 
   Offset _camera;
   Offset _backgroundCamera;
@@ -33,6 +36,7 @@ class BatufoGame extends Game {
           GameProps.renderBackground,
         ),
         _walls = Walls(_game.walls, GameProps.tileSize),
+        _bullets = Bullets(_game.bullets),
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
     final colliders = Colliders(
@@ -63,7 +67,18 @@ class BatufoGame extends Game {
       _game.player,
       _game.stats,
     );
-    this._cameraFollow(
+    _bullets.update(dt);
+
+    // firing bullets
+    if (pressedKeys.contains(GameKey.Fire)) {
+      final bullet = BulletModel(
+        velocity: Offset.zero,
+        tilePosition: _game.player.tilePosition,
+      );
+      _bullets.add(bullet);
+    }
+
+    _cameraFollow(
       _game.player.tilePosition.toWorldPosition(),
       dt,
     );
@@ -81,6 +96,7 @@ class BatufoGame extends Game {
     _background.render(canvas);
     _walls.render(canvas);
     _player.render(canvas, _game.player);
+    _bullets.render(canvas);
   }
 
   void resize(Size size) {

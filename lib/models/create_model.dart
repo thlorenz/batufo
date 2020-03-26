@@ -3,6 +3,7 @@ import 'dart:ui' show Offset;
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/levels/tilemap.dart';
+import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/game_model.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/models/stats_model.dart';
@@ -37,11 +38,13 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
   }
 
   final statsModel = StatsModel(playerHealth: GameProps.playerTotalHealth);
+  final bullets = List<BulletModel>();
   return GameModel(
     player: player,
     floorTiles: floorTiles,
     walls: walls,
     stats: statsModel,
+    bullets: bullets,
     nrows: nrows,
     ncols: ncols,
   );
