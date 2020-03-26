@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:batufo/engine/game.dart';
+import 'package:batufo/engine/physics.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/background.dart';
 import 'package:batufo/game/bullets.dart';
@@ -23,6 +24,7 @@ class BatufoGame extends Game {
   final Grid _grid;
   final Walls _walls;
   final Bullets _bullets;
+  final double _bulletForce;
 
   Offset _camera;
   Offset _backgroundCamera;
@@ -38,7 +40,8 @@ class BatufoGame extends Game {
         _walls = Walls(_game.walls, GameProps.tileSize),
         _bullets = Bullets(_game.bullets),
         _camera = Offset.zero,
-        _backgroundCamera = Offset.zero {
+        _backgroundCamera = Offset.zero,
+        _bulletForce = GameProps.bulletForce {
     final colliders = Colliders(
       _game.nrows,
       _game.ncols,
@@ -71,9 +74,18 @@ class BatufoGame extends Game {
 
     // firing bullets
     if (pressedKeys.contains(GameKey.Fire)) {
+      final p = _game.player;
       final bullet = BulletModel(
-        velocity: Offset.zero,
-        tilePosition: _game.player.tilePosition,
+        velocity: Physics.increaseVelocity(
+          p.velocity,
+          p.angle,
+          _bulletForce,
+        ),
+        tilePosition: Physics.scaleAlongAngle(
+          _game.player.tilePosition,
+          p.angle,
+          GameProps.playerSize * 0.85,
+        ),
       );
       _bullets.add(bullet);
     }

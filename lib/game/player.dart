@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui' show Canvas, Offset, Paint;
 
 import 'package:batufo/engine/hit_tiles.dart';
+import 'package:batufo/engine/physics.dart';
 import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/engine/world_position.dart';
@@ -62,12 +63,13 @@ class Player {
     StatsModel stats,
   ) {
     player.appliedThrust = false;
-    final check = _checkWallCollision(player);
+    final check = _checkWallCollision(player, dt);
     player.velocity = check.first;
     if (check.second > 0) {
       stats.playerHealth -= check.second;
     }
-    player.tilePosition = _move(player.tilePosition, player.velocity);
+    player.tilePosition =
+        Physics.move(player.tilePosition, player.velocity, dt);
 
     // rotation
     if (keys.contains(GameKey.Left)) {
@@ -81,7 +83,7 @@ class Player {
     }
     // thrust
     if (keys.contains(GameKey.Up)) {
-      player.velocity = _increaseVelocity(
+      player.velocity = Physics.increaseVelocity(
         player.velocity,
         player.angle,
         keyboardThrustForce * dt,
@@ -89,7 +91,7 @@ class Player {
       player.appliedThrust = true;
     }
     if (gestures.thrust != 0.0) {
-      player.velocity = _increaseVelocity(
+      player.velocity = Physics.increaseVelocity(
         player.velocity,
         player.angle,
         gestures.thrust,
@@ -124,25 +126,15 @@ class Player {
     return res > twopi ? res - twopi : res;
   }
 
-  Offset _increaseVelocity(
-    Offset velocity,
-    double angle,
-    double thrustForce,
+  Tuple<Offset, double> _checkWallCollision(
+    PlayerModel playerModel,
+    double dt,
   ) {
-    final xa = cos(angle);
-    final ya = sin(angle);
-    return velocity.translate(xa * thrustForce, ya * thrustForce);
-  }
-
-  TilePosition _move(TilePosition tilePosition, Offset velocity) {
-    if (velocity == Offset.zero) return tilePosition;
-    final wp = tilePosition.toWorldPosition();
-    final newWp = WorldPosition(wp.x + velocity.dx, wp.y + velocity.dy);
-    return newWp.toTilePosition();
-  }
-
-  Tuple<Offset, double> _checkWallCollision(PlayerModel playerModel) {
-    final next = _move(playerModel.tilePosition, playerModel.velocity);
+    final next = Physics.move(
+      playerModel.tilePosition,
+      playerModel.velocity,
+      dt,
+    );
     final hit =
         getHitTiles(playerModel.tilePosition.toWorldPosition(), hitSize);
     final nextHit = getHitTiles(next.toWorldPosition(), hitSize);
