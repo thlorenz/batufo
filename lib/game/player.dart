@@ -66,7 +66,6 @@ class Player {
     player.velocity = check.first;
     if (check.second > 0) {
       stats.playerHealth -= check.second;
-      debugPrint('health: ${stats.playerHealth}');
     }
     player.tilePosition = _move(player.tilePosition, player.velocity);
 
