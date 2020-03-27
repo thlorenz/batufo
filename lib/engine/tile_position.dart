@@ -18,6 +18,20 @@ class TilePosition {
   WorldPosition toWorldPosition() => WorldPosition.fromTilePosition(this);
   Offset toOffset() => toWorldPosition().toOffset();
 
+  TilePosition copyWith({
+    int col,
+    int row,
+    double relX,
+    double relY,
+  }) {
+    return TilePosition(
+      col ?? this.col,
+      row ?? this.row,
+      relX ?? this.relX,
+      relY ?? this.relY,
+    );
+  }
+
   @override
   String toString() {
     return '''TilePosition {
