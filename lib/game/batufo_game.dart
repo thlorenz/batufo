@@ -62,6 +62,7 @@ class BatufoGame extends Game {
       _game.bullets,
       colliderAt: colliders.colliderAt,
       msToExplode: GameProps.bulletMsToExplode,
+      tileSize: GameProps.tileSize,
     );
   }
 

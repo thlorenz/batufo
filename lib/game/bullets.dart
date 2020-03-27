@@ -1,6 +1,7 @@
 import 'dart:ui' show Canvas, Paint;
 
 import 'package:batufo/engine/physics.dart';
+import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/sprites/bullet_explosion_sprite.dart';
 import 'package:batufo/types.dart';
@@ -17,11 +18,13 @@ class Bullets {
   final List<BulletModel> _bullets;
   final List<BulletExplosionSprite> _explodingBullets;
   final double msToExplode;
+  final double tileSize;
 
   Bullets(
     this._bullets, {
     @required this.colliderAt,
     @required this.msToExplode,
+    @required this.tileSize,
     this.radius = 3.0,
     Paint paint,
   })  : this.paint = paint ?? _bulletPaint,
@@ -34,6 +37,7 @@ class Bullets {
   void update(double dt) {
     final collidedInPreviousFrame = List<BulletModel>();
     for (final bullet in _bullets) {
+      final previousPosition = bullet.tilePosition;
       bullet.tilePosition =
           Physics.move(bullet.tilePosition, bullet.velocity, dt);
 
@@ -42,8 +46,7 @@ class Bullets {
         _explodingBullets
             .add(_createBulletExplosion(bullet.tilePosition.toOffset()));
       } else if (colliderAt(bullet.tilePosition)) {
-        bullet.collided = true;
-        bullet.velocity = Offset.zero;
+        _handleCollision(bullet, previousPosition);
       }
     }
 
@@ -63,6 +66,20 @@ class Bullets {
     }
     for (final bullet in _explodingBullets) {
       bullet.render(canvas);
+    }
+  }
+
+  void _handleCollision(BulletModel bullet, TilePosition previousPosition) {
+    bullet.collided = true;
+    bullet.velocity = Offset.zero;
+    if (previousPosition.row < bullet.tilePosition.row) {
+      bullet.tilePosition = bullet.tilePosition.copyWith(relY: 0.0);
+    } else if (previousPosition.row > bullet.tilePosition.row) {
+      bullet.tilePosition = bullet.tilePosition.copyWith(relY: tileSize);
+    } else if (previousPosition.col < bullet.tilePosition.col) {
+      bullet.tilePosition = bullet.tilePosition.copyWith(relX: 0.0);
+    } else if (previousPosition.col > bullet.tilePosition.col) {
+      bullet.tilePosition = bullet.tilePosition.copyWith(relX: tileSize);
     }
   }
 
