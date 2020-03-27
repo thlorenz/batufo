@@ -63,6 +63,7 @@ class GameProps {
   static const playerThrustAnimationDurationMs = 200.0;
 
   static const bulletForce = 0.4;
+  static const bulletMsToExplode = 200.0;
 
   static bool get debugPlayerHitTile => false;
 

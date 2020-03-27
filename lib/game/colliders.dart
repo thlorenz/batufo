@@ -14,6 +14,7 @@ class Colliders {
   }
 
   bool colliderAt(TilePosition tp) {
-    return _colliders[tp.row * ncols + tp.col];
+    final idx = tp.row * ncols + tp.col;
+    return idx >= _colliders.length || _colliders[idx];
   }
 }

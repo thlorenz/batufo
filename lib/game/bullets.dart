@@ -9,15 +9,21 @@ final _bulletPaint = Paint()
   ..style = PaintingStyle.fill
   ..color = Colors.black45;
 
+final _explosionPaint = Paint()
+  ..style = PaintingStyle.fill
+  ..color = Colors.black45;
+
 class Bullets {
   final TilePositionPredicate colliderAt;
   final Paint paint;
   final double radius;
   final List<BulletModel> _bullets;
+  final double msToExplode;
 
   Bullets(
     this._bullets, {
     @required this.colliderAt,
+    @required this.msToExplode,
     this.radius = 3.0,
     Paint paint,
   }) : this.paint = paint ?? _bulletPaint;
@@ -27,17 +33,24 @@ class Bullets {
   }
 
   void update(double dt) {
-    final explodeds = List<BulletModel>();
+    final exploded = List<BulletModel>();
     for (final bullet in _bullets) {
       bullet.tilePosition =
           Physics.move(bullet.tilePosition, bullet.velocity, dt);
-      if (colliderAt(bullet.tilePosition)) {
-        explodeds.add(bullet);
+
+      if (_bulletIsExploding(bullet)) {
+        if (bullet.msToExplode < 0) {
+          exploded.add(bullet);
+        } else {
+          bullet.msToExplode -= dt;
+        }
+      } else if (colliderAt(bullet.tilePosition)) {
+        bullet.msToExplode = msToExplode;
+        bullet.velocity = Offset.zero;
       }
     }
-    for (final bullet in explodeds) {
-      _bullets.remove(bullet);
-    }
+
+    for (final bullet in exploded) _bullets.remove(bullet);
   }
 
   void render(Canvas canvas) {
@@ -48,6 +61,17 @@ class Bullets {
 
   void _renderBullet(Canvas canvas, BulletModel bullet) {
     final center = bullet.tilePosition.toWorldPosition().toOffset();
-    canvas.drawCircle(center, radius, paint);
+    if (bullet.msToExplode == null) {
+      canvas.drawCircle(center, radius, paint);
+    } else {
+      _renderExplosion(canvas, center, bullet);
+    }
   }
+
+  void _renderExplosion(Canvas canvas, Offset center, BulletModel bullet) {
+    canvas.drawCircle(center, bullet.msToExplode / 20, _explosionPaint);
+  }
+
+  static bool _bulletIsExploding(BulletModel bullet) =>
+      bullet.msToExplode != null;
 }

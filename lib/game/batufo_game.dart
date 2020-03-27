@@ -58,7 +58,11 @@ class BatufoGame extends Game {
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
       colliderAt: colliders.colliderAt,
     );
-    _bullets = Bullets(_game.bullets, colliderAt: colliders.colliderAt);
+    _bullets = Bullets(
+      _game.bullets,
+      colliderAt: colliders.colliderAt,
+      msToExplode: GameProps.bulletMsToExplode,
+    );
   }
 
   void update(double dt, double ts) {
