@@ -28,7 +28,10 @@ class SpriteSheetAnimation {
     if (done) return;
     _clock += dt;
     _currentIdx = (_clock / _frameMs).round();
-    if (loop && _currentIdx >= _framesCount) _currentIdx = 0;
+    if (loop && _currentIdx >= _framesCount) {
+      _currentIdx = 0;
+      _clock = 0;
+    }
   }
 
   void reset() {
