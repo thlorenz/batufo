@@ -1,4 +1,7 @@
+import 'package:batufo/engine/tile_position.dart';
 import 'package:flutter/foundation.dart';
+
+typedef TilePositionPredicate = bool Function(TilePosition);
 
 @immutable
 class Tuple<T, U> {

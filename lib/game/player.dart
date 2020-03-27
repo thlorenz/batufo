@@ -18,8 +18,6 @@ import 'package:flutter/material.dart';
 
 const twopi = 2 * pi;
 
-typedef TilePositionPredicate = bool Function(TilePosition);
-
 Paint _debugHitTilePaint = Paint()
   ..color = Colors.amberAccent
   ..strokeWidth = 0.5

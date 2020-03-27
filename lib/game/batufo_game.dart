@@ -19,12 +19,13 @@ import 'package:flutter/cupertino.dart';
 
 class BatufoGame extends Game {
   final GameModel _game;
-  Player _player;
   final Background _background;
   final Grid _grid;
   final Walls _walls;
-  final Bullets _bullets;
   final double _bulletForce;
+
+  Player _player;
+  Bullets _bullets;
 
   Offset _camera;
   Offset _backgroundCamera;
@@ -38,7 +39,6 @@ class BatufoGame extends Game {
           GameProps.renderBackground,
         ),
         _walls = Walls(_game.walls, GameProps.tileSize),
-        _bullets = Bullets(_game.bullets),
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero,
         _bulletForce = GameProps.bulletForce {
@@ -58,6 +58,7 @@ class BatufoGame extends Game {
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
       colliderAt: colliders.colliderAt,
     );
+    _bullets = Bullets(_game.bullets, colliderAt: colliders.colliderAt);
   }
 
   void update(double dt, double ts) {
