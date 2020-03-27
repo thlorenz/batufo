@@ -6,11 +6,12 @@ import 'package:flutter/foundation.dart';
 class BulletModel {
   TilePosition tilePosition;
   Offset velocity;
-  double msToExplode;
+  bool collided;
 
   BulletModel({
     @required this.tilePosition,
     @required this.velocity,
+    this.collided = false,
   });
 
   String toString() {

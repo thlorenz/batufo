@@ -1,49 +1,41 @@
-import 'dart:math';
 import 'dart:ui' show Canvas, Offset;
 
 import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/sprite_sheet_animation.dart';
 import 'package:batufo/game_props.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-class ThrustSprite {
-  static ImageAsset asset = GameProps.assets.thrust;
+class BulletExplosionSprite {
+  static ImageAsset asset = GameProps.assets.bulletExplosion;
   final SpriteSheetAnimation _spriteSheetAnimation;
   final double width;
   final double height;
+  final Offset center;
 
-  ThrustSprite(
-      {@required this.width,
-      @required this.height,
-      @required animationDurationMs})
-      : _spriteSheetAnimation = SpriteSheetAnimation(
+  BulletExplosionSprite(
+    this.center, {
+    @required this.width,
+    @required this.height,
+    @required animationDurationMs,
+  }) : _spriteSheetAnimation = SpriteSheetAnimation(
           SpriteSheet.fromImageAsset(asset),
           animationDurationMs,
           loop: false,
         );
-
   bool get done => _spriteSheetAnimation.done;
 
   void update(double dt) {
+    if (done) return;
     _spriteSheetAnimation.update(dt);
   }
 
-  void render(Canvas canvas, Offset playerCenter, double playerWidth) {
+  void render(Canvas canvas) {
     if (done) return;
-    final center = Offset(playerCenter.dx - playerWidth / 2, playerCenter.dy);
-    canvas.save();
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(pi / 2);
     _spriteSheetAnimation.sprite.render(
       canvas,
-      Offset.zero,
+      center,
       width: width,
       height: height,
     );
-    canvas.restore();
-  }
-
-  void reset() {
-    _spriteSheetAnimation.reset();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:ui' show Offset;
+
 import 'package:batufo/engine/world_position.dart';
 import 'package:flutter/foundation.dart';
 
@@ -14,6 +16,7 @@ class TilePosition {
       other.col == this.col && other.row == this.row;
 
   WorldPosition toWorldPosition() => WorldPosition.fromTilePosition(this);
+  Offset toOffset() => toWorldPosition().toOffset();
 
   @override
   String toString() {

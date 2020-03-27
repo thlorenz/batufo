@@ -37,6 +37,14 @@ class Assets {
     rows: 1,
     cols: 1,
   );
+
+  final bulletExplosion = ImageAsset(
+    'assets/images/sprites/bullet-explosion.png',
+    256,
+    256,
+    rows: 4,
+    cols: 4,
+  );
 }
 
 class GameProps {

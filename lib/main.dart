@@ -19,6 +19,7 @@ void main() async {
     GameProps.assets.player.imagePath,
     GameProps.assets.thrust.imagePath,
     GameProps.assets.wallMetal.imagePath,
+    GameProps.assets.bulletExplosion.imagePath,
   ]);
 
   final tilemap = Tilemap.build(Levels.simple);
