@@ -1,8 +1,8 @@
 import 'dart:ui' show Canvas, Rect;
 
-import 'package:batufo/engine/sprite.dart';
-import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/tile_position.dart';
+import 'package:batufo/engine/ui/sprite.dart';
+import 'package:batufo/engine/ui/sprite_sheet.dart';
 import 'package:batufo/game_props.dart';
 
 class BackgroundSprite {

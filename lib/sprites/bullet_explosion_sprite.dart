@@ -2,8 +2,8 @@ import 'dart:ui' show Canvas, Offset;
 
 import 'package:batufo/engine/geometry/conversions.dart';
 import 'package:batufo/engine/geometry/dart_geometry.dart' as geo;
-import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/sprite_sheet_animation.dart';
+import 'package:batufo/engine/ui/sprite_sheet.dart';
 import 'package:batufo/game_props.dart';
 import 'package:flutter/foundation.dart';
 

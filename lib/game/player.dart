@@ -1,6 +1,6 @@
 import 'dart:ui' show Canvas, Offset, Paint, PaintingStyle, Rect;
 
-import 'package:batufo/engine/sprite.dart';
+import 'package:batufo/engine/ui/sprite.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/player_model.dart';

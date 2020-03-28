@@ -2,8 +2,8 @@ import 'dart:math';
 import 'dart:ui' show Canvas, Offset;
 
 import 'package:batufo/dart_types.dart';
-import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/sprite_sheet_animation.dart';
+import 'package:batufo/engine/ui/sprite_sheet.dart';
 import 'package:batufo/game_props.dart';
 
 class ThrustSprite {
