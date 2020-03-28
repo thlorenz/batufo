@@ -7,6 +7,7 @@ import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/background.dart';
 import 'package:batufo/game/bullets.dart';
 import 'package:batufo/game/colliders.dart';
+import 'package:batufo/game/controllers/bullets_controller.dart';
 import 'package:batufo/game/controllers/player_controller.dart';
 import 'package:batufo/game/grid.dart';
 import 'package:batufo/game/player.dart';
@@ -28,6 +29,7 @@ class BatufoGame extends Game {
   Player _player;
   PlayerController _playerController;
   Bullets _bullets;
+  BulletsController _bulletsController;
 
   Offset _camera;
   Offset _backgroundCamera;
@@ -63,9 +65,12 @@ class BatufoGame extends Game {
       hitSize: GameProps.playerSize,
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
     );
-    _bullets = Bullets(
+    _bulletsController = BulletsController(
       _game.bullets,
       colliderAt: colliders.colliderAt,
+      tileSize: GameProps.tileSize,
+    );
+    _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
       tileSize: GameProps.tileSize,
     );
@@ -81,7 +86,7 @@ class BatufoGame extends Game {
       _game.player,
       _game.stats,
     );
-    _bullets.update(dt);
+    _bulletsController.update(dt);
 
     // firing bullets
     if (pressedKeys.contains(GameKey.Fire)) {
@@ -98,7 +103,7 @@ class BatufoGame extends Game {
           GameProps.playerSize * 0.85,
         ),
       );
-      _bullets.add(bullet);
+      _bulletsController.add(bullet);
     }
 
     _cameraFollow(
@@ -107,6 +112,7 @@ class BatufoGame extends Game {
     );
 
     _player.updateSprites(_game.player, dt);
+    _bullets.updateSprites(_game.bullets, dt);
   }
 
   void render(Canvas canvas) {
@@ -121,7 +127,7 @@ class BatufoGame extends Game {
     _background.render(canvas);
     _walls.render(canvas);
     _player.render(canvas, _game.player);
-    _bullets.render(canvas);
+    _bullets.render(canvas, _game.bullets);
   }
 
   void resize(Size size) {
