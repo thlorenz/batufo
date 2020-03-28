@@ -33,6 +33,11 @@ class Player {
     );
   }
 
+  void updateSprites(PlayerModel player, double dt) {
+    if (player.appliedThrust) thrustSprite.reset();
+    thrustSprite.update(dt);
+  }
+
   void render(Canvas canvas, PlayerModel player) {
     final playerTilePosition = player.tilePosition;
     final center = WorldPosition.fromTilePosition(playerTilePosition);

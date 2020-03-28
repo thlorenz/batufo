@@ -105,6 +105,8 @@ class BatufoGame extends Game {
       _game.player.tilePosition.toWorldPosition(),
       dt,
     );
+
+    _player.updateSprites(_game.player, dt);
   }
 
   void render(Canvas canvas) {

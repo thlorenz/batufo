@@ -71,10 +71,6 @@ class PlayerController {
       );
       player.appliedThrust = true;
     }
-    /*
-    if (player.appliedThrust) thrustSprite.reset();
-    thrustSprite.update(dt);
-     */
   }
 
   double _increasAngle(double angle, double delta) {
