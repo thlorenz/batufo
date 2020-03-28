@@ -7,11 +7,13 @@ import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/background.dart';
 import 'package:batufo/game/bullets.dart';
 import 'package:batufo/game/colliders.dart';
+import 'package:batufo/game/controllers/player_controller.dart';
 import 'package:batufo/game/grid.dart';
 import 'package:batufo/game/player.dart';
 import 'package:batufo/game/walls.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/inputs/gestures.dart';
+import 'package:batufo/inputs/input_types.dart';
 import 'package:batufo/inputs/keyboard.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/game_model.dart';
@@ -25,6 +27,7 @@ class BatufoGame extends Game {
   final double _bulletForce;
 
   Player _player;
+  PlayerController _playerController;
   Bullets _bullets;
 
   Offset _camera;
@@ -47,16 +50,19 @@ class BatufoGame extends Game {
       _game.ncols,
       walls: _game.walls,
     );
-    _player = Player(
-      playerImagePath: GameProps.assets.player.imagePath,
-      tileSize: GameProps.tileSize,
+    _playerController = PlayerController(
       hitSize: GameProps.playerSize,
       keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
       keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,
       wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
-      thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
       colliderAt: colliders.colliderAt,
+    );
+    _player = Player(
+      playerImagePath: GameProps.assets.player.imagePath,
+      tileSize: GameProps.tileSize,
+      hitSize: GameProps.playerSize,
+      thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
     );
     _bullets = Bullets(
       _game.bullets,
@@ -69,7 +75,7 @@ class BatufoGame extends Game {
   void update(double dt, double ts) {
     final pressedKeys = GameKeyboard.pressedKeys;
     final gestures = GameGestures.instance.aggregatedGestures;
-    _player.update(
+    _playerController.update(
       dt,
       pressedKeys,
       gestures,

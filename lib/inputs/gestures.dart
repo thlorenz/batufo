@@ -1,15 +1,6 @@
 import 'package:batufo/game_props.dart';
+import 'package:batufo/inputs/input_types.dart';
 import 'package:flutter/material.dart';
-
-class AggregatedGestures {
-  final double rotation;
-  final double thrust;
-
-  AggregatedGestures({
-    @required this.rotation,
-    @required this.thrust,
-  });
-}
 
 class GameGestures {
   double _rotation;

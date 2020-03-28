@@ -1,8 +1,8 @@
+import 'package:batufo/dart_types.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/models/stats_model.dart';
-import 'package:flutter/foundation.dart';
 
 class GameModel {
   PlayerModel player;

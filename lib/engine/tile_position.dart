@@ -1,7 +1,7 @@
 import 'dart:ui' show Offset;
 
+import 'package:batufo/dart_types.dart';
 import 'package:batufo/engine/world_position.dart';
-import 'package:flutter/foundation.dart';
 
 @immutable
 class TilePosition {

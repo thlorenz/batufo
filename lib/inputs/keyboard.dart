@@ -1,6 +1,5 @@
+import 'package:batufo/inputs/input_types.dart';
 import 'package:flutter/services.dart';
-
-enum GameKey { Left, Right, Up, Fire }
 
 class GameKeyboard {
   static Set<GameKey> get pressedKeys {
