@@ -1,5 +1,4 @@
-import 'dart:ui' show Offset;
-
+import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/levels/tilemap.dart';

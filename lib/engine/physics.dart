@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'dart:ui' show Offset;
 
+import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/engine/world_position.dart';
 

@@ -1,5 +1,7 @@
-import 'dart:ui' show Canvas, Offset, Paint, Rect, Image;
+import 'dart:ui' show Canvas, Paint, Image;
+import 'dart:ui' as dui;
 
+import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset, Rect;
 import 'package:batufo/engine/images.dart';
 import 'package:batufo/game_props.dart';
 import 'package:flutter/foundation.dart';
@@ -57,7 +59,7 @@ class Sprite {
     final x = center.dx;
     final y = center.dy;
     final dst = Rect.fromLTWH(x - width / 2, y - height / 2, width, height);
-    canvas.drawImageRect(image, src, dst, _paint);
+    canvas.drawImageRect(image, src as dui.Rect, dst as dui.Rect, _paint);
   }
 
   void _init(Image img, double x, double y, double width, double height) {

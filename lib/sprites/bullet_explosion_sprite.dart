@@ -1,5 +1,6 @@
-import 'dart:ui' show Canvas, Offset;
+import 'dart:ui' show Canvas;
 
+import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/sprite_sheet_animation.dart';
 import 'package:batufo/game_props.dart';

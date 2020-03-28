@@ -1,5 +1,6 @@
-import 'dart:ui' show Canvas, Size;
+import 'dart:ui' show Canvas;
 
+import 'package:batufo/engine/geometry/dart_geometry.dart' show Size;
 import 'package:flutter/foundation.dart';
 
 abstract class Game {

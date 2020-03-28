@@ -1,5 +1,6 @@
-import 'dart:ui' show Canvas, Rect;
+import 'dart:ui' show Canvas;
 
+import 'package:batufo/engine/geometry/dart_geometry.dart' show Rect;
 import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/tile_position.dart';

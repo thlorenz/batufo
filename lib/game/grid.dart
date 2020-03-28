@@ -1,4 +1,4 @@
-import 'dart:ui' show Canvas, Offset, Paint;
+import 'dart:ui' show Canvas, Paint, Offset;
 
 import 'package:flutter/material.dart' show Colors, PaintingStyle;
 
