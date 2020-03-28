@@ -1,12 +1,9 @@
 import 'dart:math';
 import 'dart:ui' show Canvas, Offset, Size;
 
-import 'package:batufo/engine/game.dart';
-import 'package:batufo/engine/physics.dart';
+import 'package:batufo/engine/ui/game.dart';
 import 'package:batufo/engine/world_position.dart';
-import 'package:batufo/game/colliders.dart';
-import 'package:batufo/game/controllers/bullets_controller.dart';
-import 'package:batufo/game/controllers/player_controller.dart';
+import 'package:batufo/game/controllers/game_controller.dart';
 import 'package:batufo/game/ui/background.dart';
 import 'package:batufo/game/ui/bullets.dart';
 import 'package:batufo/game/ui/grid.dart';
@@ -14,9 +11,7 @@ import 'package:batufo/game/ui/player.dart';
 import 'package:batufo/game/ui/walls.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/inputs/gestures.dart';
-import 'package:batufo/inputs/input_types.dart';
 import 'package:batufo/inputs/keyboard.dart';
-import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/game_model.dart';
 
 class BatufoGame extends Game {
@@ -24,19 +19,18 @@ class BatufoGame extends Game {
   final Background _background;
   final Grid _grid;
   final Walls _walls;
-  final double _bulletForce;
+  final GameController _gameController;
 
   Player _player;
-  PlayerController _playerController;
   Bullets _bullets;
-  BulletsController _bulletsController;
 
   Offset _camera;
   Offset _backgroundCamera;
   Size _size;
 
   BatufoGame(this._game)
-      : _grid = Grid(GameProps.tileSize),
+      : _gameController = GameController(_game),
+        _grid = Grid(GameProps.tileSize),
         _background = Background(
           _game.floorTiles,
           GameProps.tileSize,
@@ -44,31 +38,12 @@ class BatufoGame extends Game {
         ),
         _walls = Walls(_game.walls, GameProps.tileSize),
         _camera = Offset.zero,
-        _backgroundCamera = Offset.zero,
-        _bulletForce = GameProps.bulletForce {
-    final colliders = Colliders(
-      _game.nrows,
-      _game.ncols,
-      walls: _game.walls,
-    );
-    _playerController = PlayerController(
-      hitSize: GameProps.playerSize,
-      keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
-      keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
-      wallHitSlowdown: GameProps.playerHitsWallSlowdown,
-      wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
-      colliderAt: colliders.colliderAt,
-    );
+        _backgroundCamera = Offset.zero {
     _player = Player(
       playerImagePath: GameProps.assets.player.imagePath,
       tileSize: GameProps.tileSize,
       hitSize: GameProps.playerSize,
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
-    );
-    _bulletsController = BulletsController(
-      _game.bullets,
-      colliderAt: colliders.colliderAt,
-      tileSize: GameProps.tileSize,
     );
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
@@ -77,40 +52,17 @@ class BatufoGame extends Game {
   }
 
   void update(double dt, double ts) {
+    // game controller updater
     final pressedKeys = GameKeyboard.pressedKeys;
     final gestures = GameGestures.instance.aggregatedGestures;
-    _playerController.update(
-      dt,
-      pressedKeys,
-      gestures,
-      _game.player,
-      _game.stats,
-    );
-    _bulletsController.update(dt);
+    _gameController.update(dt, ts, pressedKeys, gestures);
+  }
 
-    // firing bullets
-    if (pressedKeys.contains(GameKey.Fire)) {
-      final p = _game.player;
-      final bullet = BulletModel(
-        velocity: Physics.increaseVelocity(
-          p.velocity,
-          p.angle,
-          _bulletForce,
-        ),
-        tilePosition: Physics.scaleAlongAngle(
-          _game.player.tilePosition,
-          p.angle,
-          GameProps.playerSize * 0.85,
-        ),
-      );
-      _bulletsController.add(bullet);
-    }
-
+  void updateUI(double dt, double ts) {
     _cameraFollow(
       _game.player.tilePosition.toWorldPosition(),
       dt,
     );
-
     _player.updateSprites(_game.player, dt);
     _bullets.updateSprites(_game.bullets, dt);
   }

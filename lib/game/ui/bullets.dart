@@ -1,6 +1,6 @@
 import 'dart:ui' show Canvas, Paint;
 
-import 'package:batufo/dart_types.dart';
+import 'package:batufo/dart_types/dart_types.dart';
 import 'package:batufo/engine/geometry/conversions.dart';
 import 'package:batufo/engine/geometry/dart_geometry.dart';
 import 'package:batufo/models/bullet_model.dart';

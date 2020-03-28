@@ -1,4 +1,4 @@
-import 'package:batufo/dart_types.dart';
+import 'package:batufo/dart_types/dart_types.dart';
 import 'package:batufo/engine/tile_position.dart';
 
 class Colliders {

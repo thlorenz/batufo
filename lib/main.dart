@@ -1,7 +1,7 @@
 import 'package:batufo/engine/ui/game_widget.dart';
 import 'package:batufo/engine/ui/images.dart';
 import 'package:batufo/engine/world_position.dart';
-import 'package:batufo/game/batufo_game.dart';
+import 'package:batufo/game/ui/batufo_game.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/inputs/gestures.dart';
 import 'package:batufo/levels/levels.dart';

@@ -1,4 +1,4 @@
-import 'package:batufo/dart_types.dart';
+import 'package:batufo/dart_types/dart_types.dart';
 import 'package:batufo/engine/ui/sprite.dart';
 import 'package:batufo/game_props.dart';
 

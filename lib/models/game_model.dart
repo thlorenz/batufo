@@ -1,4 +1,4 @@
-import 'package:batufo/dart_types.dart';
+import 'package:batufo/dart_types/dart_types.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/player_model.dart';

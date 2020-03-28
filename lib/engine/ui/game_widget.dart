@@ -1,4 +1,4 @@
-import 'package:batufo/engine/game.dart';
+import 'package:batufo/engine/ui/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -94,6 +94,7 @@ class _GameRenderBox extends RenderBox with WidgetsBindingObserver {
   void _update(double ts) {
     final dt = _computeDelta(ts);
     game.update(dt, ts);
+    game.updateUI(dt, ts);
   }
 
   double _computeDelta(double ts) {

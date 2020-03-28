@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:batufo/dart_types.dart';
+import 'package:batufo/dart_types/dart_types.dart';
 import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/engine/hit_tiles.dart';
 import 'package:batufo/engine/physics.dart';
