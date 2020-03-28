@@ -16,7 +16,7 @@ class TilePosition {
       other.col == this.col && other.row == this.row;
 
   WorldPosition toWorldPosition() => WorldPosition.fromTilePosition(this);
-  Offset toOffset() => toWorldPosition().toOffset();
+  Offset toWorldOffset() => toWorldPosition().toOffset();
 
   TilePosition copyWith({
     int col,

@@ -25,7 +25,6 @@ class BulletExplosionSprite {
   bool get done => _spriteSheetAnimation.done;
 
   void update(double dt) {
-    if (done) return;
     _spriteSheetAnimation.update(dt);
   }
 

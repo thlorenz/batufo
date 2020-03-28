@@ -44,7 +44,7 @@ class Bullets {
       if (bullet.collided) {
         collidedInPreviousFrame.add(bullet);
         _explodingBullets
-            .add(_createBulletExplosion(bullet.tilePosition.toOffset()));
+            .add(_createBulletExplosion(bullet.tilePosition.toWorldOffset()));
       } else if (colliderAt(bullet.tilePosition)) {
         _handleCollision(bullet, previousPosition);
       }
