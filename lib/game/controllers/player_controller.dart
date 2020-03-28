@@ -30,7 +30,7 @@ class PlayerController {
   });
   void update(
     double dt,
-    Set<GameKey> keys,
+    GameKeys keys,
     AggregatedGestures gestures,
     PlayerModel player,
     StatsModel stats,

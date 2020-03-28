@@ -2,13 +2,16 @@ import 'package:batufo/inputs/input_types.dart';
 import 'package:flutter/services.dart';
 
 class GameKeyboard {
-  static Set<GameKey> get pressedKeys {
-    return Set.from(RawKeyboard.instance.keysPressed
-        .map(_toGameKey)
-        .where((x) => x != null));
+  static GameKeys get pressedKeys {
+    final keys = GameKeys();
+    for (final lk in RawKeyboard.instance.keysPressed) {
+      final bits = _toGameKey(lk);
+      if (bits != null) keys.add(bits);
+    }
+    return keys;
   }
 
-  static GameKey _toGameKey(LogicalKeyboardKey e) {
+  static int _toGameKey(LogicalKeyboardKey e) {
     if (e == LogicalKeyboardKey.arrowLeft || e == LogicalKeyboardKey.keyA) {
       return GameKey.Left;
     }

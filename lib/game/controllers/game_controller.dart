@@ -33,7 +33,7 @@ class GameController {
   void update(
     double dt,
     double ts,
-    Set<GameKey> pressedKeys,
+    GameKeys pressedKeys,
     AggregatedGestures gestures,
   ) {
     _playerController.update(
