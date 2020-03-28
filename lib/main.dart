@@ -1,5 +1,5 @@
-import 'package:batufo/engine/game_widget.dart';
-import 'package:batufo/engine/images.dart';
+import 'package:batufo/engine/ui/game_widget.dart';
+import 'package:batufo/engine/ui/images.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/batufo_game.dart';
 import 'package:batufo/game_props.dart';

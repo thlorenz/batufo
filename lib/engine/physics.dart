@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' show cos, sin;
 
 import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/engine/tile_position.dart';
