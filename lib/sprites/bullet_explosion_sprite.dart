@@ -1,6 +1,7 @@
-import 'dart:ui' show Canvas;
+import 'dart:ui' show Canvas, Offset;
 
-import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset;
+import 'package:batufo/engine/geometry/conversions.dart';
+import 'package:batufo/engine/geometry/dart_geometry.dart' as geo;
 import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/sprite_sheet_animation.dart';
 import 'package:batufo/game_props.dart';
@@ -11,10 +12,10 @@ class BulletExplosionSprite {
   final SpriteSheetAnimation _spriteSheetAnimation;
   final double width;
   final double height;
-  final Offset center;
+  Offset center;
 
   BulletExplosionSprite(
-    this.center, {
+    geo.Offset center, {
     @required this.width,
     @required this.height,
     @required animationDurationMs,
@@ -22,7 +23,10 @@ class BulletExplosionSprite {
           SpriteSheet.fromImageAsset(asset),
           animationDurationMs,
           loop: false,
-        );
+        ) {
+    this.center = uiOffset(center);
+  }
+
   bool get done => _spriteSheetAnimation.done;
 
   void update(double dt) {

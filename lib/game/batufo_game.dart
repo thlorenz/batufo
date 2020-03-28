@@ -1,7 +1,7 @@
 import 'dart:math';
+import 'dart:ui' show Canvas, Offset, Size;
 
 import 'package:batufo/engine/game.dart';
-import 'package:batufo/engine/geometry/dart_geometry.dart';
 import 'package:batufo/engine/physics.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/background.dart';
@@ -17,7 +17,6 @@ import 'package:batufo/inputs/input_types.dart';
 import 'package:batufo/inputs/keyboard.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/game_model.dart';
-import 'package:flutter/cupertino.dart';
 
 class BatufoGame extends Game {
   final GameModel _game;

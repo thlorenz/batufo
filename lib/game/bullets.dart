@@ -1,8 +1,8 @@
 import 'dart:ui' show Canvas, Paint;
-import 'dart:ui' as dui;
 
 import 'package:batufo/dart_types.dart';
-import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset;
+import 'package:batufo/engine/geometry/conversions.dart';
+import 'package:batufo/engine/geometry/dart_geometry.dart';
 import 'package:batufo/engine/physics.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/bullet_model.dart';
@@ -89,7 +89,7 @@ class Bullets {
 
   void _renderBullet(Canvas canvas, BulletModel bullet) {
     final center = bullet.tilePosition.toWorldPosition().toOffset();
-    canvas.drawCircle(center as dui.Offset, radius, paint);
+    canvas.drawCircle(uiOffset(center), radius, paint);
   }
 
   BulletExplosionSprite _createBulletExplosion(Offset center) {
