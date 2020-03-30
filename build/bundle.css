@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Space+Mono&display=swap');main{font-family:'Space Mono', monospace;text-align:center;padding:1em;max-width:none;margin:0 auto}h1{color:#ff3e00;text-transform:uppercase;font-size:2.4em;font-weight:100}h2{margin-bottom:2em;font-size:1.4em}h4{margin-bottom:2em;font-size:1.0em}nav.svelte-cfipd3{text-align:center}nav > a{margin:0 1em 0 1em}
+@import url('https://fonts.googleapis.com/css?family=Space+Mono&display=swap');main{font-family:'Space Mono', monospace;text-align:center;padding:1em;max-width:none;margin:0 auto}h1{color:#2E577C;text-transform:uppercase;font-size:2.4em;font-weight:100}h2{margin-bottom:2em;font-size:1.4em}h4{margin-bottom:2em;font-size:1em}nav.svelte-1czbmiz{text-align:center}nav > a{margin:0 1em 0 1em;cursor:pointer;font-size:1.1em}.underline{text-decoration:underline}
 .italic.svelte-10b9e0n{font-style:italic}
 
 /*# sourceMappingURL=bundle.css.map */
