@@ -16,6 +16,10 @@ const startingRoute =
     ? routes.watch
     : routes.home
 
+const rootURL = location.href.includes('localhost')
+  ? '/'
+  : 'https://thlorenz.github.io/batufo/'
+
 const app = new App({
   target: document.body,
   props: {
@@ -36,6 +40,7 @@ const app = new App({
     state: {
       currentRoute: startingRoute,
     },
+    rootURL
   },
 })
 

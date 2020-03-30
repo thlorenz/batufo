@@ -51,6 +51,7 @@
   export let youtubePlaylistURL
   export let state
   export let routes
+  export let rootURL
 
   const getWindowWidth = () => window.innerWidth
     || document.documentElement.clientWidth
@@ -92,9 +93,9 @@
 
 <main>
   <nav>
-    <a href="{'/' + routes.home.hash }" class="{homeClass}" on:click={navigateHome}>Home</a>
-    <a href="{'/' + routes.game.hash }" class="{gameClass}" on:click={navigateGame}>Game</a>
-    <a href="{'/' + routes.watch.hash }" class="{watchClass}" on:click={navigateWatch}>Watch</a>
+    <a href="{rootURL + routes.home.hash }" class="{homeClass}" on:click={navigateHome}>Home</a>
+    <a href="{rootURL + routes.game.hash }" class="{gameClass}" on:click={navigateGame}>Game</a>
+    <a href="{rootURL + routes.watch.hash }" class="{watchClass}" on:click={navigateWatch}>Watch</a>
   </nav>
   <div>
     {#if state.currentRoute === routes.home}
