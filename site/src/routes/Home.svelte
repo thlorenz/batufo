@@ -2,8 +2,12 @@
   export let title
   export let embedPlaylist
   export let subChannelURL
-  export let gameWebURL
-  export let latestReleaseURL
+  export let twitchChannelURL
+  export let twitterURL
+  export let windowWidth
+
+  $: videoWidth = Math.min(windowWidth * 0.66, 560)
+  $: videoHeight = videoWidth / 1.77
 </script>
 
 <main>
@@ -14,9 +18,10 @@
     without any libraries or frameworks
   </h4>
   <iframe
+    title="YouTube"
     class="center"
-    width="560"
-    height="315"
+    width="{videoWidth}"
+    height="{videoHeight}"
     src="{embedPlaylist}"
     frameborder="0"
     allow="accelerometer; autoplay; encrypted-media; gyroscope;
@@ -24,7 +29,11 @@
     allowfullscreen
   ></iframe>
   <p>
-    <a href="{subChannelURL}" target="_blank">Subscribe</a>
+    <a href="{twitchChannelURL}" target="_blank">Follow on Twitch</a>
+    |
+    <a href="{subChannelURL}" target="_blank">Subscribe on YouTube</a>
+    |
+    <a href="{twitterURL}" target="_blank">Follow on Twitter</a>
   </p>
 
 </main>

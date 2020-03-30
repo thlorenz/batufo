@@ -9,7 +9,7 @@
   }
 
   :global(h1) {
-    color: #ff3e00;
+    color: #2E577C;
     text-transform: uppercase;
     font-size: 2.4em;
     font-weight: 100;
@@ -20,48 +20,98 @@
   }
   :global(h4) {
     margin-bottom: 2em;
-    font-size: 1.0em;
+    font-size: 1em;
   }
   nav {
     text-align: center;
   }
   :global(nav > a) {
     margin: 0 1em 0 1em;
+    cursor: pointer;
+    font-size: 1.1em;
+  }
+  :global(.underline) {
+    text-decoration: underline;
   }
 </style>
 
 <script>
-  import { Router, Link, Route } from 'svelte-routing'
   import Home from './routes/Home.svelte'
   import Game from './routes/Game.svelte'
+  import Watch from './routes/Watch.svelte'
 
   export let title
   export let embedPlaylist
   export let subChannelURL
   export let gameWebURL
+  export let twitchChannel
+  export let twitchChannelURL
   export let latestReleaseURL
+  export let twitterURL
+  export let youtubePlaylistURL
+  export let state
+  export let routes
+
+  const getWindowWidth = () => window.innerWidth
+    || document.documentElement.clientWidth
+    || document.body.clientWidth
+
+  const getWindowHeight = () => window.innerHeight
+    || document.documentElement.clientHeight
+    || document.body.clientHeight
+
+  $: homeClass = state.currentRoute === routes.home ? 'underline' : ''
+  $: gameClass = state.currentRoute === routes.game ? 'underline' : ''
+  $: watchClass = state.currentRoute === routes.watch ? 'underline' : ''
+  $: windowWidth = getWindowWidth()
+  $: windowHeight = getWindowHeight()
+
+
+  const navigateHome = () => {
+    state.currentRoute = routes.home
+    state = state
+  }
+  const navigateGame = () => {
+    state.currentRoute = routes.game
+    state = state
+  }
+
+  const navigateWatch = () => {
+    state.currentRoute = routes.watch
+    state = state
+  }
+
+  window.onresize = () => {
+    windowWidth = getWindowWidth()
+    windowHeight = getWindowHeight()
+  }
+
   export let githubSourceURL
 
-  export let url = ''
 </script>
 
-<Router {url}>
+<main>
   <nav>
-    <Link to="/">Home</Link>
-    <Link to="game">Game</Link>
+    <a href="{'/' + routes.home.hash }" class="{homeClass}" on:click={navigateHome}>Home</a>
+    <a href="{'/' + routes.game.hash }" class="{gameClass}" on:click={navigateGame}>Game</a>
+    <a href="{'/' + routes.watch.hash }" class="{watchClass}" on:click={navigateWatch}>Watch</a>
   </nav>
   <div>
-    <Route path="game">
-      <Game {title} {gameWebURL} {latestReleaseURL} {githubSourceURL} />
-    </Route>
-    <Route path="/">
+    {#if state.currentRoute === routes.home}
       <Home
         {title}
         {embedPlaylist}
         {subChannelURL}
         {gameWebURL}
+        {twitterURL}
+        {twitchChannelURL}
         {latestReleaseURL}
+        {windowWidth}
       />
-    </Route>
+    {:else if state.currentRoute === routes.game}
+      <Game {title} {gameWebURL} {latestReleaseURL} {githubSourceURL} {windowWidth} />
+    {:else if state.currentRoute === routes.watch}
+      <Watch {title} {twitchChannelURL} {twitchChannel} {youtubePlaylistURL} {windowWidth} />
+    {/if}
   </div>
-</Router>
+</main>

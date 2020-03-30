@@ -2,6 +2,20 @@ import App from './App.svelte'
 
 import gameUpdate from '../data/game-update.json'
 
+const routes = {
+  home: { id: 'home', hash: '' },
+  game: { id: 'game', hash: '#game' },
+  watch: { id: 'watch', hash: '#watch' },
+}
+
+const hash = location.hash
+const startingRoute =
+  hash === routes.game.hash
+    ? routes.game
+    : hash === routes.watch.hash
+    ? routes.watch
+    : routes.home
+
 const app = new App({
   target: document.body,
   props: {
@@ -13,6 +27,15 @@ const app = new App({
     gameWebURL: 'https://thlorenz.github.io/batufo/webgame',
     latestReleaseURL: gameUpdate.release.url,
     githubSourceURL: 'https://github.com/thlorenz/batufo',
+    youtubePlaylistURL:
+      'https://www.youtube.com/watch?list=PL4k64WemroGlTDHJzVo_O1l6C0nuwRc6G&v=xTcO6lPMUaA',
+    twitchChannel: 'thlorenz',
+    twitchChannelURL: 'https://www.twitch.tv/thlorenz',
+    twitterURL: 'https://twitter.com/thlorenz',
+    routes,
+    state: {
+      currentRoute: startingRoute,
+    },
   },
 })
 
