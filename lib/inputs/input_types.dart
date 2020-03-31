@@ -19,12 +19,14 @@ class GameKey {
 }
 
 class GameKeys {
-  int _keys = 0x0;
+  int bits;
 
-  void add(int key) => _keys = _keys | key;
-  bool contains(int key) => key & _keys == key;
+  GameKeys({this.bits = 0x0});
+
+  void add(int key) => bits = bits | key;
+  bool contains(int key) => key & bits != 0;
 
   String toString() {
-    return 'GameKeys { _keys: ${_keys.toRadixString(2)} }';
+    return 'GameKeys { _keys: ${bits.toRadixString(2)} }';
   }
 }
