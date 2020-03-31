@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+service GameUpdates {
+  rpc Play(Empty) returns (PlayingClient) {}
+}
+
+message Empty {}
+
+message PlayingClient {
+  uint32 gameID = 1;
+  uint32 clientID = 2;
+}
+
+// flags least to most significant bits
+//  - appliedThrust
+message PackedPlayerModel {
+  PackedTilePosition tilePosition = 1;
+  PackedFractionalPoint velocity = 2;
+  DoubleFourDecimals angle = 3;
+  uint32 flags = 4;
+}
+
+// colRow: tile column and row
+// relXY:  integer representation of offset from tile center
+//   Example: relX: 1.233 -> x = floor(1.233* 1000)
+message PackedTilePosition {
+  PackedPoint colRow = 1;
+  PackedFractionalPoint relXY = 2;
+}
+
+// A PackedOffset packs signed x:double + y:double information
+// into one int32.
+// The upper 16 bits are x/col and the lower 16 bits are y/row.
+message PackedFractionalPoint {
+  uint32 xy = 1;
+}
+
+// A PackedPoint packs unsigned x:int + y:int information
+// into one int32.
+// The upper 16 bits are x and the lower 16 bits are y.
+message PackedPoint {
+  uint32 xy = 1;
+}
+
+message DoubleTwoDecimals {
+  int32 value = 1;
+}
+
+message DoubleFourDecimals {
+  int32 value = 1;
+}
