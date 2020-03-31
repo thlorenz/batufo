@@ -1,6 +1,8 @@
 import 'package:batufo/dart_types/dart_types.dart';
 import 'package:batufo/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/engine/world_position.dart';
+import 'package:batufo/generated/message_bus.pb.dart' show PackedTilePosition;
+import 'package:batufo/utils/packing_types.dart' show FractionalPoint, Point;
 
 @immutable
 class TilePosition {
@@ -29,6 +31,20 @@ class TilePosition {
       relX ?? this.relX,
       relY ?? this.relY,
     );
+  }
+
+  PackedTilePosition pack() {
+    final colRow = Point(col, row).pack();
+    final relXY = FractionalPoint(relX, relY).pack();
+    return PackedTilePosition()
+      ..colRow = colRow
+      ..relXY = relXY;
+  }
+
+  factory TilePosition.unpack(PackedTilePosition data) {
+    final colRow = Point.unpack(data.colRow);
+    final relXY = FractionalPoint.unpack(data.relXY);
+    return TilePosition(colRow.x, colRow.y, relXY.x, relXY.y);
   }
 
   @override
