@@ -2,22 +2,45 @@ syntax = "proto3";
 
 service GameUpdates {
   rpc Play(Empty) returns (PlayingClient) {}
+  rpc SubscribeGameStates(PlayingClient) returns (stream GameStateEvent) {}
+  rpc OnPlayingClientEvent(stream PlayingClientEvent) returns (Empty)
 }
 
 message Empty {}
 
+
+message GameStateEvent {
+  // TODO: possibly needs id and timestamp
+  PackedGameState gameState = 1;
+}
+
+message PackedGameState {
+  repeated PackedPlayerModel players = 1;
+}
+
 message PlayingClient {
   uint32 gameID = 1;
   uint32 clientID = 2;
+  // TODO: send floorTiles and walls + nrows and ncols
+}
+
+message PlayingClientEvent {
+  PlayingClient client = 1;
+  PlayerInputs playerInputs = 2;
+}
+
+message PlayerInputs {
+  uint32 pressedKeys = 1;
 }
 
 // flags least to most significant bits
 //  - appliedThrust
 message PackedPlayerModel {
-  PackedTilePosition tilePosition = 1;
-  PackedFractionalPoint velocity = 2;
-  DoubleFourDecimals angle = 3;
-  uint32 flags = 4;
+  uint32 id = 1;
+  PackedTilePosition tilePosition = 2;
+  PackedFractionalPoint velocity = 3;
+  DoubleFourDecimals angle = 4;
+  uint32 flags = 5;
 }
 
 // colRow: tile column and row

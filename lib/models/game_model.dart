@@ -7,9 +7,9 @@ import 'package:batufo/models/stats_model.dart';
 class GameModel {
   PlayerModel player;
   StatsModel stats;
+  List<BulletModel> bullets;
   List<TilePosition> floorTiles;
   List<TilePosition> walls;
-  List<BulletModel> bullets;
   int nrows;
   int ncols;
   GameModel({

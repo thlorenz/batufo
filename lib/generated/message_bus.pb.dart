@@ -30,6 +30,64 @@ class Empty extends $pb.GeneratedMessage {
   static Empty _defaultInstance;
 }
 
+class GameStateEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GameStateEvent', createEmptyInstance: create)
+    ..aOM<PackedGameState>(1, 'gameState', protoName: 'gameState', subBuilder: PackedGameState.create)
+    ..hasRequiredFields = false
+  ;
+
+  GameStateEvent._() : super();
+  factory GameStateEvent() => create();
+  factory GameStateEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GameStateEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GameStateEvent clone() => GameStateEvent()..mergeFromMessage(this);
+  GameStateEvent copyWith(void Function(GameStateEvent) updates) => super.copyWith((message) => updates(message as GameStateEvent));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GameStateEvent create() => GameStateEvent._();
+  GameStateEvent createEmptyInstance() => create();
+  static $pb.PbList<GameStateEvent> createRepeated() => $pb.PbList<GameStateEvent>();
+  @$core.pragma('dart2js:noInline')
+  static GameStateEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GameStateEvent>(create);
+  static GameStateEvent _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PackedGameState get gameState => $_getN(0);
+  @$pb.TagNumber(1)
+  set gameState(PackedGameState v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasGameState() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearGameState() => clearField(1);
+  @$pb.TagNumber(1)
+  PackedGameState ensureGameState() => $_ensure(0);
+}
+
+class PackedGameState extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedGameState', createEmptyInstance: create)
+    ..pc<PackedPlayerModel>(1, 'players', $pb.PbFieldType.PM, subBuilder: PackedPlayerModel.create)
+    ..hasRequiredFields = false
+  ;
+
+  PackedGameState._() : super();
+  factory PackedGameState() => create();
+  factory PackedGameState.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedGameState.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedGameState clone() => PackedGameState()..mergeFromMessage(this);
+  PackedGameState copyWith(void Function(PackedGameState) updates) => super.copyWith((message) => updates(message as PackedGameState));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PackedGameState create() => PackedGameState._();
+  PackedGameState createEmptyInstance() => create();
+  static $pb.PbList<PackedGameState> createRepeated() => $pb.PbList<PackedGameState>();
+  @$core.pragma('dart2js:noInline')
+  static PackedGameState getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedGameState>(create);
+  static PackedGameState _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<PackedPlayerModel> get players => $_getList(0);
+}
+
 class PlayingClient extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayingClient', createEmptyInstance: create)
     ..a<$core.int>(1, 'gameID', $pb.PbFieldType.OU3, protoName: 'gameID')
@@ -71,12 +129,89 @@ class PlayingClient extends $pb.GeneratedMessage {
   void clearClientID() => clearField(2);
 }
 
+class PlayingClientEvent extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayingClientEvent', createEmptyInstance: create)
+    ..aOM<PlayingClient>(1, 'client', subBuilder: PlayingClient.create)
+    ..aOM<PlayerInputs>(2, 'playerInputs', protoName: 'playerInputs', subBuilder: PlayerInputs.create)
+    ..hasRequiredFields = false
+  ;
+
+  PlayingClientEvent._() : super();
+  factory PlayingClientEvent() => create();
+  factory PlayingClientEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PlayingClientEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PlayingClientEvent clone() => PlayingClientEvent()..mergeFromMessage(this);
+  PlayingClientEvent copyWith(void Function(PlayingClientEvent) updates) => super.copyWith((message) => updates(message as PlayingClientEvent));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PlayingClientEvent create() => PlayingClientEvent._();
+  PlayingClientEvent createEmptyInstance() => create();
+  static $pb.PbList<PlayingClientEvent> createRepeated() => $pb.PbList<PlayingClientEvent>();
+  @$core.pragma('dart2js:noInline')
+  static PlayingClientEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayingClientEvent>(create);
+  static PlayingClientEvent _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PlayingClient get client => $_getN(0);
+  @$pb.TagNumber(1)
+  set client(PlayingClient v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasClient() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearClient() => clearField(1);
+  @$pb.TagNumber(1)
+  PlayingClient ensureClient() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  PlayerInputs get playerInputs => $_getN(1);
+  @$pb.TagNumber(2)
+  set playerInputs(PlayerInputs v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPlayerInputs() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPlayerInputs() => clearField(2);
+  @$pb.TagNumber(2)
+  PlayerInputs ensurePlayerInputs() => $_ensure(1);
+}
+
+class PlayerInputs extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayerInputs', createEmptyInstance: create)
+    ..a<$core.int>(1, 'pressedKeys', $pb.PbFieldType.OU3, protoName: 'pressedKeys')
+    ..hasRequiredFields = false
+  ;
+
+  PlayerInputs._() : super();
+  factory PlayerInputs() => create();
+  factory PlayerInputs.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PlayerInputs.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PlayerInputs clone() => PlayerInputs()..mergeFromMessage(this);
+  PlayerInputs copyWith(void Function(PlayerInputs) updates) => super.copyWith((message) => updates(message as PlayerInputs));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PlayerInputs create() => PlayerInputs._();
+  PlayerInputs createEmptyInstance() => create();
+  static $pb.PbList<PlayerInputs> createRepeated() => $pb.PbList<PlayerInputs>();
+  @$core.pragma('dart2js:noInline')
+  static PlayerInputs getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayerInputs>(create);
+  static PlayerInputs _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get pressedKeys => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set pressedKeys($core.int v) { $_setUnsignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasPressedKeys() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPressedKeys() => clearField(1);
+}
+
 class PackedPlayerModel extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedPlayerModel', createEmptyInstance: create)
-    ..aOM<PackedTilePosition>(1, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
-    ..aOM<PackedFractionalPoint>(2, 'velocity', subBuilder: PackedFractionalPoint.create)
-    ..aOM<DoubleFourDecimals>(3, 'angle', subBuilder: DoubleFourDecimals.create)
-    ..a<$core.int>(4, 'flags', $pb.PbFieldType.OU3)
+    ..a<$core.int>(1, 'id', $pb.PbFieldType.OU3)
+    ..aOM<PackedTilePosition>(2, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
+    ..aOM<PackedFractionalPoint>(3, 'velocity', subBuilder: PackedFractionalPoint.create)
+    ..aOM<DoubleFourDecimals>(4, 'angle', subBuilder: DoubleFourDecimals.create)
+    ..a<$core.int>(5, 'flags', $pb.PbFieldType.OU3)
     ..hasRequiredFields = false
   ;
 
@@ -96,46 +231,55 @@ class PackedPlayerModel extends $pb.GeneratedMessage {
   static PackedPlayerModel _defaultInstance;
 
   @$pb.TagNumber(1)
-  PackedTilePosition get tilePosition => $_getN(0);
+  $core.int get id => $_getIZ(0);
   @$pb.TagNumber(1)
-  set tilePosition(PackedTilePosition v) { setField(1, v); }
+  set id($core.int v) { $_setUnsignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasTilePosition() => $_has(0);
+  $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTilePosition() => clearField(1);
-  @$pb.TagNumber(1)
-  PackedTilePosition ensureTilePosition() => $_ensure(0);
+  void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  PackedFractionalPoint get velocity => $_getN(1);
+  PackedTilePosition get tilePosition => $_getN(1);
   @$pb.TagNumber(2)
-  set velocity(PackedFractionalPoint v) { setField(2, v); }
+  set tilePosition(PackedTilePosition v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasVelocity() => $_has(1);
+  $core.bool hasTilePosition() => $_has(1);
   @$pb.TagNumber(2)
-  void clearVelocity() => clearField(2);
+  void clearTilePosition() => clearField(2);
   @$pb.TagNumber(2)
-  PackedFractionalPoint ensureVelocity() => $_ensure(1);
+  PackedTilePosition ensureTilePosition() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  DoubleFourDecimals get angle => $_getN(2);
+  PackedFractionalPoint get velocity => $_getN(2);
   @$pb.TagNumber(3)
-  set angle(DoubleFourDecimals v) { setField(3, v); }
+  set velocity(PackedFractionalPoint v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasAngle() => $_has(2);
+  $core.bool hasVelocity() => $_has(2);
   @$pb.TagNumber(3)
-  void clearAngle() => clearField(3);
+  void clearVelocity() => clearField(3);
   @$pb.TagNumber(3)
-  DoubleFourDecimals ensureAngle() => $_ensure(2);
+  PackedFractionalPoint ensureVelocity() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $core.int get flags => $_getIZ(3);
+  DoubleFourDecimals get angle => $_getN(3);
   @$pb.TagNumber(4)
-  set flags($core.int v) { $_setUnsignedInt32(3, v); }
+  set angle(DoubleFourDecimals v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasFlags() => $_has(3);
+  $core.bool hasAngle() => $_has(3);
   @$pb.TagNumber(4)
-  void clearFlags() => clearField(4);
+  void clearAngle() => clearField(4);
+  @$pb.TagNumber(4)
+  DoubleFourDecimals ensureAngle() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $core.int get flags => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set flags($core.int v) { $_setUnsignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasFlags() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearFlags() => clearField(5);
 }
 
 class PackedTilePosition extends $pb.GeneratedMessage {

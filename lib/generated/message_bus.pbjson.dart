@@ -9,6 +9,20 @@ const Empty$json = const {
   '1': 'Empty',
 };
 
+const GameStateEvent$json = const {
+  '1': 'GameStateEvent',
+  '2': const [
+    const {'1': 'gameState', '3': 1, '4': 1, '5': 11, '6': '.PackedGameState', '10': 'gameState'},
+  ],
+};
+
+const PackedGameState$json = const {
+  '1': 'PackedGameState',
+  '2': const [
+    const {'1': 'players', '3': 1, '4': 3, '5': 11, '6': '.PackedPlayerModel', '10': 'players'},
+  ],
+};
+
 const PlayingClient$json = const {
   '1': 'PlayingClient',
   '2': const [
@@ -17,13 +31,29 @@ const PlayingClient$json = const {
   ],
 };
 
+const PlayingClientEvent$json = const {
+  '1': 'PlayingClientEvent',
+  '2': const [
+    const {'1': 'client', '3': 1, '4': 1, '5': 11, '6': '.PlayingClient', '10': 'client'},
+    const {'1': 'playerInputs', '3': 2, '4': 1, '5': 11, '6': '.PlayerInputs', '10': 'playerInputs'},
+  ],
+};
+
+const PlayerInputs$json = const {
+  '1': 'PlayerInputs',
+  '2': const [
+    const {'1': 'pressedKeys', '3': 1, '4': 1, '5': 13, '10': 'pressedKeys'},
+  ],
+};
+
 const PackedPlayerModel$json = const {
   '1': 'PackedPlayerModel',
   '2': const [
-    const {'1': 'tilePosition', '3': 1, '4': 1, '5': 11, '6': '.PackedTilePosition', '10': 'tilePosition'},
-    const {'1': 'velocity', '3': 2, '4': 1, '5': 11, '6': '.PackedFractionalPoint', '10': 'velocity'},
-    const {'1': 'angle', '3': 3, '4': 1, '5': 11, '6': '.DoubleFourDecimals', '10': 'angle'},
-    const {'1': 'flags', '3': 4, '4': 1, '5': 13, '10': 'flags'},
+    const {'1': 'id', '3': 1, '4': 1, '5': 13, '10': 'id'},
+    const {'1': 'tilePosition', '3': 2, '4': 1, '5': 11, '6': '.PackedTilePosition', '10': 'tilePosition'},
+    const {'1': 'velocity', '3': 3, '4': 1, '5': 11, '6': '.PackedFractionalPoint', '10': 'velocity'},
+    const {'1': 'angle', '3': 4, '4': 1, '5': 11, '6': '.DoubleFourDecimals', '10': 'angle'},
+    const {'1': 'flags', '3': 5, '4': 1, '5': 13, '10': 'flags'},
   ],
 };
 
