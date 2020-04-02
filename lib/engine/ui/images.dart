@@ -5,7 +5,7 @@ import 'dart:ui' show Image, decodeImageFromList;
 import 'package:flutter/services.dart';
 
 class Images {
-  final loaded = Map<String, Image>();
+  final Map<String, Image> loaded = <String, Image>{};
 
   Future<void> load(List<String> paths) {
     final loaders = paths.map(_load);
@@ -29,7 +29,7 @@ class Images {
     final data = await rootBundle.load(path);
     final bytes = Uint8List.view(data.buffer);
     final completer = Completer<Image>();
-    decodeImageFromList(bytes, (image) => completer.complete(image));
+    decodeImageFromList(bytes, completer.complete);
     return completer.future;
   }
 

@@ -1,6 +1,6 @@
 import 'dart:math';
 
 int getRandomInt() {
-  var random = Random.secure();
+  final random = Random.secure();
   return random.nextInt(0xFFFFFFFF);
 }

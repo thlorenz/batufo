@@ -13,8 +13,7 @@ class TilePosition {
 
   const TilePosition(this.col, this.row, this.relX, this.relY);
 
-  bool isSameTileAs(TilePosition other) =>
-      other.col == this.col && other.row == this.row;
+  bool isSameTileAs(TilePosition other) => other.col == col && other.row == row;
 
   WorldPosition toWorldPosition() => WorldPosition.fromTilePosition(this);
   Offset toWorldOffset() => toWorldPosition().toOffset();

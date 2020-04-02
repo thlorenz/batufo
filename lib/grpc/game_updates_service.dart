@@ -17,7 +17,7 @@ class Game {
   final GameLoop _gameLoop;
 
   Game(this.id, GameState gameState, {List<PlayingClient> clients})
-      : this._clients = clients ?? <PlayingClient>[],
+      : _clients = clients ?? <PlayingClient>[],
         _gameLoop = GameLoop(gameState);
 
   void tryStart() => _gameLoop.tryStart();
@@ -50,7 +50,7 @@ class GameUpdatesService extends GameUpdatesServiceBase {
   int _currentGameID;
   final Map<int, Game> _games;
 
-  GameUpdatesService() : _games = Map<int, Game>();
+  GameUpdatesService() : _games = <int, Game>{};
 
   final _gameStateEvent$ = StreamController<GameStateEvent>.broadcast();
   Stream<GameStateEvent> get gameStateEvent$ => _gameStateEvent$.stream;
@@ -65,17 +65,18 @@ class GameUpdatesService extends GameUpdatesServiceBase {
       ..clientID = clientID
       ..arena = arena.pack();
 
-    game.addClient(playingClient);
-    game.tryStart();
+    game
+      ..addClient(playingClient)
+      ..tryStart();
     return Future.value(playingClient);
   }
 
   Stream<GameStateEvent> subscribeGameStates(
     ServiceCall call,
-    PlayingClient client,
+    PlayingClient request,
   ) {
-    final game = this._games[client.gameID];
-    assert(game != null, 'cannot find game ${client.gameID}');
+    final game = _games[request.gameID];
+    assert(game != null, 'cannot find game ${request.gameID}');
     return game.gameState$.map((gs) {
       final event = GameStateEvent()..gameState = gs.pack();
       return event;
@@ -84,10 +85,10 @@ class GameUpdatesService extends GameUpdatesServiceBase {
 
   Future<Empty> playingClientSync(
     ServiceCall call,
-    Stream<PlayingClientEvent> event$,
+    Stream<PlayingClientEvent> request,
   ) {
     StreamSubscription<PlayingClientEvent> sub;
-    sub = event$.listen(
+    sub = request.listen(
       _processPlayingClientEvent,
       onDone: () => sub.cancel(),
       onError: print,

@@ -12,7 +12,7 @@ import 'package:batufo/models/stats_model.dart';
 import 'package:batufo/widgets/hud/hud_widget.dart';
 import 'package:flutter/material.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Images.instance.load([
     GameProps.assets.floorTiles.imagePath,
@@ -36,7 +36,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   final BatufoGame game;
   final GameModel gameModel;
-  MyApp({@required this.game, this.gameModel});
+  const MyApp({@required this.game, this.gameModel});
 
   Widget build(BuildContext context) {
     return MaterialApp(

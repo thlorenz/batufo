@@ -8,7 +8,7 @@ const TICK_DURATION = 2000;
 
 class GameLoop {
   bool _started;
-  GameState _currentGameState;
+  final GameState _currentGameState;
   GameLoop(this._currentGameState) : _started = false;
 
   final _gameState$ = StreamController<GameState>.broadcast();

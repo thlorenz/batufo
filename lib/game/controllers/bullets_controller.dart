@@ -20,7 +20,7 @@ class BulletsController {
   }
 
   void update(double dt) {
-    final collidedInPreviousFrame = List<BulletModel>();
+    final collidedInPreviousFrame = <BulletModel>[];
     for (final bullet in _bullets) {
       final previousPosition = bullet.tilePosition;
       bullet.tilePosition =
@@ -39,8 +39,9 @@ class BulletsController {
   }
 
   void _handleCollision(BulletModel bullet, TilePosition previousPosition) {
-    bullet.collided = true;
-    bullet.velocity = Offset.zero;
+    bullet
+      ..collided = true
+      ..velocity = Offset.zero;
     if (previousPosition.row < bullet.tilePosition.row) {
       bullet.tilePosition = bullet.tilePosition.copyWith(relY: 0.0);
     } else if (previousPosition.row > bullet.tilePosition.row) {

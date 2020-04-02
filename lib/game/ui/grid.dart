@@ -18,8 +18,8 @@ class Grid {
     final delta = _tileSize;
     final gameWidth = ncols * delta;
     final gameHeight = nrows * delta;
-    final marginX = this.marginCols * delta;
-    final marginY = this.marginRows * delta;
+    final marginX = marginCols * delta;
+    final marginY = marginRows * delta;
     final startX = -marginX;
     final endX = gameWidth + marginX;
     final startY = -marginY;

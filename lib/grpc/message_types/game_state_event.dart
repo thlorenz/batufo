@@ -3,7 +3,7 @@ import 'package:batufo/models/player_model.dart';
 
 class GameState {
   final Map<int, PlayerModel> players;
-  GameState() : players = Map<int, PlayerModel>();
+  GameState() : players = <int, PlayerModel>{};
 
   void addPlayer(int id, PlayerModel player) {
     players[id] = player;

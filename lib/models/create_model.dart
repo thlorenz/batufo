@@ -13,8 +13,8 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
   final center = tileSize / 2;
 
   PlayerModel player;
-  final floorTiles = List<TilePosition>();
-  final walls = List<TilePosition>();
+  final floorTiles = <TilePosition>[];
+  final walls = <TilePosition>[];
 
   for (int row = 0; row < nrows; row++) {
     for (int col = 0; col < ncols; col++) {
@@ -37,7 +37,7 @@ GameModel createModel(Tilemap tilemap, double tileSize) {
   }
 
   final statsModel = StatsModel(playerHealth: GameProps.playerTotalHealth);
-  final bullets = List<BulletModel>();
+  final bullets = <BulletModel>[];
   return GameModel(
     player: player,
     floorTiles: floorTiles,

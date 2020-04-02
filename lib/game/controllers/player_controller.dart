@@ -56,20 +56,22 @@ class PlayerController {
     }
     // thrust
     if (keys.contains(GameKey.Up)) {
-      player.velocity = Physics.increaseVelocity(
-        player.velocity,
-        player.angle,
-        keyboardThrustForce * dt,
-      );
-      player.appliedThrust = true;
+      player
+        ..velocity = Physics.increaseVelocity(
+          player.velocity,
+          player.angle,
+          keyboardThrustForce * dt,
+        )
+        ..appliedThrust = true;
     }
     if (gestures.thrust != 0.0) {
-      player.velocity = Physics.increaseVelocity(
-        player.velocity,
-        player.angle,
-        gestures.thrust,
-      );
-      player.appliedThrust = true;
+      player
+        ..velocity = Physics.increaseVelocity(
+          player.velocity,
+          player.angle,
+          gestures.thrust,
+        )
+        ..appliedThrust = true;
     }
   }
 
@@ -91,25 +93,27 @@ class PlayerController {
         getHitTiles(playerModel.tilePosition.toWorldPosition(), hitSize);
     final nextHit = getHitTiles(next.toWorldPosition(), hitSize);
 
-    final hitOnAxisX = () {
+    Tuple<Offset, double> hitOnAxisX() {
       final healthToll =
           playerModel.velocity.dx.abs() * wallHitHealthTollFactor;
       return Tuple(
         playerModel.velocity.scale(-wallHitSlowdown, wallHitSlowdown),
         healthToll,
       );
-    };
-    final hitOnAxisY = () {
+    }
+
+    Tuple<Offset, double> hitOnAxisY() {
       final healthToll =
           playerModel.velocity.dy.abs() * wallHitHealthTollFactor;
       return Tuple(
         playerModel.velocity.scale(wallHitSlowdown, -wallHitSlowdown),
         healthToll,
       );
-    };
-    final handleHit = (TilePosition tp, TilePosition nextTp) {
+    }
+
+    Tuple<Offset, double> handleHit(TilePosition tp, TilePosition nextTp) {
       return tp.col == nextTp.col ? hitOnAxisY() : hitOnAxisX();
-    };
+    }
 
     if (colliderAt(nextHit.bottomRight)) {
       if (colliderAt(nextHit.bottomLeft)) return hitOnAxisY();

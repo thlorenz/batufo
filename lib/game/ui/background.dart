@@ -24,7 +24,7 @@ class Background {
   final bool _isActive;
   Background(this._floorTiles, this._tileSize, this._isActive)
       : _spriteSheet = SpriteSheet.fromImageAsset(GameProps.assets.floorTiles),
-        _backgroundSprites = List<BackgroundSprite>() {
+        _backgroundSprites = <BackgroundSprite>[] {
     _initTiles();
   }
 
@@ -45,7 +45,7 @@ class Background {
       final tile = _floorTiles[i];
       final wp = tile.toWorldPosition();
       final rect = Rect.fromLTWH(wp.x - w / 2, wp.y - w / 2, w, w);
-      final nrows = 20;
+      const nrows = 20;
 
       final sheetRow = i % 7;
       final sheetCol = (i ~/ nrows) % 7;

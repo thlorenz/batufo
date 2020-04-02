@@ -15,22 +15,23 @@ class ImageAsset {
 }
 
 class Assets {
-  final player = ImageAsset('assets/images/sprites/player.png', 536, 534);
-  final thrust = ImageAsset(
+  final ImageAsset player =
+      ImageAsset('assets/images/sprites/player.png', 536, 534);
+  final ImageAsset thrust = ImageAsset(
     'assets/images/sprites/thrust.png',
     7700,
     442,
     rows: 1,
     cols: 50,
   );
-  final floorTiles = ImageAsset(
+  final ImageAsset floorTiles = ImageAsset(
     'assets/images/bg/floor-tiles.png',
     1024,
     1024,
     rows: 8,
     cols: 8,
   );
-  final wallMetal = ImageAsset(
+  final ImageAsset wallMetal = ImageAsset(
     'assets/images/static/wall-metal.png',
     66,
     66,
@@ -38,7 +39,7 @@ class Assets {
     cols: 1,
   );
 
-  final bulletExplosion = ImageAsset(
+  final ImageAsset bulletExplosion = ImageAsset(
     'assets/images/sprites/bullet-explosion.png',
     256,
     256,

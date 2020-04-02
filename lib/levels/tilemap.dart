@@ -113,7 +113,7 @@ $_tilesString
   }
 }
 
-final terrain = ('''
+const String terrain = '''
 (---------------------)
 (                     )
 (                     )
@@ -125,7 +125,7 @@ final terrain = ('''
 (   +   p                )
 (                     ---)
 (---------------------)
-''');
+''';
 
 void main() {
   final tilemap = Tilemap.build(terrain);

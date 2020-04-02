@@ -42,11 +42,15 @@ class Player {
     final playerTilePosition = player.tilePosition;
     final center = WorldPosition.fromTilePosition(playerTilePosition);
     canvas.save();
-    canvas.translate(center.x, center.y);
-    canvas.rotate(player.angle);
-    playerSprite.render(canvas, Offset.zero, width: tileSize, height: tileSize);
-    thrustSprite.render(canvas, Offset.zero, tileSize);
-    _renderDebugHitTile(canvas, player);
+    {
+      canvas
+        ..translate(center.x, center.y)
+        ..rotate(player.angle);
+      playerSprite.render(canvas, Offset.zero,
+          width: tileSize, height: tileSize);
+      thrustSprite.render(canvas, Offset.zero, tileSize);
+      _renderDebugHitTile(canvas, player);
+    }
     canvas.restore();
   }
 

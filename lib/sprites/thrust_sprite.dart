@@ -15,7 +15,7 @@ class ThrustSprite {
   ThrustSprite(
       {@required this.width,
       @required this.height,
-      @required animationDurationMs})
+      @required double animationDurationMs})
       : _spriteSheetAnimation = SpriteSheetAnimation(
           SpriteSheet.fromImageAsset(asset),
           animationDurationMs,
@@ -32,14 +32,17 @@ class ThrustSprite {
     if (done) return;
     final center = Offset(playerCenter.dx - playerWidth / 2, playerCenter.dy);
     canvas.save();
-    canvas.translate(center.dx, center.dy);
-    canvas.rotate(pi / 2);
-    _spriteSheetAnimation.sprite.render(
-      canvas,
-      Offset.zero,
-      width: width,
-      height: height,
-    );
+    {
+      canvas
+        ..translate(center.dx, center.dy)
+        ..rotate(pi / 2);
+      _spriteSheetAnimation.sprite.render(
+        canvas,
+        Offset.zero,
+        width: width,
+        height: height,
+      );
+    }
     canvas.restore();
   }
 

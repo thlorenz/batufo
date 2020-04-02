@@ -11,8 +11,8 @@ class Walls {
   final double _tileSize;
 
   Walls(this._walls, this._tileSize)
-      : this._sprite = Sprite.fromImageAsset(GameProps.assets.wallMetal),
-        _rects = List<Rect>() {
+      : _sprite = Sprite.fromImageAsset(GameProps.assets.wallMetal),
+        _rects = <Rect>[] {
     _initRects();
   }
 

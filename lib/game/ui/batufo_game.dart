@@ -71,15 +71,19 @@ class BatufoGame extends Game {
     _lowerLeftCanvas(canvas, _size.height);
 
     canvas.save();
-    canvas.translate(-_backgroundCamera.dx, -_backgroundCamera.dy);
-    _grid.render(canvas, _game.nrows, _game.ncols);
+    {
+      canvas.translate(-_backgroundCamera.dx, -_backgroundCamera.dy);
+      _grid.render(canvas, _game.nrows, _game.ncols);
+    }
     canvas.restore();
 
-    canvas.translate(-_camera.dx, -_camera.dy);
-    _background.render(canvas);
-    _walls.render(canvas);
-    _player.render(canvas, _game.player);
-    _bullets.render(canvas, _game.bullets);
+    {
+      canvas.translate(-_camera.dx, -_camera.dy);
+      _background.render(canvas);
+      _walls.render(canvas);
+      _player.render(canvas, _game.player);
+      _bullets.render(canvas, _game.bullets);
+    }
   }
 
   void resize(Size size) {
@@ -93,7 +97,7 @@ class BatufoGame extends Game {
     final moved = Offset(pos.dx - centerScreen.dx, pos.dy - centerScreen.dy);
 
     final lerp = min(0.0025 * dt, 1.0);
-    final backgroundLerp = 0.8;
+    const backgroundLerp = 0.8;
     final dx = (moved.dx - _camera.dx) * lerp;
     final dy = (moved.dy - _camera.dy) * lerp;
     _camera = _camera.translate(dx, dy);
@@ -104,7 +108,8 @@ class BatufoGame extends Game {
   }
 
   void _lowerLeftCanvas(Canvas canvas, double height) {
-    canvas.translate(0, height);
-    canvas.scale(1, -1);
+    canvas
+      ..translate(0, height)
+      ..scale(1, -1);
   }
 }

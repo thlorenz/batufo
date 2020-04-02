@@ -18,7 +18,7 @@ class BulletExplosionSprite {
     geo.Offset center, {
     @required this.width,
     @required this.height,
-    @required animationDurationMs,
+    @required double animationDurationMs,
   }) : _spriteSheetAnimation = SpriteSheetAnimation(
           SpriteSheet.fromImageAsset(asset),
           animationDurationMs,

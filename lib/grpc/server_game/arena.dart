@@ -22,8 +22,8 @@ class Arena {
     final nrows = tilemap.nrows;
     final ncols = tilemap.ncols;
     final center = tileSize / 2;
-    final floorTiles = List<TilePosition>();
-    final walls = List<TilePosition>();
+    final floorTiles = <TilePosition>[];
+    final walls = <TilePosition>[];
 
     for (int row = 0; row < nrows; row++) {
       for (int col = 0; col < ncols; col++) {

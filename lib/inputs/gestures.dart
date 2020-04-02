@@ -18,7 +18,7 @@ class GameGestures {
     }
   }
 
-  static GameGestures _instance = GameGestures._();
+  static final GameGestures _instance = GameGestures._();
   static GameGestures get instance => _instance;
 
   void _addRotation(double dx) {

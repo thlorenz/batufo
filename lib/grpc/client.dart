@@ -52,7 +52,7 @@ class Client {
   }
 }
 
-void main(List<String> args) async {
+Future<void> main(List<String> args) async {
   final client = await Client.create('simple');
   client.gameStateEvent$.listen(_onGameStateEvent);
 }

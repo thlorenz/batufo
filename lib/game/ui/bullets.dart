@@ -24,8 +24,8 @@ class Bullets {
     @required this.tileSize,
     this.radius = 3.0,
     Paint paint,
-  })  : this.paint = paint ?? _bulletPaint,
-        _explodingBullets = List<BulletExplosionSprite>();
+  })  : paint = paint ?? _bulletPaint,
+        _explodingBullets = <BulletExplosionSprite>[];
 
   void updateSprites(Iterable<BulletModel> bullets, double dt) {
     for (final bullet in bullets) {

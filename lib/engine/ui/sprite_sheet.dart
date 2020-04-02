@@ -47,7 +47,7 @@ class SpriteSheet {
     return _sprites[idx];
   }
 
-  getRowCol(int row, int col) {
+  Sprite getRowCol(int row, int col) {
     final idx = row * cols + col;
     return getIndex(idx);
   }

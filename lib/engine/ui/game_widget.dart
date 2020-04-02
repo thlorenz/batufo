@@ -7,7 +7,7 @@ class GameWidget extends StatelessWidget {
   final Game game;
   final Color background;
 
-  GameWidget(this.game, {this.background = Colors.transparent});
+  const GameWidget(this.game, {this.background = Colors.transparent});
 
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +21,7 @@ class _EmbeddedGameWidget extends LeafRenderObjectWidget {
   final Game game;
   final Size size;
 
-  _EmbeddedGameWidget(this.game, {this.size});
+  const _EmbeddedGameWidget(this.game, {this.size});
 
   RenderBox createRenderObject(BuildContext context) {
     return RenderConstrainedBox(
@@ -93,8 +93,9 @@ class _GameRenderBox extends RenderBox with WidgetsBindingObserver {
 
   void _update(double ts) {
     final dt = _computeDelta(ts);
-    game.update(dt, ts);
-    game.updateUI(dt, ts);
+    game
+      ..update(dt, ts)
+      ..updateUI(dt, ts);
   }
 
   double _computeDelta(double ts) {

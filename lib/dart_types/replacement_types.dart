@@ -1,5 +1,5 @@
-const Required required = const Required();
-const Immutable immutable = const Immutable();
+const Required required = Required();
+const Immutable immutable = Immutable();
 
 class Required {
   final String reason;
