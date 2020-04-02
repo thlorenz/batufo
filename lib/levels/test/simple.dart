@@ -1,4 +1,4 @@
-final simpleLevel = '''
+const simpleLevel = '''
 (---------------------)
 (                     )
 (                     )

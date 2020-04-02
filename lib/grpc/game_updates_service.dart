@@ -5,6 +5,7 @@ import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/generated/message_bus.pbgrpc.dart';
 import 'package:batufo/grpc/game_loop.dart';
 import 'package:batufo/grpc/message_types/game_state_event.dart';
+import 'package:batufo/grpc/server_game/arena.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/utils/ids.dart';
 import 'package:grpc/grpc.dart';
@@ -54,13 +55,15 @@ class GameUpdatesService extends GameUpdatesServiceBase {
   final _gameStateEvent$ = StreamController<GameStateEvent>.broadcast();
   Stream<GameStateEvent> get gameStateEvent$ => _gameStateEvent$.stream;
 
-  Future<PlayingClient> play(ServiceCall call, Empty request) {
+  Future<PlayingClient> play(ServiceCall call, PlayRequest request) {
     final game = _getOrCreateCurrentGame();
 
     final clientID = getRandomInt();
+    final arena = Arena.forLevel(request.levelName);
     final playingClient = PlayingClient()
       ..gameID = game.id
-      ..clientID = clientID;
+      ..clientID = clientID
+      ..arena = arena.pack();
 
     game.addClient(playingClient);
     game.tryStart();
@@ -87,7 +90,7 @@ class GameUpdatesService extends GameUpdatesServiceBase {
     sub = event$.listen(
       _processPlayingClientEvent,
       onDone: () => sub.cancel(),
-      onError: (err) => print(err),
+      onError: print,
       cancelOnError: true,
     );
     return Future.value(Empty());

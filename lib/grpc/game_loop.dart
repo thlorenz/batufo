@@ -26,7 +26,7 @@ class GameLoop {
     _currentGameState.players[player.id] = player;
   }
 
-  _scheduleTick() {
+  void _scheduleTick() {
     Future.delayed(Duration(milliseconds: TICK_DURATION), _tick);
   }
 

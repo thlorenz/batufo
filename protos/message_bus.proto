@@ -1,13 +1,16 @@
 syntax = "proto3";
 
 service GameUpdates {
-  rpc Play(Empty) returns (PlayingClient) {}
+  rpc Play(PlayRequest) returns (PlayingClient) {}
   rpc SubscribeGameStates(PlayingClient) returns (stream GameStateEvent) {}
   rpc PlayingClientSync(stream PlayingClientEvent) returns (Empty) {}
 }
 
 message Empty {}
 
+message PlayRequest {
+  string levelName = 1;
+}
 
 message GameStateEvent {
   // TODO: possibly needs id and timestamp
@@ -21,7 +24,15 @@ message PackedGameState {
 message PlayingClient {
   uint32 gameID = 1;
   uint32 clientID = 2;
-  // TODO: send floorTiles and walls + nrows and ncols
+  PackedArena arena = 3;
+}
+
+message PackedArena {
+  repeated PackedTilePosition floorTiles = 1;
+  repeated PackedTilePosition walls = 2;
+  // Note: may pack those into one uint32 in the future
+  uint32 nrows = 3;
+  uint32 ncols = 4;
 }
 
 message PlayingClientEvent {

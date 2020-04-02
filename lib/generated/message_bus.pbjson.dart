@@ -9,6 +9,13 @@ const Empty$json = const {
   '1': 'Empty',
 };
 
+const PlayRequest$json = const {
+  '1': 'PlayRequest',
+  '2': const [
+    const {'1': 'levelName', '3': 1, '4': 1, '5': 9, '10': 'levelName'},
+  ],
+};
+
 const GameStateEvent$json = const {
   '1': 'GameStateEvent',
   '2': const [
@@ -28,6 +35,17 @@ const PlayingClient$json = const {
   '2': const [
     const {'1': 'gameID', '3': 1, '4': 1, '5': 13, '10': 'gameID'},
     const {'1': 'clientID', '3': 2, '4': 1, '5': 13, '10': 'clientID'},
+    const {'1': 'arena', '3': 3, '4': 1, '5': 11, '6': '.PackedArena', '10': 'arena'},
+  ],
+};
+
+const PackedArena$json = const {
+  '1': 'PackedArena',
+  '2': const [
+    const {'1': 'floorTiles', '3': 1, '4': 3, '5': 11, '6': '.PackedTilePosition', '10': 'floorTiles'},
+    const {'1': 'walls', '3': 2, '4': 3, '5': 11, '6': '.PackedTilePosition', '10': 'walls'},
+    const {'1': 'nrows', '3': 3, '4': 1, '5': 13, '10': 'nrows'},
+    const {'1': 'ncols', '3': 4, '4': 1, '5': 13, '10': 'ncols'},
   ],
 };
 
