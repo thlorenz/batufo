@@ -3,13 +3,9 @@ import 'package:batufo/engine/ui/images.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/ui/batufo_game.dart';
 import 'package:batufo/game_props.dart';
+import 'package:batufo/grpc/client.dart';
 import 'package:batufo/inputs/gestures.dart';
-import 'package:batufo/levels/levels.dart';
-import 'package:batufo/levels/tilemap.dart';
-import 'package:batufo/models/create_model.dart';
 import 'package:batufo/models/game_model.dart';
-import 'package:batufo/models/stats_model.dart';
-import 'package:batufo/widgets/hud/hud_widget.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -21,11 +17,11 @@ Future<void> main() async {
     GameProps.assets.wallMetal.imagePath,
     GameProps.assets.bulletExplosion.imagePath,
   ]);
+  const level = 'simple';
+  final client = await Client.create(level);
 
-  final tilemap = Tilemap.build(Levels.simple);
-  debugPrint('$tilemap');
   WorldPosition.tileSize = GameProps.tileSize;
-  final gameModel = createModel(tilemap, GameProps.tileSize);
+  final gameModel = client.arena.initGameModel();
   final game = BatufoGame(gameModel);
   runApp(MyApp(
     game: game,
@@ -50,12 +46,14 @@ class MyApp extends StatelessWidget {
               background: Colors.tealAccent,
             ),
           ),
+          /*
           StreamBuilder(
             stream: gameModel.stats.update$,
             builder: (_, AsyncSnapshot<StatsModel> snapshot) =>
                 HudWidget(model: snapshot.data),
             initialData: gameModel.stats,
           )
+           */
         ]),
       ),
     );

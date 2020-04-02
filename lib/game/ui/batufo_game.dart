@@ -55,7 +55,7 @@ class BatufoGame extends Game {
     // game controller updater
     final pressedKeys = GameKeyboard.pressedKeys;
     final gestures = GameGestures.instance.aggregatedGestures;
-    _gameController.update(dt, ts, pressedKeys, gestures);
+    // _gameController.update(dt, ts, pressedKeys, gestures);
   }
 
   void updateUI(double dt, double ts) {

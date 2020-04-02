@@ -4,6 +4,8 @@ import 'package:batufo/game_props.dart';
 import 'package:batufo/generated/message_bus.pb.dart';
 import 'package:batufo/levels/levels.dart';
 import 'package:batufo/levels/tilemap.dart';
+import 'package:batufo/models/bullet_model.dart';
+import 'package:batufo/models/game_model.dart';
 
 class Arena {
   final List<TilePosition> floorTiles;
@@ -65,6 +67,16 @@ class Arena {
       walls: walls,
       nrows: data.nrows,
       ncols: data.ncols,
+    );
+  }
+
+  GameModel initGameModel() {
+    return GameModel(
+      floorTiles: floorTiles,
+      walls: walls,
+      bullets: <BulletModel>[],
+      nrows: nrows,
+      ncols: ncols,
     );
   }
 
