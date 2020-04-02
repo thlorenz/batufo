@@ -18,7 +18,10 @@ const charToTile = <String, Tile>{
   BOUNDS_START: Tile.Boundary,
   BOUNDS_END: Tile.Boundary,
   EMPTY: Tile.Empty,
-  'p': Tile.Player,
+  '1': Tile.Player,
+  '2': Tile.Player,
+  '3': Tile.Player,
+  '4': Tile.Player,
   '|': Tile.Wall,
   '-': Tile.Wall,
   'd': Tile.Diamond,
@@ -115,14 +118,14 @@ $_tilesString
 
 const String terrain = '''
 (---------------------)
+(         2           )
 (                     )
-(                     )
-(----                 )
+(----           4     )
     (     |--|        )
     (   d |  |        )
     (     |--|        )
 (----                 ---)
-(   +   p                )
+(   +   1       3        )
 (                     ---)
 (---------------------)
 ''';
