@@ -20,7 +20,7 @@ class Game {
       : _clients = clients ?? <PlayingClient>[],
         _gameLoop = GameLoop(gameState);
 
-  void tryStart() => _gameLoop.tryStart();
+  void tryStart(Arena arena) => _gameLoop.tryStart(arena);
 
   void addClient(PlayingClient playingClient) {
     _clients.add(playingClient);
@@ -59,7 +59,8 @@ class GameUpdatesService extends GameUpdatesServiceBase {
     final game = _getOrCreateCurrentGame();
 
     final clientID = getRandomInt();
-    final arena = Arena.forLevel(request.levelName);
+    // TODO(thlorenz): support multiple active arenas
+    final arena = Arena.forLevel(request.levelName)..registerClient(clientID);
     final playingClient = PlayingClient()
       ..gameID = game.id
       ..clientID = clientID
@@ -67,7 +68,7 @@ class GameUpdatesService extends GameUpdatesServiceBase {
 
     game
       ..addClient(playingClient)
-      ..tryStart();
+      ..tryStart(arena);
     return Future.value(playingClient);
   }
 

@@ -9,8 +9,6 @@ class GameState {
     players[id] = player;
   }
 
-  bool get enoughPlayers => players.length >= 2;
-
   PackedGameState pack() {
     final gameState = PackedGameState();
     final ps = gameState.players;

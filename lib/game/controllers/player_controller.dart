@@ -19,8 +19,10 @@ class PlayerController {
   final double wallHitSlowdown;
   final double wallHitHealthTollFactor;
   final double hitSize;
+  final int cliendID;
 
-  PlayerController({
+  PlayerController(
+    this.cliendID, {
     @required this.keyboardRotationFactor,
     @required this.keyboardThrustForce,
     @required this.hitSize,
@@ -28,16 +30,20 @@ class PlayerController {
     @required this.wallHitSlowdown,
     @required this.wallHitHealthTollFactor,
   });
+
   void update(
     double dt,
     GameKeys keys,
     AggregatedGestures gestures,
-    PlayerModel player,
+    Map<int, PlayerModel> players,
     StatsModel stats,
   ) {
-    player.appliedThrust = false;
+    final player = players[cliendID];
     final check = _checkWallCollision(player, dt);
-    player.velocity = check.first;
+    player
+      ..appliedThrust = false
+      ..velocity = check.first;
+
     if (check.second > 0) {
       stats.playerHealth -= check.second;
     }

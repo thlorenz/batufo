@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:batufo/grpc/server_game/arena.dart';
 import 'package:batufo/models/player_model.dart';
 
 import 'message_types/game_state_event.dart';
@@ -14,9 +15,9 @@ class GameLoop {
   final _gameState$ = StreamController<GameState>.broadcast();
   Stream<GameState> get gameState$ => _gameState$.stream;
 
-  bool tryStart() {
+  bool tryStart(Arena arena) {
     if (_started) return true;
-    if (!_currentGameState.enoughPlayers) return false;
+    if (!arena.isFull) return false;
     _started = true;
     _scheduleTick();
     return true;

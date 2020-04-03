@@ -44,8 +44,17 @@ const PackedArena$json = const {
   '2': const [
     const {'1': 'floorTiles', '3': 1, '4': 3, '5': 11, '6': '.PackedTilePosition', '10': 'floorTiles'},
     const {'1': 'walls', '3': 2, '4': 3, '5': 11, '6': '.PackedTilePosition', '10': 'walls'},
-    const {'1': 'nrows', '3': 3, '4': 1, '5': 13, '10': 'nrows'},
-    const {'1': 'ncols', '3': 4, '4': 1, '5': 13, '10': 'ncols'},
+    const {'1': 'players', '3': 3, '4': 3, '5': 11, '6': '.PackedInitialPlayer', '10': 'players'},
+    const {'1': 'nrows', '3': 4, '4': 1, '5': 13, '10': 'nrows'},
+    const {'1': 'ncols', '3': 5, '4': 1, '5': 13, '10': 'ncols'},
+  ],
+};
+
+const PackedInitialPlayer$json = const {
+  '1': 'PackedInitialPlayer',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 13, '10': 'id'},
+    const {'1': 'tilePosition', '3': 2, '4': 1, '5': 11, '6': '.PackedTilePosition', '10': 'tilePosition'},
   ],
 };
 

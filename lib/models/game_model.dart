@@ -5,7 +5,7 @@ import 'package:batufo/models/player_model.dart';
 import 'package:batufo/models/stats_model.dart';
 
 class GameModel {
-  PlayerModel player;
+  Map<int, PlayerModel> players;
   StatsModel stats;
   List<BulletModel> bullets;
   List<TilePosition> floorTiles;
@@ -13,7 +13,7 @@ class GameModel {
   int nrows;
   int ncols;
   GameModel({
-    @required this.player,
+    @required this.players,
     @required this.floorTiles,
     @required this.walls,
     @required this.stats,
@@ -24,7 +24,7 @@ class GameModel {
 
   String toString() {
     return '''GameModel {
-    player: $player
+    player: $players
     bullets: $bullets
     stats: $stats
     nrows: $nrows

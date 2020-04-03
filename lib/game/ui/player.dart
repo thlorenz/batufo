@@ -1,6 +1,7 @@
 import 'dart:ui' show Canvas, Offset, Paint, PaintingStyle, Rect;
 
 import 'package:batufo/engine/ui/sprite.dart';
+import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/sprites/thrust_sprite.dart';
@@ -38,7 +39,6 @@ class Player {
   }
 
   void render(Canvas canvas, PlayerModel player) {
-    /*
     final playerTilePosition = player.tilePosition;
     final center = WorldPosition.fromTilePosition(playerTilePosition);
     canvas.save();
@@ -52,8 +52,6 @@ class Player {
       _renderDebugHitTile(canvas, player);
     }
     canvas.restore();
-
-     */
   }
 
   void _renderDebugHitTile(Canvas canvas, PlayerModel player) {

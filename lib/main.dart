@@ -5,6 +5,7 @@ import 'package:batufo/game/ui/batufo_game.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/grpc/client.dart';
 import 'package:batufo/inputs/gestures.dart';
+import 'package:batufo/models/create_model.dart';
 import 'package:batufo/models/game_model.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ Future<void> main() async {
   final client = await Client.create(level);
 
   WorldPosition.tileSize = GameProps.tileSize;
-  final gameModel = client.arena.initGameModel();
+  final gameModel = createModel(client.arena);
   final game = BatufoGame(gameModel);
   runApp(MyApp(
     game: game,

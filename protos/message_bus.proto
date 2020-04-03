@@ -30,9 +30,15 @@ message PlayingClient {
 message PackedArena {
   repeated PackedTilePosition floorTiles = 1;
   repeated PackedTilePosition walls = 2;
+  repeated PackedInitialPlayer players = 3;
   // Note: may pack those into one uint32 in the future
-  uint32 nrows = 3;
-  uint32 ncols = 4;
+  uint32 nrows = 4;
+  uint32 ncols = 5;
+}
+
+message PackedInitialPlayer {
+  uint32 id = 1;
+  PackedTilePosition tilePosition = 2;
 }
 
 message PlayingClientEvent {

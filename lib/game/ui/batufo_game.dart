@@ -21,7 +21,7 @@ class BatufoGame extends Game {
   final Walls _walls;
   final GameController _gameController;
 
-  Player _player;
+  Map<int, Player> _players;
   Bullets _bullets;
 
   Offset _camera;
@@ -39,12 +39,11 @@ class BatufoGame extends Game {
         _walls = Walls(_game.walls, GameProps.tileSize),
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
-    _player = Player(
-      playerImagePath: GameProps.assets.player.imagePath,
-      tileSize: GameProps.tileSize,
-      hitSize: GameProps.playerSize,
-      thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
-    );
+    _players = <int, Player>{};
+    for (final clientID in _game.players.keys) {
+      _players[clientID] = _initPlayer();
+    }
+
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
       tileSize: GameProps.tileSize,
@@ -59,11 +58,15 @@ class BatufoGame extends Game {
   }
 
   void updateUI(double dt, double ts) {
+    /*
     _cameraFollow(
-      _game.player.tilePosition.toWorldPosition(),
+      _game.players.tilePosition.toWorldPosition(),
       dt,
     );
-    _player.updateSprites(_game.player, dt);
+     */
+    for (final entry in _game.players.entries) {
+      _players[entry.key].updateSprites(entry.value, dt);
+    }
     _bullets.updateSprites(_game.bullets, dt);
   }
 
@@ -81,7 +84,9 @@ class BatufoGame extends Game {
       canvas.translate(-_camera.dx, -_camera.dy);
       _background.render(canvas);
       _walls.render(canvas);
-      _player.render(canvas, _game.player);
+      for (final entry in _game.players.entries) {
+        _players[entry.key].render(canvas, entry.value);
+      }
       _bullets.render(canvas, _game.bullets);
     }
   }
@@ -111,5 +116,14 @@ class BatufoGame extends Game {
     canvas
       ..translate(0, height)
       ..scale(1, -1);
+  }
+
+  Player _initPlayer() {
+    return Player(
+      playerImagePath: GameProps.assets.player.imagePath,
+      tileSize: GameProps.tileSize,
+      hitSize: GameProps.playerSize,
+      thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
+    );
   }
 }
