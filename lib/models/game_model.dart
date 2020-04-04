@@ -21,7 +21,7 @@ class GameModel {
     @required this.ncols,
   });
 
-  void initPlayers(Map<int, PlayerModel> players) {
+  void updatePlayers(Map<int, PlayerModel> players) {
     this.players = players;
   }
 

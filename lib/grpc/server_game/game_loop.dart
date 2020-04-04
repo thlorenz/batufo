@@ -4,7 +4,7 @@ import 'package:batufo/models/player_model.dart';
 
 import '../message_types/game_state_event.dart';
 
-const TICK_DURATION = 2000;
+const TICK_DURATION = 200;
 
 class GameLoop {
   bool _started;
@@ -30,7 +30,7 @@ class GameLoop {
 
   void _tick() {
     // TODO: run controllers, ala _currentGameState = ...
-    _currentGameState.players.values.forEach((p) => p.angle += 0.01);
+    _currentGameState.players.values.forEach((p) => p.angle += 0.1);
     _gameState$.add(_currentGameState);
     _scheduleTick();
   }

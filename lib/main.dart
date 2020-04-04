@@ -49,6 +49,8 @@ class _MyAppState extends State<MyApp> {
   BatufoGame game;
   RunningGame gameWidget;
 
+  GameModel get gameModel => widget.gameModel;
+
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -64,11 +66,12 @@ class _MyAppState extends State<MyApp> {
     if (snapshot.data == null) return WaitingForPlayers();
     final gameState = GameState.unpack(snapshot.data.gameState);
     if (game == null) {
-      widget.gameModel.initPlayers(gameState.players);
+      gameModel.updatePlayers(gameState.players);
       game = BatufoGame(widget.gameModel);
       gameWidget = RunningGame(game: game);
+    } else {
+      gameModel.updatePlayers(gameState.players);
     }
-    // TODO: update game with new server data
     return gameWidget;
   }
 }
