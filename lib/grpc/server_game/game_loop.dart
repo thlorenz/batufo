@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:batufo/grpc/server_game/arena.dart';
 import 'package:batufo/models/player_model.dart';
 
-import 'message_types/game_state_event.dart';
+import '../message_types/game_state_event.dart';
 
 const TICK_DURATION = 2000;
 
@@ -15,12 +14,10 @@ class GameLoop {
   final _gameState$ = StreamController<GameState>.broadcast();
   Stream<GameState> get gameState$ => _gameState$.stream;
 
-  bool tryStart(Arena arena) {
-    if (_started) return true;
-    if (!arena.isFull) return false;
+  void start() {
+    assert(_started, 'cannot start the game loop twice');
     _started = true;
     _scheduleTick();
-    return true;
   }
 
   void addPlayer(PlayerModel player) {

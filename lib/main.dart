@@ -25,12 +25,20 @@ Future<void> main() async {
   final client = await Client.create(level, serverIP);
 
   WorldPosition.tileSize = GameProps.tileSize;
-  final gameModel = createModel(client.arena);
-  final game = BatufoGame(gameModel);
-  runApp(MyApp(
-    game: game,
-    gameModel: gameModel,
-  ));
+  final gameModel = createModel(client.arena, client.clientID);
+  client.gameStateEvent$.listen((event) {
+    // TODO: fix this
+    /*
+    final players = event.gameState.players.map((x) => PlayerModel.unx.);
+    gameModel.initPlayers(event.gameState.players);
+
+     */
+    final game = BatufoGame(gameModel);
+    runApp(MyApp(
+      game: game,
+      gameModel: gameModel,
+    ));
+  });
 }
 
 class MyApp extends StatelessWidget {

@@ -176,7 +176,7 @@ class PackedArena extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedArena', createEmptyInstance: create)
     ..pc<PackedTilePosition>(1, 'floorTiles', $pb.PbFieldType.PM, protoName: 'floorTiles', subBuilder: PackedTilePosition.create)
     ..pc<PackedTilePosition>(2, 'walls', $pb.PbFieldType.PM, subBuilder: PackedTilePosition.create)
-    ..pc<PackedInitialPlayer>(3, 'players', $pb.PbFieldType.PM, subBuilder: PackedInitialPlayer.create)
+    ..pc<PackedTilePosition>(3, 'playerPositions', $pb.PbFieldType.PM, protoName: 'playerPositions', subBuilder: PackedTilePosition.create)
     ..a<$core.int>(4, 'nrows', $pb.PbFieldType.OU3)
     ..a<$core.int>(5, 'ncols', $pb.PbFieldType.OU3)
     ..hasRequiredFields = false
@@ -204,7 +204,7 @@ class PackedArena extends $pb.GeneratedMessage {
   $core.List<PackedTilePosition> get walls => $_getList(1);
 
   @$pb.TagNumber(3)
-  $core.List<PackedInitialPlayer> get players => $_getList(2);
+  $core.List<PackedTilePosition> get playerPositions => $_getList(2);
 
   @$pb.TagNumber(4)
   $core.int get nrows => $_getIZ(3);
@@ -223,49 +223,6 @@ class PackedArena extends $pb.GeneratedMessage {
   $core.bool hasNcols() => $_has(4);
   @$pb.TagNumber(5)
   void clearNcols() => clearField(5);
-}
-
-class PackedInitialPlayer extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedInitialPlayer', createEmptyInstance: create)
-    ..a<$core.int>(1, 'id', $pb.PbFieldType.OU3)
-    ..aOM<PackedTilePosition>(2, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
-    ..hasRequiredFields = false
-  ;
-
-  PackedInitialPlayer._() : super();
-  factory PackedInitialPlayer() => create();
-  factory PackedInitialPlayer.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory PackedInitialPlayer.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  PackedInitialPlayer clone() => PackedInitialPlayer()..mergeFromMessage(this);
-  PackedInitialPlayer copyWith(void Function(PackedInitialPlayer) updates) => super.copyWith((message) => updates(message as PackedInitialPlayer));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static PackedInitialPlayer create() => PackedInitialPlayer._();
-  PackedInitialPlayer createEmptyInstance() => create();
-  static $pb.PbList<PackedInitialPlayer> createRepeated() => $pb.PbList<PackedInitialPlayer>();
-  @$core.pragma('dart2js:noInline')
-  static PackedInitialPlayer getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedInitialPlayer>(create);
-  static PackedInitialPlayer _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.int get id => $_getIZ(0);
-  @$pb.TagNumber(1)
-  set id($core.int v) { $_setUnsignedInt32(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  PackedTilePosition get tilePosition => $_getN(1);
-  @$pb.TagNumber(2)
-  set tilePosition(PackedTilePosition v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasTilePosition() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearTilePosition() => clearField(2);
-  @$pb.TagNumber(2)
-  PackedTilePosition ensureTilePosition() => $_ensure(1);
 }
 
 class PlayingClientEvent extends $pb.GeneratedMessage {

@@ -18,6 +18,8 @@ class Client {
   Arena get arena => _arena;
   ResponseStream<GameStateEvent> get gameStateEvent$ => _gameStateEvent$;
 
+  int get clientID => _playingClient.clientID;
+
   void submitPlayerInputs(PlayerInputs playerInputs) {
     _inputEvent$.add(PlayingClientEvent()..playerInputs = playerInputs);
   }

@@ -13,7 +13,6 @@ class GameModel {
   int nrows;
   int ncols;
   GameModel({
-    @required this.players,
     @required this.floorTiles,
     @required this.walls,
     @required this.stats,
@@ -21,6 +20,10 @@ class GameModel {
     @required this.nrows,
     @required this.ncols,
   });
+
+  void initPlayers(Map<int, PlayerModel> players) {
+    this.players = players;
+  }
 
   String toString() {
     return '''GameModel {
