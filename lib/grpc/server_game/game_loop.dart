@@ -15,7 +15,7 @@ class GameLoop {
   Stream<GameState> get gameState$ => _gameState$.stream;
 
   void start() {
-    assert(_started, 'cannot start the game loop twice');
+    assert(!_started, 'cannot start the game loop twice');
     _started = true;
     _scheduleTick();
   }

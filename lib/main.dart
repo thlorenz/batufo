@@ -6,10 +6,13 @@ import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/ui/batufo_game.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/grpc/client.dart';
+import 'package:batufo/grpc/message_types/game_state_event.dart';
 import 'package:batufo/inputs/gestures.dart';
 import 'package:batufo/models/create_model.dart';
 import 'package:batufo/models/game_model.dart';
 import 'package:flutter/material.dart';
+
+import 'generated/message_bus.pb.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,39 +29,70 @@ Future<void> main() async {
 
   WorldPosition.tileSize = GameProps.tileSize;
   final gameModel = createModel(client.arena, client.clientID);
-  client.gameStateEvent$.listen((event) {
-    // TODO: fix this
-    /*
-    final players = event.gameState.players.map((x) => PlayerModel.unx.);
-    gameModel.initPlayers(event.gameState.players);
-
-     */
-    final game = BatufoGame(gameModel);
-    runApp(MyApp(
-      game: game,
-      gameModel: gameModel,
-    ));
-  });
+  runApp(MyApp(
+    gameModel: gameModel,
+    gameStateEvent$: client.gameStateEvent$,
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  final BatufoGame game;
+class MyApp extends StatefulWidget {
+  final Stream<GameStateEvent> gameStateEvent$;
   final GameModel gameModel;
-  const MyApp({@required this.game, this.gameModel});
+
+  const MyApp({this.gameStateEvent$, this.gameModel}) : super();
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  BatufoGame game;
+  RunningGame gameWidget;
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Stack(children: [
-          GestureDetector(
-            onPanUpdate: GameGestures.instance.onPanUpdate,
-            child: GameWidget(
-              game,
-              background: Colors.tealAccent,
-            ),
-          ),
-          /*
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+            body: StreamBuilder<GameStateEvent>(
+          builder: _build,
+          stream: widget.gameStateEvent$,
+          initialData: null,
+        )));
+  }
+
+  Widget _build(BuildContext context, AsyncSnapshot<GameStateEvent> snapshot) {
+    if (snapshot.data == null) return WaitingForPlayers();
+    final gameState = GameState.unpack(snapshot.data.gameState);
+    if (game == null) {
+      widget.gameModel.initPlayers(gameState.players);
+      game = BatufoGame(widget.gameModel);
+      gameWidget = RunningGame(game: game);
+    }
+    // TODO: update game with new server data
+    return gameWidget;
+  }
+}
+
+class WaitingForPlayers extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Container(child: Text('Waiting for players'));
+  }
+}
+
+class RunningGame extends StatelessWidget {
+  final BatufoGame game;
+  const RunningGame({@required this.game});
+
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      GestureDetector(
+        onPanUpdate: GameGestures.instance.onPanUpdate,
+        child: GameWidget(
+          game,
+          background: Colors.tealAccent,
+        ),
+      ),
+      /*
           StreamBuilder(
             stream: gameModel.stats.update$,
             builder: (_, AsyncSnapshot<StatsModel> snapshot) =>
@@ -66,8 +100,6 @@ class MyApp extends StatelessWidget {
             initialData: gameModel.stats,
           )
            */
-        ]),
-      ),
-    );
+    ]);
   }
 }
