@@ -87,11 +87,14 @@ class Arena {
   PackedArena pack() {
     final packedFloorTiles = floorTiles.map((x) => x.pack());
     final packedWalls = walls.map((x) => x.pack());
+    final packedInitialPlayers = players.map((x) => x.pack());
     final packedArena = PackedArena()
       ..nrows = nrows
       ..ncols = ncols;
     packedFloorTiles.forEach((x) => packedArena.floorTiles.add(x));
     packedWalls.forEach((x) => packedArena.walls.add(x));
+    packedInitialPlayers.forEach((x) => packedArena.players.add(x));
+
     return packedArena;
   }
 

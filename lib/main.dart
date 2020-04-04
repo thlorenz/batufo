@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:batufo/engine/ui/game_widget.dart';
 import 'package:batufo/engine/ui/images.dart';
 import 'package:batufo/engine/world_position.dart';
@@ -19,7 +21,8 @@ Future<void> main() async {
     GameProps.assets.bulletExplosion.imagePath,
   ]);
   const level = 'simple';
-  final client = await Client.create(level);
+  final serverIP = Platform.isAndroid ? '192.168.1.7' : 'localhost';
+  final client = await Client.create(level, serverIP);
 
   WorldPosition.tileSize = GameProps.tileSize;
   final gameModel = createModel(client.arena);

@@ -6,6 +6,7 @@ import 'package:batufo/models/player_model.dart';
 import 'package:grpc/grpc.dart';
 
 class Client {
+  String serverHost;
   ClientChannel _channel;
   GameUpdatesClient _updatesClient;
   PlayingClient _playingClient;
@@ -21,7 +22,8 @@ class Client {
     _inputEvent$.add(PlayingClientEvent()..playerInputs = playerInputs);
   }
 
-  void _init() {
+  void _init(String serverURL) {
+    serverHost = serverURL;
     _createClient();
   }
 
@@ -36,7 +38,7 @@ class Client {
   void _createClient() {
     final channelOpts =
         ChannelOptions(credentials: ChannelCredentials.insecure());
-    _channel = ClientChannel('localhost', port: 8080, options: channelOpts);
+    _channel = ClientChannel(serverHost, port: 8080, options: channelOpts);
     final clientOpts = CallOptions(timeout: null);
     _updatesClient = GameUpdatesClient(_channel, options: clientOpts);
   }
@@ -45,15 +47,15 @@ class Client {
     if (!_inputEvent$.isClosed) _inputEvent$?.close();
   }
 
-  static Future<Client> create(String levelName) async {
-    final client = Client().._init();
+  static Future<Client> create(String levelName, String serverHost) async {
+    final client = Client().._init(serverHost);
     await client._requestToPlay(levelName);
     return client;
   }
 }
 
 Future<void> main(List<String> args) async {
-  final client = await Client.create('simple');
+  final client = await Client.create('simple', 'localhost');
   client.gameStateEvent$.listen(_onGameStateEvent);
 }
 
