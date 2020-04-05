@@ -3,7 +3,7 @@
   :global(main) {
     font-family: 'Space Mono', monospace;
     text-align: center;
-    padding: 1em;
+    padding: 0.3em;
     max-width: none;
     margin: 0 auto;
   }
