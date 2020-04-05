@@ -39,6 +39,7 @@
   import Home from './routes/Home.svelte'
   import Game from './routes/Game.svelte'
   import Watch from './routes/Watch.svelte'
+  import Devlog from './routes/Devlog.svelte'
 
   export let title
   export let embedPlaylist
@@ -64,6 +65,7 @@
   $: homeClass = state.currentRoute === routes.home ? 'underline' : ''
   $: gameClass = state.currentRoute === routes.game ? 'underline' : ''
   $: watchClass = state.currentRoute === routes.watch ? 'underline' : ''
+  $: devlogClass = state.currentRoute === routes.devlog ? 'underline' : ''
   $: windowWidth = getWindowWidth()
   $: windowHeight = getWindowHeight()
 
@@ -82,6 +84,11 @@
     state = state
   }
 
+  const navigateDevlog = () => {
+    state.currentRoute = routes.devlog
+    state = state
+  }
+
   window.onresize = () => {
     windowWidth = getWindowWidth()
     windowHeight = getWindowHeight()
@@ -96,6 +103,7 @@
     <a href="{rootURL + routes.home.hash }" class="{homeClass}" on:click={navigateHome}>Home</a>
     <a href="{rootURL + routes.game.hash }" class="{gameClass}" on:click={navigateGame}>Game</a>
     <a href="{rootURL + routes.watch.hash }" class="{watchClass}" on:click={navigateWatch}>Watch</a>
+    <a href="{rootURL + routes.devlog.hash }" class="{devlogClass}" on:click={navigateDevlog}>Devlog</a>
   </nav>
   <div>
     {#if state.currentRoute === routes.home}
@@ -113,6 +121,8 @@
       <Game {title} {gameWebURL} {latestReleaseURL} {githubSourceURL} {windowWidth} />
     {:else if state.currentRoute === routes.watch}
       <Watch {title} {twitchChannelURL} {twitchChannel} {youtubePlaylistURL} {windowWidth} />
+    {:else if state.currentRoute === routes.devlog}
+      <Devlog />
     {/if}
   </div>
 </main>

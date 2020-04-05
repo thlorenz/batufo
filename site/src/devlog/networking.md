@@ -1,5 +1,7 @@
 # Multiplayer Client-Server Architecture
 
+<p class="right">`Saturday, April 4, 2020`</p>
+
 ## Terms
 
 ### Latency aka RTT aka Ping
@@ -14,7 +16,7 @@
 ### Authorative Server
 
 - game happens in server under our control
-- clients just send inputs and render world as similated by the server
+- clients just send inputs and render world as simulated by the server
 
 ### Lockstep
 
@@ -23,7 +25,7 @@
 
 ## Server Time Step
 
-- goal decouple server updates from client command frequency
+- goal is to decouple server updates from client command frequency
 - queue player inputs without any processing (game loop does not run yet)
 - instead game loop runs at much lower frequency i.e. every 100ms (time step)
 - applies all queued player inputs
@@ -35,18 +37,24 @@
 ### Prediction
 
 - predict local player and other entities from last given state
+    - in our game that means applying entity velocity onto last known entity
+     position considering time delta
 - when we get server state we'll _correct_ our prediction
 - best done via shared game simulation code
+    - in our game controller code is shared, so we are golden
 - the more deterministic our game is the better the result
 - use message IDs to be able to replay commands that server hasn't received yet [see](https://www.gabrielgambetta.com/client-side-prediction-server-reconciliation.html#server-reconciliation)
 
 
 ### Dead Reckoning
 
-- using prediction to _guess_ the position and other state of a given entity given last update
-  received from the server
-- we correct our assumptions once the next server update arrives
-- falls down when game state is less predictable, i.e. if player direction changes frequently
+- using client side prediction we may result in a slightly different game
+ state than server arrived at 
+- once we receive an update from the server and it doesn't match our state, we
+ correct our assumptions
+- falls down when game state is less predictable as that means we'd correct
+ our state all the time leading to lots of jumps, i.e. if player direction
+  changes frequently
 
 ### Smoothing
 
@@ -110,54 +118,3 @@
 - [Unreal Engine 2: Unreal Networking
   Architecture](https://docs.unrealengine.com/udk/Three/NetworkingOverview.html)
 - [Unreal Engine 4: Networking Overview](https://docs.unrealengine.com/en-US/Gameplay/Networking/Overview/index.html)
-
-
-
-# Strategies to Apply Multiplayer Techniquest to Our Game
-
-## Main Strategy Used
-
-- authoratative server sending updates every 100ms
-- client updates are limited to 10/second
-- client side prediction is used to exrapolate opponent's position from previous position and
-  their velocity
-- other players and bullets are predicted on the client from previous position and velocity
-  - same controllers as on server are used which allows us to predict collisions client side as
-    well
-- use dead reckoning to correct client predictions, both for opponents and bullets as well as
-  our own player
-
-
-## Limiting Player Inputs
-
-- require 100ms between each shot
-  - instead of sending a key press we send `bulletCreated(angle)`
-- require 100ms between each thrust
-  - instead of sending key press we send `appliedThrust(anger)`
-  - server then calculates velocity
-- instead of sending rotation input we send `updatedAngle(angle)`
-- change of player angle happens in real time but is reported to the server at a 100ms interval
-  even if no other client action occured
-
-## Server Processing of Player Inputs
-
-- delay execution of action until server tick
-  - in the worst case bullet is trailing client side prediction by 100ms
-- find way to align client input ticks to server ticks
-
-## To be seen
-
-- test how well dead reckoning works for our game and try the following if we end up with lots
-  of player position jumps
-- apply smooting to correct position slowly over time
-- if nothing else works look into interpolation
-
-## Smaller Packets
-
-- if packets get too large we can omit bullet positions
-  - instead rely on client prediction to show bullets in flight
-  - use server to report created bullets `createBullet(bulletID, position, velocity)`
-    - after that client predicts positions
-  - and exploded bullets
-    - `explodedBullet(bulletID, position)`
-- alternative is to limit amount of bullets / ammo available

@@ -6,6 +6,7 @@ const routes = {
   home: { id: 'home', hash: '' },
   game: { id: 'game', hash: '#game' },
   watch: { id: 'watch', hash: '#watch' },
+  devlog: { id: 'devlog', hash: '#devlog' },
 }
 
 const hash = location.hash
@@ -14,6 +15,8 @@ const startingRoute =
     ? routes.game
     : hash === routes.watch.hash
     ? routes.watch
+    : hash === routes.devlog.hash
+    ? routes.devlog
     : routes.home
 
 const rootURL = location.href.includes('localhost')
