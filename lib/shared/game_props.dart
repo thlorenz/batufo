@@ -27,4 +27,7 @@ class GameProps {
   static bool get debugPlayerHitTile => false;
 
   static bool get renderBackground => true;
+
+  static const GAME_ID = 'gameid';
+  static const CLIENT_ID = 'clientid';
 }

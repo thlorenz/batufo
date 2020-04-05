@@ -18,16 +18,11 @@ class GameClient extends $grpc.Client {
       '/Game/Play',
       ($0.PlayRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.PlayingClient.fromBuffer(value));
-  static final _$subscribeGameStates =
-      $grpc.ClientMethod<$0.PlayingClient, $0.GameStateEvent>(
-          '/Game/SubscribeGameStates',
-          ($0.PlayingClient value) => value.writeToBuffer(),
-          ($core.List<$core.int> value) => $0.GameStateEvent.fromBuffer(value));
-  static final _$clientStates =
-      $grpc.ClientMethod<$0.PlayingClientEvent, $0.Empty>(
-          '/Game/ClientStates',
+  static final _$syncClientAndGameStates =
+      $grpc.ClientMethod<$0.PlayingClientEvent, $0.GameStateEvent>(
+          '/Game/SyncClientAndGameStates',
           ($0.PlayingClientEvent value) => value.writeToBuffer(),
-          ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
+          ($core.List<$core.int> value) => $0.GameStateEvent.fromBuffer(value));
 
   GameClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
@@ -39,20 +34,12 @@ class GameClient extends $grpc.Client {
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseStream<$0.GameStateEvent> subscribeGameStates(
-      $0.PlayingClient request,
-      {$grpc.CallOptions options}) {
-    final call = $createCall(
-        _$subscribeGameStates, $async.Stream.fromIterable([request]),
-        options: options);
-    return $grpc.ResponseStream(call);
-  }
-
-  $grpc.ResponseFuture<$0.Empty> clientStates(
+  $grpc.ResponseStream<$0.GameStateEvent> syncClientAndGameStates(
       $async.Stream<$0.PlayingClientEvent> request,
       {$grpc.CallOptions options}) {
-    final call = $createCall(_$clientStates, request, options: options);
-    return $grpc.ResponseFuture(call);
+    final call =
+        $createCall(_$syncClientAndGameStates, request, options: options);
+    return $grpc.ResponseStream(call);
   }
 }
 
@@ -67,21 +54,14 @@ abstract class GameServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.PlayRequest.fromBuffer(value),
         ($0.PlayingClient value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.PlayingClient, $0.GameStateEvent>(
-        'SubscribeGameStates',
-        subscribeGameStates_Pre,
-        false,
+    $addMethod($grpc.ServiceMethod<$0.PlayingClientEvent, $0.GameStateEvent>(
+        'SyncClientAndGameStates',
+        syncClientAndGameStates,
         true,
-        ($core.List<$core.int> value) => $0.PlayingClient.fromBuffer(value),
-        ($0.GameStateEvent value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.PlayingClientEvent, $0.Empty>(
-        'ClientStates',
-        clientStates,
         true,
-        false,
         ($core.List<$core.int> value) =>
             $0.PlayingClientEvent.fromBuffer(value),
-        ($0.Empty value) => value.writeToBuffer()));
+        ($0.GameStateEvent value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.PlayingClient> play_Pre(
@@ -89,15 +69,8 @@ abstract class GameServiceBase extends $grpc.Service {
     return play(call, await request);
   }
 
-  $async.Stream<$0.GameStateEvent> subscribeGameStates_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.PlayingClient> request) async* {
-    yield* subscribeGameStates(call, await request);
-  }
-
   $async.Future<$0.PlayingClient> play(
       $grpc.ServiceCall call, $0.PlayRequest request);
-  $async.Stream<$0.GameStateEvent> subscribeGameStates(
-      $grpc.ServiceCall call, $0.PlayingClient request);
-  $async.Future<$0.Empty> clientStates(
+  $async.Stream<$0.GameStateEvent> syncClientAndGameStates(
       $grpc.ServiceCall call, $async.Stream<$0.PlayingClientEvent> request);
 }

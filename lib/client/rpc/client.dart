@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:batufo/shared/arena/arena.dart';
+import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
     show
         GameStateEvent,
@@ -37,12 +38,26 @@ class Client {
     _createClient();
   }
 
+  CallOptions get _callOptions {
+    assert(
+      _playingClient != null,
+      'cannot get call options without playing client',
+    );
+    final metadata = <String, String>{
+      GameProps.GAME_ID: _playingClient.gameID.toString(),
+      GameProps.CLIENT_ID: _playingClient.clientID.toString(),
+    };
+    return CallOptions(metadata: metadata);
+  }
+
   Future<void> _requestToPlay(String levelName) async {
     final request = PlayRequest()..levelName = levelName;
     _playingClient = await _updatesClient.play(request);
     _arena = Arena.unpack(_playingClient.arena);
-    await _updatesClient.clientStates(_inputEvent$.stream);
-    _gameStateEvent$ = _updatesClient.subscribeGameStates(_playingClient);
+    _gameStateEvent$ = _updatesClient.syncClientAndGameStates(
+      _inputEvent$.stream,
+      options: _callOptions,
+    );
   }
 
   void _createClient() {
