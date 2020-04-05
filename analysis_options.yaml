@@ -2,7 +2,7 @@ analyzer:
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
-  exclude: [ lib/generated/*.*, lib/engine/geometry/dart_geometry.dart ]
+  exclude: [ lib/shared/generated/*.*, lib/engine/geometry/dart_geometry.dart ]
 
 # http://dart-lang.github.io/linter/lints/
 linter:
