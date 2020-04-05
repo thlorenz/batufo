@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-service GameUpdates {
+service Game {
   rpc Play(PlayRequest) returns (PlayingClient) {}
   rpc SubscribeGameStates(PlayingClient) returns (stream GameStateEvent) {}
-  rpc PlayingClientSync(stream PlayingClientEvent) returns (Empty) {}
+  rpc ClientStates(stream PlayingClientEvent) returns (Empty) {}
 }
 
 message Empty {}

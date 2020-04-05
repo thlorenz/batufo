@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:batufo/server/game/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
-const TICK_DURATION = 200;
+const TICK_DURATION = 100;
 
 class GameLoop {
   bool _started;

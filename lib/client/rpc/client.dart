@@ -9,14 +9,14 @@ import 'package:batufo/shared/generated/message_bus.pb.dart'
         PlayingClient,
         PlayingClientEvent;
 import 'package:batufo/shared/generated/message_bus.pbgrpc.dart'
-    show GameUpdatesClient;
+    show GameClient;
 import 'package:batufo/shared/models/player_model.dart';
 import 'package:grpc/grpc.dart';
 
 class Client {
   String serverHost;
   ClientChannel _channel;
-  GameUpdatesClient _updatesClient;
+  GameClient _updatesClient;
   PlayingClient _playingClient;
   Arena _arena;
 
@@ -41,7 +41,7 @@ class Client {
     final request = PlayRequest()..levelName = levelName;
     _playingClient = await _updatesClient.play(request);
     _arena = Arena.unpack(_playingClient.arena);
-    await _updatesClient.playingClientSync(_inputEvent$.stream);
+    await _updatesClient.clientStates(_inputEvent$.stream);
     _gameStateEvent$ = _updatesClient.subscribeGameStates(_playingClient);
   }
 
@@ -50,7 +50,7 @@ class Client {
         ChannelOptions(credentials: ChannelCredentials.insecure());
     _channel = ClientChannel(serverHost, port: 8080, options: channelOpts);
     final clientOpts = CallOptions(timeout: null);
-    _updatesClient = GameUpdatesClient(_channel, options: clientOpts);
+    _updatesClient = GameClient(_channel, options: clientOpts);
   }
 
   void dispose() {

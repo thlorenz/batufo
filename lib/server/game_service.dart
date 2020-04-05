@@ -8,11 +8,11 @@ import 'package:batufo/shared/generated/message_bus.pbgrpc.dart';
 import 'package:batufo/shared/messaging/ids.dart';
 import 'package:grpc/grpc.dart';
 
-class GameUpdatesService extends GameUpdatesServiceBase {
+class GameService extends GameServiceBase {
   int _currentGameID;
   final Map<int, ServerGame> _games;
 
-  GameUpdatesService() : _games = <int, ServerGame>{};
+  GameService() : _games = <int, ServerGame>{};
 
   final _gameStateEvent$ = StreamController<GameStateEvent>.broadcast();
   Stream<GameStateEvent> get gameStateEvent$ => _gameStateEvent$.stream;
@@ -23,7 +23,7 @@ class GameUpdatesService extends GameUpdatesServiceBase {
 
     final clientID = getRandomInt();
     final playingClient = PlayingClient()
-      ..gameID = game.id
+      ..gameID = game.gameID
       ..clientID = clientID
       ..arena = arena.pack();
 
@@ -45,7 +45,7 @@ class GameUpdatesService extends GameUpdatesServiceBase {
     });
   }
 
-  Future<Empty> playingClientSync(
+  Future<Empty> clientStates(
     ServiceCall call,
     Stream<PlayingClientEvent> request,
   ) {
