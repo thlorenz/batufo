@@ -9,13 +9,18 @@ const routes = {
   devlog: { id: 'devlog', hash: '#devlog' },
 }
 
+const isOnDevlogPage = () => {
+  const hash = location.hash
+  return hash.startsWith(routes.devlog.hash)
+}
+
 const hash = location.hash
 const startingRoute =
   hash === routes.game.hash
     ? routes.game
     : hash === routes.watch.hash
     ? routes.watch
-    : hash === routes.devlog.hash
+    : isOnDevlogPage()
     ? routes.devlog
     : routes.home
 

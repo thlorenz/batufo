@@ -1,4 +1,8 @@
-# Appling Multiplayer Strategies to Our Game
+<script>
+    export let link
+</script>
+
+# [Appling Multiplayer Strategies to Our Game]({link})
 
 <p class="right">`Saturday, April 4, 2020`</p>
 

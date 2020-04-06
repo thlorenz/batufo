@@ -1,4 +1,8 @@
-# Multiplayer Client-Server Architecture
+<script>
+    export let link
+</script>
+
+# [Multiplayer Client-Server Architecture]({link})
 
 <p class="right">`Saturday, April 4, 2020`</p>
 

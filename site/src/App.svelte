@@ -53,6 +53,7 @@
   export let state
   export let routes
   export let rootURL
+  export let githubSourceURL
 
   const getWindowWidth = () => window.innerWidth
     || document.documentElement.clientWidth
@@ -65,7 +66,7 @@
   $: homeClass = state.currentRoute === routes.home ? 'underline' : ''
   $: gameClass = state.currentRoute === routes.game ? 'underline' : ''
   $: watchClass = state.currentRoute === routes.watch ? 'underline' : ''
-  $: devlogClass = state.currentRoute === routes.devlog ? 'underline' : ''
+  $: devlogClass = isOnDevlogPage() ? 'underline' : ''
   $: windowWidth = getWindowWidth()
   $: windowHeight = getWindowHeight()
 
@@ -73,6 +74,7 @@
   const navigateHome = () => {
     state.currentRoute = routes.home
     state = state
+      window.history.state
   }
   const navigateGame = () => {
     state.currentRoute = routes.game
@@ -89,21 +91,31 @@
     state = state
   }
 
+  const isOnDevlogPage = () => {
+    const hash = location.hash
+    return hash.startsWith(routes.devlog.hash)
+  }
+
   window.onresize = () => {
     windowWidth = getWindowWidth()
     windowHeight = getWindowHeight()
   }
-
-  export let githubSourceURL
-
 </script>
 
 <main>
   <nav>
-    <a href="{rootURL + routes.home.hash }" class="{homeClass}" on:click={navigateHome}>Home</a>
-    <a href="{rootURL + routes.game.hash }" class="{gameClass}" on:click={navigateGame}>Game</a>
-    <a href="{rootURL + routes.watch.hash }" class="{watchClass}" on:click={navigateWatch}>Watch</a>
-    <a href="{rootURL + routes.devlog.hash }" class="{devlogClass}" on:click={navigateDevlog}>Devlog</a>
+    <a href="{rootURL + routes.home.hash }"
+       class="{homeClass}"
+       on:click={navigateHome}>Home</a>
+    <a href="{rootURL + routes.game.hash}"
+       class="{gameClass}"
+       on:click={navigateGame}>Game</a>
+    <a href="{rootURL + routes.watch.hash }"
+       class="{watchClass}"
+       on:click={navigateWatch}>Watch</a>
+    <a href="{rootURL + routes.devlog.hash }"
+       class="{devlogClass}"
+       on:click={navigateDevlog}>Devlog</a>
   </nav>
   <div>
     {#if state.currentRoute === routes.home}
@@ -121,7 +133,7 @@
       <Game {title} {gameWebURL} {latestReleaseURL} {githubSourceURL} {windowWidth} />
     {:else if state.currentRoute === routes.watch}
       <Watch {title} {twitchChannelURL} {twitchChannel} {youtubePlaylistURL} {windowWidth} />
-    {:else if state.currentRoute === routes.devlog}
+    {:else if state.currentRoute === routes.devlog || isOnDevlogPage()}
       <Devlog />
     {/if}
   </div>
