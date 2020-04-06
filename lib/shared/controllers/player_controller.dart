@@ -1,30 +1,20 @@
-import 'dart:math';
-
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/engine/hit_tiles.dart';
 import 'package:batufo/shared/engine/physics.dart';
 import 'package:batufo/shared/engine/tile_position.dart';
-import 'package:batufo/shared/input_types.dart';
 import 'package:batufo/shared/models/player_model.dart';
-import 'package:batufo/shared/models/stats_model.dart';
 import 'package:batufo/shared/types.dart';
 
-const twopi = 2 * pi;
-
 class PlayerController {
-  final double keyboardRotationFactor;
-  final double keyboardThrustForce;
   final TilePositionPredicate colliderAt;
   final double wallHitSlowdown;
   final double wallHitHealthTollFactor;
   final double hitSize;
-  final int cliendID;
+  final int clientID;
 
   PlayerController(
-    this.cliendID, {
-    @required this.keyboardRotationFactor,
-    @required this.keyboardThrustForce,
+    this.clientID, {
     @required this.hitSize,
     @required this.colliderAt,
     @required this.wallHitSlowdown,
@@ -33,57 +23,29 @@ class PlayerController {
 
   void update(
     double dt,
-    GameKeys keys,
-    AggregatedGestures gestures,
     Map<int, PlayerModel> players,
-    StatsModel stats,
   ) {
-    final player = players[cliendID];
+    final player = players[clientID];
     final check = _checkWallCollision(player, dt);
-    player
-      ..appliedThrust = false
-      ..velocity = check.first;
 
+    if (player.appliedThrustForce != 0) {
+      player.velocity = Physics.increaseVelocity(
+        player.velocity,
+        player.angle,
+        player.appliedThrustForce,
+      );
+    }
+
+    player
+      ..appliedThrustForce = 0.0
+      ..velocity = check.first
+      ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt);
+
+    /*
     if (check.second > 0) {
       stats.playerHealth -= check.second;
     }
-    player.tilePosition =
-        Physics.move(player.tilePosition, player.velocity, dt);
-
-    // rotation
-    if (keys.contains(GameKey.Left)) {
-      player.angle = _increasAngle(player.angle, dt * keyboardRotationFactor);
-    }
-    if (keys.contains(GameKey.Right)) {
-      player.angle = _increasAngle(player.angle, -dt * keyboardRotationFactor);
-    }
-    if (gestures.rotation != 0.0) {
-      player.angle = _increasAngle(player.angle, gestures.rotation);
-    }
-    // thrust
-    if (keys.contains(GameKey.Up)) {
-      player
-        ..velocity = Physics.increaseVelocity(
-          player.velocity,
-          player.angle,
-          keyboardThrustForce * dt,
-        )
-        ..appliedThrust = true;
-    }
-    if (gestures.thrust != 0.0) {
-      player
-        ..velocity = Physics.increaseVelocity(
-          player.velocity,
-          player.angle,
-          gestures.thrust,
-        )
-        ..appliedThrust = true;
-    }
-  }
-
-  double _increasAngle(double angle, double delta) {
-    final res = angle + delta;
-    return res > twopi ? res - twopi : res;
+     */
   }
 
   Tuple<Offset, double> _checkWallCollision(

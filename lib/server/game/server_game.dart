@@ -38,7 +38,7 @@ class ServerGame {
       tilePosition: arena.playerPosition(_clients.length - 1),
       angle: 0.0,
       velocity: Offset.zero,
-      appliedThrust: false,
+      appliedThrustForce: 0.0,
     );
     _gameLoop.addPlayer(player);
   }

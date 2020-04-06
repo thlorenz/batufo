@@ -2,7 +2,6 @@ import 'package:batufo/shared/controllers/bullets_controller.dart';
 import 'package:batufo/shared/controllers/helpers/colliders.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
 import 'package:batufo/shared/game_props.dart';
-import 'package:batufo/shared/input_types.dart';
 import 'package:batufo/shared/models/game_model.dart';
 import 'package:batufo/shared/types.dart';
 
@@ -27,20 +26,9 @@ class GameController {
     );
   }
 
-  void update(
-    double dt,
-    double ts,
-    GameKeys pressedKeys,
-    AggregatedGestures gestures,
-  ) {
+  void update(double dt, double ts) {
     _playerControllers.forEach(
-      (x) => x.update(
-        dt,
-        pressedKeys,
-        gestures,
-        _game.players,
-        _game.stats,
-      ),
+      (x) => x.update(dt, _game.players),
     );
     // _bulletsController.update(dt);
 
@@ -73,8 +61,6 @@ class GameController {
     return PlayerController(
       clientID,
       hitSize: GameProps.playerSize,
-      keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
-      keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,
       wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
       colliderAt: colliderAt,

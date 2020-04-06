@@ -22,21 +22,24 @@ class PlayerModel {
   TilePosition tilePosition;
   Offset velocity;
   double angle;
-  bool appliedThrust;
+  double appliedThrustForce;
   PlayerModel({
     @required this.id,
     @required this.tilePosition,
-    @required this.angle,
-    @required this.velocity,
-    @required this.appliedThrust,
-  });
+    @required double angle,
+    @required Offset velocity,
+    @required double appliedThrustForce,
+  })  : angle = angle ?? 0.0,
+        velocity = velocity ?? Offset.zero,
+        appliedThrustForce = appliedThrustForce ?? 0.0;
 
   PackedPlayerModel pack() {
     final tp = tilePosition.pack();
     final v = FractionalPoint(velocity.dx, velocity.dy).pack();
     final a = packFourDecimals(angle);
     final flags = PlayerFlags();
-    if (appliedThrust) flags.add(PlayerFlags.AppliedThrust);
+    // TODO: fix packing
+    // if (appliedThrust) flags.add(PlayerFlags.AppliedThrust);
     return PackedPlayerModel()
       ..id = id
       ..tilePosition = tp
@@ -56,7 +59,8 @@ class PlayerModel {
       tilePosition: tp,
       velocity: v,
       angle: a,
-      appliedThrust: flags.has(PlayerFlags.AppliedThrust),
+      // TODO(thlorenz): set from the packed model
+      appliedThrustForce: 0.0,
     );
   }
 
@@ -67,7 +71,7 @@ class PlayerModel {
      tilePosition: $tilePosition
      angle: $angle
      velocity: $velocity
-     appliedThrust: $appliedThrust
+     appliedThrustForce: $appliedThrustForce
    }''';
   }
 }

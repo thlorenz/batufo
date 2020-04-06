@@ -9,11 +9,13 @@ import 'package:batufo/client/game/entities/grid.dart';
 import 'package:batufo/client/game/entities/player.dart';
 import 'package:batufo/client/game/entities/walls.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
+import 'package:batufo/client/game/inputs/input_processor.dart';
 import 'package:batufo/client/game/inputs/keyboard.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_model.dart';
+import 'package:batufo/shared/models/player_model.dart';
 
 class ClientGame extends Game {
   final GameModel _game;
@@ -21,6 +23,8 @@ class ClientGame extends Game {
   final Grid _grid;
   final Walls _walls;
   final GameController _gameController;
+  final InputProcessor _inputProcessor;
+  final int _clientID;
 
   Map<int, Player> _players;
   Bullets _bullets;
@@ -29,7 +33,7 @@ class ClientGame extends Game {
   Offset _backgroundCamera;
   Size _size;
 
-  ClientGame(this._game)
+  ClientGame(this._game, this._clientID)
       : _gameController = GameController(_game),
         _grid = Grid(GameProps.tileSize),
         _background = Background(
@@ -38,6 +42,10 @@ class ClientGame extends Game {
           GameProps.renderBackground,
         ),
         _walls = Walls(_game.walls, GameProps.tileSize),
+        _inputProcessor = InputProcessor(
+          keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
+          keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
+        ),
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
     _players = <int, Player>{};
@@ -51,20 +59,25 @@ class ClientGame extends Game {
     );
   }
 
+  PlayerModel get clientPlayer {
+    final player = _game.players[_clientID];
+    assert(player != null, 'our player with id $_clientID should exist');
+    return player;
+  }
+
   void update(double dt, double ts) {
-    // game controller updater
     final pressedKeys = GameKeyboard.pressedKeys;
     final gestures = GameGestures.instance.aggregatedGestures;
-    // _gameController.update(dt, ts, pressedKeys, gestures);
+
+    _inputProcessor.udate(dt, pressedKeys, gestures, clientPlayer);
+    _gameController.update(dt, ts);
   }
 
   void updateUI(double dt, double ts) {
-    /*
     _cameraFollow(
-      _game.players.tilePosition.toWorldPosition(),
+      clientPlayer.tilePosition.toWorldPosition(),
       dt,
     );
-     */
     for (final entry in _game.players.entries) {
       _players[entry.key].updateSprites(entry.value, dt);
     }

@@ -33,14 +33,16 @@ Future<void> main() async {
   runApp(MyApp(
     gameModel: gameModel,
     gameStateEvent$: client.gameStateEvent$,
+    clientID: client.clientID,
   ));
 }
 
 class MyApp extends StatefulWidget {
   final Stream<GameStateEvent> gameStateEvent$;
   final GameModel gameModel;
+  final int clientID;
 
-  const MyApp({this.gameStateEvent$, this.gameModel}) : super();
+  const MyApp({this.gameStateEvent$, this.gameModel, this.clientID}) : super();
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -68,7 +70,7 @@ class _MyAppState extends State<MyApp> {
     final gameState = GameState.unpack(snapshot.data.gameState);
     if (game == null) {
       gameModel.updatePlayers(gameState.players);
-      game = ClientGame(widget.gameModel);
+      game = ClientGame(widget.gameModel, widget.clientID);
       gameWidget = RunningGame(game: game);
     } else {
       gameModel.updatePlayers(gameState.players);
