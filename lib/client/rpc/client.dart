@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:batufo/shared/arena/arena.dart';
+import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
     show
@@ -79,7 +80,12 @@ class Client {
   }
 }
 
+final _mainLog = Log<Object>();
+
 Future<void> main(List<String> args) async {
+  Log.activateConsole();
+  Log.rootLevel = Level.FINEST;
+
   final client = await Client.create('simple', 'localhost');
   client.gameStateEvent$.listen(_onGameStateEvent);
 }
@@ -87,8 +93,9 @@ Future<void> main(List<String> args) async {
 void _onGameStateEvent(GameStateEvent event) {
   final infos = event.gameState.players.map((x) {
     final player = PlayerModel.unpack(x);
-    return 'id: ${player.id} => ${player.angle}';
+    return 'id: ${player.id} => v: ${player.velocity} '
+        'p: ${player.tilePosition}';
   });
-  print('\n-------------------------\n');
-  print(infos.join('\n'));
+  _mainLog.fine('\n-------------------------\n');
+  _mainLog.fine(infos.join('\n'));
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
+import 'package:batufo/shared/engine/geometry/dart_geometry.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
@@ -26,6 +27,7 @@ class GameLoop {
 
   void addPlayer(PlayerModel player) {
     _gameController.addPlayer(player);
+    player.velocity = Offset(0.08, 0.0);
   }
 
   void _scheduleTick() {
@@ -37,12 +39,14 @@ class GameLoop {
     final double dt = _lastTick == null
         ? Duration.zero.inMicroseconds / 1E3
         : ts.difference(_lastTick).inMicroseconds / 1E3;
-    _log.finest('tick: $dt');
     final gameState = _gameController.update(
       dt,
       ts.microsecondsSinceEpoch / 1E3,
     );
     _lastTick = ts;
+
+    _log.finest('tick: $dt');
+    _log.finest(gameState.toString());
 
     _gameState$.add(gameState);
     _scheduleTick();

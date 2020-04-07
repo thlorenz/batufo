@@ -9,7 +9,7 @@ final _log = Log<GameUpdatesServer>();
 class GameUpdatesServer {
   Future<void> init(List<String> args) async {
     Log.activateConsole();
-    Log.rootLevel = Level.FINEST;
+    Log.rootLevel = Level.FINER;
 
     final server = Server([GameService()]);
     await server.serve(port: PORT);
