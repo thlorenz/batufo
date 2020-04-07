@@ -30,39 +30,44 @@ Future<void> main() async {
   ]);
   const level = 'simple';
   final serverIP = Platform.isAndroid ? '192.168.1.7' : 'localhost';
-  final client = await Client.create(level, serverIP);
 
   WorldPosition.tileSize = GameProps.tileSize;
-  runApp(MyApp(
-    arena: client.arena,
-    clientGameState: ClientGameState(),
-    gameStateEvent$: client.gameStateEvent$,
-    clientID: client.clientID,
-  ));
+  runApp(MyApp(level: level, serverIP: serverIP));
 }
 
-class MyApp extends StatefulWidget {
-  final Stream<GameStateEvent> gameStateEvent$;
-  final Arena arena;
-  final ClientGameState clientGameState;
-  final int clientID;
+final _log = Log<MyApp>();
 
-  const MyApp({
-    @required this.arena,
-    @required this.gameStateEvent$,
-    @required this.clientGameState,
-    @required this.clientID,
-  }) : super();
+class MyApp extends StatefulWidget {
+  final String level;
+  final String serverIP;
+  const MyApp({@required this.level, @required this.serverIP}) : super();
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _MyAppState createState() => _MyAppState(level: level, serverIP: serverIP);
 }
 
 class _MyAppState extends State<MyApp> {
+  Stream<GameStateEvent> gameStateEvent$;
+  Arena arena;
+  ClientGameState clientGameState;
+  int clientID;
+
   ClientGame game;
   RunningGame gameWidget;
+  final String level;
+  final String serverIP;
 
-  ClientGameState get clientGameState => widget.clientGameState;
+  _MyAppState({@required this.level, @required this.serverIP});
+
+  Future<Client> _createClient() async {
+    final client = await Client.create(level, serverIP);
+    arena = client.arena;
+    clientGameState = ClientGameState();
+    gameStateEvent$ = client.gameStateEvent$;
+    clientID = client.clientID;
+    setState(() {});
+    return client;
+  }
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,7 +75,7 @@ class _MyAppState extends State<MyApp> {
         home: Scaffold(
             body: StreamBuilder<GameStateEvent>(
           builder: _build,
-          stream: widget.gameStateEvent$,
+          stream: gameStateEvent$,
           initialData: null,
         )));
   }
@@ -80,12 +85,24 @@ class _MyAppState extends State<MyApp> {
     final gameState = GameState.unpack(snapshot.data.gameState);
     if (game == null) {
       clientGameState.sync(gameState);
-      game = ClientGame(widget.arena, widget.clientGameState, widget.clientID);
+      game = ClientGame(arena, clientGameState, clientID);
       gameWidget = RunningGame(game: game);
     } else {
       clientGameState.sync(gameState);
     }
     return gameWidget;
+  }
+
+  void initState() {
+    super.initState();
+    _log.finest('init state');
+    _createClient();
+  }
+
+  Future<void> reassemble() async {
+    _log.finest('reassemble');
+    await _createClient();
+    super.reassemble();
   }
 }
 
