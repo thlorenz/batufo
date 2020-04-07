@@ -2,7 +2,9 @@ import 'package:batufo/shared/models/game_state.dart';
 
 class ClientGameState extends GameState {
   void sync(GameState gameState) {
-    players = gameState.players;
+    for (final entry in gameState.players.entries) {
+      players[entry.key] = entry.value;
+    }
   }
 
   String toString() {

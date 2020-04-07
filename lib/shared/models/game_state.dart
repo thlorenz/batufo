@@ -3,13 +3,14 @@ import 'package:batufo/shared/models/bullet_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 class GameState {
-  Map<int, PlayerModel> players;
-  List<BulletModel> bullets;
+  final Map<int, PlayerModel> players;
+  final List<BulletModel> bullets;
   GameState()
       : players = <int, PlayerModel>{},
         bullets = <BulletModel>[];
 
   void addPlayer(int id, PlayerModel player) {
+    assert(player != null, 'cannot add null as player');
     players[id] = player;
   }
 
