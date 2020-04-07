@@ -8,8 +8,6 @@ import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/rpc/client.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
-import 'package:batufo/shared/engine/world_position.dart';
-import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
     show GameStateEvent;
 import 'package:batufo/shared/models/game_model.dart';
@@ -31,7 +29,6 @@ Future<void> main() async {
   const level = 'simple';
   final serverIP = Platform.isAndroid ? '192.168.1.7' : 'localhost';
 
-  WorldPosition.tileSize = GameProps.tileSize;
   runApp(MyApp(level: level, serverIP: serverIP));
 }
 
