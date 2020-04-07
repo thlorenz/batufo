@@ -11,6 +11,7 @@ import 'package:batufo/client/game/entities/walls.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/game/inputs/input_processor.dart';
 import 'package:batufo/client/game/inputs/keyboard.dart';
+import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
@@ -19,6 +20,7 @@ import 'package:batufo/shared/models/player_model.dart';
 
 class ClientGame extends Game {
   final GameModel _game;
+  final Arena _arena;
   final Background _background;
   final Grid _grid;
   final Walls _walls;
@@ -33,15 +35,15 @@ class ClientGame extends Game {
   Offset _backgroundCamera;
   Size _size;
 
-  ClientGame(this._game, this._clientID)
-      : _gameController = GameController(_game),
+  ClientGame(this._arena, this._game, this._clientID)
+      : _gameController = GameController(_arena, _game),
         _grid = Grid(GameProps.tileSize),
         _background = Background(
-          _game.floorTiles,
+          _arena.floorTiles,
           GameProps.tileSize,
           GameProps.renderBackground,
         ),
-        _walls = Walls(_game.walls, GameProps.tileSize),
+        _walls = Walls(_arena.walls, GameProps.tileSize),
         _inputProcessor = InputProcessor(
           keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
           keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
@@ -90,7 +92,7 @@ class ClientGame extends Game {
     canvas.save();
     {
       canvas.translate(-_backgroundCamera.dx, -_backgroundCamera.dy);
-      _grid.render(canvas, _game.nrows, _game.ncols);
+      _grid.render(canvas, _arena.nrows, _arena.ncols);
     }
     canvas.restore();
 

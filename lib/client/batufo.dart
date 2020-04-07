@@ -7,6 +7,7 @@ import 'package:batufo/client/game/client_game.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/rpc/client.dart';
 import 'package:batufo/server/game/game_state.dart';
+import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
@@ -31,6 +32,7 @@ Future<void> main() async {
   WorldPosition.tileSize = GameProps.tileSize;
   final gameModel = createModel(client.arena, client.clientID);
   runApp(MyApp(
+    arena: client.arena,
     gameModel: gameModel,
     gameStateEvent$: client.gameStateEvent$,
     clientID: client.clientID,
@@ -39,10 +41,16 @@ Future<void> main() async {
 
 class MyApp extends StatefulWidget {
   final Stream<GameStateEvent> gameStateEvent$;
+  final Arena arena;
   final GameModel gameModel;
   final int clientID;
 
-  const MyApp({this.gameStateEvent$, this.gameModel, this.clientID}) : super();
+  const MyApp({
+    @required this.arena,
+    @required this.gameStateEvent$,
+    @required this.gameModel,
+    @required this.clientID,
+  }) : super();
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -70,7 +78,7 @@ class _MyAppState extends State<MyApp> {
     final gameState = GameState.unpack(snapshot.data.gameState);
     if (game == null) {
       gameModel.updatePlayers(gameState.players);
-      game = ClientGame(widget.gameModel, widget.clientID);
+      game = ClientGame(widget.arena, widget.gameModel, widget.clientID);
       gameWidget = RunningGame(game: game);
     } else {
       gameModel.updatePlayers(gameState.players);

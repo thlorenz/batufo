@@ -8,10 +8,6 @@ GameModel createModel(Arena arena, int clientID) {
   final statsModel = StatsModel(playerHealth: GameProps.playerTotalHealth);
   final bullets = <BulletModel>[];
   return GameModel(
-    floorTiles: arena.floorTiles,
-    walls: arena.walls,
-    nrows: arena.nrows,
-    ncols: arena.ncols,
     stats: statsModel,
     bullets: bullets,
   );

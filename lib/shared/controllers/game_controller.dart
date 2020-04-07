@@ -1,3 +1,4 @@
+import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/bullets_controller.dart';
 import 'package:batufo/shared/controllers/helpers/colliders.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
@@ -10,9 +11,15 @@ class GameController {
   BulletsController _bulletsController;
   final double _bulletForce;
   final GameModel _game;
+  final Arena _arena;
 
-  GameController(this._game) : _bulletForce = GameProps.bulletForce {
-    final colliders = Colliders(_game.nrows, _game.ncols, walls: _game.walls);
+  GameController(this._arena, this._game)
+      : _bulletForce = GameProps.bulletForce {
+    final colliders = Colliders(
+      _arena.nrows,
+      _arena.ncols,
+      walls: _arena.walls,
+    );
 
     _playerControllers = _game.players.keys
         .map(
