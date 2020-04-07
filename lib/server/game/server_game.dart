@@ -25,7 +25,7 @@ class ServerGame {
 
   bool tryStart() {
     if (!isFull) return false;
-    _gameLoop.start();
+    _gameLoop.start(gameID);
     return true;
   }
 

@@ -3,11 +3,14 @@ import 'dart:async';
 import 'package:batufo/server/game/game_state.dart';
 import 'package:batufo/server/game/server_game.dart';
 import 'package:batufo/shared/arena/arena.dart';
+import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart';
 import 'package:batufo/shared/generated/message_bus.pbgrpc.dart';
 import 'package:batufo/shared/messaging/ids.dart';
 import 'package:grpc/grpc.dart';
+
+final _log = Log<GameService>();
 
 class GameService extends GameServiceBase {
   int _currentGameID;
@@ -75,9 +78,9 @@ class GameService extends GameServiceBase {
     StackTrace stackTrace,
   ) {
     // TODO(thlorenz): clean up games?
-    print(stackTrace.toString());
-    print('client $clientID disconnected from game $gameID');
-    print(err);
+    _log.fine(stackTrace.toString());
+    _log.info('client $clientID disconnected from game $gameID');
+    _log.fine(err);
   }
 
   void _processPlayingClientEvent(PlayingClientEvent event) {
