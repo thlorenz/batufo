@@ -7,6 +7,7 @@ import 'package:batufo/client/game/client_game.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/rpc/client.dart';
 import 'package:batufo/shared/arena/arena.dart';
+import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
@@ -16,6 +17,9 @@ import 'package:batufo/shared/models/game_state.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
+  Log.activateConsole();
+  Log.rootLevel = Level.FINEST;
+
   WidgetsFlutterBinding.ensureInitialized();
   await Images.instance.load([
     assets.floorTiles.imagePath,
