@@ -1,9 +1,13 @@
 import 'package:batufo/shared/generated/message_bus.pb.dart';
+import 'package:batufo/shared/models/bullet_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 class GameState {
-  final Map<int, PlayerModel> players;
-  GameState() : players = <int, PlayerModel>{};
+  Map<int, PlayerModel> players;
+  List<BulletModel> bullets;
+  GameState()
+      : players = <int, PlayerModel>{},
+        bullets = <BulletModel>[];
 
   void addPlayer(int id, PlayerModel player) {
     players[id] = player;

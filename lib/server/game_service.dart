@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:batufo/server/game/game_state.dart';
 import 'package:batufo/server/game/server_game.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
@@ -8,6 +7,7 @@ import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart';
 import 'package:batufo/shared/generated/message_bus.pbgrpc.dart';
 import 'package:batufo/shared/messaging/ids.dart';
+import 'package:batufo/shared/models/game_state.dart';
 import 'package:grpc/grpc.dart';
 
 final _log = Log<GameService>();

@@ -6,14 +6,13 @@ import 'package:batufo/client/game/assets/assets.dart';
 import 'package:batufo/client/game/client_game.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/rpc/client.dart';
-import 'package:batufo/server/game/game_state.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
     show GameStateEvent;
-import 'package:batufo/shared/models/create_model.dart';
 import 'package:batufo/shared/models/game_model.dart';
+import 'package:batufo/shared/models/game_state.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -30,10 +29,9 @@ Future<void> main() async {
   final client = await Client.create(level, serverIP);
 
   WorldPosition.tileSize = GameProps.tileSize;
-  final gameModel = createModel(client.arena, client.clientID);
   runApp(MyApp(
     arena: client.arena,
-    gameModel: gameModel,
+    clientGameState: ClientGameState(),
     gameStateEvent$: client.gameStateEvent$,
     clientID: client.clientID,
   ));
@@ -42,13 +40,13 @@ Future<void> main() async {
 class MyApp extends StatefulWidget {
   final Stream<GameStateEvent> gameStateEvent$;
   final Arena arena;
-  final GameModel gameModel;
+  final ClientGameState clientGameState;
   final int clientID;
 
   const MyApp({
     @required this.arena,
     @required this.gameStateEvent$,
-    @required this.gameModel,
+    @required this.clientGameState,
     @required this.clientID,
   }) : super();
 
@@ -60,7 +58,7 @@ class _MyAppState extends State<MyApp> {
   ClientGame game;
   RunningGame gameWidget;
 
-  GameModel get gameModel => widget.gameModel;
+  ClientGameState get clientGameState => widget.clientGameState;
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -77,11 +75,11 @@ class _MyAppState extends State<MyApp> {
     if (snapshot.data == null) return WaitingForPlayers();
     final gameState = GameState.unpack(snapshot.data.gameState);
     if (game == null) {
-      gameModel.updatePlayers(gameState.players);
-      game = ClientGame(widget.arena, widget.gameModel, widget.clientID);
+      clientGameState.sync(gameState);
+      game = ClientGame(widget.arena, widget.clientGameState, widget.clientID);
       gameWidget = RunningGame(game: game);
     } else {
-      gameModel.updatePlayers(gameState.players);
+      clientGameState.sync(gameState);
     }
     return gameWidget;
   }

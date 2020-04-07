@@ -19,7 +19,7 @@ import 'package:batufo/shared/models/game_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 class ClientGame extends Game {
-  final GameModel _game;
+  final ClientGameState _game;
   final Arena _arena;
   final Background _background;
   final Grid _grid;

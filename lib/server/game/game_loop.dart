@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:batufo/server/game/game_state.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
+import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 const TICK_DURATION = 100;

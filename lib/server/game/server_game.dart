@@ -1,9 +1,9 @@
 import 'package:batufo/server/game/game_loop.dart';
-import 'package:batufo/server/game/game_state.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/generated/message_bus.pb.dart' show PlayingClient;
+import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 class ServerGame {

@@ -1,16 +1,8 @@
-import 'package:batufo/shared/dart_types/dart_types.dart';
-import 'package:batufo/shared/models/bullet_model.dart';
-import 'package:batufo/shared/models/player_model.dart';
+import 'package:batufo/shared/models/game_state.dart';
 
-class GameModel {
-  Map<int, PlayerModel> players;
-  List<BulletModel> bullets;
-  GameModel({
-    @required this.bullets,
-  });
-
-  void updatePlayers(Map<int, PlayerModel> players) {
-    this.players = players;
+class ClientGameState extends GameState {
+  void sync(GameState gameState) {
+    players = gameState.players;
   }
 
   String toString() {

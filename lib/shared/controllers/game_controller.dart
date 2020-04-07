@@ -3,17 +3,17 @@ import 'package:batufo/shared/controllers/bullets_controller.dart';
 import 'package:batufo/shared/controllers/helpers/colliders.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
 import 'package:batufo/shared/game_props.dart';
-import 'package:batufo/shared/models/game_model.dart';
+import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/types.dart';
 
 class GameController {
   List<PlayerController> _playerControllers;
   BulletsController _bulletsController;
   final double _bulletForce;
-  final GameModel _game;
+  final GameState _gameState;
   final Arena _arena;
 
-  GameController(this._arena, this._game)
+  GameController(this._arena, this._gameState)
       : _bulletForce = GameProps.bulletForce {
     final colliders = Colliders(
       _arena.nrows,
@@ -21,13 +21,13 @@ class GameController {
       walls: _arena.walls,
     );
 
-    _playerControllers = _game.players.keys
+    _playerControllers = _gameState.players.keys
         .map(
             (clientID) => _initPlayerController(clientID, colliders.colliderAt))
         .toList();
 
     _bulletsController = BulletsController(
-      _game.bullets,
+      _gameState.bullets,
       colliderAt: colliders.colliderAt,
       tileSize: GameProps.tileSize,
     );
@@ -35,7 +35,7 @@ class GameController {
 
   void update(double dt, double ts) {
     _playerControllers.forEach(
-      (x) => x.update(dt, _game.players),
+      (x) => x.update(dt, _gameState.players),
     );
     // _bulletsController.update(dt);
 
