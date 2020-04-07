@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
@@ -9,8 +10,9 @@ final _log = Log<GameLoop>();
 
 class GameLoop {
   bool _started;
-  final GameState _currentGameState;
-  GameLoop(this._currentGameState) : _started = false;
+  final GameController _gameController;
+  DateTime _lastTick;
+  GameLoop(this._gameController) : _started = false;
 
   final _gameState$ = StreamController<GameState>.broadcast();
   Stream<GameState> get gameState$ => _gameState$.stream;
@@ -23,7 +25,7 @@ class GameLoop {
   }
 
   void addPlayer(PlayerModel player) {
-    _currentGameState.players[player.id] = player;
+    _gameController.addPlayer(player);
   }
 
   void _scheduleTick() {
@@ -31,9 +33,18 @@ class GameLoop {
   }
 
   void _tick() {
-    // TODO: run controllers, ala _currentGameState = ...
-    _currentGameState.players.values.forEach((p) => p.angle += 0.1);
-    _gameState$.add(_currentGameState);
+    final ts = DateTime.now();
+    final double dt = _lastTick == null
+        ? Duration.zero.inMicroseconds / 1E3
+        : ts.difference(_lastTick).inMicroseconds / 1E3;
+    _log.finest('tick: $dt');
+    final gameState = _gameController.update(
+      dt,
+      ts.microsecondsSinceEpoch / 1E3,
+    );
+    _lastTick = ts;
+
+    _gameState$.add(gameState);
     _scheduleTick();
   }
 

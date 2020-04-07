@@ -1,5 +1,6 @@
 import 'package:batufo/server/game/game_loop.dart';
 import 'package:batufo/shared/arena/arena.dart';
+import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/generated/message_bus.pb.dart' show PlayingClient;
@@ -19,7 +20,7 @@ class ServerGame {
     @required GameState gameState,
     List<PlayingClient> clients,
   })  : _clients = clients ?? <PlayingClient>[],
-        _gameLoop = GameLoop(gameState);
+        _gameLoop = GameLoop(GameController(arena, gameState));
 
   bool get isFull => arena.isFull(_clients.length);
 

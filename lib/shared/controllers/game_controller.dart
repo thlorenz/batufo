@@ -2,8 +2,10 @@ import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/bullets_controller.dart';
 import 'package:batufo/shared/controllers/helpers/colliders.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
+import 'package:batufo/shared/engine/geometry/dart_geometry.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_state.dart';
+import 'package:batufo/shared/models/player_model.dart';
 import 'package:batufo/shared/types.dart';
 
 class GameController {
@@ -11,6 +13,7 @@ class GameController {
   BulletsController _bulletsController;
   final double _bulletForce;
   final GameState _gameState;
+
   final Arena _arena;
 
   GameController(this._arena, this._gameState)
@@ -33,7 +36,9 @@ class GameController {
     );
   }
 
-  void update(double dt, double ts) {
+  GameState get gameState => _gameState;
+
+  GameState update(double dt, double ts) {
     _playerControllers.forEach(
       (x) => x.update(dt, _gameState.players),
     );
@@ -59,6 +64,12 @@ class GameController {
 
     }
      */
+    return _gameState;
+  }
+
+  void addPlayer(PlayerModel player) {
+    player.velocity = Offset(0.02, 0.0);
+    _gameState.players[player.id] = player;
   }
 
   PlayerController _initPlayerController(
