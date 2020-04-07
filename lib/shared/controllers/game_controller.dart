@@ -2,14 +2,13 @@ import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/bullets_controller.dart';
 import 'package:batufo/shared/controllers/helpers/colliders.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart';
+import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
-import 'package:batufo/shared/types.dart';
 
 class GameController {
-  List<PlayerController> _playerControllers;
+  PlayerController _playerController;
   BulletsController _bulletsController;
   final double _bulletForce;
   final GameState _gameState;
@@ -18,16 +17,20 @@ class GameController {
 
   GameController(this._arena, this._gameState)
       : _bulletForce = GameProps.bulletForce {
+    WorldPosition.tileSize = GameProps.tileSize;
+
     final colliders = Colliders(
       _arena.nrows,
       _arena.ncols,
       walls: _arena.walls,
     );
 
-    _playerControllers = _gameState.players.keys
-        .map(
-            (clientID) => _initPlayerController(clientID, colliders.colliderAt))
-        .toList();
+    _playerController = PlayerController(
+      hitSize: GameProps.playerSize,
+      wallHitSlowdown: GameProps.playerHitsWallSlowdown,
+      wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
+      colliderAt: colliders.colliderAt,
+    );
 
     _bulletsController = BulletsController(
       _gameState.bullets,
@@ -39,9 +42,9 @@ class GameController {
   GameState get gameState => _gameState;
 
   GameState update(double dt, double ts) {
-    _playerControllers.forEach(
-      (x) => x.update(dt, _gameState.players),
-    );
+    for (final x in _gameState.players.entries) {
+      _playerController.update(dt, x.value);
+    }
     // _bulletsController.update(dt);
 
     /*
@@ -68,20 +71,7 @@ class GameController {
   }
 
   void addPlayer(PlayerModel player) {
-    player.velocity = Offset(0.02, 0.0);
-    _gameState.players[player.id] = player;
-  }
-
-  PlayerController _initPlayerController(
-    int clientID,
-    TilePositionPredicate colliderAt,
-  ) {
-    return PlayerController(
-      clientID,
-      hitSize: GameProps.playerSize,
-      wallHitSlowdown: GameProps.playerHitsWallSlowdown,
-      wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
-      colliderAt: colliderAt,
-    );
+    assert(player != null, 'cannot add null as player');
+    _gameState.addPlayer(player.id, player);
   }
 }

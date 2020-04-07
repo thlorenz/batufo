@@ -6,15 +6,14 @@ import 'package:batufo/shared/engine/tile_position.dart';
 import 'package:batufo/shared/models/player_model.dart';
 import 'package:batufo/shared/types.dart';
 
+@immutable
 class PlayerController {
   final TilePositionPredicate colliderAt;
   final double wallHitSlowdown;
   final double wallHitHealthTollFactor;
   final double hitSize;
-  final int clientID;
 
-  PlayerController(
-    this.clientID, {
+  PlayerController({
     @required this.hitSize,
     @required this.colliderAt,
     @required this.wallHitSlowdown,
@@ -23,9 +22,8 @@ class PlayerController {
 
   void update(
     double dt,
-    Map<int, PlayerModel> players,
+    PlayerModel player,
   ) {
-    final player = players[clientID];
     final check = _checkWallCollision(player, dt);
 
     if (player.appliedThrustForce != 0) {
