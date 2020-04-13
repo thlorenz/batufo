@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:batufo/client/engine/game_widget.dart';
@@ -62,11 +63,12 @@ class _MyAppState extends State<MyApp> {
     clientGameState = ClientGameState();
     gameStateEvent$ = client.gameStateEvent$;
     clientID = client.clientID;
-    setState(() {});
+    game = null;
     return client;
   }
 
   Widget build(BuildContext context) {
+    _log.finer('build');
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -78,28 +80,40 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _build(BuildContext context, AsyncSnapshot<GameStateEvent> snapshot) {
+    if (snapshot.connectionState == ConnectionState.done) {
+      _log.finer('disconnected, hot restart app to reconnect ...');
+    }
+    if (snapshot.hasError) {
+      _log.warning('snapshot error: ${snapshot.error}');
+    }
     if (snapshot.data == null) return WaitingForPlayers();
-    final gameState = GameState.unpack(snapshot.data.gameState);
+
+    clientGameState.sync(GameState.unpack(snapshot.data.gameState));
+
     if (game == null) {
-      clientGameState.sync(gameState);
       game = ClientGame(arena, clientGameState, clientID);
       gameWidget = RunningGame(game: game);
-    } else {
-      clientGameState.sync(gameState);
     }
     return gameWidget;
   }
 
   void initState() {
     super.initState();
-    _log.finest('init state');
-    _createClient();
+    _log.finer('init state');
+  }
+
+  Future<void> didChangeDependencies() async {
+    super.didChangeDependencies();
+    _log.finer('start: did change dependencies');
+    await _createClient();
+    // trigger a rebuild in case creating the client completed after last build
+    setState(() {});
+    _log.finer('end: did change dependencies');
   }
 
   Future<void> reassemble() async {
-    _log.finest('reassemble');
-    await _createClient();
     super.reassemble();
+    _log.finer('reassemble');
   }
 }
 

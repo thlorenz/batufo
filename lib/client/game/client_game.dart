@@ -13,10 +13,13 @@ import 'package:batufo/client/game/inputs/input_processor.dart';
 import 'package:batufo/client/game/inputs/keyboard.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
+import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
+
+final _log = Log<ClientGame>();
 
 class ClientGame extends Game {
   final ClientGameState _game;
@@ -72,7 +75,7 @@ class ClientGame extends Game {
     final gestures = GameGestures.instance.aggregatedGestures;
 
     _inputProcessor.udate(dt, pressedKeys, gestures, clientPlayer);
-    _gameController.update(dt, ts);
+    // _gameController.update(dt, ts);
   }
 
   void updateUI(double dt, double ts) {
@@ -101,6 +104,7 @@ class ClientGame extends Game {
       _background.render(canvas);
       _walls.render(canvas);
       for (final entry in _game.players.entries) {
+        _log.finest('render ${entry.value.tilePosition}');
         _players[entry.key].render(canvas, entry.value);
       }
       _bullets.render(canvas, _game.bullets);
