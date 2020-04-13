@@ -5,10 +5,8 @@ final _log = Log<ClientGameState>();
 
 class ClientGameState extends GameState {
   void sync(GameState gameState) {
-    _log.finest('updating game state');
     for (final entry in gameState.players.entries) {
       final player = entry.value;
-      _log.finest(player.tilePosition.toString());
       players[entry.key] = player;
     }
   }

@@ -104,7 +104,6 @@ class ClientGame extends Game {
       _background.render(canvas);
       _walls.render(canvas);
       for (final entry in _game.players.entries) {
-        _log.finest('render ${entry.value.tilePosition}');
         _players[entry.key].render(canvas, entry.value);
       }
       _bullets.render(canvas, _game.bullets);
