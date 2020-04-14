@@ -228,7 +228,7 @@ class PackedArena extends $pb.GeneratedMessage {
 class PlayingClientEvent extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayingClientEvent', createEmptyInstance: create)
     ..aOM<PlayingClient>(1, 'client', subBuilder: PlayingClient.create)
-    ..aOM<PlayerInputs>(2, 'playerInputs', protoName: 'playerInputs', subBuilder: PlayerInputs.create)
+    ..aOM<PackedPlayerInputs>(2, 'playerInputs', protoName: 'playerInputs', subBuilder: PackedPlayerInputs.create)
     ..hasRequiredFields = false
   ;
 
@@ -259,46 +259,48 @@ class PlayingClientEvent extends $pb.GeneratedMessage {
   PlayingClient ensureClient() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  PlayerInputs get playerInputs => $_getN(1);
+  PackedPlayerInputs get playerInputs => $_getN(1);
   @$pb.TagNumber(2)
-  set playerInputs(PlayerInputs v) { setField(2, v); }
+  set playerInputs(PackedPlayerInputs v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasPlayerInputs() => $_has(1);
   @$pb.TagNumber(2)
   void clearPlayerInputs() => clearField(2);
   @$pb.TagNumber(2)
-  PlayerInputs ensurePlayerInputs() => $_ensure(1);
+  PackedPlayerInputs ensurePlayerInputs() => $_ensure(1);
 }
 
-class PlayerInputs extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayerInputs', createEmptyInstance: create)
-    ..a<$core.int>(1, 'pressedKeys', $pb.PbFieldType.OU3, protoName: 'pressedKeys')
+class PackedPlayerInputs extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedPlayerInputs', createEmptyInstance: create)
+    ..aOM<DoubleFourDecimals>(1, 'angle', subBuilder: DoubleFourDecimals.create)
     ..hasRequiredFields = false
   ;
 
-  PlayerInputs._() : super();
-  factory PlayerInputs() => create();
-  factory PlayerInputs.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory PlayerInputs.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  PlayerInputs clone() => PlayerInputs()..mergeFromMessage(this);
-  PlayerInputs copyWith(void Function(PlayerInputs) updates) => super.copyWith((message) => updates(message as PlayerInputs));
+  PackedPlayerInputs._() : super();
+  factory PackedPlayerInputs() => create();
+  factory PackedPlayerInputs.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedPlayerInputs.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedPlayerInputs clone() => PackedPlayerInputs()..mergeFromMessage(this);
+  PackedPlayerInputs copyWith(void Function(PackedPlayerInputs) updates) => super.copyWith((message) => updates(message as PackedPlayerInputs));
   $pb.BuilderInfo get info_ => _i;
   @$core.pragma('dart2js:noInline')
-  static PlayerInputs create() => PlayerInputs._();
-  PlayerInputs createEmptyInstance() => create();
-  static $pb.PbList<PlayerInputs> createRepeated() => $pb.PbList<PlayerInputs>();
+  static PackedPlayerInputs create() => PackedPlayerInputs._();
+  PackedPlayerInputs createEmptyInstance() => create();
+  static $pb.PbList<PackedPlayerInputs> createRepeated() => $pb.PbList<PackedPlayerInputs>();
   @$core.pragma('dart2js:noInline')
-  static PlayerInputs getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayerInputs>(create);
-  static PlayerInputs _defaultInstance;
+  static PackedPlayerInputs getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedPlayerInputs>(create);
+  static PackedPlayerInputs _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get pressedKeys => $_getIZ(0);
+  DoubleFourDecimals get angle => $_getN(0);
   @$pb.TagNumber(1)
-  set pressedKeys($core.int v) { $_setUnsignedInt32(0, v); }
+  set angle(DoubleFourDecimals v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasPressedKeys() => $_has(0);
+  $core.bool hasAngle() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPressedKeys() => clearField(1);
+  void clearAngle() => clearField(1);
+  @$pb.TagNumber(1)
+  DoubleFourDecimals ensureAngle() => $_ensure(0);
 }
 
 class PackedPlayerModel extends $pb.GeneratedMessage {

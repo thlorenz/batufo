@@ -54,14 +54,14 @@ const PlayingClientEvent$json = const {
   '1': 'PlayingClientEvent',
   '2': const [
     const {'1': 'client', '3': 1, '4': 1, '5': 11, '6': '.PlayingClient', '10': 'client'},
-    const {'1': 'playerInputs', '3': 2, '4': 1, '5': 11, '6': '.PlayerInputs', '10': 'playerInputs'},
+    const {'1': 'playerInputs', '3': 2, '4': 1, '5': 11, '6': '.PackedPlayerInputs', '10': 'playerInputs'},
   ],
 };
 
-const PlayerInputs$json = const {
-  '1': 'PlayerInputs',
+const PackedPlayerInputs$json = const {
+  '1': 'PackedPlayerInputs',
   '2': const [
-    const {'1': 'pressedKeys', '3': 1, '4': 1, '5': 13, '10': 'pressedKeys'},
+    const {'1': 'angle', '3': 1, '4': 1, '5': 11, '6': '.DoubleFourDecimals', '10': 'angle'},
   ],
 };
 

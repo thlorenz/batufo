@@ -38,11 +38,11 @@ message PackedArena {
 
 message PlayingClientEvent {
   PlayingClient client = 1;
-  PlayerInputs playerInputs = 2;
+  PackedPlayerInputs playerInputs = 2;
 }
 
-message PlayerInputs {
-  uint32 pressedKeys = 1;
+message PackedPlayerInputs {
+  DoubleFourDecimals angle = 1;
 }
 
 // flags least to most significant bits

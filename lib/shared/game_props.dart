@@ -30,4 +30,6 @@ class GameProps {
 
   static const GAME_ID = 'gameid';
   static const CLIENT_ID = 'clientid';
+
+  static const playerInputSyncIntervalMs = 100.0;
 }

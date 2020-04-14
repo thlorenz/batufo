@@ -6,6 +6,7 @@ import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
     show
         GameStateEvent,
+        PackedPlayerInputs,
         PlayRequest,
         PlayerInputs,
         PlayingClient,
@@ -30,7 +31,7 @@ class Client {
 
   int get clientID => _playingClient.clientID;
 
-  void submitPlayerInputs(PlayerInputs playerInputs) {
+  void submitPlayerInputs(PackedPlayerInputs playerInputs) {
     _inputEvent$.add(PlayingClientEvent()..playerInputs = playerInputs);
   }
 
