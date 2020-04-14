@@ -1,3 +1,4 @@
+import 'package:batufo/shared/controllers/helpers/math_utils.dart';
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/engine/hit_tiles.dart';
@@ -27,16 +28,17 @@ class PlayerController {
     final check = _checkWallCollision(player, dt);
 
     if (player.appliedThrustForce != 0) {
-      player.velocity = Physics.increaseVelocity(
+      final velocity = Physics.increaseVelocity(
         player.velocity,
         player.angle,
         player.appliedThrustForce,
       );
+      player.velocity = _normalizeVelocity(velocity);
     }
 
     player
       ..appliedThrustForce = 0.0
-      ..velocity = check.first
+      ..velocity = _normalizeVelocity(check.first)
       ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt);
 
     /*
@@ -44,6 +46,12 @@ class PlayerController {
       stats.playerHealth -= check.second;
     }
      */
+  }
+
+  Offset _normalizeVelocity(Offset velocity) {
+    final dx = roundPrecisionTwo(velocity.dx);
+    final dy = roundPrecisionTwo(velocity.dy);
+    return Offset(dx, dy);
   }
 
   Tuple<Offset, double> _checkWallCollision(

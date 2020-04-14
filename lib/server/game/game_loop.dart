@@ -6,12 +6,14 @@ import 'package:batufo/shared/engine/geometry/dart_geometry.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
-const TICK_DURATION = 100;
+const TICK_DURATION = 20;
+const MESSAGING_INTERVAL_MS = 1500.0;
 final _log = Log<GameLoop>();
 
 class GameLoop {
   bool _started;
   final GameController _gameController;
+  double timeUntilNextMessage = 0;
   DateTime _lastTick;
   GameLoop(this._gameController) : _started = false;
 
@@ -45,11 +47,16 @@ class GameLoop {
     );
     _lastTick = ts;
 
-    _log.finest('tick: $dt');
-    _log.finest(gameState.toString());
+    _maybeSendGameState(gameState, dt);
+    _scheduleTick();
+  }
+
+  void _maybeSendGameState(GameState gameState, double dt) {
+    timeUntilNextMessage -= dt;
+    if (timeUntilNextMessage > 0) return;
 
     _gameState$.add(gameState);
-    _scheduleTick();
+    timeUntilNextMessage = MESSAGING_INTERVAL_MS;
   }
 
   void dispose() {
