@@ -33,11 +33,11 @@ class InputProcessor {
     }
     // thrust
     if (keys.contains(GameKey.Up)) {
-      player.appliedThrustForce = keyboardThrustForce * dt;
+      player.appliedThrust = true;
     }
 
     if (gestures.thrust != 0.0) {
-      player.appliedThrustForce = gestures.thrust;
+      player.appliedThrust = true;
     }
   }
 

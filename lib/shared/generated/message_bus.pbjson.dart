@@ -62,6 +62,7 @@ const PackedPlayerInputs$json = const {
   '1': 'PackedPlayerInputs',
   '2': const [
     const {'1': 'angle', '3': 1, '4': 1, '5': 11, '6': '.DoubleFourDecimals', '10': 'angle'},
+    const {'1': 'inputFlags', '3': 2, '4': 1, '5': 13, '10': 'inputFlags'},
   ],
 };
 
@@ -72,7 +73,6 @@ const PackedPlayerModel$json = const {
     const {'1': 'tilePosition', '3': 2, '4': 1, '5': 11, '6': '.PackedTilePosition', '10': 'tilePosition'},
     const {'1': 'velocity', '3': 3, '4': 1, '5': 11, '6': '.PackedFractionalPoint', '10': 'velocity'},
     const {'1': 'angle', '3': 4, '4': 1, '5': 11, '6': '.DoubleFourDecimals', '10': 'angle'},
-    const {'1': 'flags', '3': 5, '4': 1, '5': 13, '10': 'flags'},
   ],
 };
 

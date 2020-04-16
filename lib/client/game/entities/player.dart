@@ -34,7 +34,7 @@ class Player {
   }
 
   void updateSprites(PlayerModel player, double dt) {
-    if (player.appliedThrustForce != 0) thrustSprite.reset();
+    if (player.appliedThrust) thrustSprite.reset();
     thrustSprite.update(dt);
   }
 

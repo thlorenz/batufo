@@ -43,16 +43,14 @@ message PlayingClientEvent {
 
 message PackedPlayerInputs {
   DoubleFourDecimals angle = 1;
+  uint32 inputFlags = 2;
 }
 
-// flags least to most significant bits
-//  - appliedThrust
 message PackedPlayerModel {
   uint32 id = 1;
   PackedTilePosition tilePosition = 2;
   PackedFractionalPoint velocity = 3;
   DoubleFourDecimals angle = 4;
-  uint32 flags = 5;
 }
 
 // colRow: tile column and row

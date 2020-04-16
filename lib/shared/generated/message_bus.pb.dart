@@ -273,6 +273,7 @@ class PlayingClientEvent extends $pb.GeneratedMessage {
 class PackedPlayerInputs extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedPlayerInputs', createEmptyInstance: create)
     ..aOM<DoubleFourDecimals>(1, 'angle', subBuilder: DoubleFourDecimals.create)
+    ..a<$core.int>(2, 'inputFlags', $pb.PbFieldType.OU3, protoName: 'inputFlags')
     ..hasRequiredFields = false
   ;
 
@@ -301,6 +302,15 @@ class PackedPlayerInputs extends $pb.GeneratedMessage {
   void clearAngle() => clearField(1);
   @$pb.TagNumber(1)
   DoubleFourDecimals ensureAngle() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.int get inputFlags => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set inputFlags($core.int v) { $_setUnsignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasInputFlags() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearInputFlags() => clearField(2);
 }
 
 class PackedPlayerModel extends $pb.GeneratedMessage {
@@ -309,7 +319,6 @@ class PackedPlayerModel extends $pb.GeneratedMessage {
     ..aOM<PackedTilePosition>(2, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
     ..aOM<PackedFractionalPoint>(3, 'velocity', subBuilder: PackedFractionalPoint.create)
     ..aOM<DoubleFourDecimals>(4, 'angle', subBuilder: DoubleFourDecimals.create)
-    ..a<$core.int>(5, 'flags', $pb.PbFieldType.OU3)
     ..hasRequiredFields = false
   ;
 
@@ -369,15 +378,6 @@ class PackedPlayerModel extends $pb.GeneratedMessage {
   void clearAngle() => clearField(4);
   @$pb.TagNumber(4)
   DoubleFourDecimals ensureAngle() => $_ensure(3);
-
-  @$pb.TagNumber(5)
-  $core.int get flags => $_getIZ(4);
-  @$pb.TagNumber(5)
-  set flags($core.int v) { $_setUnsignedInt32(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasFlags() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearFlags() => clearField(5);
 }
 
 class PackedTilePosition extends $pb.GeneratedMessage {

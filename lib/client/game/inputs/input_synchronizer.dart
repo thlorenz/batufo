@@ -6,18 +6,24 @@ class InputSynchronizer {
   final double syncInterval;
   final Function(PlayerInputs playerInputs) submitPlayerInputs;
 
+  bool _appliedThrust = false;
   InputSynchronizer(this.submitPlayerInputs, this.syncInterval);
 
   void update(
     double dt,
     PlayerModel player,
   ) {
+    _appliedThrust = _appliedThrust || player.appliedThrust;
     timeToNextSync -= dt;
     if (timeToNextSync > 0) return;
 
-    final inputs = PlayerInputs(angle: player.angle);
+    final inputs = PlayerInputs(
+      angle: player.angle,
+      appliedThrust: _appliedThrust,
+    );
     submitPlayerInputs(inputs);
 
     timeToNextSync = syncInterval;
+    _appliedThrust = false;
   }
 }

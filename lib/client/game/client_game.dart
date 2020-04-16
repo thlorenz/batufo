@@ -57,7 +57,7 @@ class ClientGame extends Game {
         _walls = Walls(arena.walls, GameProps.tileSize),
         _inputProcessor = InputProcessor(
           keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
-          keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
+          keyboardThrustForce: GameProps.playerThrustForce,
         ),
         _inputSynchronizer = InputSynchronizer(
           submitPlayerInputs,

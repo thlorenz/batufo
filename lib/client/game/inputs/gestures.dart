@@ -26,7 +26,7 @@ class GameGestures {
   }
 
   void _addThrust(double dy) {
-    _thrust += -dy * GameProps.gesturePlayerThrustFactor;
+    _thrust += -dy;
   }
 
   AggregatedGestures get aggregatedGestures {

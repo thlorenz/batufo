@@ -13,12 +13,14 @@ class PlayerController {
   final double wallHitSlowdown;
   final double wallHitHealthTollFactor;
   final double hitSize;
+  final double thrustForce;
 
   PlayerController({
     @required this.hitSize,
     @required this.colliderAt,
     @required this.wallHitSlowdown,
     @required this.wallHitHealthTollFactor,
+    @required this.thrustForce,
   });
 
   void update(
@@ -27,17 +29,17 @@ class PlayerController {
   ) {
     final check = _checkWallCollision(player, dt);
 
-    if (player.appliedThrustForce != 0) {
+    if (player.appliedThrust) {
       final velocity = Physics.increaseVelocity(
         player.velocity,
         player.angle,
-        player.appliedThrustForce,
+        thrustForce,
       );
       player.velocity = _normalizeVelocity(velocity);
     }
 
     player
-      ..appliedThrustForce = 0.0
+      ..appliedThrust = false
       ..velocity = _normalizeVelocity(check.first)
       ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt);
 

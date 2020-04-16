@@ -31,6 +31,7 @@ class GameController {
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,
       wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
       colliderAt: colliders.colliderAt,
+      thrustForce: GameProps.playerThrustForce,
     );
 
     _bulletsController = BulletsController(
@@ -81,6 +82,8 @@ class GameController {
       _gameState.players.containsKey(clientID),
       'player with id $clientID not found',
     );
-    _gameState.players[clientID].angle = inputs.angle;
+    _gameState.players[clientID]
+      ..angle = inputs.angle
+      ..appliedThrust = inputs.appliedThrust;
   }
 }
