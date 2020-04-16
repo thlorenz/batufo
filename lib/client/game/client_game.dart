@@ -10,26 +10,30 @@ import 'package:batufo/client/game/entities/player.dart';
 import 'package:batufo/client/game/entities/walls.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/game/inputs/input_processor.dart';
+import 'package:batufo/client/game/inputs/input_synchronizer.dart';
 import 'package:batufo/client/game/inputs/keyboard.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
+import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
+import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 final _log = Log<ClientGame>();
 
 class ClientGame extends Game {
-  final ClientGameState _game;
-  final Arena _arena;
+  final ClientGameState game;
+  final Arena arena;
   final Background _background;
   final Grid _grid;
   final Walls _walls;
   final GameController _gameController;
   final InputProcessor _inputProcessor;
-  final int _clientID;
+  final InputSynchronizer _inputSynchronizer;
+  final int clientID;
 
   Map<int, Player> _players;
   Bullets _bullets;
@@ -38,23 +42,31 @@ class ClientGame extends Game {
   Offset _backgroundCamera;
   Size _size;
 
-  ClientGame(this._arena, this._game, this._clientID)
-      : _gameController = GameController(_arena, _game),
+  ClientGame({
+    @required this.arena,
+    @required this.game,
+    @required this.clientID,
+    @required Function(PlayerInputs playerInputs) submitPlayerInputs,
+  })  : _gameController = GameController(arena, game),
         _grid = Grid(GameProps.tileSize),
         _background = Background(
-          _arena.floorTiles,
+          arena.floorTiles,
           GameProps.tileSize,
           GameProps.renderBackground,
         ),
-        _walls = Walls(_arena.walls, GameProps.tileSize),
+        _walls = Walls(arena.walls, GameProps.tileSize),
         _inputProcessor = InputProcessor(
           keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
           keyboardThrustForce: GameProps.keyboardPlayerThrustForce,
         ),
+        _inputSynchronizer = InputSynchronizer(
+          submitPlayerInputs,
+          GameProps.playerInputSyncIntervalMs,
+        ),
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
     _players = <int, Player>{};
-    for (final clientID in _game.players.keys) {
+    for (final clientID in game.players.keys) {
       _players[clientID] = _initPlayer();
     }
 
@@ -65,8 +77,8 @@ class ClientGame extends Game {
   }
 
   PlayerModel get clientPlayer {
-    final player = _game.players[_clientID];
-    assert(player != null, 'our player with id $_clientID should exist');
+    final player = game.players[clientID];
+    assert(player != null, 'our player with id $clientID should exist');
     return player;
   }
 
@@ -76,6 +88,7 @@ class ClientGame extends Game {
 
     _inputProcessor.udate(dt, pressedKeys, gestures, clientPlayer);
     _gameController.update(dt, ts);
+    _inputSynchronizer.update(dt, clientPlayer);
   }
 
   void updateUI(double dt, double ts) {
@@ -83,10 +96,10 @@ class ClientGame extends Game {
       clientPlayer.tilePosition.toWorldPosition(),
       dt,
     );
-    for (final entry in _game.players.entries) {
+    for (final entry in game.players.entries) {
       _players[entry.key].updateSprites(entry.value, dt);
     }
-    _bullets.updateSprites(_game.bullets, dt);
+    _bullets.updateSprites(game.bullets, dt);
   }
 
   void render(Canvas canvas) {
@@ -95,7 +108,7 @@ class ClientGame extends Game {
     canvas.save();
     {
       canvas.translate(-_backgroundCamera.dx, -_backgroundCamera.dy);
-      _grid.render(canvas, _arena.nrows, _arena.ncols);
+      _grid.render(canvas, arena.nrows, arena.ncols);
     }
     canvas.restore();
 
@@ -103,10 +116,10 @@ class ClientGame extends Game {
       canvas.translate(-_camera.dx, -_camera.dy);
       _background.render(canvas);
       _walls.render(canvas);
-      for (final entry in _game.players.entries) {
+      for (final entry in game.players.entries) {
         _players[entry.key].render(canvas, entry.value);
       }
-      _bullets.render(canvas, _game.bullets);
+      _bullets.render(canvas, game.bullets);
     }
   }
 

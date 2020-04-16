@@ -4,6 +4,7 @@ import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/generated/message_bus.pb.dart' show PlayingClient;
+import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
@@ -42,6 +43,10 @@ class ServerGame {
       appliedThrustForce: 0.0,
     );
     _gameLoop.addPlayer(player);
+  }
+
+  void syncPlayerInputs(int clientID, PlayerInputs inputs) {
+    _gameLoop.syncPlayerInputs(clientID, inputs);
   }
 
   Stream<GameState> get gameState$ => _gameLoop.gameState$;

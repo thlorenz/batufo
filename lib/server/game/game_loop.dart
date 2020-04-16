@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart';
+import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
@@ -29,7 +29,11 @@ class GameLoop {
 
   void addPlayer(PlayerModel player) {
     _gameController.addPlayer(player);
-    player.velocity = Offset(0.08, 0.0);
+    // player.velocity = Offset(0.08, 0.0);
+  }
+
+  void syncPlayerInputs(int clientID, PlayerInputs inputs) {
+    _gameController.syncPlayerInputs(clientID, inputs);
   }
 
   void _scheduleTick() {

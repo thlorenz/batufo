@@ -7,6 +7,7 @@ import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart';
 import 'package:batufo/shared/generated/message_bus.pbgrpc.dart';
 import 'package:batufo/shared/messaging/ids.dart';
+import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:grpc/grpc.dart';
 
@@ -87,7 +88,8 @@ class GameService extends GameServiceBase {
     final client = event.client;
     final game = _games[client.gameID];
     assert(game != null, 'cannot find game with id ${client.gameID}');
-    // TODO: tell the game about the player input
+    final inputs = PlayerInputs.unpack(event.playerInputs);
+    game.syncPlayerInputs(client.clientID, inputs);
   }
 
   ServerGame _getOrCreateCurrentGame(Arena arena) {

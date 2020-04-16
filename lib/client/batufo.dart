@@ -11,6 +11,7 @@ import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
     show GameStateEvent;
+import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_model.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
   Arena arena;
   ClientGameState clientGameState;
   int clientID;
+  Client client;
 
   ClientGame game;
   RunningGame gameWidget;
@@ -58,7 +60,7 @@ class _MyAppState extends State<MyApp> {
   _MyAppState({@required this.level, @required this.serverIP});
 
   Future<Client> _createClient() async {
-    final client = await Client.create(level, serverIP);
+    client = await Client.create(level, serverIP);
     arena = client.arena;
     clientGameState = ClientGameState();
     gameStateEvent$ = client.gameStateEvent$;
@@ -91,7 +93,13 @@ class _MyAppState extends State<MyApp> {
     clientGameState.sync(GameState.unpack(snapshot.data.gameState));
 
     if (game == null) {
-      game = ClientGame(arena, clientGameState, clientID);
+      game = ClientGame(
+        arena: arena,
+        game: clientGameState,
+        clientID: clientID,
+        submitPlayerInputs: (PlayerInputs playerInputs) =>
+            client.submitPlayerInputs(playerInputs.pack()),
+      );
       gameWidget = RunningGame(game: game);
     }
     return gameWidget;

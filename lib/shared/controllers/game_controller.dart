@@ -4,6 +4,7 @@ import 'package:batufo/shared/controllers/helpers/colliders.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
+import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
@@ -73,5 +74,13 @@ class GameController {
   void addPlayer(PlayerModel player) {
     assert(player != null, 'cannot add null as player');
     _gameState.addPlayer(player.id, player);
+  }
+
+  void syncPlayerInputs(int clientID, PlayerInputs inputs) {
+    assert(
+      _gameState.players.containsKey(clientID),
+      'player with id $clientID not found',
+    );
+    _gameState.players[clientID].angle = inputs.angle;
   }
 }

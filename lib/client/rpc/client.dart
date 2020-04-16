@@ -32,7 +32,11 @@ class Client {
   int get clientID => _playingClient.clientID;
 
   void submitPlayerInputs(PackedPlayerInputs playerInputs) {
-    _inputEvent$.add(PlayingClientEvent()..playerInputs = playerInputs);
+    _inputEvent$.add(
+      PlayingClientEvent()
+        ..playerInputs = playerInputs
+        ..client = _playingClient,
+    );
   }
 
   void _init(String serverURL) {
