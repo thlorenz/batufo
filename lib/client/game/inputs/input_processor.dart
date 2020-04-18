@@ -1,10 +1,13 @@
 import 'dart:math';
 
 import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/input_types.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 const twopi = 2 * pi;
+
+final _log = Log<InputProcessor>();
 
 class InputProcessor {
   final double keyboardThrustForce;
@@ -35,7 +38,6 @@ class InputProcessor {
     if (keys.contains(GameKey.Up)) {
       player.appliedThrust = true;
     }
-
     if (gestures.thrust != 0.0) {
       player.appliedThrust = true;
     }

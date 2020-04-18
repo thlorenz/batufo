@@ -46,4 +46,9 @@ class PlayerInputs {
       appliedThrust: appliedThrust,
     );
   }
+
+  String toString() {
+    return 'PlayerInputs{angle: ${angle.toStringAsFixed(2)}, '
+        'appliedThrust: $appliedThrust}';
+  }
 }

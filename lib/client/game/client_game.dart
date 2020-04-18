@@ -87,8 +87,8 @@ class ClientGame extends Game {
     final gestures = GameGestures.instance.aggregatedGestures;
 
     _inputProcessor.udate(dt, pressedKeys, gestures, clientPlayer);
-    _gameController.update(dt, ts);
     _inputSynchronizer.update(dt, clientPlayer);
+    _gameController.update(dt, ts);
   }
 
   void updateUI(double dt, double ts) {
