@@ -5,7 +5,7 @@ class GameProps {
   static const gesturePlayerMinThrustDelta = 2.2;
 
   static const keyboardPlayerRotationFactor = 0.004;
-  static const playerThrustForce = 0.0005; // Newton
+  static const playerThrustForce = 0.05; // Newton
 
   // TODO(thlorenz): need to take those into account for above
   // thrust force value

@@ -1,11 +1,14 @@
 import 'package:batufo/shared/controllers/helpers/math_utils.dart';
 import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/engine/hit_tiles.dart';
 import 'package:batufo/shared/engine/physics.dart';
 import 'package:batufo/shared/engine/tile_position.dart';
 import 'package:batufo/shared/models/player_model.dart';
 import 'package:batufo/shared/types.dart';
+
+final _log = Log<PlayerController>();
 
 @immutable
 class PlayerController {
@@ -27,8 +30,6 @@ class PlayerController {
     double dt,
     PlayerModel player,
   ) {
-    final check = _checkWallCollision(player, dt);
-
     if (player.appliedThrust) {
       final velocity = Physics.increaseVelocity(
         player.velocity,
@@ -38,6 +39,7 @@ class PlayerController {
       player.velocity = _normalizeVelocity(velocity);
     }
 
+    final check = _checkWallCollision(player, dt);
     player
       ..appliedThrust = false
       ..velocity = _normalizeVelocity(check.first)

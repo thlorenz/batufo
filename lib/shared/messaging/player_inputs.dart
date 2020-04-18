@@ -61,7 +61,6 @@ class PlayerInputs {
   int get hashCode => angle.hashCode ^ appliedThrust.hashCode;
 
   String toString() {
-    return 'PlayerInputs{angle: ${angle.toStringAsFixed(2)}, '
-        'appliedThrust: $appliedThrust}';
+    return 'PlayerInputs[ ${angle.toStringAsFixed(2)}, $appliedThrust ]';
   }
 }
