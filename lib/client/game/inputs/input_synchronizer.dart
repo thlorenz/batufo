@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/player_model.dart';
@@ -8,28 +10,27 @@ class InputSynchronizer {
   double timeToNextSync = 0;
   final double syncInterval;
   final Function(PlayerInputs playerInputs) submitPlayerInputs;
+  PlayerInputs _lastSentInputs;
 
-  bool _appliedThrust = false;
   InputSynchronizer(this.submitPlayerInputs, this.syncInterval);
 
   void update(
     double dt,
     PlayerModel player,
   ) {
-    _appliedThrust = _appliedThrust || player.appliedThrust;
-    timeToNextSync -= dt;
+    timeToNextSync = max(0, timeToNextSync - dt);
     if (timeToNextSync > 0) return;
 
     final inputs = PlayerInputs(
       angle: player.angle,
-      appliedThrust: _appliedThrust,
+      appliedThrust: player.appliedThrust,
     );
+    if (_lastSentInputs == inputs) return;
+
     submitPlayerInputs(inputs);
-    if (inputs.appliedThrust) {
-      _log.finer('submitting $inputs');
-    }
 
     timeToNextSync = syncInterval;
-    _appliedThrust = false;
+    _lastSentInputs = inputs.cloneWithoutEvents();
+    _log.finer('submitted $inputs, dt: $dt, next: $timeToNextSync');
   }
 }

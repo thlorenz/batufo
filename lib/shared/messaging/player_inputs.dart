@@ -47,6 +47,19 @@ class PlayerInputs {
     );
   }
 
+  PlayerInputs cloneWithoutEvents() {
+    return PlayerInputs(angle: angle, appliedThrust: false);
+  }
+
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PlayerInputs &&
+          runtimeType == other.runtimeType &&
+          angle == other.angle &&
+          appliedThrust == other.appliedThrust;
+
+  int get hashCode => angle.hashCode ^ appliedThrust.hashCode;
+
   String toString() {
     return 'PlayerInputs{angle: ${angle.toStringAsFixed(2)}, '
         'appliedThrust: $appliedThrust}';
