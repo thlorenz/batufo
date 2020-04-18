@@ -58,6 +58,7 @@ class ClientGame extends Game {
         _inputProcessor = InputProcessor(
           keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
           keyboardThrustForce: GameProps.playerThrustForce,
+          timeBetweenThrusts: GameProps.timeBetweenThrustsMs,
         ),
         _inputSynchronizer = InputSynchronizer(
           submitPlayerInputs,

@@ -12,11 +12,21 @@ final _log = Log<InputProcessor>();
 class InputProcessor {
   final double keyboardThrustForce;
   final double keyboardRotationFactor;
+  final double timeBetweenThrusts;
+
+  double timeSinceLastThrust;
 
   InputProcessor({
     @required this.keyboardThrustForce,
     @required this.keyboardRotationFactor,
-  });
+    @required this.timeBetweenThrusts,
+  }) {
+    timeSinceLastThrust = 0.0;
+  }
+
+  bool get canApplyThrust {
+    return timeBetweenThrusts <= timeSinceLastThrust;
+  }
 
   void udate(
     double dt,
@@ -35,11 +45,16 @@ class InputProcessor {
       player.angle = _increaseAngle(player.angle, gestures.rotation);
     }
     // thrust
+    timeSinceLastThrust = min(timeBetweenThrusts, timeSinceLastThrust + dt);
+    if (!canApplyThrust) return;
+
     if (keys.contains(GameKey.Up)) {
       player.appliedThrust = true;
+      timeSinceLastThrust = 0.0;
     }
     if (gestures.thrust != 0.0) {
       player.appliedThrust = true;
+      timeSinceLastThrust = 0.0;
     }
   }
 

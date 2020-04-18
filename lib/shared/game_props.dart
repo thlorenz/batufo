@@ -31,4 +31,5 @@ class GameProps {
   static const CLIENT_ID = 'clientid';
 
   static const playerInputSyncIntervalMs = 100.0;
+  static const timeBetweenThrustsMs = 500.0;
 }
