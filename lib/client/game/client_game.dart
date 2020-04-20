@@ -124,6 +124,10 @@ class ClientGame extends Game {
     }
   }
 
+  void cleanup() {
+    _gameController.cleanup();
+  }
+
   void resize(Size size) {
     _size = size;
   }

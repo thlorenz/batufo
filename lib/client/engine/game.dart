@@ -8,6 +8,7 @@ abstract class Game {
   void update(double dt, double ts);
   void updateUI(double dt, double ts);
   void render(Canvas canvas);
+  void cleanup();
   void resize(Size size);
 
   @mustCallSuper

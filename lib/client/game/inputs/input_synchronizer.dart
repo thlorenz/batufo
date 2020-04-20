@@ -31,6 +31,5 @@ class InputSynchronizer {
 
     timeToNextSync = syncInterval;
     _lastSentInputs = inputs.cloneWithoutEvents();
-    _log.finer('$inputs');
   }
 }

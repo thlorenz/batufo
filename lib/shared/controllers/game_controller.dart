@@ -72,6 +72,12 @@ class GameController {
     return _gameState;
   }
 
+  void cleanup() {
+    for (final x in _gameState.players.entries) {
+      _playerController.cleanup(x.value);
+    }
+  }
+
   void addPlayer(PlayerModel player) {
     assert(player != null, 'cannot add null as player');
     _gameState.addPlayer(player.id, player);

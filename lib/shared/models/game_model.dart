@@ -10,6 +10,7 @@ class ClientGameState extends GameState {
   void sync(GameState gameState) {
     for (final entry in gameState.players.entries) {
       final player = entry.value;
+      if (player.appliedThrust) _log.fine(player.toString());
       if (!synced || !SYNC_ONLY_ONCE) {
         players[entry.key] = player;
         synced = true;

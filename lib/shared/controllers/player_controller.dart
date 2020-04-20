@@ -41,7 +41,6 @@ class PlayerController {
 
     final check = _checkWallCollision(player, dt);
     player
-      ..appliedThrust = false
       ..velocity = _normalizeVelocity(check.first)
       ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt);
 
@@ -50,6 +49,10 @@ class PlayerController {
       stats.playerHealth -= check.second;
     }
      */
+  }
+
+  void cleanup(PlayerModel player) {
+    player.appliedThrust = false;
   }
 
   Offset _normalizeVelocity(Offset velocity) {

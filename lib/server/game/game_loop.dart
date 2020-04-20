@@ -7,7 +7,7 @@ import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 const TICK_DURATION = 20;
-const MESSAGING_INTERVAL_MS = 1500.0;
+const MESSAGING_INTERVAL_MS = 100.0;
 final _log = Log<GameLoop>();
 
 class GameLoop {
@@ -29,7 +29,6 @@ class GameLoop {
 
   void addPlayer(PlayerModel player) {
     _gameController.addPlayer(player);
-    // player.velocity = Offset(0.08, 0.0);
   }
 
   void syncPlayerInputs(int clientID, PlayerInputs inputs) {
@@ -45,6 +44,7 @@ class GameLoop {
     final double dt = _lastTick == null
         ? Duration.zero.inMicroseconds / 1E3
         : ts.difference(_lastTick).inMicroseconds / 1E3;
+
     final gameState = _gameController.update(
       dt,
       ts.microsecondsSinceEpoch / 1E3,
@@ -52,14 +52,19 @@ class GameLoop {
     _lastTick = ts;
 
     _maybeSendGameState(gameState, dt);
+    // TODO: send player thrust correctly so we see other players
+    //    applying thrust
+    _gameController.cleanup();
     _scheduleTick();
   }
 
   void _maybeSendGameState(GameState gameState, double dt) {
     timeUntilNextMessage -= dt;
-    if (timeUntilNextMessage > 0) return;
+    if (timeUntilNextMessage > 0) {
+      return;
+    }
 
-    _gameState$.add(gameState);
+    _gameState$.add(gameState.clone());
     timeUntilNextMessage = MESSAGING_INTERVAL_MS;
   }
 

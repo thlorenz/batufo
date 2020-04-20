@@ -95,7 +95,8 @@ class _GameRenderBox extends RenderBox with WidgetsBindingObserver {
     final dt = _computeDelta(ts);
     game
       ..update(dt, ts)
-      ..updateUI(dt, ts);
+      ..updateUI(dt, ts)
+      ..cleanup();
   }
 
   double _computeDelta(double ts) {
