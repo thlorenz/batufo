@@ -45,6 +45,16 @@ class PlayerModel {
     );
   }
 
+  PlayerModel clone() {
+    return PlayerModel(
+      id: id,
+      tilePosition: tilePosition.copyWith(),
+      velocity: Offset(velocity.dx, velocity.dy),
+      angle: angle,
+      appliedThrust: appliedThrust,
+    );
+  }
+
   @override
   String toString() {
     return '''PlayerModel {

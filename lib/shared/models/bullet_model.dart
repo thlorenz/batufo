@@ -13,6 +13,13 @@ class BulletModel {
     this.collided = false,
   });
 
+  BulletModel clone() {
+    return BulletModel(
+      tilePosition: tilePosition.copyWith(),
+      velocity: Offset(velocity.dx, velocity.dy),
+    );
+  }
+
   String toString() {
     return '''PlayerModel {
      tilePosition: $tilePosition

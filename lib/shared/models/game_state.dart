@@ -5,9 +5,9 @@ import 'package:batufo/shared/models/player_model.dart';
 class GameState {
   final Map<int, PlayerModel> players;
   final List<BulletModel> bullets;
-  GameState()
-      : players = <int, PlayerModel>{},
-        bullets = <BulletModel>[];
+  GameState([Map<int, PlayerModel> players, List<BulletModel> bullets])
+      : players = players ?? <int, PlayerModel>{},
+        bullets = bullets ?? <BulletModel>[];
 
   void addPlayer(int id, PlayerModel player) {
     assert(player != null, 'cannot add null as player');
@@ -29,6 +29,17 @@ class GameState {
       gameState.addPlayer(p.id, playerModel);
     }
     return gameState;
+  }
+
+  GameState clone() {
+    final clonedPlayers = <int, PlayerModel>{};
+
+    for (final entry in players.entries) {
+      clonedPlayers[entry.key] = entry.value.clone();
+    }
+
+    final clonedBullets = bullets.map((x) => x.clone()).toList();
+    return GameState(clonedPlayers, clonedBullets);
   }
 
   @override
