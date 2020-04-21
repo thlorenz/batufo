@@ -24,6 +24,7 @@ class InputSynchronizer {
     final inputs = PlayerInputs(
       angle: player.angle,
       appliedThrust: player.appliedThrust,
+      shotBullet: player.shotBullet,
     );
     if (_lastSentInputs == inputs) return;
 

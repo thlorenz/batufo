@@ -14,6 +14,10 @@ class GameState {
     players[id] = player;
   }
 
+  void addBullet(BulletModel bullet) {
+    bullets.add(bullet);
+  }
+
   PackedGameState pack() {
     final gameState = PackedGameState();
     final ps = gameState.players;

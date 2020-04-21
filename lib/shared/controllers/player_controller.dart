@@ -18,7 +18,7 @@ class PlayerController {
   final double hitSize;
   final double thrustForce;
 
-  PlayerController({
+  const PlayerController({
     @required this.hitSize,
     @required this.colliderAt,
     @required this.wallHitSlowdown,

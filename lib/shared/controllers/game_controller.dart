@@ -1,23 +1,30 @@
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/bullets_controller.dart';
+import 'package:batufo/shared/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/shared/controllers/helpers/colliders.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
+import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
+final _log = Log<GameController>();
+
 class GameController {
+  final BulletsSpawner _bulletsSpawner;
   PlayerController _playerController;
   BulletsController _bulletsController;
-  final double _bulletForce;
   final GameState _gameState;
 
   final Arena _arena;
 
   GameController(this._arena, this._gameState)
-      : _bulletForce = GameProps.bulletForce {
+      : _bulletsSpawner = BulletsSpawner(
+          bulletForce: GameProps.bulletForce,
+          playerSize: GameProps.playerSize,
+        ) {
     WorldPosition.tileSize = GameProps.tileSize;
 
     final colliders = Colliders(
@@ -45,30 +52,13 @@ class GameController {
 
   GameState update(double dt, double ts) {
     for (final x in _gameState.players.entries) {
-      _playerController.update(dt, x.value);
-    }
-    // _bulletsController.update(dt);
+      final player = x.value;
+      _playerController.update(dt, player);
 
-    /*
-    // firing bullets
-    if (pressedKeys.contains(GameKey.Fire)) {
-      final p = _game.players;
-      final bullet = BulletModel(
-        velocity: Physics.increaseVelocity(
-          p.velocity,
-          p.angle,
-          _bulletForce,
-        ),
-        tilePosition: Physics.scaleAlongAngle(
-          _game.players.tilePosition,
-          p.angle,
-          GameProps.playerSize * 0.85,
-        ),
-      );
-      _bulletsController.add(bullet);
-
+      if (player.shotBullet) _spawnBullet(player);
     }
-     */
+    _bulletsController.update(dt);
+
     return _gameState;
   }
 
@@ -88,8 +78,18 @@ class GameController {
       _gameState.players.containsKey(clientID),
       'player with id $clientID not found',
     );
-    _gameState.players[clientID]
+    final player = _gameState.players[clientID]
       ..angle = inputs.angle
       ..appliedThrust = inputs.appliedThrust;
+
+    if (inputs.shotBullet) {
+      _spawnBullet(player);
+    }
+  }
+
+  void _spawnBullet(PlayerModel player) {
+    final bullet = _bulletsSpawner.spawnFor(player);
+    _log.fine('spawning bullet $bullet');
+    _gameState.addBullet(bullet);
   }
 }

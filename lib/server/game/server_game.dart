@@ -36,11 +36,13 @@ class ServerGame {
     _clients.add(playingClient);
 
     final player = PlayerModel(
-        id: playingClient.clientID,
-        tilePosition: arena.playerPosition(_clients.length - 1),
-        angle: 0.0,
-        velocity: Offset.zero,
-        appliedThrust: false);
+      id: playingClient.clientID,
+      tilePosition: arena.playerPosition(_clients.length - 1),
+      angle: 0.0,
+      velocity: Offset.zero,
+      appliedThrust: false,
+      shotBullet: false,
+    );
     _gameLoop.addPlayer(player);
   }
 

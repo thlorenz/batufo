@@ -21,9 +21,6 @@ class BulletModel {
   }
 
   String toString() {
-    return '''PlayerModel {
-     tilePosition: $tilePosition
-     velocity: $velocity
-   }''';
+    return 'BulletModel [ $tilePosition, $velocity, $collided ]';
   }
 }

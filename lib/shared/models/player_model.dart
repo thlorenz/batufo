@@ -11,15 +11,18 @@ class PlayerModel {
   Offset velocity;
   double angle;
   bool appliedThrust;
+  bool shotBullet;
   PlayerModel({
     @required this.id,
     @required this.tilePosition,
     @required double angle,
     @required Offset velocity,
-    @required bool appliedThrust,
+    bool appliedThrust,
+    bool shotBullet,
   })  : angle = angle ?? 0.0,
         velocity = velocity ?? Offset.zero,
-        appliedThrust = appliedThrust ?? false;
+        appliedThrust = appliedThrust ?? false,
+        shotBullet = shotBullet ?? false;
 
   PackedPlayerModel pack() {
     final tp = tilePosition.pack();

@@ -8,7 +8,6 @@ import 'package:batufo/shared/generated/message_bus.pb.dart'
         GameStateEvent,
         PackedPlayerInputs,
         PlayRequest,
-        PlayerInputs,
         PlayingClient,
         PlayingClientEvent;
 import 'package:batufo/shared/generated/message_bus.pbgrpc.dart'

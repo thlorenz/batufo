@@ -28,6 +28,10 @@ class InputProcessor {
     return timeBetweenThrusts <= timeSinceLastThrust;
   }
 
+  bool get canShootBullet {
+    return true;
+  }
+
   void udate(
     double dt,
     GameKeys keys,
@@ -44,17 +48,25 @@ class InputProcessor {
     if (gestures.rotation != 0.0) {
       player.angle = _increaseAngle(player.angle, gestures.rotation);
     }
-    // thrust
     timeSinceLastThrust = min(timeBetweenThrusts, timeSinceLastThrust + dt);
-    if (!canApplyThrust) return;
 
-    if (keys.contains(GameKey.Up)) {
-      player.appliedThrust = true;
-      timeSinceLastThrust = 0.0;
+    // bullets
+    if (canShootBullet) {
+      if (keys.contains(GameKey.Fire)) {
+        player.shotBullet = true;
+      }
     }
-    if (gestures.thrust != 0.0) {
-      player.appliedThrust = true;
-      timeSinceLastThrust = 0.0;
+
+    // thrust
+    if (canApplyThrust) {
+      if (keys.contains(GameKey.Up)) {
+        player.appliedThrust = true;
+        timeSinceLastThrust = 0.0;
+      }
+      if (gestures.thrust != 0.0) {
+        player.appliedThrust = true;
+        timeSinceLastThrust = 0.0;
+      }
     }
   }
 

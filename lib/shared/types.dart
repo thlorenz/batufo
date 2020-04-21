@@ -7,5 +7,5 @@ typedef TilePositionPredicate = bool Function(TilePosition);
 class Tuple<T, U> {
   final T first;
   final U second;
-  Tuple(this.first, this.second);
+  const Tuple(this.first, this.second);
 }
