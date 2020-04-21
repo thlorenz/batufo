@@ -52,7 +52,9 @@ class PlayerController {
   }
 
   void cleanup(PlayerModel player) {
-    player.appliedThrust = false;
+    player
+      ..appliedThrust = false
+      ..shotBullet = false;
   }
 
   Offset _normalizeVelocity(Offset velocity) {

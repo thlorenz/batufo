@@ -13,15 +13,19 @@ class InputProcessor {
   final double keyboardThrustForce;
   final double keyboardRotationFactor;
   final double timeBetweenThrusts;
+  final double timeBetweenBullets;
 
   double timeSinceLastThrust;
+  double timeSinceLastBullet;
 
   InputProcessor({
     @required this.keyboardThrustForce,
     @required this.keyboardRotationFactor,
     @required this.timeBetweenThrusts,
+    @required this.timeBetweenBullets,
   }) {
     timeSinceLastThrust = 0.0;
+    timeSinceLastBullet = 0.0;
   }
 
   bool get canApplyThrust {
@@ -29,7 +33,7 @@ class InputProcessor {
   }
 
   bool get canShootBullet {
-    return true;
+    return timeBetweenBullets <= timeSinceLastBullet;
   }
 
   void udate(
@@ -49,11 +53,13 @@ class InputProcessor {
       player.angle = _increaseAngle(player.angle, gestures.rotation);
     }
     timeSinceLastThrust = min(timeBetweenThrusts, timeSinceLastThrust + dt);
+    timeSinceLastBullet = min(timeBetweenBullets, timeSinceLastBullet + dt);
 
     // bullets
     if (canShootBullet) {
       if (keys.contains(GameKey.Fire)) {
         player.shotBullet = true;
+        timeSinceLastBullet = 0.0;
       }
     }
 
