@@ -19,7 +19,6 @@ class InputSynchronizer {
     PlayerModel player,
   ) {
     timeToNextSync = max(0, timeToNextSync - dt);
-    if (timeToNextSync > 0) return;
 
     final inputs = PlayerInputs(
       angle: player.angle,
@@ -28,9 +27,13 @@ class InputSynchronizer {
     );
     if (_lastSentInputs == inputs) return;
 
-    submitPlayerInputs(inputs);
+    final forceSync = inputs.appliedThrust || inputs.shotBullet;
 
-    timeToNextSync = syncInterval;
-    _lastSentInputs = inputs.cloneWithoutEvents();
+    if (forceSync || timeToNextSync <= 0) {
+      submitPlayerInputs(inputs);
+
+      timeToNextSync = syncInterval;
+      _lastSentInputs = inputs.cloneWithoutEvents();
+    }
   }
 }

@@ -37,6 +37,7 @@ class PlayerController {
         thrustForce,
       );
       player.velocity = _normalizeVelocity(velocity);
+      _log.fine('applied thrust');
     }
 
     final check = _checkWallCollision(player, dt);
