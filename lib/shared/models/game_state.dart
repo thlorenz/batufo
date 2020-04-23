@@ -18,11 +18,19 @@ class GameState {
     bullets.add(bullet);
   }
 
+  void clearBullets() {
+    bullets.clear();
+  }
+
   PackedGameState pack() {
-    final gameState = PackedGameState();
-    final ps = gameState.players;
+    final packedState = PackedGameState();
+
+    final ps = packedState.players;
     players.values.forEach((x) => ps.add(x.pack()));
-    return gameState;
+
+    final bs = packedState.bullets;
+    bullets.forEach((x) => bs.add(x.pack()));
+    return packedState;
   }
 
   factory GameState.unpack(PackedGameState data) {
@@ -31,6 +39,10 @@ class GameState {
     for (final p in data.players) {
       final playerModel = PlayerModel.unpack(p);
       gameState.addPlayer(p.id, playerModel);
+    }
+    for (final b in data.bullets) {
+      final bulletModel = BulletModel.unpack(b);
+      gameState.addBullet(bulletModel);
     }
     return gameState;
   }

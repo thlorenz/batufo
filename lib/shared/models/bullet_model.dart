@@ -1,6 +1,9 @@
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/engine/tile_position.dart';
+import 'package:batufo/shared/generated/message_bus.pb.dart'
+    show PackedBulletModel;
+import 'package:batufo/shared/messaging/packing_types.dart';
 
 class BulletModel {
   TilePosition tilePosition;
@@ -12,6 +15,24 @@ class BulletModel {
     @required this.velocity,
     this.collided = false,
   });
+
+  PackedBulletModel pack() {
+    final tp = tilePosition.pack();
+    final v = FractionalPoint(velocity.dx, velocity.dy).pack();
+    return PackedBulletModel()
+      ..tilePosition = tp
+      ..velocity = v;
+  }
+
+  factory BulletModel.unpack(PackedBulletModel data) {
+    final tp = TilePosition.unpack(data.tilePosition);
+    final p = FractionalPoint.unpack(data.velocity);
+    final v = Offset(p.x, p.y);
+    return BulletModel(
+      tilePosition: tp,
+      velocity: v,
+    );
+  }
 
   BulletModel clone() {
     return BulletModel(

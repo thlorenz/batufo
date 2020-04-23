@@ -6,8 +6,6 @@ service Game {
       GameStateEvent) {}
 }
 
-message Empty {}
-
 message PlayRequest {
   string levelName = 1;
 }
@@ -19,6 +17,7 @@ message GameStateEvent {
 
 message PackedGameState {
   repeated PackedPlayerModel players = 1;
+  repeated PackedBulletModel bullets = 2;
 }
 
 message PlayingClient {
@@ -51,6 +50,11 @@ message PackedPlayerModel {
   PackedTilePosition tilePosition = 2;
   PackedFractionalPoint velocity = 3;
   DoubleFourDecimals angle = 4;
+}
+
+message PackedBulletModel {
+  PackedTilePosition tilePosition = 1;
+  PackedFractionalPoint velocity = 2;
 }
 
 // colRow: tile column and row

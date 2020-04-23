@@ -53,6 +53,7 @@ class GameLoop {
 
     _maybeSendGameState(gameState, dt);
     // TODO: send player thrust correctly so we see other players
+    //
     //    applying thrust
     _gameController.cleanup();
     _scheduleTick();
