@@ -91,7 +91,6 @@ class GameController {
 
   void _spawnBullet(PlayerModel player) {
     final bullet = _bulletsSpawner.spawnFor(player);
-    _log.fine('spawning bullet $bullet');
     _gameState.addBullet(bullet);
   }
 }
