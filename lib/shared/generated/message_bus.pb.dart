@@ -302,6 +302,7 @@ class PackedPlayerModel extends $pb.GeneratedMessage {
     ..aOM<PackedTilePosition>(2, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
     ..aOM<PackedFractionalPoint>(3, 'velocity', subBuilder: PackedFractionalPoint.create)
     ..aOM<DoubleFourDecimals>(4, 'angle', subBuilder: DoubleFourDecimals.create)
+    ..aOM<DoubleTwoDecimals>(5, 'health', subBuilder: DoubleTwoDecimals.create)
     ..hasRequiredFields = false
   ;
 
@@ -361,6 +362,17 @@ class PackedPlayerModel extends $pb.GeneratedMessage {
   void clearAngle() => clearField(4);
   @$pb.TagNumber(4)
   DoubleFourDecimals ensureAngle() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  DoubleTwoDecimals get health => $_getN(4);
+  @$pb.TagNumber(5)
+  set health(DoubleTwoDecimals v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasHealth() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearHealth() => clearField(5);
+  @$pb.TagNumber(5)
+  DoubleTwoDecimals ensureHealth() => $_ensure(4);
 }
 
 class PackedBulletModel extends $pb.GeneratedMessage {

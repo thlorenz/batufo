@@ -12,7 +12,7 @@ final _log = Log<PlayerController>();
 
 @immutable
 class PlayerController {
-  final TilePositionPredicate colliderAt;
+  final TilePositionPredicate playerCollidingAt;
   final double wallHitSlowdown;
   final double wallHitHealthTollFactor;
   final double hitSize;
@@ -20,7 +20,7 @@ class PlayerController {
 
   const PlayerController({
     @required this.hitSize,
-    @required this.colliderAt,
+    @required this.playerCollidingAt,
     @required this.wallHitSlowdown,
     @required this.wallHitHealthTollFactor,
     @required this.thrustForce,
@@ -99,21 +99,21 @@ class PlayerController {
       return tp.col == nextTp.col ? hitOnAxisY() : hitOnAxisX();
     }
 
-    if (colliderAt(nextHit.bottomRight)) {
-      if (colliderAt(nextHit.bottomLeft)) return hitOnAxisY();
-      if (colliderAt(nextHit.topRight)) return hitOnAxisX();
+    if (playerCollidingAt(nextHit.bottomRight)) {
+      if (playerCollidingAt(nextHit.bottomLeft)) return hitOnAxisY();
+      if (playerCollidingAt(nextHit.topRight)) return hitOnAxisX();
       return handleHit(hit.bottomRight, nextHit.bottomRight);
     }
-    if (colliderAt(nextHit.topRight)) {
-      if (colliderAt(nextHit.topLeft)) return hitOnAxisY();
+    if (playerCollidingAt(nextHit.topRight)) {
+      if (playerCollidingAt(nextHit.topLeft)) return hitOnAxisY();
       return handleHit(hit.topRight, nextHit.topRight);
     }
-    if (colliderAt(nextHit.bottomLeft)) {
-      if (colliderAt(nextHit.topLeft)) return hitOnAxisX();
+    if (playerCollidingAt(nextHit.bottomLeft)) {
+      if (playerCollidingAt(nextHit.topLeft)) return hitOnAxisX();
       return handleHit(hit.bottomLeft, nextHit.bottomLeft);
     }
 
-    if (colliderAt(nextHit.topLeft)) {
+    if (playerCollidingAt(nextHit.topLeft)) {
       return handleHit(hit.topLeft, nextHit.topLeft);
     }
 

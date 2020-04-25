@@ -3,15 +3,15 @@ import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/engine/physics.dart';
 import 'package:batufo/shared/engine/tile_position.dart';
 import 'package:batufo/shared/models/bullet_model.dart';
-import 'package:batufo/shared/types.dart';
+import 'package:batufo/shared/models/player_model.dart';
 
 class BulletsController {
-  final TilePositionPredicate colliderAt;
+  final bool Function(Iterable<PlayerModel>, TilePosition) bulletCollidingAt;
   final List<BulletModel> _bullets;
   final double tileSize;
   BulletsController(
     this._bullets, {
-    @required this.colliderAt,
+    @required this.bulletCollidingAt,
     @required this.tileSize,
   });
 
@@ -19,7 +19,7 @@ class BulletsController {
     _bullets.add(model);
   }
 
-  void update(double dt) {
+  void update(double dt, Iterable<PlayerModel> players) {
     final collidedInPreviousFrame = <BulletModel>[];
     for (final bullet in _bullets) {
       final previousPosition = bullet.tilePosition;
@@ -28,7 +28,7 @@ class BulletsController {
 
       if (bullet.collided) {
         collidedInPreviousFrame.add(bullet);
-      } else if (colliderAt(bullet.tilePosition)) {
+      } else if (bulletCollidingAt(players, bullet.tilePosition)) {
         _handleCollision(bullet, previousPosition);
       }
     }

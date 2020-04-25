@@ -3,6 +3,7 @@ import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
+import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart' show PlayingClient;
 import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_state.dart';
@@ -40,6 +41,7 @@ class ServerGame {
       tilePosition: arena.playerPosition(_clients.length - 1),
       angle: 0.0,
       velocity: Offset.zero,
+      health: GameProps.playerTotalHealth,
       appliedThrust: false,
       shotBullet: false,
     );

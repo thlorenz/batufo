@@ -31,19 +31,21 @@ class GameController {
       _arena.nrows,
       _arena.ncols,
       walls: _arena.walls,
+      playerRadius: GameProps.playerSize,
+      bulletHitsPlayerHealthToll: GameProps.bulletHitsPlayerHealthToll,
     );
 
     _playerController = PlayerController(
       hitSize: GameProps.playerSize,
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,
       wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
-      colliderAt: colliders.colliderAt,
+      playerCollidingAt: colliders.playerCollidingAt,
       thrustForce: GameProps.playerThrustForce,
     );
 
     _bulletsController = BulletsController(
       _gameState.bullets,
-      colliderAt: colliders.colliderAt,
+      bulletCollidingAt: colliders.bulletCollidingAt,
       tileSize: GameProps.tileSize,
     );
   }
@@ -57,7 +59,7 @@ class GameController {
 
       if (player.shotBullet) _spawnBullet(player);
     }
-    _bulletsController.update(dt);
+    _bulletsController.update(dt, _gameState.players.values);
 
     return _gameState;
   }

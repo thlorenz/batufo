@@ -50,6 +50,7 @@ message PackedPlayerModel {
   PackedTilePosition tilePosition = 2;
   PackedFractionalPoint velocity = 3;
   DoubleFourDecimals angle = 4;
+  DoubleTwoDecimals health = 5;
 }
 
 message PackedBulletModel {
