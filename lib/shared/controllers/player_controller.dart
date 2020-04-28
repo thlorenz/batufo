@@ -43,13 +43,8 @@ class PlayerController {
     final check = _checkWallCollision(player, dt);
     player
       ..velocity = _normalizeVelocity(check.first)
-      ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt);
-
-    /*
-    if (check.second > 0) {
-      stats.playerHealth -= check.second;
-    }
-     */
+      ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt)
+      ..health = player.health - check.second;
   }
 
   void cleanup(PlayerModel player) {
