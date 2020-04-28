@@ -40,9 +40,9 @@ class ClientGameState extends GameState {
   final StreamController<Stats> _stats$;
 
   ClientGameState({@required this.clientID})
-      : _stats$ = StreamController<Stats>();
+      : _stats$ = StreamController<Stats>.broadcast();
 
-  Stream<Stats> get stats$ => _stats$.stream.asBroadcastStream();
+  Stream<Stats> get stats$ => _stats$.stream;
 
   void sync(GameState serverState) {
     for (final entry in serverState.players.entries) {
