@@ -7,6 +7,7 @@ import 'package:batufo/client/game/assets/assets.dart';
 import 'package:batufo/client/game/client_game.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/rpc/client.dart';
+import 'package:batufo/client/widgets/hud/hud_widget.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
   Future<Client> _createClient() async {
     client = await Client.create(level, serverIP);
     arena = client.arena;
-    clientGameState = ClientGameState();
+    clientGameState = ClientGameState(clientID: client.clientID);
     gameStateEvent$ = client.gameStateEvent$;
     clientID = client.clientID;
     game = null;
@@ -95,7 +96,7 @@ class _MyAppState extends State<MyApp> {
     if (game == null) {
       game = ClientGame(
         arena: arena,
-        game: clientGameState,
+        gameState: clientGameState,
         clientID: clientID,
         submitPlayerInputs: (PlayerInputs playerInputs) =>
             client.submitPlayerInputs(playerInputs.pack()),
@@ -144,14 +145,12 @@ class RunningGame extends StatelessWidget {
           background: Colors.tealAccent,
         ),
       ),
-      /*
-          StreamBuilder(
-            stream: gameModel.stats.update$,
-            builder: (_, AsyncSnapshot<StatsModel> snapshot) =>
-                HudWidget(model: snapshot.data),
-            initialData: gameModel.stats,
-          )
-           */
+      StreamBuilder(
+        stream: game.gameState.stats$,
+        builder: (_, AsyncSnapshot<Stats> snapshot) =>
+            HudWidget(stats: snapshot.data),
+        initialData: Stats.initial(),
+      )
     ]);
   }
 }

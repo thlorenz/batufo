@@ -25,7 +25,7 @@ import 'package:batufo/shared/models/player_model.dart';
 final _log = Log<ClientGame>();
 
 class ClientGame extends Game {
-  final ClientGameState game;
+  final ClientGameState gameState;
   final Arena arena;
   final Background _background;
   final Grid _grid;
@@ -44,10 +44,10 @@ class ClientGame extends Game {
 
   ClientGame({
     @required this.arena,
-    @required this.game,
+    @required this.gameState,
     @required this.clientID,
     @required Function(PlayerInputs playerInputs) submitPlayerInputs,
-  })  : _gameController = GameController(arena, game),
+  })  : _gameController = GameController(arena, gameState),
         _grid = Grid(GameProps.tileSize),
         _background = Background(
           arena.floorTiles,
@@ -68,7 +68,7 @@ class ClientGame extends Game {
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
     _players = <int, Player>{};
-    for (final clientID in game.players.keys) {
+    for (final clientID in gameState.players.keys) {
       _players[clientID] = _initPlayer();
     }
 
@@ -79,7 +79,7 @@ class ClientGame extends Game {
   }
 
   PlayerModel get clientPlayer {
-    final player = game.players[clientID];
+    final player = gameState.players[clientID];
     assert(player != null, 'our player with id $clientID should exist');
     return player;
   }
@@ -98,10 +98,10 @@ class ClientGame extends Game {
       clientPlayer.tilePosition.toWorldPosition(),
       dt,
     );
-    for (final entry in game.players.entries) {
+    for (final entry in gameState.players.entries) {
       _players[entry.key].updateSprites(entry.value, dt);
     }
-    _bullets.updateSprites(game.bullets, dt);
+    _bullets.updateSprites(gameState.bullets, dt);
   }
 
   void render(Canvas canvas) {
@@ -118,10 +118,10 @@ class ClientGame extends Game {
       canvas.translate(-_camera.dx, -_camera.dy);
       _background.render(canvas);
       _walls.render(canvas);
-      for (final entry in game.players.entries) {
+      for (final entry in gameState.players.entries) {
         _players[entry.key].render(canvas, entry.value);
       }
-      _bullets.render(canvas, game.bullets);
+      _bullets.render(canvas, gameState.bullets);
     }
   }
 

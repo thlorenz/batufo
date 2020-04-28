@@ -1,11 +1,11 @@
 import 'package:batufo/client/widgets/hud/health_widget.dart';
-import 'package:batufo/shared/models/stats_model.dart';
+import 'package:batufo/shared/models/game_model.dart';
 import 'package:flutter/material.dart';
 
 class HudWidget extends StatelessWidget {
-  final StatsModel model;
+  final Stats stats;
 
-  const HudWidget({@required this.model}) : super();
+  const HudWidget({@required this.stats}) : super();
 
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +15,7 @@ class HudWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            HealthWidget(health: model.playerHealth),
+            HealthWidget(health: stats.health),
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
+import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
@@ -25,6 +26,10 @@ class Stats {
           health == other.health;
 
   int get hashCode => health.hashCode;
+
+  static Stats initial() {
+    return Stats(health: GameProps.playerTotalHealth);
+  }
 }
 
 class ClientGameState extends GameState {
@@ -47,6 +52,7 @@ class ClientGameState extends GameState {
         players[id] = player;
         synced = true;
       }
+
       if (id == clientID) {
         _addStats(player);
       }
