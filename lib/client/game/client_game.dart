@@ -159,6 +159,7 @@ class ClientGame extends Game {
   Player _initPlayer() {
     return Player(
       playerImagePath: assets.player.imagePath,
+      deadPlayerImagePath: assets.skull.imagePath,
       tileSize: GameProps.tileSize,
       hitSize: GameProps.playerSize,
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,

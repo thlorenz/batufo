@@ -51,8 +51,12 @@ class Sprite {
     );
   }
 
-  void render(Canvas canvas, Offset center,
-      {@required double width, @required double height}) {
+  void render(
+    Canvas canvas,
+    Offset center, {
+    @required double width,
+    @required double height,
+  }) {
     if (!_loaded) return;
     final x = center.dx;
     final y = center.dy;

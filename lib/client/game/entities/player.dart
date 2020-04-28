@@ -2,6 +2,7 @@ import 'dart:ui' show Canvas, Offset, Paint, PaintingStyle, Rect;
 
 import 'package:batufo/client/engine/sprite.dart';
 import 'package:batufo/client/game/sprites/thrust_sprite.dart';
+import 'package:batufo/shared/controllers/helpers/player_status.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/player_model.dart';
@@ -14,18 +15,21 @@ Paint _debugHitTilePaint = Paint()
   ..style = PaintingStyle.stroke;
 
 class Player {
-  Sprite playerSprite;
+  Sprite alivePlayerSprite;
+  Sprite deadPlayerSprite;
   ThrustSprite thrustSprite;
   final double tileSize;
   final double hitSize;
 
   Player({
-    String playerImagePath,
+    @required String playerImagePath,
+    @required String deadPlayerImagePath,
     @required this.tileSize,
     @required this.hitSize,
     @required double thrustAnimationDurationMs,
   }) {
-    playerSprite = Sprite(playerImagePath);
+    alivePlayerSprite = Sprite(playerImagePath);
+    deadPlayerSprite = Sprite(deadPlayerImagePath);
     thrustSprite = ThrustSprite(
       width: tileSize / 2,
       height: tileSize / 2,
@@ -34,6 +38,7 @@ class Player {
   }
 
   void updateSprites(PlayerModel player, double dt) {
+    if (PlayerStatus(player).isDead) return;
     if (player.appliedThrust) thrustSprite.reset();
     thrustSprite.update(dt);
   }
@@ -41,13 +46,19 @@ class Player {
   void render(Canvas canvas, PlayerModel player) {
     final playerTilePosition = player.tilePosition;
     final center = WorldPosition.fromTilePosition(playerTilePosition);
+    final playerSprite =
+        PlayerStatus(player).isDead ? deadPlayerSprite : alivePlayerSprite;
     canvas.save();
     {
       canvas
         ..translate(center.x, center.y)
         ..rotate(player.angle);
-      playerSprite.render(canvas, Offset.zero,
-          width: tileSize, height: tileSize);
+      playerSprite.render(
+        canvas,
+        Offset.zero,
+        width: tileSize,
+        height: tileSize,
+      );
       thrustSprite.render(canvas, Offset.zero, tileSize);
       _renderDebugHitTile(canvas, player);
     }

@@ -1,4 +1,5 @@
 import 'package:batufo/shared/controllers/helpers/math_utils.dart';
+import 'package:batufo/shared/controllers/helpers/player_status.dart';
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
@@ -30,6 +31,8 @@ class PlayerController {
     double dt,
     PlayerModel player,
   ) {
+    if (PlayerStatus(player).isDead) return;
+
     if (player.appliedThrust) {
       final velocity = Physics.increaseVelocity(
         player.velocity,

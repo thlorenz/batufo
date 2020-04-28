@@ -32,6 +32,13 @@ class _Assets {
     rows: 4,
     cols: 4,
   );
+  final ImageAsset skull = ImageAsset(
+    'assets/images/sprites/skull.png',
+    840,
+    859,
+    rows: 1,
+    cols: 1,
+  );
 }
 
 final _Assets assets = _Assets();

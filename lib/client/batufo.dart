@@ -28,6 +28,7 @@ Future<void> main() async {
     assets.thrust.imagePath,
     assets.wallMetal.imagePath,
     assets.bulletExplosion.imagePath,
+    assets.skull.imagePath,
   ]);
   const level = 'simple';
   final serverIP = Platform.isAndroid ? '192.168.1.7' : 'localhost';
