@@ -7,6 +7,7 @@ import 'package:batufo/client/game/assets/assets.dart';
 import 'package:batufo/client/game/client_game.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/rpc/client.dart';
+import 'package:batufo/client/widgets/game_over/game_over_widget.dart';
 import 'package:batufo/client/widgets/hud/hud_widget.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
@@ -102,9 +103,23 @@ class _MyAppState extends State<MyApp> {
         submitPlayerInputs: (PlayerInputs playerInputs) =>
             client.submitPlayerInputs(playerInputs.pack()),
       );
-      gameWidget = RunningGame(game: game);
+      gameWidget = RunningGame(
+        game: game,
+        newGameRequested: _onNewGameRequested,
+      );
     }
     return gameWidget;
+  }
+
+  void _onNewGameRequested() {
+    _startNewGame();
+  }
+
+  Future<void> _startNewGame() async {
+    game?.dispose();
+    await _createClient();
+    // trigger a rebuild in case creating the client completed after last build
+    setState(() {});
   }
 
   void initState() {
@@ -115,9 +130,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     _log.finer('start: did change dependencies');
-    await _createClient();
-    // trigger a rebuild in case creating the client completed after last build
-    setState(() {});
+    await _startNewGame();
     _log.finer('end: did change dependencies');
   }
 
@@ -135,7 +148,11 @@ class WaitingForPlayers extends StatelessWidget {
 
 class RunningGame extends StatelessWidget {
   final ClientGame game;
-  const RunningGame({@required this.game});
+  final VoidCallback newGameRequested;
+  const RunningGame({
+    @required this.game,
+    @required this.newGameRequested,
+  });
 
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -148,10 +165,15 @@ class RunningGame extends StatelessWidget {
       ),
       StreamBuilder(
         stream: game.gameState.stats$,
-        builder: (_, AsyncSnapshot<Stats> snapshot) =>
-            HudWidget(stats: snapshot.data),
+        builder: (_, AsyncSnapshot<Stats> snapshot) => snapshot.data.health > 0
+            ? HudWidget(stats: snapshot.data)
+            : GameOverWidget(newGameRequested: onNewGameRequested),
         initialData: Stats.initial(),
-      )
+      ),
     ]);
+  }
+
+  void onNewGameRequested() {
+    newGameRequested();
   }
 }

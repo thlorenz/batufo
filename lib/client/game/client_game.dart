@@ -42,13 +42,15 @@ class ClientGame extends Game {
   Offset _camera;
   Offset _backgroundCamera;
   Size _size;
+  bool _disposed;
 
   ClientGame({
     @required this.arena,
     @required this.gameState,
     @required this.clientID,
     @required Function(PlayerInputs playerInputs) submitPlayerInputs,
-  })  : _gameController = GameController(arena, gameState),
+  })  : _disposed = false,
+        _gameController = GameController(arena, gameState),
         _grid = Grid(GameProps.tileSize),
         _background = Background(
           arena.floorTiles,
@@ -86,6 +88,7 @@ class ClientGame extends Game {
   }
 
   void update(double dt, double ts) {
+    if (_disposed) return;
     if (!PlayerStatus(clientPlayer).isDead) {
       final pressedKeys = GameKeyboard.pressedKeys;
       final gestures = GameGestures.instance.aggregatedGestures;
@@ -97,6 +100,7 @@ class ClientGame extends Game {
   }
 
   void updateUI(double dt, double ts) {
+    if (_disposed) return;
     _cameraFollow(
       clientPlayer.tilePosition.toWorldPosition(),
       dt,
@@ -108,6 +112,7 @@ class ClientGame extends Game {
   }
 
   void render(Canvas canvas) {
+    if (_disposed) return;
     _lowerLeftCanvas(canvas, _size.height);
 
     canvas.save();
@@ -129,10 +134,12 @@ class ClientGame extends Game {
   }
 
   void cleanup() {
+    if (_disposed) return;
     _gameController.cleanup();
   }
 
   void resize(Size size) {
+    if (_disposed) return;
     _size = size;
   }
 
@@ -167,5 +174,9 @@ class ClientGame extends Game {
       hitSize: GameProps.playerSize,
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
     );
+  }
+
+  void dispose() {
+    _disposed = true;
   }
 }
