@@ -14,6 +14,7 @@ import 'package:batufo/client/game/inputs/input_synchronizer.dart';
 import 'package:batufo/client/game/inputs/keyboard.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
+import 'package:batufo/shared/controllers/helpers/player_status.dart';
 import 'package:batufo/shared/dart_types/dart_types.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/world_position.dart';
@@ -85,11 +86,13 @@ class ClientGame extends Game {
   }
 
   void update(double dt, double ts) {
-    final pressedKeys = GameKeyboard.pressedKeys;
-    final gestures = GameGestures.instance.aggregatedGestures;
+    if (!PlayerStatus(clientPlayer).isDead) {
+      final pressedKeys = GameKeyboard.pressedKeys;
+      final gestures = GameGestures.instance.aggregatedGestures;
 
-    _inputProcessor.udate(dt, pressedKeys, gestures, clientPlayer);
-    _inputSynchronizer.update(dt, clientPlayer);
+      _inputProcessor.udate(dt, pressedKeys, gestures, clientPlayer);
+      _inputSynchronizer.update(dt, clientPlayer);
+    }
     _gameController.update(dt, ts);
   }
 

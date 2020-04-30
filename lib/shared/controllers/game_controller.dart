@@ -2,6 +2,7 @@ import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/bullets_controller.dart';
 import 'package:batufo/shared/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/shared/controllers/helpers/colliders.dart';
+import 'package:batufo/shared/controllers/helpers/player_status.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/world_position.dart';
@@ -80,7 +81,10 @@ class GameController {
       _gameState.players.containsKey(clientID),
       'player with id $clientID not found',
     );
-    final player = _gameState.players[clientID]
+    final player = _gameState.players[clientID];
+    if (PlayerStatus(player).isDead) return;
+
+    player
       ..angle = inputs.angle
       ..appliedThrust = inputs.appliedThrust;
 
