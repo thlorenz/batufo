@@ -44,6 +44,8 @@ class ClientGame extends Game {
   Size _size;
   bool _disposed;
 
+  bool get disposed => _disposed;
+
   ClientGame({
     @required this.arena,
     @required this.gameState,
@@ -177,6 +179,7 @@ class ClientGame extends Game {
   }
 
   void dispose() {
+    _log.fine('disposing');
     _disposed = true;
   }
 }

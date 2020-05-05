@@ -9,6 +9,7 @@ import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/rpc/client.dart';
 import 'package:batufo/client/widgets/game_over/game_over_widget.dart';
 import 'package:batufo/client/widgets/hud/hud_widget.dart';
+import 'package:batufo/client/widgets/restart/restart_widget.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
@@ -34,7 +35,14 @@ Future<void> main() async {
   const level = 'simple';
   final serverIP = Platform.isAndroid ? '192.168.1.7' : 'localhost';
 
-  runApp(MyApp(level: level, serverIP: serverIP));
+  runApp(
+    RestartWidget(
+      child: MyApp(
+        level: level,
+        serverIP: serverIP,
+      ),
+    ),
+  );
 }
 
 final _log = Log<MyApp>();
@@ -105,18 +113,19 @@ class _MyAppState extends State<MyApp> {
       );
       gameWidget = RunningGame(
         game: game,
-        newGameRequested: _onNewGameRequested,
+        newGameRequested: () => _onNewGameRequested(context),
       );
     }
     return gameWidget;
   }
 
-  void _onNewGameRequested() {
-    _startNewGame();
+  void _onNewGameRequested(BuildContext context) {
+    _disposeGame();
+    RestartWidget.restartApp(context);
   }
 
   Future<void> _startNewGame() async {
-    game?.dispose();
+    _disposeGame();
     await _createClient();
     // trigger a rebuild in case creating the client completed after last build
     setState(() {});
@@ -137,6 +146,11 @@ class _MyAppState extends State<MyApp> {
   Future<void> reassemble() async {
     super.reassemble();
     _log.finer('reassemble');
+  }
+
+  void _disposeGame() {
+    client?.dispose();
+    game?.dispose();
   }
 }
 
