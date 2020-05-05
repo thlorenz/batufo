@@ -5,8 +5,12 @@ final _log = Log<GameOverWidget>();
 
 class GameOverWidget extends StatelessWidget {
   final VoidCallback newGameRequested;
+  final bool won;
 
-  const GameOverWidget({@required this.newGameRequested}) : super();
+  const GameOverWidget({
+    @required this.newGameRequested,
+    @required this.won,
+  }) : super();
 
   Widget build(BuildContext context) {
     return SizedBox.expand(
@@ -16,7 +20,7 @@ class GameOverWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Game Over',
+                won ? 'You won!!' : 'Game Over',
                 style: TextStyle(
                   fontSize: 28.0,
                   fontWeight: FontWeight.bold,

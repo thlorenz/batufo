@@ -46,6 +46,10 @@ class ClientGame extends Game {
 
   bool get disposed => _disposed;
 
+  int get numberOfAlivePlayers {
+    return gameState.players.values.where((x) => x.health > 0).length;
+  }
+
   ClientGame({
     @required this.arena,
     @required this.gameState,
