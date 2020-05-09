@@ -32,7 +32,7 @@ Future<void> main() async {
     assets.bulletExplosion.imagePath,
     assets.skull.imagePath,
   ]);
-  const level = 'simple';
+  const level = 'large';
   final serverIP = Platform.isAndroid ? '192.168.1.7' : 'localhost';
 
   runApp(
