@@ -182,7 +182,7 @@ class RunningGame extends StatelessWidget {
         builder: (_, AsyncSnapshot<Stats> snapshot) => snapshot.data.health > 0
             ? _winnerGameOverOrHud(snapshot.data)
             : GameOverWidget(newGameRequested: onNewGameRequested, won: false),
-        initialData: Stats.initial(),
+        initialData: Stats.initial(game?.playersAlive),
       ),
     ]);
   }
@@ -190,7 +190,7 @@ class RunningGame extends StatelessWidget {
   Widget _winnerGameOverOrHud(Stats stats) {
     // TODO: need separate stream that tells us that number
     // of alive players changed something like an overall game state stream
-    return game.numberOfAlivePlayers == 1
+    return game.playersAlive == 1
         ? GameOverWidget(newGameRequested: onNewGameRequested, won: true)
         : HudWidget(stats: stats);
   }

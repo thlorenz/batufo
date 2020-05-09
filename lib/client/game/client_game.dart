@@ -21,6 +21,7 @@ import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_model.dart';
+import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 final _log = Log<ClientGame>();
@@ -46,8 +47,8 @@ class ClientGame extends Game {
 
   bool get disposed => _disposed;
 
-  int get numberOfAlivePlayers {
-    return gameState.players.values.where((x) => x.health > 0).length;
+  int get playersAlive {
+    return GameState.playersAlive(gameState);
   }
 
   ClientGame({

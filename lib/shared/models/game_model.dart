@@ -12,23 +12,28 @@ const SYNC_ONLY_ONCE = false;
 
 class Stats {
   final double health;
+  final int playersAlive;
 
-  Stats({@required this.health});
+  Stats({@required this.health, @required this.playersAlive});
 
   String toString() {
-    return 'Stats [ $health ]';
+    return 'Stats [ $health, $playersAlive ]';
   }
 
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Stats &&
           runtimeType == other.runtimeType &&
-          health == other.health;
+          health == other.health &&
+          playersAlive == other.playersAlive;
 
-  int get hashCode => health.hashCode;
+  int get hashCode => health.hashCode ^ playersAlive.hashCode;
 
-  static Stats initial() {
-    return Stats(health: GameProps.playerTotalHealth);
+  static Stats initial(int playersAlive) {
+    return Stats(
+      health: GameProps.playerTotalHealth,
+      playersAlive: playersAlive,
+    );
   }
 }
 
@@ -54,7 +59,10 @@ class ClientGameState extends GameState {
       }
 
       if (id == clientID) {
-        _addStats(player);
+        _addStats(
+          player,
+          GameState.playersAlive(serverState),
+        );
       }
     }
 
@@ -64,8 +72,11 @@ class ClientGameState extends GameState {
     }
   }
 
-  void _addStats(PlayerModel player) {
-    final stats = Stats(health: player.health);
+  void _addStats(PlayerModel player, int playersAlive) {
+    final stats = Stats(
+      health: player.health,
+      playersAlive: playersAlive,
+    );
     if (stats == _currentStats) return;
     _currentStats = stats;
     _stats$.add(stats);

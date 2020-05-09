@@ -58,6 +58,10 @@ class GameState {
     return GameState(clonedPlayers, clonedBullets);
   }
 
+  static int playersAlive(GameState gameState) {
+    return gameState.players.values.where((x) => x.health > 0).length;
+  }
+
   @override
   String toString() {
     return '''GameState { 
