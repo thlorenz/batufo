@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 class GameGestures {
   double _rotation;
   double _thrust;
+  bool _fire;
   GameGestures._()
       : _rotation = 0.0,
-        _thrust = 0.0;
+        _thrust = 0.0,
+        _fire = false;
 
   void onPanUpdate(DragUpdateDetails details) {
     final delta = details.delta;
@@ -16,6 +18,10 @@ class GameGestures {
     } else if (delta.dy < -GameProps.gesturePlayerMinThrustDelta) {
       _addThrust(delta.dy);
     }
+  }
+
+  void onTap() {
+    _fire = true;
   }
 
   static final GameGestures _instance = GameGestures._();
@@ -33,9 +39,11 @@ class GameGestures {
     final gestures = AggregatedGestures(
       rotation: _rotation,
       thrust: _thrust,
+      fire: _fire,
     );
     _rotation = 0.0;
     _thrust = 0.0;
+    _fire = false;
     return gestures;
   }
 }

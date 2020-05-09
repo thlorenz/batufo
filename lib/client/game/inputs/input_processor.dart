@@ -57,7 +57,7 @@ class InputProcessor {
 
     // bullets
     if (canShootBullet) {
-      if (keys.contains(GameKey.Fire)) {
+      if (keys.contains(GameKey.Fire) || gestures.fire) {
         player.shotBullet = true;
         timeSinceLastBullet = 0.0;
       }

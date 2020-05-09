@@ -172,6 +172,7 @@ class RunningGame extends StatelessWidget {
     return Stack(children: [
       GestureDetector(
         onPanUpdate: GameGestures.instance.onPanUpdate,
+        onTap: GameGestures.instance.onTap,
         child: GameWidget(
           game,
           background: Colors.tealAccent,

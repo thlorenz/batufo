@@ -3,10 +3,12 @@ import 'package:batufo/shared/dart_types/dart_types.dart';
 class AggregatedGestures {
   final double rotation;
   final double thrust;
+  final bool fire;
 
   AggregatedGestures({
     @required this.rotation,
     @required this.thrust,
+    @required this.fire,
   });
 }
 
