@@ -33,11 +33,16 @@
 <script>
   import Networking from '../devlog/networking.md'
   import BatufoNetworking from '../devlog/batufo-networking.md'
+  import BatufoTodos from '../devlog/batufo-todos.md'
   const bafuNetworkingID = 'devlog-applying-strategies'
   const multiplayerArchitectureID = 'devlog-multiplayer-architecture'
+  const batufoTodosID = 'devlog-batufo-todos'
 </script>
 
 <main>
+  <article id="{batufoTodosID}">
+    <BatufoTodos link="#{batufoTodosID}" />
+  </article>
   <article id="{bafuNetworkingID}">
     <BatufoNetworking link="#{bafuNetworkingID}" />
   </article>
