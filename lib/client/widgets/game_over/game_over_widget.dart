@@ -1,7 +1,4 @@
-import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:flutter/material.dart';
-
-final _log = Log<GameOverWidget>();
 
 class GameOverWidget extends StatelessWidget {
   final VoidCallback newGameRequested;

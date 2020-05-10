@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/diagnostics/logger.dart';
+import 'package:batufo/rpc/server_update.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
-
-final _log = Log<ClientGameState>();
+import 'package:flutter/foundation.dart';
 
 const SYNC_ONLY_ONCE = false;
 
@@ -49,8 +47,8 @@ class ClientGameState extends GameState {
 
   Stream<Stats> get stats$ => _stats$.stream;
 
-  void sync(GameState serverState) {
-    for (final entry in serverState.players.entries) {
+  void sync(ServerUpdate serverUpdate) {
+    for (final entry in serverUpdate.players.entries) {
       final player = entry.value;
       final id = entry.key;
       if (!synced || !SYNC_ONLY_ONCE) {
@@ -61,13 +59,15 @@ class ClientGameState extends GameState {
       if (id == clientID) {
         _addStats(
           player,
-          GameState.playersAlive(serverState),
+          ServerUpdate.playersAlive(serverUpdate),
         );
       }
     }
 
     clearBullets();
-    for (final bullet in serverState.bullets) {
+    // TODO: don't add our own bullets possibly via a clientSpawnID
+    // on the bullet
+    for (final bullet in serverUpdate.spawnedBullets) {
       addBullet(bullet);
     }
   }

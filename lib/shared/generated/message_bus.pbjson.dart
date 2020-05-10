@@ -15,15 +15,15 @@ const PlayRequest$json = const {
 const GameStateEvent$json = const {
   '1': 'GameStateEvent',
   '2': const [
-    const {'1': 'gameState', '3': 1, '4': 1, '5': 11, '6': '.PackedGameState', '10': 'gameState'},
+    const {'1': 'gameState', '3': 1, '4': 1, '5': 11, '6': '.PackedServerUpdate', '10': 'gameState'},
   ],
 };
 
-const PackedGameState$json = const {
-  '1': 'PackedGameState',
+const PackedServerUpdate$json = const {
+  '1': 'PackedServerUpdate',
   '2': const [
     const {'1': 'players', '3': 1, '4': 3, '5': 11, '6': '.PackedPlayerModel', '10': 'players'},
-    const {'1': 'bullets', '3': 2, '4': 3, '5': 11, '6': '.PackedBulletModel', '10': 'bullets'},
+    const {'1': 'spawnedBullets', '3': 2, '4': 3, '5': 11, '6': '.PackedBulletModel', '10': 'spawnedBullets'},
   ],
 };
 
@@ -51,15 +51,8 @@ const PlayingClientEvent$json = const {
   '1': 'PlayingClientEvent',
   '2': const [
     const {'1': 'client', '3': 1, '4': 1, '5': 11, '6': '.PlayingClient', '10': 'client'},
-    const {'1': 'playerInputs', '3': 2, '4': 1, '5': 11, '6': '.PackedPlayerInputs', '10': 'playerInputs'},
-  ],
-};
-
-const PackedPlayerInputs$json = const {
-  '1': 'PackedPlayerInputs',
-  '2': const [
-    const {'1': 'angle', '3': 1, '4': 1, '5': 11, '6': '.DoubleFourDecimals', '10': 'angle'},
-    const {'1': 'inputFlags', '3': 2, '4': 1, '5': 13, '10': 'inputFlags'},
+    const {'1': 'spawnedBullet', '3': 2, '4': 1, '5': 11, '6': '.PackedBulletModel', '10': 'spawnedBullet'},
+    const {'1': 'player', '3': 3, '4': 1, '5': 11, '6': '.PackedPlayerModel', '10': 'player'},
   ],
 };
 

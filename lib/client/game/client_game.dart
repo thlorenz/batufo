@@ -10,7 +10,6 @@ import 'package:batufo/client/game/entities/player.dart';
 import 'package:batufo/client/game/entities/walls.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/game/inputs/input_processor.dart';
-import 'package:batufo/client/game/inputs/input_synchronizer.dart';
 import 'package:batufo/client/game/inputs/keyboard.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
@@ -19,9 +18,7 @@ import 'package:flutter/foundation.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
-import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_model.dart';
-import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 final _log = Log<ClientGame>();
@@ -34,7 +31,6 @@ class ClientGame extends Game {
   final Walls _walls;
   final GameController _gameController;
   final InputProcessor _inputProcessor;
-  final InputSynchronizer _inputSynchronizer;
   final int clientID;
 
   Map<int, Player> _players;
@@ -47,15 +43,10 @@ class ClientGame extends Game {
 
   bool get disposed => _disposed;
 
-  int get playersAlive {
-    return GameState.playersAlive(gameState);
-  }
-
   ClientGame({
     @required this.arena,
     @required this.gameState,
     @required this.clientID,
-    @required Function(PlayerInputs playerInputs) submitPlayerInputs,
   })  : _disposed = false,
         _gameController = GameController(arena, gameState),
         _grid = Grid(GameProps.tileSize),
@@ -70,10 +61,6 @@ class ClientGame extends Game {
           keyboardThrustForce: GameProps.playerThrustForce,
           timeBetweenThrusts: GameProps.timeBetweenThrustsMs,
           timeBetweenBullets: GameProps.timeBetweenBulletsMs,
-        ),
-        _inputSynchronizer = InputSynchronizer(
-          submitPlayerInputs,
-          GameProps.playerInputSyncIntervalMs,
         ),
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
@@ -101,7 +88,6 @@ class ClientGame extends Game {
       final gestures = GameGestures.instance.aggregatedGestures;
 
       _inputProcessor.udate(dt, pressedKeys, gestures, clientPlayer);
-      _inputSynchronizer.update(dt, clientPlayer);
     }
     _gameController.update(dt, ts);
   }

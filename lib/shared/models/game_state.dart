@@ -1,4 +1,3 @@
-import 'package:batufo/shared/generated/message_bus.pb.dart';
 import 'package:batufo/shared/models/bullet_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
@@ -22,31 +21,6 @@ class GameState {
     bullets.clear();
   }
 
-  PackedGameState pack() {
-    final packedState = PackedGameState();
-
-    final ps = packedState.players;
-    players.values.forEach((x) => ps.add(x.pack()));
-
-    final bs = packedState.bullets;
-    bullets.forEach((x) => bs.add(x.pack()));
-    return packedState;
-  }
-
-  factory GameState.unpack(PackedGameState data) {
-    final gameState = GameState();
-
-    for (final p in data.players) {
-      final playerModel = PlayerModel.unpack(p);
-      gameState.addPlayer(p.id, playerModel);
-    }
-    for (final b in data.bullets) {
-      final bulletModel = BulletModel.unpack(b);
-      gameState.addBullet(bulletModel);
-    }
-    return gameState;
-  }
-
   GameState clone() {
     final clonedPlayers = <int, PlayerModel>{};
 
@@ -56,10 +30,6 @@ class GameState {
 
     final clonedBullets = bullets.map((x) => x.clone()).toList();
     return GameState(clonedPlayers, clonedBullets);
-  }
-
-  static int playersAlive(GameState gameState) {
-    return gameState.players.values.where((x) => x.health > 0).length;
   }
 
   @override

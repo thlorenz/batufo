@@ -1,22 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:batufo/rpc/client.dart';
 import 'package:batufo/client/engine/game_widget.dart';
 import 'package:batufo/client/engine/images.dart';
 import 'package:batufo/client/game/assets/assets.dart';
 import 'package:batufo/client/game/client_game.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
-import 'package:batufo/client/rpc/client.dart';
 import 'package:batufo/client/widgets/game_over/game_over_widget.dart';
 import 'package:batufo/client/widgets/hud/hud_widget.dart';
 import 'package:batufo/client/widgets/restart/restart_widget.dart';
+import 'package:batufo/rpc/server_update.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
-import 'package:batufo/shared/generated/message_bus.pb.dart'
-    show GameStateEvent;
-import 'package:batufo/shared/messaging/player_inputs.dart';
 import 'package:batufo/shared/models/game_model.dart';
-import 'package:batufo/shared/models/game_state.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -57,11 +54,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Stream<GameStateEvent> gameStateEvent$;
+  Stream<ServerUpdate> serverUpdate$;
   Arena arena;
+  Client client;
   ClientGameState clientGameState;
   int clientID;
-  Client client;
 
   ClientGame game;
   RunningGame gameWidget;
@@ -70,11 +67,11 @@ class _MyAppState extends State<MyApp> {
 
   _MyAppState({@required this.level, @required this.serverIP});
 
-  Future<Client> _createClient() async {
+  Future<void> _createClient() async {
     client = await Client.create(level, serverIP);
     arena = client.arena;
     clientGameState = ClientGameState(clientID: client.clientID);
-    gameStateEvent$ = client.gameStateEvent$;
+    serverUpdate$ = client.serverUpdate$;
     clientID = client.clientID;
     game = null;
     return client;
@@ -83,33 +80,34 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     _log.finer('build');
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            body: StreamBuilder<GameStateEvent>(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: StreamBuilder<ServerUpdate>(
           builder: _build,
-          stream: gameStateEvent$,
+          stream: serverUpdate$,
           initialData: null,
-        )));
+        ),
+      ),
+    );
   }
 
-  Widget _build(BuildContext context, AsyncSnapshot<GameStateEvent> snapshot) {
+  Widget _build(BuildContext context, AsyncSnapshot<ServerUpdate> snapshot) {
     if (snapshot.connectionState == ConnectionState.done) {
       _log.finer('disconnected, hot restart app to reconnect ...');
     }
     if (snapshot.hasError) {
       _log.warning('snapshot error: ${snapshot.error}');
     }
+    _log.info('snapshot: ${snapshot.data.toString()}');
     if (snapshot.data == null) return WaitingForPlayers();
 
-    clientGameState.sync(GameState.unpack(snapshot.data.gameState));
+    clientGameState.sync(snapshot.data);
 
     if (game == null) {
       game = ClientGame(
         arena: arena,
         gameState: clientGameState,
         clientID: clientID,
-        submitPlayerInputs: (PlayerInputs playerInputs) =>
-            client.submitPlayerInputs(playerInputs.pack()),
       );
       gameWidget = RunningGame(
         game: game,
@@ -149,7 +147,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _disposeGame() {
-    client?.dispose();
     game?.dispose();
   }
 }
@@ -181,19 +178,12 @@ class RunningGame extends StatelessWidget {
       StreamBuilder(
         stream: game.gameState.stats$,
         builder: (_, AsyncSnapshot<Stats> snapshot) => snapshot.data.health > 0
-            ? _winnerGameOverOrHud(snapshot.data)
+            ? HudWidget(stats: snapshot.data)
             : GameOverWidget(newGameRequested: onNewGameRequested, won: false),
-        initialData: Stats.initial(game?.playersAlive),
+        // FIXME: possibly get number of starting players from Level?
+        initialData: Stats.initial(2),
       ),
     ]);
-  }
-
-  Widget _winnerGameOverOrHud(Stats stats) {
-    // TODO: need separate stream that tells us that number
-    // of alive players changed something like an overall game state stream
-    return game.playersAlive == 1
-        ? GameOverWidget(newGameRequested: onNewGameRequested, won: true)
-        : HudWidget(stats: stats);
   }
 
   void onNewGameRequested() {

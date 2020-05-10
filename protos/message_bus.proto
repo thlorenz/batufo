@@ -1,23 +1,17 @@
 syntax = "proto3";
 
-service Game {
-  rpc Play(PlayRequest) returns (PlayingClient) {}
-  rpc SyncClientAndGameStates(stream PlayingClientEvent) returns (stream
-      GameStateEvent) {}
-}
-
 message PlayRequest {
   string levelName = 1;
 }
 
 message GameStateEvent {
   // TODO: possibly needs id and timestamp
-  PackedGameState gameState = 1;
+  PackedServerUpdate gameState = 1;
 }
 
-message PackedGameState {
+message PackedServerUpdate {
   repeated PackedPlayerModel players = 1;
-  repeated PackedBulletModel bullets = 2;
+  repeated PackedBulletModel spawnedBullets = 2;
 }
 
 message PlayingClient {
@@ -30,19 +24,16 @@ message PackedArena {
   repeated PackedTilePosition floorTiles = 1;
   repeated PackedTilePosition walls = 2;
   repeated PackedTilePosition playerPositions = 3;
-  // Note: may pack those into one uint32 in the future
   uint32 nrows = 4;
   uint32 ncols = 5;
 }
 
+// TODO: possibly we'll have two event types,
+// one for spawned bullets and another for player updates
 message PlayingClientEvent {
   PlayingClient client = 1;
-  PackedPlayerInputs playerInputs = 2;
-}
-
-message PackedPlayerInputs {
-  DoubleFourDecimals angle = 1;
-  uint32 inputFlags = 2;
+  PackedBulletModel spawnedBullet = 2;
+  PackedPlayerModel player = 3;
 }
 
 message PackedPlayerModel {
@@ -65,6 +56,10 @@ message PackedTilePosition {
   PackedPoint colRow = 1;
   PackedFractionalPoint relXY = 2;
 }
+
+//
+// Primitives
+//
 
 // A PackedOffset packs signed x:double + y:double information
 // into one int32.

@@ -1,13 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/input_types.dart';
 import 'package:batufo/shared/models/player_model.dart';
 
 const twopi = 2 * pi;
-
-final _log = Log<InputProcessor>();
 
 class InputProcessor {
   final double keyboardThrustForce;
