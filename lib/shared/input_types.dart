@@ -1,4 +1,4 @@
-import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:flutter/foundation.dart';
 
 class AggregatedGestures {
   final double rotation;

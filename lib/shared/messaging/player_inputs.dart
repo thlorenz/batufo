@@ -1,4 +1,4 @@
-import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:flutter/foundation.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart';
 import 'package:batufo/shared/messaging/packing_types.dart';
 

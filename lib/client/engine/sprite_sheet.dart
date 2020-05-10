@@ -1,6 +1,6 @@
 import 'package:batufo/client/engine/sprite.dart';
 import 'package:batufo/client/game/assets/image_asset.dart';
-import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:flutter/foundation.dart';
 
 class SpriteSheet {
   List<Sprite> _sprites;

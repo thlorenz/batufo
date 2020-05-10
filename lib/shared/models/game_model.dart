@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:flutter/foundation.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_state.dart';

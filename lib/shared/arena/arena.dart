@@ -1,6 +1,6 @@
 import 'package:batufo/shared/arena/levels.dart';
 import 'package:batufo/shared/arena/tilemap.dart';
-import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:flutter/foundation.dart';
 import 'package:batufo/shared/engine/tile_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart' show PackedArena;

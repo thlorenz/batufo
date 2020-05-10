@@ -1,7 +1,7 @@
 import 'dart:ui' show Canvas, Paint;
 
 import 'package:batufo/client/game/sprites/bullet_explosion_sprite.dart';
-import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:flutter/foundation.dart';
 import 'package:batufo/shared/engine/geometry/conversions.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart';
 import 'package:batufo/shared/models/bullet_model.dart';

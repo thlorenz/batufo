@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:flutter/foundation.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/input_types.dart';
 import 'package:batufo/shared/models/player_model.dart';

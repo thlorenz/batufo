@@ -1,4 +1,4 @@
-import 'package:batufo/shared/dart_types/dart_types.dart';
+import 'package:flutter/foundation.dart';
 import 'package:batufo/shared/engine/physics.dart';
 import 'package:batufo/shared/models/bullet_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
