@@ -1,15 +1,12 @@
 import 'package:batufo/shared/controllers/helpers/math_utils.dart';
 import 'package:batufo/shared/controllers/helpers/player_status.dart';
-import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
 import 'package:batufo/shared/engine/hit_tiles.dart';
 import 'package:batufo/shared/engine/physics.dart';
 import 'package:batufo/shared/engine/tile_position.dart';
 import 'package:batufo/shared/models/player_model.dart';
 import 'package:batufo/shared/types.dart';
-
-final _log = Log<PlayerController>();
+import 'package:flutter/foundation.dart';
 
 @immutable
 class PlayerController {
@@ -40,7 +37,6 @@ class PlayerController {
         thrustForce,
       );
       player.velocity = _normalizeVelocity(velocity);
-      _log.fine('applied thrust');
     }
 
     final check = _checkWallCollision(player, dt);
