@@ -24,15 +24,15 @@ import 'package:flutter/foundation.dart';
 final _log = Log<ClientGame>();
 
 class ClientGame extends Game {
-  final ClientGameState gameState;
   final Arena arena;
   final Background _background;
   final Grid _grid;
   final Walls _walls;
-  final GameController _gameController;
   final InputProcessor _inputProcessor;
   final int clientID;
 
+  ClientGameState gameState;
+  GameController _gameController;
   Map<int, Player> _players;
   Bullets _bullets;
 
@@ -48,11 +48,9 @@ class ClientGame extends Game {
 
   ClientGame({
     @required this.arena,
-    @required this.gameState,
     @required this.clientID,
   })  : _disposed = false,
         _initialized = false,
-        _gameController = GameController(arena, gameState),
         _grid = Grid(GameProps.tileSize),
         _background = Background(
           arena.floorTiles,
@@ -82,8 +80,11 @@ class ClientGame extends Game {
     return player;
   }
 
-  void init() {
+  void init(ClientGameState gameState) {
     if (_initialized) return;
+    this.gameState = gameState;
+    _gameController = GameController(arena, gameState);
+
     for (final clientID in gameState.players.keys) {
       _players[clientID] = _initPlayer();
     }

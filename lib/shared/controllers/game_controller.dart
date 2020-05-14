@@ -3,7 +3,6 @@ import 'package:batufo/shared/controllers/bullets_controller.dart';
 import 'package:batufo/shared/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/shared/controllers/helpers/colliders.dart';
 import 'package:batufo/shared/controllers/player_controller.dart';
-import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_state.dart';
 import 'package:batufo/shared/models/player_model.dart';
@@ -21,8 +20,6 @@ class GameController {
           bulletForce: GameProps.bulletForce,
           playerSize: GameProps.playerSize,
         ) {
-    WorldPosition.tileSize = GameProps.tileSize;
-
     final colliders = Colliders(
       _arena.nrows,
       _arena.ncols,

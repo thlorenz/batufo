@@ -4,7 +4,6 @@ import 'package:batufo/client/widgets/game/waiting_widget.dart';
 import 'package:batufo/client/widgets/restart/restart_widget.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/rpc/server_update.dart';
-import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/models/game_model.dart';
 import 'package:flutter/material.dart';
@@ -22,16 +21,14 @@ class GameWidget extends StatefulWidget {
 }
 
 class _GameWidgetState extends State<GameWidget> {
-  Stream<ServerUpdate> serverUpdate$;
-  Arena arena;
-  Client client;
-  ClientGameState clientGameState;
-  int clientID;
-
-  ClientGame game;
-  RunningGame gameWidget;
   final String level;
   final String serverIP;
+
+  Stream<ServerUpdate> serverUpdate$;
+  Client client;
+  ClientGameState clientGameState;
+  ClientGame game;
+  RunningGame gameWidget;
 
   _GameWidgetState({@required this.level, @required this.serverIP});
 
@@ -60,7 +57,7 @@ class _GameWidgetState extends State<GameWidget> {
     if (snapshot.data == null) return WaitingForPlayers();
 
     clientGameState.sync(snapshot.data);
-    game.init();
+    game.init(clientGameState);
 
     return gameWidget;
   }
@@ -70,47 +67,34 @@ class _GameWidgetState extends State<GameWidget> {
     RestartWidget.restartApp(context);
   }
 
-  Future<void> _createClient() async {
+  Future<Client> _createClient() async {
     client = await Client.create(level, serverIP);
-    arena = client.arena;
     clientGameState = ClientGameState(clientID: client.clientID);
     serverUpdate$ = client.serverUpdate$;
-    clientID = client.clientID;
     return client;
   }
 
   Future<void> _startNewGame() async {
     _disposeGame();
-    await _createClient();
+    final client = await _createClient();
 
     game = ClientGame(
-      arena: arena,
-      gameState: clientGameState,
-      clientID: clientID,
+      arena: client.arena,
+      clientID: client.clientID,
     );
 
     gameWidget = RunningGame(
       game: game,
       newGameRequested: () => _onNewGameRequested(context),
-      numberOfPlayers: arena.players.length,
+      numberOfPlayers: client.arena.players.length,
     );
     setState(() {});
-  }
-
-  void initState() {
-    super.initState();
-    _log.finer('init state');
   }
 
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     _log.finer('did change dependencies');
     await _startNewGame();
-  }
-
-  Future<void> reassemble() async {
-    super.reassemble();
-    _log.finer('reassemble');
   }
 
   void _disposeGame() {
