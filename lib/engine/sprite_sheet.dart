@@ -1,5 +1,5 @@
-import 'package:batufo/client/game/assets/image_asset.dart';
 import 'package:batufo/engine/sprite.dart';
+import 'package:batufo/game/assets/image_asset.dart';
 import 'package:flutter/foundation.dart';
 
 class SpriteSheet {

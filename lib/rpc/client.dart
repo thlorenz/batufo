@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:ui' show Offset;
 
+import 'package:batufo/arena/arena.dart';
+import 'package:batufo/game_props.dart';
+import 'package:batufo/models/player_model.dart';
+import 'package:batufo/rpc/generated/message_bus.pb.dart';
 import 'package:batufo/rpc/server_update.dart';
-import 'package:batufo/shared/arena/arena.dart';
-import 'package:batufo/shared/game_props.dart';
-import 'package:batufo/shared/generated/message_bus.pb.dart';
-import 'package:batufo/shared/models/player_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 

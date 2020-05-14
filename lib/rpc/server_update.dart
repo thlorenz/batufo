@@ -1,7 +1,7 @@
-import 'package:batufo/shared/generated/message_bus.pb.dart'
+import 'package:batufo/models/bullet_model.dart';
+import 'package:batufo/models/player_model.dart';
+import 'package:batufo/rpc/generated/message_bus.pb.dart'
     show PackedServerUpdate;
-import 'package:batufo/shared/models/bullet_model.dart';
-import 'package:batufo/shared/models/player_model.dart';
 
 class ServerUpdate {
   final Map<int, PlayerModel> players;
