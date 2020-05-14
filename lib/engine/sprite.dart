@@ -1,7 +1,7 @@
 import 'dart:ui' show Canvas, Paint, Image, Offset, Rect;
 
-import 'package:batufo/client/engine/images.dart';
 import 'package:batufo/client/game/assets/image_asset.dart';
+import 'package:batufo/engine/images.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors;
 

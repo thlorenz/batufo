@@ -1,6 +1,7 @@
+import 'dart:ui';
+
+import 'package:batufo/engine/tile_position.dart';
 import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
-import 'package:batufo/shared/engine/tile_position.dart';
 
 @immutable
 class WorldPosition {

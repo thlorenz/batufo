@@ -1,8 +1,8 @@
-import 'package:batufo/client/engine/game_widget.dart';
 import 'package:batufo/client/game/client_game.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/widgets/game_over/game_over_widget.dart';
 import 'package:batufo/client/widgets/hud/hud_widget.dart';
+import 'package:batufo/engine/game_widget.dart';
 import 'package:batufo/shared/models/game_model.dart';
 import 'package:flutter/material.dart';
 

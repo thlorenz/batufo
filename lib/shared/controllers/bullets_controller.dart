@@ -1,9 +1,10 @@
-import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
-import 'package:batufo/shared/engine/physics.dart';
-import 'package:batufo/shared/engine/tile_position.dart';
+import 'dart:ui' show Offset;
+
+import 'package:batufo/engine/physics.dart';
+import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/shared/models/bullet_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
+import 'package:flutter/foundation.dart';
 
 class BulletsController {
   final bool Function(Iterable<PlayerModel>, TilePosition) bulletCollidingAt;

@@ -1,9 +1,10 @@
-import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
-import 'package:batufo/shared/engine/tile_position.dart';
+import 'dart:ui' show Offset;
+
+import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
     show PackedPlayerModel;
 import 'package:batufo/shared/messaging/packing_types.dart';
+import 'package:flutter/foundation.dart';
 
 class PlayerModel {
   int id;

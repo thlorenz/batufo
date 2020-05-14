@@ -1,5 +1,5 @@
-import 'package:batufo/client/engine/sprite.dart';
-import 'package:batufo/client/engine/sprite_sheet.dart';
+import 'package:batufo/engine/sprite.dart';
+import 'package:batufo/engine/sprite_sheet.dart';
 
 class SpriteSheetAnimation {
   final SpriteSheet _spriteSheet;

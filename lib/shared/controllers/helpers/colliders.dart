@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/engine/tile_position.dart';
+import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/shared/models/player_model.dart';
+import 'package:flutter/foundation.dart';
 
 bool didBulletHitPlayer(
   TilePosition player,

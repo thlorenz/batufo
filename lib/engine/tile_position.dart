@@ -1,10 +1,11 @@
-import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
-import 'package:batufo/shared/engine/world_position.dart';
+import 'dart:ui' show Offset;
+
+import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart'
     show PackedTilePosition;
 import 'package:batufo/shared/messaging/packing_types.dart'
     show FractionalPoint, Point;
+import 'package:flutter/foundation.dart';
 
 @immutable
 class TilePosition {

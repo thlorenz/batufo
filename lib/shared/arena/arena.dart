@@ -1,9 +1,9 @@
+import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/shared/arena/levels.dart';
 import 'package:batufo/shared/arena/tilemap.dart';
-import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/engine/tile_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart' show PackedArena;
+import 'package:flutter/foundation.dart';
 
 class Arena {
   final List<TilePosition> floorTiles;

@@ -1,4 +1,4 @@
-import 'package:batufo/client/engine/game.dart';
+import 'package:batufo/engine/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';

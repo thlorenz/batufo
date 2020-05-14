@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:ui' show Offset;
 
 import 'package:batufo/rpc/server_update.dart';
 import 'package:batufo/shared/arena/arena.dart';
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/generated/message_bus.pb.dart';
 import 'package:batufo/shared/models/player_model.dart';

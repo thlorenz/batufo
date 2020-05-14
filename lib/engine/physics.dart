@@ -1,8 +1,8 @@
 import 'dart:math' show cos, sin;
+import 'dart:ui' show Offset;
 
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart' show Offset;
-import 'package:batufo/shared/engine/tile_position.dart';
-import 'package:batufo/shared/engine/world_position.dart';
+import 'package:batufo/engine/tile_position.dart';
+import 'package:batufo/engine/world_position.dart';
 
 class Physics {
   static TilePosition move(

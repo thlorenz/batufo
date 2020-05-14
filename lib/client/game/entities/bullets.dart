@@ -1,10 +1,8 @@
-import 'dart:ui' show Canvas, Paint;
+import 'dart:ui' show Canvas, Offset, Paint;
 
 import 'package:batufo/client/game/sprites/bullet_explosion_sprite.dart';
-import 'package:flutter/foundation.dart';
-import 'package:batufo/shared/engine/geometry/conversions.dart';
-import 'package:batufo/shared/engine/geometry/dart_geometry.dart';
 import 'package:batufo/shared/models/bullet_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'
     show Canvas, Colors, Paint, PaintingStyle;
 
@@ -51,7 +49,7 @@ class Bullets {
 
   void _renderBullet(Canvas canvas, BulletModel bullet) {
     final center = bullet.tilePosition.toWorldPosition().toOffset();
-    canvas.drawCircle(uiOffset(center), radius, paint);
+    canvas.drawCircle(center, radius, paint);
   }
 
   BulletExplosionSprite _createBulletExplosion(Offset center) {

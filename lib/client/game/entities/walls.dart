@@ -1,8 +1,8 @@
 import 'dart:ui' show Canvas, Rect;
 
-import 'package:batufo/client/engine/sprite.dart';
 import 'package:batufo/client/game/assets/assets.dart';
-import 'package:batufo/shared/engine/tile_position.dart';
+import 'package:batufo/engine/sprite.dart';
+import 'package:batufo/engine/tile_position.dart';
 
 class Walls {
   final Sprite _sprite;

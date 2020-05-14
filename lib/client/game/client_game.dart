@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui' show Canvas, Offset, Size;
 
-import 'package:batufo/client/engine/game.dart';
 import 'package:batufo/client/game/assets/assets.dart';
 import 'package:batufo/client/game/entities/background.dart';
 import 'package:batufo/client/game/entities/bullets.dart';
@@ -11,11 +10,12 @@ import 'package:batufo/client/game/entities/walls.dart';
 import 'package:batufo/client/game/inputs/gestures.dart';
 import 'package:batufo/client/game/inputs/input_processor.dart';
 import 'package:batufo/client/game/inputs/keyboard.dart';
+import 'package:batufo/engine/game.dart';
+import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/controllers/helpers/player_status.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
-import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
