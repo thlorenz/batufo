@@ -35,16 +35,6 @@ class _GameWidgetState extends State<GameWidget> {
 
   _GameWidgetState({@required this.level, @required this.serverIP});
 
-  Future<void> _createClient() async {
-    client = await Client.create(level, serverIP);
-    arena = client.arena;
-    clientGameState = ClientGameState(clientID: client.clientID);
-    serverUpdate$ = client.serverUpdate$;
-    clientID = client.clientID;
-    game = null;
-    return client;
-  }
-
   Widget build(BuildContext context) {
     _log.finer('build');
     return MaterialApp(
@@ -70,19 +60,8 @@ class _GameWidgetState extends State<GameWidget> {
     if (snapshot.data == null) return WaitingForPlayers();
 
     clientGameState.sync(snapshot.data);
+    game.init();
 
-    if (game == null) {
-      game = ClientGame(
-        arena: arena,
-        gameState: clientGameState,
-        clientID: clientID,
-      );
-      gameWidget = RunningGame(
-        game: game,
-        newGameRequested: () => _onNewGameRequested(context),
-        numberOfPlayers: snapshot.data.players.length,
-      );
-    }
     return gameWidget;
   }
 
@@ -91,10 +70,30 @@ class _GameWidgetState extends State<GameWidget> {
     RestartWidget.restartApp(context);
   }
 
+  Future<void> _createClient() async {
+    client = await Client.create(level, serverIP);
+    arena = client.arena;
+    clientGameState = ClientGameState(clientID: client.clientID);
+    serverUpdate$ = client.serverUpdate$;
+    clientID = client.clientID;
+    return client;
+  }
+
   Future<void> _startNewGame() async {
     _disposeGame();
     await _createClient();
-    // trigger a rebuild in case creating the client completed after last build
+
+    game = ClientGame(
+      arena: arena,
+      gameState: clientGameState,
+      clientID: clientID,
+    );
+
+    gameWidget = RunningGame(
+      game: game,
+      newGameRequested: () => _onNewGameRequested(context),
+      numberOfPlayers: arena.players.length,
+    );
     setState(() {});
   }
 
@@ -105,9 +104,8 @@ class _GameWidgetState extends State<GameWidget> {
 
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
-    _log.finer('start: did change dependencies');
+    _log.finer('did change dependencies');
     await _startNewGame();
-    _log.finer('end: did change dependencies');
   }
 
   Future<void> reassemble() async {

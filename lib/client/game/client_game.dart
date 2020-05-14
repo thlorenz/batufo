@@ -14,12 +14,12 @@ import 'package:batufo/client/game/inputs/keyboard.dart';
 import 'package:batufo/shared/arena/arena.dart';
 import 'package:batufo/shared/controllers/game_controller.dart';
 import 'package:batufo/shared/controllers/helpers/player_status.dart';
-import 'package:flutter/foundation.dart';
 import 'package:batufo/shared/diagnostics/logger.dart';
 import 'package:batufo/shared/engine/world_position.dart';
 import 'package:batufo/shared/game_props.dart';
 import 'package:batufo/shared/models/game_model.dart';
 import 'package:batufo/shared/models/player_model.dart';
+import 'package:flutter/foundation.dart';
 
 final _log = Log<ClientGame>();
 
@@ -40,14 +40,18 @@ class ClientGame extends Game {
   Offset _backgroundCamera;
   Size _size;
   bool _disposed;
+  bool _initialized;
 
   bool get disposed => _disposed;
+  bool get initialized => _initialized;
+  bool get ready => !_disposed && _initialized;
 
   ClientGame({
     @required this.arena,
     @required this.gameState,
     @required this.clientID,
   })  : _disposed = false,
+        _initialized = false,
         _gameController = GameController(arena, gameState),
         _grid = Grid(GameProps.tileSize),
         _background = Background(
@@ -65,9 +69,6 @@ class ClientGame extends Game {
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
     _players = <int, Player>{};
-    for (final clientID in gameState.players.keys) {
-      _players[clientID] = _initPlayer();
-    }
 
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
@@ -81,8 +82,16 @@ class ClientGame extends Game {
     return player;
   }
 
+  void init() {
+    if (_initialized) return;
+    for (final clientID in gameState.players.keys) {
+      _players[clientID] = _initPlayer();
+    }
+    _initialized = true;
+  }
+
   void update(double dt, double ts) {
-    if (_disposed) return;
+    if (!ready) return;
     if (!PlayerStatus(clientPlayer).isDead) {
       final pressedKeys = GameKeyboard.pressedKeys;
       final gestures = GameGestures.instance.aggregatedGestures;
@@ -93,19 +102,21 @@ class ClientGame extends Game {
   }
 
   void updateUI(double dt, double ts) {
-    if (_disposed) return;
+    if (!ready) return;
     _cameraFollow(
       clientPlayer.tilePosition.toWorldPosition(),
       dt,
     );
     for (final entry in gameState.players.entries) {
-      _players[entry.key].updateSprites(entry.value, dt);
+      final player = _players[entry.key];
+      if (player == null) continue;
+      player.updateSprites(entry.value, dt);
     }
     _bullets.updateSprites(gameState.bullets, dt);
   }
 
   void render(Canvas canvas) {
-    if (_disposed) return;
+    if (!ready) return;
     _lowerLeftCanvas(canvas, _size.height);
 
     canvas.save();
@@ -120,19 +131,20 @@ class ClientGame extends Game {
       _background.render(canvas);
       _walls.render(canvas);
       for (final entry in gameState.players.entries) {
-        _players[entry.key].render(canvas, entry.value);
+        final player = _players[entry.key];
+        if (player == null) continue;
+        player.render(canvas, entry.value);
       }
       _bullets.render(canvas, gameState.bullets);
     }
   }
 
   void cleanup() {
-    if (_disposed) return;
+    if (!ready) return;
     _gameController.cleanup();
   }
 
   void resize(Size size) {
-    if (_disposed) return;
     _size = size;
   }
 
