@@ -1,0 +1,23 @@
+{
+  "name": "batufo-server",
+  "version": "0.0.0",
+  "description": "Socket.io server for batufo game.",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc -b",
+    "watch": "tsc -b --watch"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "debug": "^4.1.1",
+    "socket.io": "^2.3.0",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/socket.io": "^2.1.4",
+    "@types/socket.io-client": "^1.4.32",
+    "socket.io-client": "^2.3.0"
+  }
+}

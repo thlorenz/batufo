@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "target": "ES2018",
+    "module": "commonjs",
+    "baseUrl": "./",
+    "sourceMap": true,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": false,
+    "preserveWatchOutput": true,
+    "emitDeclarationOnly": false,
+    "importHelpers": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "incremental": false
+  }
+}
