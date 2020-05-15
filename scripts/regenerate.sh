@@ -8,6 +8,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "Make sure to run this from the root of the project"
 
-generated_dir=$DIR/../lib/shared/generated
+dart_generated_dir=$DIR/../client/lib/rpc/generated
 rm -rf "${generated_dir}/*"
-protoc --dart_out=grpc:"${generated_dir}" -Iprotos protos/message_bus.proto
+protoc --dart_out=grpc:"${dart_generated_dir}" -Iprotos protos/message_bus.proto
