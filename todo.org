@@ -2,34 +2,27 @@
 
 * Networking
 
-** Socket.io Spike [0/1]
+** Socket.io Spike [6/7]
 :LOGBOOK:
+CLOCK: [2020-05-15 Fri 18:40]--[2020-05-15 Fri 20:17] =>  1:37
 CLOCK: [2020-05-14 Thu 18:40]--[2020-05-14 Thu 20:20] =>  1:40
 :END:
 
 - [X] setup TS project 
 - [X] simple socket.io server in TypeScript 
-- [ ] write commandline socket.io dart client
-  - [ ] [[*Try possible fixes][Try possible fixes]] 
-- [ ] communicate between the two
-- [ ] find proto lib for JS/TS
-- [ ] write proto generator script
+- [X] write commandline socket.io dart client
+  - [X] [[*Try possible fixes][Try possible fixes]] 
+- [X] communicate between the two
+- [X] find proto lib for JS/TS
+- [X] write proto generator script
 - [ ] communicate proto messages
 
 *** Status
 
-- ran into problems connecting a dart/flutter client to the node.js socket server
-- confirmed that server is valid as connecting via a Node.js client works
-
-**** TODO Try possible fixes
-
-- Read /manual/ connection strategies inside [[https://pub.dev/packages/socket_io_client][socket_io client]] package 
-- try the [[https://pub.dev/packages/flutter_socket_io][flutter_socket_io]] package 
-- alternatively use gRPC on Node.js end
-  
 *** Resources
 
 - [[https://github.com/carlostse/nodejs-protobuf-socketio][socket.io sample]] 
 - [[https://github.com/rikulo/socket.io-client-dart][dart socket.io client lib]]  
+- [[https://github.com/improbable-eng/ts-protoc-gen][ts-protoc-gen]] 
 
 
