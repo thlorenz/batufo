@@ -24,5 +24,8 @@ protoc \
     --plugin="protoc-gen-ts=${protoc_gen_ts_path}" \
     --js_out="import_style=commonjs,binary:${ts_generated_dir}" \
     --ts_out="${ts_generated_dir}" \
-    --dart_out="${dart_generated_dir}" \
+    --dart_out=grpc:"${dart_generated_dir}" \
     -Iprotos protos/message_bus.proto
+
+rm "${dart_generated_dir}/message_bus.pbjson.dart"
+rm "${dart_generated_dir}/message_bus.pbenum.dart"

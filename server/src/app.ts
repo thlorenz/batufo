@@ -1,6 +1,7 @@
 import debug from 'debug'
 import http from 'http'
 import socketio from 'socket.io'
+import { PlayingClient } from './generated/message_bus_pb'
 
 const PORT = process.env.PORT || 2222
 const logInfo = debug('app:info')
@@ -19,9 +20,13 @@ function onRequest(_req: http.IncomingMessage, res: http.ServerResponse) {
 
 io.on('connection', (socket: socketio.Socket) => {
   logDebug('on:connection')
-  socket.emit('game:started', { gameID: 'game one' })
-  socket.on('game:request', (data) => {
-    console.log(data)
+  const playingClient = new PlayingClient()
+  playingClient.setGameid(1111)
+  playingClient.setClientid(2222)
+  socket.emit('game:started', playingClient.serializeBinary())
+  socket.on('play:request', (_req) => {
+    // logInfo('got play request')
+    // logInfo('got play request for level %s', req.getLevelname())
   })
 })
 
