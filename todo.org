@@ -1,28 +1,51 @@
 #+TITLE: batufo
 
+* Building a 2D Multiplayer Game from Scratch in #Flutter
+
+
 * Networking
 
-** Socket.io Spike [6/7]
+** Socket.io Spike [7/7]
 :LOGBOOK:
+CLOCK: [2020-05-20 Wed 18:41]--[2020-05-20 Wed 19:42] =>  1:01
 CLOCK: [2020-05-15 Fri 18:40]--[2020-05-15 Fri 20:17] =>  1:37
 CLOCK: [2020-05-14 Thu 18:40]--[2020-05-14 Thu 20:20] =>  1:40
 :END:
 
-- [X] setup TS project 
-- [X] simple socket.io server in TypeScript 
+- [X] setup TS project
+- [X] simple socket.io server in TypeScript
 - [X] write commandline socket.io dart client
-  - [X] [[*Try possible fixes][Try possible fixes]] 
+  - [X] [[*Try possible fixes][Try possible fixes]]
 - [X] communicate between the two
 - [X] find proto lib for JS/TS
 - [X] write proto generator script
-- [ ] communicate proto messages
+- [X] communicate proto messages and declare it impossible for now
 
 *** Status
 
+- communicating between server and client, but dart client is unable to deserialize message
+- Node.js server + client class have static ~(de)serialize~ methods, but dart classes don't
+- also data received is not a ~List~ either
+- possibly include a string in the payload to understand data format better
+
+** Using JSON format
+:LOGBOOK:
+CLOCK: [2020-05-20 Wed 19:51]--[2020-05-20 Wed 20:11] =>  0:20
+:END:
+  
+- [X] ensure this works
+- [ ] declare TypeScript payload types only for play request for now
+- [ ] determine small format to send, most likely flat arrays
+- [ ] send play request to server including desired level
+- [ ] server reponds with ids + arena
+- [ ] client prints out arena info
+  
+** TODO Communicate Player Data  
+ 
 *** Resources
 
-- [[https://github.com/carlostse/nodejs-protobuf-socketio][socket.io sample]] 
-- [[https://github.com/rikulo/socket.io-client-dart][dart socket.io client lib]]  
-- [[https://github.com/improbable-eng/ts-protoc-gen][ts-protoc-gen]] 
+- [[https://github.com/carlostse/nodejs-protobuf-socketio][socket.io sample]]
+- [[https://github.com/rikulo/socket.io-client-dart][dart socket.io client lib]]
+- [[https://github.com/improbable-eng/ts-protoc-gen][ts-protoc-gen]]
 
 
