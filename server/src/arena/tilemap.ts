@@ -1,6 +1,7 @@
 import { strict as assert } from 'assert'
 import { UnreachableCaseError } from '../types'
-enum Tile {
+
+export enum Tile {
   /* 0 */ OutOfBounds,
   /* 1 */ Empty,
   /* 2 */ Boundary,
@@ -52,7 +53,7 @@ function isTileKey(s: string): s is TileKey {
   return TileKeys.includes(s as TileKey)
 }
 
-class Tilemap {
+export class Tilemap {
   constructor(
     readonly tiles: Tile[],
     readonly nrows: number,
