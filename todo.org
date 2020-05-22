@@ -41,10 +41,17 @@ This allows us to use proto definitions and smaller /albeit not ideal/ payloads 
 - [X] ensure this works
 - [ ] declare TypeScript payload types only for play request for now
 - [ ] determine small format to send, most likely flat arrays
-- [ ] send play request to server including desired level
+  
+** PlayerRequest -> PlayingClient Init
+:LOGBOOK:
+CLOCK: [2020-05-21 Thu 18:37]--[2020-05-21 Thu 19:42] =>  1:05
+:END:
+  
+- [X] send play request to server including desired level
+- [X] port tilemap creation from dart to typescript
+- [ ] port arena creation from dart to typescript in order to build arena on the server
 - [ ] server reponds with ids + arena
 - [ ] client prints out arena info
-
   
 ** TODO Communicate Player Data
 
