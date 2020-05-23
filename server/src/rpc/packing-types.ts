@@ -1,4 +1,4 @@
-import { DoubleTwoDecimals, PackedFractionalPoint, PackedPoint } from 'src/generated/message_bus_pb'
+import { DoubleTwoDecimals, PackedFractionalPoint, PackedPoint } from '../generated/message_bus_pb'
 
 const doubleToInt = (value: number, factor: number) =>
   Math.floor(value * factor)

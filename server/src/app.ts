@@ -1,6 +1,7 @@
 import debug from 'debug'
 import http from 'http'
 import socketio from 'socket.io'
+import { Arena } from './arena'
 import { PlayingClient, PlayRequest } from './generated/message_bus_pb'
 
 const PORT = process.env.PORT || 2222
@@ -20,19 +21,18 @@ function onRequest(_req: http.IncomingMessage, res: http.ServerResponse) {
 
 io.on('connection', (socket: socketio.Socket) => {
   logDebug('on:connection')
-  const playingClient = new PlayingClient()
-  playingClient.setGameid(1111)
-  playingClient.setClientid(2222)
   socket.on('play:request', (data) => {
     const req = PlayRequest.deserializeBinary(data)
     logInfo('got play request for level [%s]', req.getLevelname())
   })
 
-  // Need to send this as string to be able to deserialize on the dart side
-  // without it splitting things into a JSON map.
-  // This is all probably more expensive than it needed to be if the dart socket.io
-  // wouldn't try to treat everything as JSON, but the siz of data sent is
-  // roughly the same.
+  const levelName = 'simple'
+  const tileSize = 24
+  const arena = Arena.forLevel(levelName, tileSize)
+  const playingClient = new PlayingClient()
+  playingClient.setGameid(1111)
+  playingClient.setClientid(2222)
+  playingClient.setArena(arena.pack())
   socket.emit('game:started', playingClient.serializeBinary().toString())
 })
 

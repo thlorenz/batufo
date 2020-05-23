@@ -90,4 +90,13 @@ class Arena {
     final tilemap = Levels.tilemapForLevel(levelName);
     return Arena.fromTilemap(tilemap, GameProps.tileSize);
   }
+
+  String toString() {
+    return '''
+    Arena: ${nrows}x$ncols {
+      players: $players
+      walls: $walls
+    }
+''';
+  }
 }

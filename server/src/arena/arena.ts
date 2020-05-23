@@ -1,3 +1,4 @@
+import { PackedArena } from '../generated/message_bus_pb'
 import { Levels } from './levels'
 import { TilePosition } from './tile-position'
 import { Tile, Tilemap } from './tilemap'
@@ -40,8 +41,50 @@ export class Arena {
     return new Arena(floorTiles, walls, initialPlayers, nrows, ncols)
   }
 
+  pack(): PackedArena {
+    const packedFloorTiles = this.floorTiles.map((x) => x.pack())
+    const packedWalls = this.walls.map((x) => x.pack())
+    const packedPlayerPositions = this.players.map((x) => x.pack())
+
+    const packedArena = new PackedArena()
+    packedArena.setNrows(this.nrows)
+    packedArena.setNcols(this.ncols)
+
+    packedArena.setFloortilesList(packedFloorTiles)
+    packedArena.setWallsList(packedWalls)
+    packedArena.setPlayerpositionsList(packedPlayerPositions)
+
+    return packedArena
+  }
+
+  unpack(data: PackedArena): Arena {
+    const floorTiles = data
+      .getFloortilesList()
+      .map((x) => TilePosition.unpack(x))
+    const walls = data.getWallsList().map((x) => TilePosition.unpack(x))
+    const playerPositions = data
+      .getPlayerpositionsList()
+      .map((x) => TilePosition.unpack(x))
+
+    return new Arena(
+      floorTiles,
+      walls,
+      playerPositions,
+      data.getNrows(),
+      data.getNcols()
+    )
+  }
+
   static forLevel(levelName: string, tileSize: number): Arena {
     const tilemap = Levels.tilemapForLevel(levelName)
     return Arena.fromTilemap(tilemap, tileSize)
+  }
+
+  toString(): string {
+    return `
+Arena: ${this.nrows}x${this.ncols}
+  players: {this.players}
+  walls: {this.walls}
+`
   }
 }

@@ -140,6 +140,7 @@ ${this._tilesString}
   }
 }
 
+/* Testing Area
 const terrain: string = `
 (---------------------)
 (         p           )
@@ -156,3 +157,4 @@ const terrain: string = `
 
 const tilemap = Tilemap.build(terrain)
 console.log(tilemap.toString())
+*/

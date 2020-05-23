@@ -2,7 +2,7 @@ analyzer:
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
-  exclude: [ lib/rpc/generated/message_bus.pb.dart ]
+  exclude: [lib/rpc/generated/message_bus.pb.dart]
 
 # http://dart-lang.github.io/linter/lints/
 linter:
@@ -34,7 +34,6 @@ linter:
     - await_only_futures
     - camel_case_types
     - cancel_subscriptions
-    - cascade_invocations
     - close_sinks
     - control_flow_in_finally
     - diagnostic_describe_all_properties
