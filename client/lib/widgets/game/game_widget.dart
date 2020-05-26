@@ -57,7 +57,11 @@ class _GameWidgetState extends State<GameWidget> {
     if (snapshot.data == null) return WaitingForPlayers();
 
     clientGameState.sync(snapshot.data);
-    game.init(clientGameState);
+    // TODO: see if we can call game.init in _startNewGame
+    // but how do we work around the server update thingy?
+    // Possibly have another branch to render the game without the
+    // server update?
+    // game.init(clientGameState);
 
     return gameWidget;
   }
@@ -68,6 +72,7 @@ class _GameWidgetState extends State<GameWidget> {
   }
 
   Future<Client> _createClient() async {
+    // TODO: figure out a way to show game
     client = await Client.create(level, serverIP);
     clientGameState = ClientGameState(clientID: client.clientID);
     serverUpdate$ = client.serverUpdate$;

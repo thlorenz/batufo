@@ -6,15 +6,16 @@ import 'package:batufo/engine/images.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/assets/assets.dart';
 import 'package:batufo/game_props.dart';
-import 'package:batufo/spikes/socketio_client.dart';
 import 'package:batufo/widgets/game/game_widget.dart';
 import 'package:batufo/widgets/restart/restart_widget.dart';
 import 'package:flutter/material.dart';
 
+const PORT = 2222;
+
 Future<void> main() async {
   Log.activateConsole();
-  Log.rootLevel = Level.FINEST;
-  // Log.messageFilter = (String s) => s.contains('MyApp');
+  Log.rootLevel = Level.FINE;
+  Log.messageFilter = (String s) => !s.contains('socket_io_client:engine');
 
   WorldPosition.tileSize = GameProps.tileSize;
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +27,10 @@ Future<void> main() async {
     assets.bulletExplosion.imagePath,
     assets.skull.imagePath,
   ]);
-  const level = 'large';
-  final serverIP = Platform.isAndroid ? '192.168.1.7' : 'localhost';
-  connect();
+  const level = 'simple';
+  final serverIP = Platform.isAndroid
+      ? 'http://192.168.1.7:$PORT'
+      : 'http://localhost:$PORT';
 
   runApp(
     RestartWidget(

@@ -2,7 +2,7 @@
 
 * Building a 2D Multiplayer Game from Scratch in #Flutter
 
-hacking on a multiplayer Flutter game in Emacs
+Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #TypeScript
 
 * Networking
 
@@ -21,12 +21,25 @@ CLOCK: [2020-05-21 Thu 18:37]--[2020-05-21 Thu 19:42] =>  1:05
 - [X] server reponds with ids + arena
 - [X] client prints out arena info
   
+
+** Server Sends inital Server Update
+
+Continue  [[file:client/lib/widgets/game/game_widget.dart::// TODO: see if we can call game.init in _startNewGame][here]]. 
+- [ ] for each player request server sends arena matching level
+- [ ] once game is full server sends first update with all player locations
+
+** Server Relays Player Updates to other Players  
+
 ** Init Client from Server Arena
+:LOGBOOK:
+CLOCK: [2020-05-25 Mon 18:47]--[2020-05-25 Mon 20:03] =>  1:16
+:END:
 
-- [ ] client sends play request
-- [ ] server responds with playing client including arena
-- [ ] client renders arena with current player and is in a playable state
-
+- [X] client connects
+- [X] client sends play request
+- [X] server responds with playing client including arena
+- [X] client renders arena with current player and is in a playable state
+- [ ] why on earth are we dying immediately?
   
 *** Resources
 

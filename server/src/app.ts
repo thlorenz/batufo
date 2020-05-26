@@ -21,19 +21,32 @@ function onRequest(_req: http.IncomingMessage, res: http.ServerResponse) {
 
 io.on('connection', (socket: socketio.Socket) => {
   logDebug('on:connection')
-  socket.on('play:request', (data) => {
+  socket.once('play:request', (data) => {
     const req = PlayRequest.deserializeBinary(data)
     logInfo('got play request for level [%s]', req.getLevelname())
-  })
 
-  const levelName = 'simple'
-  const tileSize = 24
-  const arena = Arena.forLevel(levelName, tileSize)
-  const playingClient = new PlayingClient()
-  playingClient.setGameid(1111)
-  playingClient.setClientid(2222)
-  playingClient.setArena(arena.pack())
-  socket.emit('game:started', playingClient.serializeBinary().toString())
+    const levelName = 'simple'
+    const tileSize = 24
+    const arena = Arena.forLevel(levelName, tileSize)
+    const playingClient = new PlayingClient()
+    const gameID = initGame()
+    const clientID = initPlayer()
+    playingClient.setGameid(gameID)
+    playingClient.setClientid(clientID)
+    playingClient.setArena(arena.pack())
+    socket.emit('game:started', playingClient.serializeBinary().toString())
+  })
 })
+
+// TODO(thlorenz): do this for real
+function initGame() {
+  const gameID = 123
+  return gameID
+}
+
+function initPlayer() {
+  const playerID = 456
+  return playerID
+}
 
 app.listen(PORT)
