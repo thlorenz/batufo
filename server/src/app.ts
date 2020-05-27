@@ -28,25 +28,25 @@ io.on('connection', (socket: socketio.Socket) => {
     const levelName = 'simple'
     const tileSize = 24
     const arena = Arena.forLevel(levelName, tileSize)
-    const playingClient = new PlayingClient()
-    const gameID = initGame()
-    const clientID = initPlayer()
-    playingClient.setGameid(gameID)
-    playingClient.setClientid(clientID)
-    playingClient.setArena(arena.pack())
-    socket.emit('game:started', playingClient.serializeBinary().toString())
+    const gameID = initOrUpdateGame()
+    const clientID = 456
+    const playingClient = initPlayer(gameID, clientID, arena)
+    socket.emit('game:created', playingClient.serializeBinary().toString())
   })
 })
 
 // TODO(thlorenz): do this for real
-function initGame() {
+function initOrUpdateGame() {
   const gameID = 123
   return gameID
 }
 
-function initPlayer() {
-  const playerID = 456
-  return playerID
+function initPlayer(gameID: number, clientID: number, arena: Arena) {
+  const playingClient = new PlayingClient()
+  playingClient.setGameid(gameID)
+  playingClient.setClientid(clientID)
+  playingClient.setArena(arena.pack())
+  return playingClient
 }
 
 app.listen(PORT)

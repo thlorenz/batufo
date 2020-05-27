@@ -39,7 +39,6 @@ class _MenuWidgetState extends State<MenuWidget> {
   }
 
   void _onLevelSelected([String level = 'simple']) {
-    universe.handleGameCreated(level, null, null);
-    // client = Client.create(universe, level, serverIP);
+    client = Client.create(universe, level, serverIP);
   }
 }
