@@ -1,4 +1,4 @@
-import 'package:batufo/models/game_model.dart';
+import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/widgets/hud/health_widget.dart';
 import 'package:flutter/material.dart';
 

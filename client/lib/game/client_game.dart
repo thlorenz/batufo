@@ -17,7 +17,7 @@ import 'package:batufo/game/inputs/gestures.dart';
 import 'package:batufo/game/inputs/input_processor.dart';
 import 'package:batufo/game/inputs/keyboard.dart';
 import 'package:batufo/game_props.dart';
-import 'package:batufo/models/game_model.dart';
+import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
 

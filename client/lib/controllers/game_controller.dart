@@ -4,14 +4,14 @@ import 'package:batufo/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/controllers/helpers/colliders.dart';
 import 'package:batufo/controllers/player_controller.dart';
 import 'package:batufo/game_props.dart';
-import 'package:batufo/models/game_state.dart';
+import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/player_model.dart';
 
 class GameController {
   final BulletsSpawner _bulletsSpawner;
   PlayerController _playerController;
   BulletsController _bulletsController;
-  final GameState _gameState;
+  final ClientGameState _gameState;
 
   final Arena _arena;
 
@@ -43,9 +43,9 @@ class GameController {
     );
   }
 
-  GameState get gameState => _gameState;
+  ClientGameState get gameState => _gameState;
 
-  GameState update(double dt, double ts) {
+  ClientGameState update(double dt, double ts) {
     for (final x in _gameState.players.entries) {
       final player = x.value;
       _playerController.update(dt, player);

@@ -1,7 +1,7 @@
 import 'package:batufo/engine/game_widget.dart';
 import 'package:batufo/game/client_game.dart';
 import 'package:batufo/game/inputs/gestures.dart';
-import 'package:batufo/models/game_model.dart';
+import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/widgets/game_over/game_over_widget.dart';
 import 'package:batufo/widgets/hud/hud_widget.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,8 @@ class RunningGame extends StatelessWidget {
         ),
       ),
       StreamBuilder(
-        stream: game.gameState.stats$,
+        // TODO: most likely should come from Universe
+        // stream: game.gameState.stats$,
         builder: (_, AsyncSnapshot<Stats> snapshot) => snapshot.data.health > 0
             ? HudWidget(stats: snapshot.data)
             : GameOverWidget(newGameRequested: onNewGameRequested, won: false),

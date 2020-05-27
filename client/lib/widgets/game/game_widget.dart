@@ -1,6 +1,6 @@
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/game/client_game.dart';
-import 'package:batufo/models/game_model.dart';
+import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/rpc/server_update.dart';
 import 'package:batufo/widgets/game/running_game_widget.dart';

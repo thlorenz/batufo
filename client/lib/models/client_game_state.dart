@@ -1,7 +1,5 @@
-import 'dart:async';
-
 import 'package:batufo/game_props.dart';
-import 'package:batufo/models/game_state.dart';
+import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/server_update.dart';
 import 'package:flutter/foundation.dart';
@@ -35,17 +33,14 @@ class Stats {
   }
 }
 
-class ClientGameState extends GameState {
+class ClientGameState {
   final int clientID;
+  final Map<int, PlayerModel> players;
+  final List<BulletModel> bullets;
 
   bool synced = false;
-  Stats _currentStats;
-  final StreamController<Stats> _stats$;
 
-  ClientGameState({@required this.clientID})
-      : _stats$ = StreamController<Stats>.broadcast();
-
-  Stream<Stats> get stats$ => _stats$.stream;
+  ClientGameState({@required this.clientID, this.players, this.bullets});
 
   void sync(ServerUpdate serverUpdate) {
     for (final entry in serverUpdate.players.entries) {
@@ -72,7 +67,36 @@ class ClientGameState extends GameState {
     }
   }
 
+  void addPlayer(int id, PlayerModel player) {
+    assert(player != null, 'cannot add null as player');
+    players[id] = player;
+  }
+
+  void addBullet(BulletModel bullet) {
+    bullets.add(bullet);
+  }
+
+  void clearBullets() {
+    bullets.clear();
+  }
+
+  ClientGameState clone() {
+    final clonedPlayers = <int, PlayerModel>{};
+
+    for (final entry in players.entries) {
+      clonedPlayers[entry.key] = entry.value.clone();
+    }
+
+    final clonedBullets = bullets.map((x) => x.clone()).toList();
+    return ClientGameState(
+      clientID: clientID,
+      players: clonedPlayers,
+      bullets: clonedBullets,
+    );
+  }
+
   void _addStats(PlayerModel player, int playersAlive) {
+    /* TODO:
     final stats = Stats(
       health: player.health,
       playersAlive: playersAlive,
@@ -80,10 +104,11 @@ class ClientGameState extends GameState {
     if (stats == _currentStats) return;
     _currentStats = stats;
     _stats$.add(stats);
+     */
   }
 
   String toString() {
-    return '''GameModel {
+    return '''ClientGameState {
     player: $players
     bullets: $bullets
     }''';
