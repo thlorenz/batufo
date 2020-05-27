@@ -67,6 +67,7 @@ class ClientGame extends Game {
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
     _players = <int, Player>{};
+    _players[clientID] = _initPlayer();
 
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
@@ -116,8 +117,7 @@ class ClientGame extends Game {
     _bullets.updateSprites(gameState.bullets, dt);
   }
 
-  void render(Canvas canvas) {
-    if (!ready) return;
+  void _renderArena(Canvas canvas) {
     _lowerLeftCanvas(canvas, _size.height);
 
     canvas.save();
@@ -127,17 +127,22 @@ class ClientGame extends Game {
     }
     canvas.restore();
 
-    {
-      canvas.translate(-_camera.dx, -_camera.dy);
-      _background.render(canvas);
-      _walls.render(canvas);
-      for (final entry in gameState.players.entries) {
-        final player = _players[entry.key];
-        if (player == null) continue;
-        player.render(canvas, entry.value);
-      }
-      _bullets.render(canvas, gameState.bullets);
+    canvas.translate(-_camera.dx, -_camera.dy);
+    _background.render(canvas);
+    _walls.render(canvas);
+  }
+
+  void render(Canvas canvas) {
+    if (disposed) return;
+    _renderArena(canvas);
+
+    if (!started) return;
+    for (final entry in gameState.players.entries) {
+      final player = _players[entry.key];
+      if (player == null) continue;
+      player.render(canvas, entry.value);
     }
+    _bullets.render(canvas, gameState.bullets);
   }
 
   void cleanup() {

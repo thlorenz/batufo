@@ -68,7 +68,7 @@ class UniverseWidget extends StatelessWidget {
             universe: universe,
           );
         } else if (snapshot.data.kind == StateOfTheUniverse.GameCreated) {
-          return GameCreatedWidget();
+          return GameCreatedWidget(game: snapshot.data.game);
         }
         return null;
       },
