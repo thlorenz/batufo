@@ -22,13 +22,7 @@ CLOCK: [2020-05-21 Thu 18:37]--[2020-05-21 Thu 19:42] =>  1:05
 - [X] client prints out arena info
   
 
-** Server Sends inital Server Update
-
-Continue  [[file:client/lib/widgets/game/game_widget.dart::// TODO: see if we can call game.init in _startNewGame][here]]. 
-- [ ] for each player request server sends arena matching level
-- [ ] once game is full server sends first update with all player locations
-
-** Server Relays Player Updates to other Players  
+** Server Relays Player Updates to other Players
 
 ** Init Client from Server Arena
 :LOGBOOK:
@@ -39,14 +33,24 @@ CLOCK: [2020-05-25 Mon 18:47]--[2020-05-25 Mon 20:03] =>  1:16
 - [X] client sends play request
 - [X] server responds with playing client including arena
 - [X] client renders arena with current player and is in a playable state
-- [ ] why on earth are we dying immediately?
-  
+
 *** Resources
 
 - [[https://github.com/carlostse/nodejs-protobuf-socketio][socket.io sample]]
 - [[https://github.com/rikulo/socket.io-client-dart][dart socket.io client lib]]
 - [[https://github.com/improbable-eng/ts-protoc-gen][ts-protoc-gen]]
 
+
+** Add Stream based State Management
+
+*** Universe  [2/4]
+
+Manages states and emits them so stream controllers can be used to render appropriate widgets.
+
+- [X] Selecting Level State
+- [X] Game Created State (shows waiting for players) includes arena with all players
+- [ ] Game Started State (subscribes to server updates) includes clientID
+- [ ] ~Client~ rpc class should have no state
 
 ** DONE Socket.io Spike [0/0]
 :LOGBOOK:

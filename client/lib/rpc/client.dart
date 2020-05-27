@@ -8,6 +8,7 @@ import 'package:batufo/game_props.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart';
 import 'package:batufo/rpc/server_update.dart';
+import 'package:batufo/universe.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -31,6 +32,7 @@ class Client {
   final String serverHost;
   final String level;
   final io.Socket socket;
+  final Universe universe;
   Arena _arena;
   PlayingClient _playingClient;
   final _serverUpdate$ = BehaviorSubject<ServerUpdate>();
@@ -39,16 +41,18 @@ class Client {
   Stream<ServerUpdate> get serverUpdate$ => _serverUpdate$.stream;
   int get clientID => _playingClient.clientID;
 
-  Client({@required this.level, @required this.serverHost})
-      : socket = io.io(serverHost, <String, dynamic>{
+  Client({
+    @required this.level,
+    @required this.serverHost,
+    @required this.universe,
+  }) : socket = io.io(serverHost, <String, dynamic>{
           'transports': ['websocket'],
           'autoConnect': false,
         }) {
     _init();
   }
 
-  Future<GameStarted> _init() {
-    final completer = Completer<GameStarted>();
+  void _init() {
     socket
       ..once('connect', (dynamic connection) {
         final playRequest = PlayRequest()..levelName = level;
@@ -59,15 +63,25 @@ class Client {
       // disconnected on purpose, i.e. when game is over
 
       ..once('disconnect', (dynamic _) => _log.fine('disconnected'))
+      ..once('game:created', _onGameCreatedMessage)
       ..once(
         'game:started',
-        (dynamic msg) => _onGameStartedMessage(msg, completer),
+        _onGameStartedMessage,
       )
       ..connect();
-    return completer.future;
   }
 
-  void _onGameStartedMessage(dynamic data, Completer<GameStarted> completer) {
+  void _onGameCreatedMessage(dynamic data) {
+    final list = listFromData(data);
+    final client = PlayingClient.fromBuffer(list);
+    final playingClient = PlayingClient()
+      ..gameID = client.gameID
+      ..clientID = client.clientID;
+    final arena = Arena.unpack(client.arena);
+    universe.handleGameCreated(level, playingClient, arena);
+  }
+
+  void _onGameStartedMessage(dynamic data) {
     final list = listFromData(data);
     final client = PlayingClient.fromBuffer(list);
 
@@ -96,16 +110,18 @@ class Client {
       'clientID: ${client.clientID}',
     );
 
-    // TODO: send other players correctly
-    final gameStarted = GameStarted(this, model, [], _arena);
-    completer.complete(gameStarted);
+    GameStarted(this, model, [], _arena);
   }
 
   void dispose() {
     if (!_serverUpdate$.isClosed) _serverUpdate$.close();
   }
 
-  static Future<GameStarted> create(String level, String serverHost) {
-    return Client(level: level, serverHost: serverHost)._init();
+  static Client create(Universe universe, String level, String serverHost) {
+    return Client(
+      universe: universe,
+      level: level,
+      serverHost: serverHost,
+    ).._init();
   }
 }

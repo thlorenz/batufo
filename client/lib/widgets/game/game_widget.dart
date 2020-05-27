@@ -73,7 +73,8 @@ class _GameWidgetState extends State<GameWidget> {
 
   Future<Client> _createClient() async {
     // TODO: figure out a way to show game
-    client = await Client.create(level, serverIP);
+
+    client = Client.create(null, level, serverIP);
     clientGameState = ClientGameState(clientID: client.clientID);
     serverUpdate$ = client.serverUpdate$;
     return client;
