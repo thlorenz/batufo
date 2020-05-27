@@ -40,17 +40,17 @@ class ClientGame extends Game {
   Offset _backgroundCamera;
   Size _size;
   bool _disposed;
-  bool _initialized;
+  bool _started;
 
   bool get disposed => _disposed;
-  bool get initialized => _initialized;
-  bool get ready => !_disposed && _initialized;
+  bool get started => _started;
+  bool get ready => !_disposed && _started;
 
   ClientGame({
     @required this.arena,
     @required this.clientID,
   })  : _disposed = false,
-        _initialized = false,
+        _started = false,
         _grid = Grid(GameProps.tileSize),
         _background = Background(
           arena.floorTiles,
@@ -80,15 +80,15 @@ class ClientGame extends Game {
     return player;
   }
 
-  void init(ClientGameState gameState) {
-    if (_initialized) return;
+  void start(ClientGameState gameState) {
+    if (_started) return;
     this.gameState = gameState;
     _gameController = GameController(arena, gameState);
 
     for (final clientID in gameState.players.keys) {
       _players[clientID] = _initPlayer();
     }
-    _initialized = true;
+    _started = true;
   }
 
   void update(double dt, double ts) {

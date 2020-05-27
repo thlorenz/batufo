@@ -1,5 +1,5 @@
 import 'package:batufo/arena/arena.dart';
-import 'package:batufo/rpc/generated/message_bus.pb.dart';
+import 'package:batufo/game/client_game.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -12,13 +12,12 @@ enum StateOfTheUniverse {
 
 class UniverseState extends Equatable {
   final StateOfTheUniverse kind;
-  final PlayingClient playingClient;
-  final Arena arena;
   final String level;
-  const UniverseState(this.kind, {this.playingClient, this.arena, this.level});
+  final ClientGame game;
+  const UniverseState(this.kind, {this.level, this.game});
 
   @override
-  List<Object> get props => [kind, playingClient, arena, level];
+  List<Object> get props => [kind, level, game?.gameState?.clientID];
 }
 
 class SelectingLevelState extends UniverseState {
@@ -27,27 +26,19 @@ class SelectingLevelState extends UniverseState {
 
 class GameCreatedState extends UniverseState {
   const GameCreatedState({
-    @required PlayingClient playingClient,
-    @required Arena arena,
     @required String level,
-  }) : super(
-          StateOfTheUniverse.GameCreated,
-          playingClient: playingClient,
-          arena: arena,
-          level: level,
-        );
+    @required ClientGame game,
+  }) : super(StateOfTheUniverse.GameCreated, level: level, game: game);
 }
 
 class GameRunningState extends UniverseState {
   const GameRunningState({
-    @required PlayingClient playingClient,
-    @required Arena arena,
     @required String level,
+    @required ClientGame game,
   }) : super(
           StateOfTheUniverse.GameRunning,
-          playingClient: playingClient,
-          arena: arena,
           level: level,
+          game: game,
         );
 }
 
@@ -65,16 +56,9 @@ class Universe {
     return _instance;
   }
 
-  void handleGameCreated(
-    String level,
-    PlayingClient playingClient,
-    Arena arena,
-  ) {
-    final state = GameCreatedState(
-      playingClient: playingClient,
-      arena: arena,
-      level: level,
-    );
+  void handleGameCreated(String level, int clientID, Arena arena) {
+    final game = ClientGame(arena: arena, clientID: clientID);
+    final state = GameCreatedState(level: level, game: game);
     _state$.add(state);
   }
 

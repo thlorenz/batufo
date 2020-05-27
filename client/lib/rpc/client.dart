@@ -1,16 +1,10 @@
-import 'dart:async';
-import 'dart:ui' show Offset;
-
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
-import 'package:batufo/game_props.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart';
-import 'package:batufo/rpc/server_update.dart';
 import 'package:batufo/universe.dart';
 import 'package:flutter/foundation.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 final _log = Log<Client>();
@@ -33,13 +27,6 @@ class Client {
   final String level;
   final io.Socket socket;
   final Universe universe;
-  Arena _arena;
-  PlayingClient _playingClient;
-  final _serverUpdate$ = BehaviorSubject<ServerUpdate>();
-
-  Arena get arena => _arena;
-  Stream<ServerUpdate> get serverUpdate$ => _serverUpdate$.stream;
-  int get clientID => _playingClient.clientID;
 
   Client({
     @required this.level,
@@ -74,14 +61,15 @@ class Client {
   void _onGameCreatedMessage(dynamic data) {
     final list = listFromData(data);
     final client = PlayingClient.fromBuffer(list);
-    final playingClient = PlayingClient()
-      ..gameID = client.gameID
-      ..clientID = client.clientID;
+
+    // TODO: use gameID to subscribe to server updates for that channel
+    // final gameID = client.gameID;
     final arena = Arena.unpack(client.arena);
-    universe.handleGameCreated(level, playingClient, arena);
+    universe.handleGameCreated(level, client.clientID, arena);
   }
 
   void _onGameStartedMessage(dynamic data) {
+    /* TODO
     final list = listFromData(data);
     final client = PlayingClient.fromBuffer(list);
 
@@ -111,10 +99,11 @@ class Client {
     );
 
     GameStarted(this, model, [], _arena);
+     */
   }
 
   void dispose() {
-    if (!_serverUpdate$.isClosed) _serverUpdate$.close();
+    // TODO: clean up connection
   }
 
   static Client create(Universe universe, String level, String serverHost) {
