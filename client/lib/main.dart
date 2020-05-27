@@ -59,20 +59,20 @@ class UniverseWidget extends StatelessWidget {
 
   Widget _selectWidget(BuildContext context) {
     return StreamBuilder(
-      initialData: universe.initalState,
-      builder: (BuildContext context, AsyncSnapshot<UniverseState> snapshot) {
+      initialData: universe.initialUserState,
+      builder: (BuildContext context, AsyncSnapshot<UserState> snapshot) {
         if (!snapshot.hasData ||
-            snapshot.data.kind == StateOfTheUniverse.SelectingLevel) {
+            snapshot.data.kind == UserStates.SelectingLevel) {
           return MenuWidget(
             serverIP: serverIP,
             universe: universe,
           );
-        } else if (snapshot.data.kind == StateOfTheUniverse.GameCreated) {
+        } else if (snapshot.data.kind == UserStates.GameCreated) {
           return GameCreatedWidget(game: snapshot.data.game);
         }
         return null;
       },
-      stream: universe.state$,
+      stream: universe.userState$,
     );
   }
 }

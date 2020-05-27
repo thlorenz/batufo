@@ -4,52 +4,52 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
-enum StateOfTheUniverse {
+enum UserStates {
   SelectingLevel,
   GameCreated,
   GameRunning,
 }
 
-class UniverseState extends Equatable {
-  final StateOfTheUniverse kind;
+class UserState extends Equatable {
+  final UserStates kind;
   final String level;
   final ClientGame game;
-  const UniverseState(this.kind, {this.level, this.game});
+  const UserState(this.kind, {this.level, this.game});
 
   @override
   List<Object> get props => [kind, level, game?.gameState?.clientID];
 }
 
-class SelectingLevelState extends UniverseState {
-  const SelectingLevelState() : super(StateOfTheUniverse.SelectingLevel);
+class UserSelectingLevelState extends UserState {
+  const UserSelectingLevelState() : super(UserStates.SelectingLevel);
 }
 
-class GameCreatedState extends UniverseState {
-  const GameCreatedState({
+class UserGameCreatedState extends UserState {
+  const UserGameCreatedState({
     @required String level,
     @required ClientGame game,
-  }) : super(StateOfTheUniverse.GameCreated, level: level, game: game);
+  }) : super(UserStates.GameCreated, level: level, game: game);
 }
 
-class GameRunningState extends UniverseState {
-  const GameRunningState({
+class UserGameRunningState extends UserState {
+  const UserGameRunningState({
     @required String level,
     @required ClientGame game,
   }) : super(
-          StateOfTheUniverse.GameRunning,
+          UserStates.GameRunning,
           level: level,
           game: game,
         );
 }
 
 class Universe {
-  final _state$ = BehaviorSubject<UniverseState>();
+  final _userState$ = BehaviorSubject<UserState>();
   Universe._() {
-    _state$.add(initalState);
+    _userState$.add(initialUserState);
   }
 
-  UniverseState get initalState => SelectingLevelState();
-  Stream<UniverseState> get state$ => _state$.stream;
+  UserState get initialUserState => UserSelectingLevelState();
+  Stream<UserState> get userState$ => _userState$.stream;
 
   static final Universe _instance = Universe._();
   static Universe get instance {
@@ -67,11 +67,11 @@ class Universe {
       clientID: clientID,
       playerIndex: playerIndex,
     );
-    final state = GameCreatedState(level: level, game: game);
-    _state$.add(state);
+    final state = UserGameCreatedState(level: level, game: game);
+    _userState$.add(state);
   }
 
   void dispose() {
-    if (!_state$.isClosed) _state$.close();
+    if (!_userState$.isClosed) _userState$.close();
   }
 }
