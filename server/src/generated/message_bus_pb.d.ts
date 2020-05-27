@@ -3,6 +3,68 @@
 
 import * as jspb from "google-protobuf";
 
+export class InfoRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InfoRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InfoRequest): InfoRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: InfoRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InfoRequest;
+  static deserializeBinaryFromReader(message: InfoRequest, reader: jspb.BinaryReader): InfoRequest;
+}
+
+export namespace InfoRequest {
+  export type AsObject = {
+  }
+}
+
+export class InfoResponse extends jspb.Message {
+  clearLevelsList(): void;
+  getLevelsList(): Array<LevelInfo>;
+  setLevelsList(value: Array<LevelInfo>): void;
+  addLevels(value?: LevelInfo, index?: number): LevelInfo;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InfoResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: InfoResponse): InfoResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: InfoResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InfoResponse;
+  static deserializeBinaryFromReader(message: InfoResponse, reader: jspb.BinaryReader): InfoResponse;
+}
+
+export namespace InfoResponse {
+  export type AsObject = {
+    levelsList: Array<LevelInfo.AsObject>,
+  }
+}
+
+export class LevelInfo extends jspb.Message {
+  getName(): string;
+  setName(value: string): void;
+
+  getNplayers(): number;
+  setNplayers(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): LevelInfo.AsObject;
+  static toObject(includeInstance: boolean, msg: LevelInfo): LevelInfo.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: LevelInfo, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): LevelInfo;
+  static deserializeBinaryFromReader(message: LevelInfo, reader: jspb.BinaryReader): LevelInfo;
+}
+
+export namespace LevelInfo {
+  export type AsObject = {
+    name: string,
+    nplayers: number,
+  }
+}
+
 export class PlayRequest extends jspb.Message {
   getLevelname(): string;
   setLevelname(value: string): void;

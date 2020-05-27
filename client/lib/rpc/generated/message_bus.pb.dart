@@ -9,6 +9,93 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class InfoRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('InfoRequest', createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  InfoRequest._() : super();
+  factory InfoRequest() => create();
+  factory InfoRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory InfoRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  InfoRequest clone() => InfoRequest()..mergeFromMessage(this);
+  InfoRequest copyWith(void Function(InfoRequest) updates) => super.copyWith((message) => updates(message as InfoRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static InfoRequest create() => InfoRequest._();
+  InfoRequest createEmptyInstance() => create();
+  static $pb.PbList<InfoRequest> createRepeated() => $pb.PbList<InfoRequest>();
+  @$core.pragma('dart2js:noInline')
+  static InfoRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<InfoRequest>(create);
+  static InfoRequest _defaultInstance;
+}
+
+class InfoResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('InfoResponse', createEmptyInstance: create)
+    ..pc<LevelInfo>(1, 'levels', $pb.PbFieldType.PM, subBuilder: LevelInfo.create)
+    ..hasRequiredFields = false
+  ;
+
+  InfoResponse._() : super();
+  factory InfoResponse() => create();
+  factory InfoResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory InfoResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  InfoResponse clone() => InfoResponse()..mergeFromMessage(this);
+  InfoResponse copyWith(void Function(InfoResponse) updates) => super.copyWith((message) => updates(message as InfoResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static InfoResponse create() => InfoResponse._();
+  InfoResponse createEmptyInstance() => create();
+  static $pb.PbList<InfoResponse> createRepeated() => $pb.PbList<InfoResponse>();
+  @$core.pragma('dart2js:noInline')
+  static InfoResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<InfoResponse>(create);
+  static InfoResponse _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<LevelInfo> get levels => $_getList(0);
+}
+
+class LevelInfo extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('LevelInfo', createEmptyInstance: create)
+    ..aOS(1, 'name')
+    ..a<$core.int>(2, 'nplayers', $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false
+  ;
+
+  LevelInfo._() : super();
+  factory LevelInfo() => create();
+  factory LevelInfo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory LevelInfo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  LevelInfo clone() => LevelInfo()..mergeFromMessage(this);
+  LevelInfo copyWith(void Function(LevelInfo) updates) => super.copyWith((message) => updates(message as LevelInfo));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static LevelInfo create() => LevelInfo._();
+  LevelInfo createEmptyInstance() => create();
+  static $pb.PbList<LevelInfo> createRepeated() => $pb.PbList<LevelInfo>();
+  @$core.pragma('dart2js:noInline')
+  static LevelInfo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LevelInfo>(create);
+  static LevelInfo _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get name => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set name($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearName() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get nplayers => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set nplayers($core.int v) { $_setUnsignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasNplayers() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNplayers() => clearField(2);
+}
+
 class PlayRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayRequest', createEmptyInstance: create)
     ..aOS(1, 'levelName', protoName: 'levelName')

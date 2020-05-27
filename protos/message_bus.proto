@@ -1,5 +1,16 @@
 syntax = "proto3";
 
+message InfoRequest {}
+
+message InfoResponse {
+  repeated LevelInfo levels = 1;
+}
+
+message LevelInfo {
+  string name = 1;
+  uint32 nplayers = 2;
+}
+
 message PlayRequest {
   string levelName = 1;
 }

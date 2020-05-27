@@ -32,12 +32,11 @@ Future<void> main() async {
       ? 'http://192.168.1.7:$PORT'
       : 'http://localhost:$PORT';
 
-  final universe = Universe.instance;
+  final universe = Universe.create(serverHost: serverIP);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Scaffold(
       body: UniverseWidget(
-        serverIP: serverIP,
         universe: universe,
       ),
     ),
@@ -45,11 +44,9 @@ Future<void> main() async {
 }
 
 class UniverseWidget extends StatelessWidget {
-  final String serverIP;
   final Universe universe;
 
   const UniverseWidget({
-    @required this.serverIP,
     @required this.universe,
   }) : super();
 
@@ -64,7 +61,6 @@ class UniverseWidget extends StatelessWidget {
         if (!snapshot.hasData ||
             snapshot.data.kind == UserStates.SelectingLevel) {
           return MenuWidget(
-            serverIP: serverIP,
             universe: universe,
           );
         } else if (snapshot.data.kind == UserStates.GameCreated) {
