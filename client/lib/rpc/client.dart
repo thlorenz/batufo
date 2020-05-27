@@ -65,7 +65,9 @@ class Client {
     // TODO: use gameID to subscribe to server updates for that channel
     // final gameID = client.gameID;
     final arena = Arena.unpack(client.arena);
-    universe.handleGameCreated(level, client.clientID, arena);
+    // TODO: send as part of game created message
+    const playerIndex = 0;
+    universe.handleGameCreated(level, client.clientID, playerIndex, arena);
   }
 
   void _onGameStartedMessage(dynamic data) {

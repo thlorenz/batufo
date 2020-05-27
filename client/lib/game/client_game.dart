@@ -49,6 +49,7 @@ class ClientGame extends Game {
   ClientGame({
     @required this.arena,
     @required this.clientID,
+    @required int playerIndex,
   })  : _disposed = false,
         _started = false,
         _grid = Grid(GameProps.tileSize),
@@ -66,19 +67,37 @@ class ClientGame extends Game {
         ),
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
-    _players = <int, Player>{};
-    _players[clientID] = _initPlayer();
-
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
       tileSize: GameProps.tileSize,
     );
+
+    assert(playerIndex < arena.players.length,
+        '$playerIndex is out of range for ${arena.players}');
+    _players = <int, Player>{clientID: _initPlayer()};
+    gameState = _preStartGameState(playerIndex);
   }
 
   PlayerModel get clientPlayer {
     final player = gameState.players[clientID];
     assert(player != null, 'our player with id $clientID should exist');
     return player;
+  }
+
+  ClientGameState _preStartGameState(int playerIndex) {
+    final playerStartPosition = arena.players[playerIndex];
+    final hero = PlayerModel(
+      id: clientID,
+      health: GameProps.playerTotalHealth,
+      velocity: Offset.zero,
+      tilePosition: playerStartPosition,
+      angle: 0,
+    );
+    return ClientGameState(
+      clientID: clientID,
+      bullets: [],
+      players: {clientID: hero},
+    );
   }
 
   void start(ClientGameState gameState) {
@@ -104,11 +123,13 @@ class ClientGame extends Game {
   }
 
   void updateUI(double dt, double ts) {
-    if (!ready) return;
+    if (_disposed) return;
     _cameraFollow(
       clientPlayer.tilePosition.toWorldPosition(),
       dt,
     );
+    if (!started) return;
+
     for (final entry in gameState.players.entries) {
       final player = _players[entry.key];
       if (player == null) continue;
@@ -136,11 +157,10 @@ class ClientGame extends Game {
     if (disposed) return;
     _renderArena(canvas);
 
-    if (!started) return;
     for (final entry in gameState.players.entries) {
       final player = _players[entry.key];
       if (player == null) continue;
-      player.render(canvas, entry.value);
+      _players[clientID].render(canvas, entry.value);
     }
     _bullets.render(canvas, gameState.bullets);
   }

@@ -56,8 +56,17 @@ class Universe {
     return _instance;
   }
 
-  void handleGameCreated(String level, int clientID, Arena arena) {
-    final game = ClientGame(arena: arena, clientID: clientID);
+  void handleGameCreated(
+    String level,
+    int clientID,
+    int playerIndex,
+    Arena arena,
+  ) {
+    final game = ClientGame(
+      arena: arena,
+      clientID: clientID,
+      playerIndex: playerIndex,
+    );
     final state = GameCreatedState(level: level, game: game);
     _state$.add(state);
   }
