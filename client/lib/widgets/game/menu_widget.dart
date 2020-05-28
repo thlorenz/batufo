@@ -18,16 +18,23 @@ class MenuWidget extends StatelessWidget {
   }
 
   Widget _levelBox(BuildContext context, LevelInfo level) {
-    return FlatButton(
+    return RaisedButton(
       onPressed: () {
         _onLevelSelected(level.name);
       },
       child: Card(
-        child: Column(
-          children: [
-            Text(level.name, style: TextStyle(fontSize: 18)),
-            Text('${level.nplayers} players', style: TextStyle(fontSize: 14))
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text(level.name, style: TextStyle(fontSize: 18)),
+              // TODO(thlorenz): put image of level here
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+              ),
+              Text('${level.nplayers} players', style: TextStyle(fontSize: 14))
+            ],
+          ),
         ),
       ),
     );
