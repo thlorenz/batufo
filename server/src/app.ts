@@ -3,7 +3,7 @@ import http from 'http'
 import socketio from 'socket.io'
 import { Arena, levels } from './arena'
 import {
-  PlayingClient,
+  GameCreated,
   PlayRequest,
   InfoResponse,
   LevelInfo,
@@ -45,13 +45,13 @@ io.on('connection', (socket: socketio.Socket) => {
       const req = PlayRequest.deserializeBinary(data)
       logInfo('got play request for level [%s]', req.getLevelname())
 
-      const levelName = 'simple'
+      const levelName = req.getLevelname()
       const tileSize = 24
       const arena = Arena.forLevel(levelName, tileSize)
       const gameID = initOrUpdateGame()
       const clientID = 456
-      const playingClient = initPlayer(gameID, clientID, arena)
-      socket.emit('game:created', playingClient.serializeBinary().toString())
+      const createdGame = initGame(gameID, clientID, arena)
+      socket.emit('game:created', createdGame.serializeBinary().toString())
     })
 })
 
@@ -61,12 +61,12 @@ function initOrUpdateGame() {
   return gameID
 }
 
-function initPlayer(gameID: number, clientID: number, arena: Arena) {
-  const playingClient = new PlayingClient()
-  playingClient.setGameid(gameID)
-  playingClient.setClientid(clientID)
-  playingClient.setArena(arena.pack())
-  return playingClient
+function initGame(gameID: number, clientID: number, arena: Arena) {
+  const createdGame = new GameCreated()
+  createdGame.setGameid(gameID)
+  createdGame.setClientid(clientID)
+  createdGame.setArena(arena.pack())
+  return createdGame
 }
 
 app.listen(PORT)

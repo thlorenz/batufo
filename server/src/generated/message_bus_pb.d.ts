@@ -135,7 +135,7 @@ export namespace PackedServerUpdate {
   }
 }
 
-export class PlayingClient extends jspb.Message {
+export class GameCreated extends jspb.Message {
   getGameid(): number;
   setGameid(value: number): void;
 
@@ -148,16 +148,16 @@ export class PlayingClient extends jspb.Message {
   setArena(value?: PackedArena): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): PlayingClient.AsObject;
-  static toObject(includeInstance: boolean, msg: PlayingClient): PlayingClient.AsObject;
+  toObject(includeInstance?: boolean): GameCreated.AsObject;
+  static toObject(includeInstance: boolean, msg: GameCreated): GameCreated.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: PlayingClient, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): PlayingClient;
-  static deserializeBinaryFromReader(message: PlayingClient, reader: jspb.BinaryReader): PlayingClient;
+  static serializeBinaryToWriter(message: GameCreated, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GameCreated;
+  static deserializeBinaryFromReader(message: GameCreated, reader: jspb.BinaryReader): GameCreated;
 }
 
-export namespace PlayingClient {
+export namespace GameCreated {
   export type AsObject = {
     gameid: number,
     clientid: number,
@@ -210,8 +210,8 @@ export namespace PackedArena {
 export class PlayingClientEvent extends jspb.Message {
   hasClient(): boolean;
   clearClient(): void;
-  getClient(): PlayingClient | undefined;
-  setClient(value?: PlayingClient): void;
+  getClient(): GameCreated | undefined;
+  setClient(value?: GameCreated): void;
 
   hasSpawnedbullet(): boolean;
   clearSpawnedbullet(): void;
@@ -235,7 +235,7 @@ export class PlayingClientEvent extends jspb.Message {
 
 export namespace PlayingClientEvent {
   export type AsObject = {
-    client?: PlayingClient.AsObject,
+    client?: GameCreated.AsObject,
     spawnedbullet?: PackedBulletModel.AsObject,
     player?: PackedPlayerModel.AsObject,
   }

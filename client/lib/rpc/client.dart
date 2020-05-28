@@ -3,7 +3,7 @@ import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart'
-    show InfoRequest, InfoResponse, PlayRequest, PlayingClient;
+    show InfoRequest, InfoResponse, PlayRequest, GameCreated;
 import 'package:batufo/universe.dart';
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -80,7 +80,7 @@ class Client {
 
   void _onGameCreatedMessage(dynamic data) {
     final list = listFromData(data);
-    final client = PlayingClient.fromBuffer(list);
+    final client = GameCreated.fromBuffer(list);
 
     // TODO: use gameID to subscribe to server updates for that channel
     // final gameID = client.gameID;

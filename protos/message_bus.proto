@@ -25,7 +25,7 @@ message PackedServerUpdate {
   repeated PackedBulletModel spawnedBullets = 2;
 }
 
-message PlayingClient {
+message GameCreated {
   uint32 gameID = 1;
   uint32 clientID = 2;
   PackedArena arena = 3;
@@ -42,7 +42,7 @@ message PackedArena {
 // TODO: possibly we'll have two event types,
 // one for spawned bullets and another for player updates
 message PlayingClientEvent {
-  PlayingClient client = 1;
+  GameCreated client = 1;
   PackedBulletModel spawnedBullet = 2;
   PackedPlayerModel player = 3;
 }
