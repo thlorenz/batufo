@@ -43,7 +43,7 @@ CLOCK: [2020-05-25 Mon 18:47]--[2020-05-25 Mon 20:03] =>  1:16
 
 ** Add Stream based State Management
 
-*** Universe  [4/4]
+*** Universe  [6/6]
 
 Manages states and emits them so stream controllers can be used to render appropriate widgets.
 
@@ -51,8 +51,8 @@ Manages states and emits them so stream controllers can be used to render approp
 - [X] Game Created State (shows waiting for players) includes arena with all players
 - [X] Game Started State (subscribes to server updates) includes clientID
 - [X] ~Client~ rpc class should have no state
-- [ ] server needs to send ~ServerInfo~
-- [ ] server needs to include client index in arena players
+- [X] server needs to send ~ServerInfo~
+- [X] server needs to include client index in arena players
 
 ** DONE Socket.io Spike [0/0]
 :LOGBOOK:

@@ -1,31 +1,31 @@
 import debug from 'debug'
 import http from 'http'
 import socketio from 'socket.io'
-import { Arena, levels } from './arena'
+import { levels } from './arena'
 import {
   GameCreated,
   PlayRequest,
   InfoResponse,
   LevelInfo,
 } from './generated/message_bus_pb'
+import { games } from './server-game'
 
 const PORT = process.env.PORT || 2222
 const logInfo = debug('app:info')
 const logDebug = debug('app:debug')
 
-const app = http
-  .createServer(onRequest)
-  .on('listening', () => logInfo('listening on http://locahost:%d', PORT))
-
 const info = new InfoResponse()
 info.setLevelsList(
-  levels.map((x) => {
+  Array.from(levels).map(([_k, x]) => {
     const info = new LevelInfo()
     info.setName(x.name)
     info.setNplayers(x.nplayers)
     return info
   })
 )
+const app = http
+  .createServer(onRequest)
+  .on('listening', () => logInfo('listening on http://locahost:%d', PORT))
 
 const io = socketio(app)
 
@@ -46,28 +46,24 @@ io.on('connection', (socket: socketio.Socket) => {
       logInfo('got play request for level [%s]', req.getLevelname())
 
       const levelName = req.getLevelname()
-      const tileSize = 24
-      const arena = Arena.forLevel(levelName, tileSize)
-      const gameID = initOrUpdateGame()
-      const clientID = 456
-      const createdGame = initGame(gameID, clientID, arena)
+      const level = levels.get(levelName)
+      if (level == null) {
+        // TODO: socket.emit('error:level-not-found') or something similar
+        return
+      }
+      const { game, clientID, arena, playerIndex } = games.addClientToGame(
+        level
+      )
+
+      const createdGame = new GameCreated()
+      createdGame.setGameid(game.gameID)
+      createdGame.setClientid(clientID)
+      createdGame.setArena(arena.pack())
+      createdGame.setPlayerindex(playerIndex)
+
       socket.emit('game:created', createdGame.serializeBinary().toString())
+      // TODO: now create or find namespaced socket connection, see ./src/rpc/game-sockets.ts
     })
 })
-
-// TODO(thlorenz): do this for real
-function initOrUpdateGame() {
-  const gameID = 123
-  return gameID
-}
-
-function initGame(gameID: number, clientID: number, arena: Arena) {
-  const createdGame = new GameCreated()
-  createdGame.setGameid(gameID)
-  createdGame.setClientid(clientID)
-  createdGame.setArena(arena.pack())
-  createdGame.setPlayerindex(0);
-  return createdGame
-}
 
 app.listen(PORT)

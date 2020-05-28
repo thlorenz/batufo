@@ -2,35 +2,23 @@ import { strict as assert } from 'assert'
 import largeLevel from './levels/large'
 import simpleLevel from './levels/simple'
 import { Tilemap } from './tilemap'
-
-class Level {
-  private constructor(readonly nplayers: number, readonly name: string) {}
-
-  static fromLevelString(name: string, levelString: string): Level {
-    let nplayers = 0
-    for (const char of levelString) {
-      if (char === 'p') nplayers++
-    }
-    return new Level(nplayers, name)
-  }
-}
+import { Level } from './level'
 
 export class Levels {
-  static simple = simpleLevel
-  static large = largeLevel
+  static simple: Level = simpleLevel
+  static large: Level = largeLevel
 
   static tilemapForLevel(levelName: string): Tilemap {
-    const level = levelStrings.get(levelName)
+    const level = levels.get(levelName)
     assert(level != null, 'cannot find level $levelName')
-    return Tilemap.build(level)
+    return Tilemap.build(level.levelString)
   }
 }
 
-export const levelStrings: Map<string, string> = new Map([
+export const levels: Map<string, Level> = new Map([
   ['simple', Levels.simple],
   ['large', Levels.large],
 ])
 
-export const levels: Level[] = Array.from(
-  levelStrings
-).map(([key, levelString]) => Level.fromLevelString(key, levelString))
+export const levelNames: string[] = Array.from(levels.keys())
+export const validLevel = (levelName: string) => levels.has(levelName)

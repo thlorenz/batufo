@@ -1,4 +1,8 @@
-export default `
+import { Level } from '../level'
+
+export default Level.fromLevelString(
+  'simple',
+  `
 (---------------------)
 (                     )
 (                     )
@@ -11,3 +15,4 @@ export default `
 (    p                ---)
 (---------------------)
 `
+)

@@ -80,6 +80,8 @@ export class Arena {
     return Arena.fromTilemap(tilemap, tileSize)
   }
 
+  static TILE_SIZE = 24
+
   toString(): string {
     return `
 Arena: ${this.nrows}x${this.ncols}
