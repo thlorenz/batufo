@@ -142,6 +142,9 @@ export class GameCreated extends jspb.Message {
   getClientid(): number;
   setClientid(value: number): void;
 
+  getPlayerindex(): number;
+  setPlayerindex(value: number): void;
+
   hasArena(): boolean;
   clearArena(): void;
   getArena(): PackedArena | undefined;
@@ -161,6 +164,7 @@ export namespace GameCreated {
   export type AsObject = {
     gameid: number,
     clientid: number,
+    playerindex: number,
     arena?: PackedArena.AsObject,
   }
 }

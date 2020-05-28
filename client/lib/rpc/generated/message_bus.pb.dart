@@ -193,7 +193,8 @@ class GameCreated extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GameCreated', createEmptyInstance: create)
     ..a<$core.int>(1, 'gameID', $pb.PbFieldType.OU3, protoName: 'gameID')
     ..a<$core.int>(2, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
-    ..aOM<PackedArena>(3, 'arena', subBuilder: PackedArena.create)
+    ..a<$core.int>(3, 'playerIndex', $pb.PbFieldType.OU3, protoName: 'playerIndex')
+    ..aOM<PackedArena>(4, 'arena', subBuilder: PackedArena.create)
     ..hasRequiredFields = false
   ;
 
@@ -231,15 +232,24 @@ class GameCreated extends $pb.GeneratedMessage {
   void clearClientID() => clearField(2);
 
   @$pb.TagNumber(3)
-  PackedArena get arena => $_getN(2);
+  $core.int get playerIndex => $_getIZ(2);
   @$pb.TagNumber(3)
-  set arena(PackedArena v) { setField(3, v); }
+  set playerIndex($core.int v) { $_setUnsignedInt32(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasArena() => $_has(2);
+  $core.bool hasPlayerIndex() => $_has(2);
   @$pb.TagNumber(3)
-  void clearArena() => clearField(3);
-  @$pb.TagNumber(3)
-  PackedArena ensureArena() => $_ensure(2);
+  void clearPlayerIndex() => clearField(3);
+
+  @$pb.TagNumber(4)
+  PackedArena get arena => $_getN(3);
+  @$pb.TagNumber(4)
+  set arena(PackedArena v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasArena() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearArena() => clearField(4);
+  @$pb.TagNumber(4)
+  PackedArena ensureArena() => $_ensure(3);
 }
 
 class PackedArena extends $pb.GeneratedMessage {

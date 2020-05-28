@@ -1313,6 +1313,7 @@ proto.GameCreated.toObject = function(includeInstance, msg) {
   var f, obj = {
     gameid: jspb.Message.getFieldWithDefault(msg, 1, 0),
     clientid: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    playerindex: jspb.Message.getFieldWithDefault(msg, 3, 0),
     arena: (f = msg.getArena()) && proto.PackedArena.toObject(includeInstance, f)
   };
 
@@ -1359,6 +1360,10 @@ proto.GameCreated.deserializeBinaryFromReader = function(msg, reader) {
       msg.setClientid(value);
       break;
     case 3:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setPlayerindex(value);
+      break;
+    case 4:
       var value = new proto.PackedArena;
       reader.readMessage(value,proto.PackedArena.deserializeBinaryFromReader);
       msg.setArena(value);
@@ -1406,10 +1411,17 @@ proto.GameCreated.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getPlayerindex();
+  if (f !== 0) {
+    writer.writeUint32(
+      3,
+      f
+    );
+  }
   f = message.getArena();
   if (f != null) {
     writer.writeMessage(
-      3,
+      4,
       f,
       proto.PackedArena.serializeBinaryToWriter
     );
@@ -1454,12 +1466,30 @@ proto.GameCreated.prototype.setClientid = function(value) {
 
 
 /**
- * optional PackedArena arena = 3;
+ * optional uint32 playerIndex = 3;
+ * @return {number}
+ */
+proto.GameCreated.prototype.getPlayerindex = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.GameCreated} returns this
+ */
+proto.GameCreated.prototype.setPlayerindex = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional PackedArena arena = 4;
  * @return {?proto.PackedArena}
  */
 proto.GameCreated.prototype.getArena = function() {
   return /** @type{?proto.PackedArena} */ (
-    jspb.Message.getWrapperField(this, proto.PackedArena, 3));
+    jspb.Message.getWrapperField(this, proto.PackedArena, 4));
 };
 
 
@@ -1468,7 +1498,7 @@ proto.GameCreated.prototype.getArena = function() {
  * @return {!proto.GameCreated} returns this
 */
 proto.GameCreated.prototype.setArena = function(value) {
-  return jspb.Message.setWrapperField(this, 3, value);
+  return jspb.Message.setWrapperField(this, 4, value);
 };
 
 
@@ -1486,7 +1516,7 @@ proto.GameCreated.prototype.clearArena = function() {
  * @return {boolean}
  */
 proto.GameCreated.prototype.hasArena = function() {
-  return jspb.Message.getField(this, 3) != null;
+  return jspb.Message.getField(this, 4) != null;
 };
 
 

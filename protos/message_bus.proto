@@ -28,7 +28,8 @@ message PackedServerUpdate {
 message GameCreated {
   uint32 gameID = 1;
   uint32 clientID = 2;
-  PackedArena arena = 3;
+  uint32 playerIndex = 3;
+  PackedArena arena = 4;
 }
 
 message PackedArena {

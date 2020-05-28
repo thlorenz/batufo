@@ -66,6 +66,7 @@ function initGame(gameID: number, clientID: number, arena: Arena) {
   createdGame.setGameid(gameID)
   createdGame.setClientid(clientID)
   createdGame.setArena(arena.pack())
+  createdGame.setPlayerindex(0);
   return createdGame
 }
 
