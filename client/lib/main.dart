@@ -41,6 +41,8 @@ Future<void> main() async {
       ),
     ),
   ));
+
+  universe.clientRequestInfo();
 }
 
 class UniverseWidget extends StatelessWidget {
@@ -59,9 +61,14 @@ class UniverseWidget extends StatelessWidget {
       initialData: universe.initialUserState,
       builder: (BuildContext context, AsyncSnapshot<UserState> snapshot) {
         if (!snapshot.hasData ||
-            snapshot.data.kind == UserStates.SelectingLevel) {
+            snapshot.data.kind == UserStates.RequestingInfo) {
+          return Container(child: Text('Connecting ...'));
+        } else if (snapshot.data.kind == UserStates.SelectingLevel) {
+          final serverInfo = snapshot.data.serverInfo;
+          assert(serverInfo != null, 'cannot select level without server info');
           return MenuWidget(
             universe: universe,
+            levels: serverInfo.levels,
           );
         } else if (snapshot.data.kind == UserStates.GameCreated) {
           return GameCreatedWidget(game: snapshot.data.game);

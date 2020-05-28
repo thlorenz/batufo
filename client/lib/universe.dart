@@ -59,14 +59,14 @@ class UserGameCreatedState extends UserState {
   }
 }
 
-class UserGameRunningState extends UserState {
-  const UserGameRunningState({
+class UserGameStartedState extends UserState {
+  const UserGameStartedState({
     @required ServerInfo serverInfo,
     @required ClientGame game,
   }) : super(UserStates.GameRunning, serverInfo: serverInfo, game: game);
 
-  factory UserGameRunningState.from(UserState state, ClientGame game) {
-    return UserGameRunningState(serverInfo: state.serverInfo, game: game);
+  factory UserGameStartedState.from(UserState state, ClientGame game) {
+    return UserGameStartedState(serverInfo: state.serverInfo, game: game);
   }
 }
 
@@ -134,6 +134,10 @@ class Universe {
     );
     final state = UserGameCreatedState.from(_userState$.value, game);
     _userState$.add(state);
+  }
+
+  void clientRequestInfo() {
+    client.requestInfo();
   }
 
   void userSelectedLevel(String level) {
