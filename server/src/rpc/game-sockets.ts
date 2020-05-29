@@ -19,8 +19,15 @@ class GameSocket {
           game.gameID,
           socket.id
         )
+        this._tellClientsIfGameIsReady()
       })
       .on('client:update', this._onPlayingClientMessage)
+  }
+
+  _tellClientsIfGameIsReady() {
+    if (!this.game.full) return
+    logDebug('game is full, sending game:started')
+    this.nsp.emit('game:started')
   }
 
   _onPlayingClientMessage = (data: Uint8Array) => {
@@ -39,7 +46,7 @@ export class GameSockets {
   readonly gameSockets: Map<number, GameSocket> = new Map()
 
   addSocketFor(io: Server, game: ServerGame) {
-    // TODO: what if it already exists?
+    if (this.gameSockets.has(game.gameID)) return
     const gameSocket = new GameSocket(io, game)
     this.gameSockets.set(game.gameID, gameSocket)
   }

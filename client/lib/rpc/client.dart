@@ -87,6 +87,9 @@ class Client {
       ..once('connect', (dynamic _) {
         _log.info('game socket connected');
       })
+      ..once('game:started', (dynamic _) {
+        _log.info('game started');
+      })
       ..connect();
   }
 
