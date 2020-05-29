@@ -1,6 +1,4 @@
 class GameProps {
-  static const tileSize = 40.0;
-
   static const gesturePlayerRotationFactor = 0.04;
   static const gesturePlayerMinThrustDelta = 2.2;
 
@@ -13,7 +11,7 @@ class GameProps {
   static const playerThrustAcceleration =
       playerThrustForce / playerMass; // m/s2
   static const playerHitsWallSlowdown = 0.7;
-  static const playerSize = tileSize * 0.75;
+  static const playerSizeFactor = 0.75;
   static const playerTotalHealth = 100.0;
 
   static const playerHitsWallHealthFactor = 50.0;
@@ -25,6 +23,7 @@ class GameProps {
   static const bulletMsToExplode = 200.0;
 
   static bool get debugPlayerHitTile => false;
+  static bool get debugWallHitTile => false;
 
   static bool get renderBackground => true;
 

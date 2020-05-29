@@ -1,7 +1,5 @@
-import 'package:batufo/arena/levels.dart';
 import 'package:batufo/arena/tilemap.dart';
 import 'package:batufo/engine/tile_position.dart';
-import 'package:batufo/game_props.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart' show PackedArena;
 import 'package:flutter/foundation.dart';
 
@@ -11,6 +9,7 @@ class Arena {
   final List<TilePosition> players;
   final int nrows;
   final int ncols;
+  final int tileSize;
 
   Arena({
     @required this.floorTiles,
@@ -18,12 +17,13 @@ class Arena {
     @required this.players,
     @required this.nrows,
     @required this.ncols,
+    @required this.tileSize,
   });
 
   bool isFull(int registeredPlayers) => players.length == registeredPlayers;
   TilePosition playerPosition(int idx) => players[idx];
 
-  factory Arena.fromTilemap(Tilemap tilemap, double tileSize) {
+  factory Arena.fromTilemap(Tilemap tilemap, int tileSize) {
     final nrows = tilemap.nrows;
     final ncols = tilemap.ncols;
     final center = tileSize / 2;
@@ -53,6 +53,7 @@ class Arena {
       players: initialPlayers,
       nrows: nrows,
       ncols: ncols,
+      tileSize: tileSize,
     );
   }
 
@@ -62,7 +63,8 @@ class Arena {
     final packedPlayerPositions = players.map((x) => x.pack());
     final packedArena = PackedArena()
       ..nrows = nrows
-      ..ncols = ncols;
+      ..ncols = ncols
+      ..tileSize = tileSize;
     packedFloorTiles.forEach((x) => packedArena.floorTiles.add(x));
     packedWalls.forEach((x) => packedArena.walls.add(x));
     packedPlayerPositions.forEach((x) => packedArena.playerPositions.add(x));
@@ -83,12 +85,8 @@ class Arena {
       players: playerPositions,
       nrows: data.nrows,
       ncols: data.ncols,
+      tileSize: data.tileSize,
     );
-  }
-
-  static Arena forLevel(String levelName) {
-    final tilemap = Levels.tilemapForLevel(levelName);
-    return Arena.fromTilemap(tilemap, GameProps.tileSize);
   }
 
   String toString() {

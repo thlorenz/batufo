@@ -18,18 +18,19 @@ class GameController {
   GameController(this._arena, this._gameState)
       : _bulletsSpawner = BulletsSpawner(
           bulletForce: GameProps.bulletForce,
-          playerSize: GameProps.playerSize,
+          playerSize: GameProps.playerSizeFactor * _arena.tileSize,
         ) {
+    final playerSize = GameProps.playerSizeFactor * _arena.tileSize;
     final colliders = Colliders(
       _arena.nrows,
       _arena.ncols,
       walls: _arena.walls,
-      playerRadius: GameProps.playerSize,
+      playerRadius: playerSize,
       bulletHitsPlayerHealthToll: GameProps.bulletHitsPlayerHealthToll,
     );
 
     _playerController = PlayerController(
-      hitSize: GameProps.playerSize,
+      hitSize: playerSize,
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,
       wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
       playerCollidingAt: colliders.playerCollidingAt,
@@ -39,7 +40,7 @@ class GameController {
     _bulletsController = BulletsController(
       _gameState.bullets,
       bulletCollidingAt: colliders.bulletCollidingAt,
-      tileSize: GameProps.tileSize,
+      tileSize: _arena.tileSize.toDouble(),
     );
   }
 

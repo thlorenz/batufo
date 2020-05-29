@@ -1566,7 +1566,8 @@ proto.PackedArena.toObject = function(includeInstance, msg) {
     playerpositionsList: jspb.Message.toObjectList(msg.getPlayerpositionsList(),
     proto.PackedTilePosition.toObject, includeInstance),
     nrows: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    ncols: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    ncols: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    tilesize: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -1625,6 +1626,10 @@ proto.PackedArena.deserializeBinaryFromReader = function(msg, reader) {
     case 5:
       var value = /** @type {number} */ (reader.readUint32());
       msg.setNcols(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setTilesize(value);
       break;
     default:
       reader.skipField();
@@ -1690,6 +1695,13 @@ proto.PackedArena.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0) {
     writer.writeUint32(
       5,
+      f
+    );
+  }
+  f = message.getTilesize();
+  if (f !== 0) {
+    writer.writeUint32(
+      6,
       f
     );
   }
@@ -1843,6 +1855,24 @@ proto.PackedArena.prototype.getNcols = function() {
  */
 proto.PackedArena.prototype.setNcols = function(value) {
   return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional uint32 tileSize = 6;
+ * @return {number}
+ */
+proto.PackedArena.prototype.getTilesize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.PackedArena} returns this
+ */
+proto.PackedArena.prototype.setTilesize = function(value) {
+  return jspb.Message.setProto3IntField(this, 6, value);
 };
 
 

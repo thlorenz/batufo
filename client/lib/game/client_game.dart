@@ -52,13 +52,13 @@ class ClientGame extends Game {
     @required int playerIndex,
   })  : _disposed = false,
         _started = false,
-        _grid = Grid(GameProps.tileSize),
+        _grid = Grid(arena.tileSize.toDouble()),
         _background = Background(
           arena.floorTiles,
-          GameProps.tileSize,
+          arena.tileSize.toDouble(),
           GameProps.renderBackground,
         ),
-        _walls = Walls(arena.walls, GameProps.tileSize),
+        _walls = Walls(arena.walls, arena.tileSize.toDouble()),
         _inputProcessor = InputProcessor(
           keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
           keyboardThrustForce: GameProps.playerThrustForce,
@@ -69,13 +69,14 @@ class ClientGame extends Game {
         _backgroundCamera = Offset.zero {
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
-      tileSize: GameProps.tileSize,
+      tileSize: arena.tileSize.toDouble(),
     );
 
     assert(playerIndex < arena.players.length,
         '$playerIndex is out of range for ${arena.players}');
     _players = <int, Player>{clientID: _initPlayer()};
     gameState = _preStartGameState(playerIndex);
+    _gameController = GameController(arena, gameState);
   }
 
   PlayerModel get clientPlayer {
@@ -103,8 +104,6 @@ class ClientGame extends Game {
   void start() {
     if (_started) return;
     // this.gameState = gameState;
-    _gameController = GameController(arena, gameState);
-
     for (final clientID in gameState.players.keys) {
       _players[clientID] = _initPlayer();
     }
@@ -198,11 +197,12 @@ class ClientGame extends Game {
   }
 
   Player _initPlayer() {
+    final playerSize = GameProps.playerSizeFactor * arena.tileSize;
     return Player(
       playerImagePath: assets.player.imagePath,
       deadPlayerImagePath: assets.skull.imagePath,
-      tileSize: GameProps.tileSize,
-      hitSize: GameProps.playerSize,
+      tileSize: arena.tileSize.toDouble(),
+      hitSize: playerSize,
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
     );
   }

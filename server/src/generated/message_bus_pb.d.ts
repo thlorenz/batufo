@@ -191,6 +191,9 @@ export class PackedArena extends jspb.Message {
   getNcols(): number;
   setNcols(value: number): void;
 
+  getTilesize(): number;
+  setTilesize(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PackedArena.AsObject;
   static toObject(includeInstance: boolean, msg: PackedArena): PackedArena.AsObject;
@@ -208,6 +211,7 @@ export namespace PackedArena {
     playerpositionsList: Array<PackedTilePosition.AsObject>,
     nrows: number,
     ncols: number,
+    tilesize: number,
   }
 }
 

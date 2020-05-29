@@ -9,7 +9,8 @@ export class Arena {
     readonly walls: TilePosition[],
     readonly players: TilePosition[],
     readonly nrows: number,
-    readonly ncols: number
+    readonly ncols: number,
+    readonly tileSize: number
   ) {}
 
   isFull(registeredPlayers: number) {
@@ -38,7 +39,7 @@ export class Arena {
         }
       }
     }
-    return new Arena(floorTiles, walls, initialPlayers, nrows, ncols)
+    return new Arena(floorTiles, walls, initialPlayers, nrows, ncols, tileSize)
   }
 
   pack(): PackedArena {
@@ -49,6 +50,7 @@ export class Arena {
     const packedArena = new PackedArena()
     packedArena.setNrows(this.nrows)
     packedArena.setNcols(this.ncols)
+    packedArena.setTilesize(this.tileSize)
 
     packedArena.setFloortilesList(packedFloorTiles)
     packedArena.setWallsList(packedWalls)
@@ -71,7 +73,8 @@ export class Arena {
       walls,
       playerPositions,
       data.getNrows(),
-      data.getNcols()
+      data.getNcols(),
+      data.getTilesize()
     )
   }
 
@@ -80,7 +83,7 @@ export class Arena {
     return Arena.fromTilemap(tilemap, tileSize)
   }
 
-  static TILE_SIZE = 24
+  static TILE_SIZE = 40
 
   toString(): string {
     return `

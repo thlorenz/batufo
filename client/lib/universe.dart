@@ -1,5 +1,6 @@
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
+import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/client_game.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/states/connection_state.dart';
@@ -55,6 +56,7 @@ class Universe {
     int playerIndex,
     Arena arena,
   ) {
+    WorldPosition.tileSize = arena.tileSize.toDouble();
     final game = ClientGame(
       arena: arena,
       clientID: clientID,

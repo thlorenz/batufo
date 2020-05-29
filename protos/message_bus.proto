@@ -38,6 +38,7 @@ message PackedArena {
   repeated PackedTilePosition playerPositions = 3;
   uint32 nrows = 4;
   uint32 ncols = 5;
+  uint32 tileSize = 6;
 }
 
 message PlayingClientEvent {

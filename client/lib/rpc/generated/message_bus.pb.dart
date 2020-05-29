@@ -259,6 +259,7 @@ class PackedArena extends $pb.GeneratedMessage {
     ..pc<PackedTilePosition>(3, 'playerPositions', $pb.PbFieldType.PM, protoName: 'playerPositions', subBuilder: PackedTilePosition.create)
     ..a<$core.int>(4, 'nrows', $pb.PbFieldType.OU3)
     ..a<$core.int>(5, 'ncols', $pb.PbFieldType.OU3)
+    ..a<$core.int>(6, 'tileSize', $pb.PbFieldType.OU3, protoName: 'tileSize')
     ..hasRequiredFields = false
   ;
 
@@ -303,6 +304,15 @@ class PackedArena extends $pb.GeneratedMessage {
   $core.bool hasNcols() => $_has(4);
   @$pb.TagNumber(5)
   void clearNcols() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.int get tileSize => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set tileSize($core.int v) { $_setUnsignedInt32(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasTileSize() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearTileSize() => clearField(6);
 }
 
 class PlayingClientEvent extends $pb.GeneratedMessage {

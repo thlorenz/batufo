@@ -3,6 +3,13 @@ import 'dart:ui' show Canvas, Rect;
 import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game/assets/assets.dart';
+import 'package:batufo/game_props.dart';
+import 'package:flutter/material.dart';
+
+Paint _debugHitTilePaint = Paint()
+  ..color = Colors.red
+  ..strokeWidth = 0.5
+  ..style = PaintingStyle.stroke;
 
 class Walls {
   final Sprite _sprite;
@@ -19,7 +26,13 @@ class Walls {
   void render(Canvas canvas) {
     for (final rect in _rects) {
       _sprite.renderRect(canvas, rect);
+      _renderDebugHitTile(canvas, rect);
     }
+  }
+
+  void _renderDebugHitTile(Canvas canvas, Rect rect) {
+    if (!GameProps.debugWallHitTile) return;
+    canvas.drawRect(rect, _debugHitTilePaint);
   }
 
   void _initRects() {
