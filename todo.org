@@ -6,13 +6,42 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Networking
 
-** PlayerRequest -> PlayingClient Init [7/7]
+** [ ] Fix Problem after Game Started
+
+- only affects player at index 0
+
+#+BEGIN_SRC
+The following RangeError was thrown during a scheduler callback:
+RangeError (index): Invalid value: Not in range 0..285, inclusive: -2
+
+When the exception was thrown, this was the stack:
+#0      List.[] (dart:core-patch/array.dart:14:52)
+#1      Colliders._wallAt (package:batufo/controllers/helpers/colliders.dart:52:42)
+#2      Colliders.playerCollidingAt (package:batufo/controllers/helpers/colliders.dart:47:12)
+#3      PlayerController._checkWallCollision (package:batufo/controllers/player_controller.dart:97:26)
+#4      PlayerController.update (package:batufo/controllers/player_controller.dart:43:19)
+
+#+END_SRC
+
+
+** Server Relays Player Updates to other Players
+
+ - [ ] players need to send updates to server
+ - [ ] server needs to propagate them
+ - [ ] cleints need to sync other players accordingly
+
+** Server Relays Spawned Bullest to other Players
+
+ - [ ] when player shoots bullet it updates server either as part of player update or separate event
+ - [ ] server updates all clients with spawned bullet info
+
+** DONE PlayerRequest -> PlayingClient Init [7/7]
 :LOGBOOK:
 CLOCK: [2020-05-22 Fri 18:35]--[2020-05-22 Fri 19:59] =>  1:24
 CLOCK: [2020-05-21 Thu 19:50]--[2020-05-21 Thu 20:20] =>  0:30
 CLOCK: [2020-05-21 Thu 18:37]--[2020-05-21 Thu 19:42] =>  1:05
 :END:
-  
+
 - [X] send play request to server including desired level
 - [X] port tilemap creation from dart to typescript
 - [X] port arena creation from dart to typescript in order to build arena on the server
@@ -20,11 +49,8 @@ CLOCK: [2020-05-21 Thu 18:37]--[2020-05-21 Thu 19:42] =>  1:05
 - [X] implement two sample levels
 - [X] server reponds with ids + arena
 - [X] client prints out arena info
-  
 
-** Server Relays Player Updates to other Players
-
-** Init Client from Server Arena
+** DONE Init Client from Server Arena
 :LOGBOOK:
 CLOCK: [2020-05-25 Mon 18:47]--[2020-05-25 Mon 20:03] =>  1:16
 :END:
@@ -40,8 +66,7 @@ CLOCK: [2020-05-25 Mon 18:47]--[2020-05-25 Mon 20:03] =>  1:16
 - [[https://github.com/rikulo/socket.io-client-dart][dart socket.io client lib]]
 - [[https://github.com/improbable-eng/ts-protoc-gen][ts-protoc-gen]]
 
-
-** Add Stream based State Management
+** DONE Add Stream based State Management
 
 *** Universe  [6/6]
 
@@ -77,7 +102,6 @@ CLOCK: [2020-05-14 Thu 18:40]--[2020-05-14 Thu 20:20] =>  1:40
 - also data received is not a ~List~ either
 - possibly include a string in the payload to understand data format better
 
-  
 ** KILL Using JSON format
 :LOGBOOK:
 CLOCK: [2020-05-20 Wed 19:51]--[2020-05-20 Wed 20:11] =>  0:20
