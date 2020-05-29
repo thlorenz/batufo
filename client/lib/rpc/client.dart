@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
@@ -5,7 +7,12 @@ import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart'
-    show InfoRequest, InfoResponse, PlayRequest, GameCreated;
+    show
+        GameCreated,
+        InfoRequest,
+        InfoResponse,
+        PackedClientPlayerUpdate,
+        PlayRequest;
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:flutter/foundation.dart';
@@ -94,13 +101,14 @@ class Client {
         _log.info('game started');
         universe.clientStartedGame();
       })
+      ..on('game:client-update', _onClientPlayerUpdateMessage)
       ..connect();
   }
 
   void sendClientPlayerUpdate(ClientPlayerUpdate update) {
     assert(_gameSocket != null, 'cannot send update without a connected game');
     assert(update != null, 'need a valid non-null update');
-    _log.info('sending client update: $update');
+    _log.finer('sending client update: $update');
     final packed = update.pack();
     final buf = packed.writeToBuffer();
     _gameSocket.emitWithBinary('game:client-update', buf);
@@ -119,6 +127,16 @@ class Client {
       arena,
     );
     connectGameSocket(createdGame);
+  }
+
+  void _onClientPlayerUpdateMessage(dynamic data) {
+    // TODO: why is this only working here instead of being parsed as JSON?
+    // since this is just rebroadcast directly by the server
+    // we don't need to pull things out of a string
+    final list = data as Uint8List;
+    final packed = PackedClientPlayerUpdate.fromBuffer(list);
+    final clientPlayerUpdate = ClientPlayerUpdate.unpack(packed);
+    universe.receivedClientPlayerUpdate(clientPlayerUpdate);
   }
 
   void dispose() {

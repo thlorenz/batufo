@@ -51,13 +51,6 @@ message PackedArena {
   uint32 tileSize = 6;
 }
 
-message PlayingClientEvent {
-  uint32 gameID = 1;
-  uint32 clientID = 2;
-  PackedBulletModel spawnedBullet = 3;
-  PackedPlayerModel player = 4;
-}
-
 message PackedPlayerModel {
   uint32 id = 1;
   PackedTilePosition tilePosition = 2;

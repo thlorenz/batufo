@@ -267,42 +267,6 @@ export namespace PackedArena {
   }
 }
 
-export class PlayingClientEvent extends jspb.Message {
-  getGameid(): number;
-  setGameid(value: number): void;
-
-  getClientid(): number;
-  setClientid(value: number): void;
-
-  hasSpawnedbullet(): boolean;
-  clearSpawnedbullet(): void;
-  getSpawnedbullet(): PackedBulletModel | undefined;
-  setSpawnedbullet(value?: PackedBulletModel): void;
-
-  hasPlayer(): boolean;
-  clearPlayer(): void;
-  getPlayer(): PackedPlayerModel | undefined;
-  setPlayer(value?: PackedPlayerModel): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): PlayingClientEvent.AsObject;
-  static toObject(includeInstance: boolean, msg: PlayingClientEvent): PlayingClientEvent.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: PlayingClientEvent, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): PlayingClientEvent;
-  static deserializeBinaryFromReader(message: PlayingClientEvent, reader: jspb.BinaryReader): PlayingClientEvent;
-}
-
-export namespace PlayingClientEvent {
-  export type AsObject = {
-    gameid: number,
-    clientid: number,
-    spawnedbullet?: PackedBulletModel.AsObject,
-    player?: PackedPlayerModel.AsObject,
-  }
-}
-
 export class PackedPlayerModel extends jspb.Message {
   getId(): number;
   setId(value: number): void;

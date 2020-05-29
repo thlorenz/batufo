@@ -9,8 +9,9 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 ** Server Relays Player Updates to other Players
 
  - [X] players need to send updates to server
- - [ ] server needs to propagate them
- - [ ] cleints need to sync other players accordingly
+ - [X] server needs to propagate them
+ - [ ] figure out why ~Offset~ is always ~Offset.zero~
+ - [ ] clients need to sync other players accordingly
 
 ** Server Relays Spawned Bullest to other Players
 

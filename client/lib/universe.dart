@@ -138,4 +138,8 @@ class Universe {
     if (!_userState$.isClosed) _userState$.close();
     _disposeClientUpdateSubs();
   }
+
+  void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {
+    _log.fine(clientPlayerUpdate.toString());
+  }
 }

@@ -1,44 +1,35 @@
-import { strict as assert } from 'assert'
 import { Namespace, Server } from 'socket.io'
 import { ServerGame } from '../server-game'
-import { PlayingClientEvent } from '../generated/message_bus_pb'
 
 import socketio from 'socket.io'
 import debug from 'debug'
 const logDebug = debug('game-socket:debug')
+const logTrace = debug('game-socket:trace')
 
 // TODO: https://socket.io/docs/rooms-and-namespaces/
 class GameSocket {
   readonly nsp: Namespace
   constructor(readonly io: Server, readonly game: ServerGame) {
     this.nsp = io.of(`/${game.gameID}`)
-    this.nsp
-      .on('connection', (socket: socketio.Socket) => {
-        logDebug(
-          'namespaced connection game: %s, socket: %s',
-          game.gameID,
-          socket.id
-        )
-        this._tellClientsIfGameIsReady()
+    this.nsp.on('connection', (socket: socketio.Socket) => {
+      logDebug(
+        'namespaced connection game: %s, socket: %s',
+        game.gameID,
+        socket.id
+      )
+      this._tellClientsIfGameIsReady()
+
+      socket.on('game:client-update', (data: Uint8Array) => {
+        logTrace('got playing client message -> broadcasting')
+        socket.broadcast.emit('game:client-update', data)
       })
-      .on('client:update', this._onPlayingClientMessage)
+    })
   }
 
   _tellClientsIfGameIsReady() {
     if (!this.game.full) return
     logDebug('game is full, sending game:started')
     this.nsp.emit('game:started')
-  }
-
-  _onPlayingClientMessage = (data: Uint8Array) => {
-    logDebug('got a message')
-    const req = PlayingClientEvent.deserializeBinary(data)
-    const gameID = req.getGameid()
-    assert(
-      gameID === this.game.gameID,
-      `${gameID} needs to match ${this.game.gameID}`
-    )
-    logDebug(req)
   }
 }
 
