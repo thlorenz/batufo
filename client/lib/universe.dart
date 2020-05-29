@@ -65,8 +65,8 @@ class UserGameStartedState extends UserState {
     @required ClientGame game,
   }) : super(UserStates.GameRunning, serverInfo: serverInfo, game: game);
 
-  factory UserGameStartedState.from(UserState state, ClientGame game) {
-    return UserGameStartedState(serverInfo: state.serverInfo, game: game);
+  factory UserGameStartedState.from(UserState state) {
+    return UserGameStartedState(serverInfo: state.serverInfo, game: state.game);
   }
 }
 
@@ -138,6 +138,14 @@ class Universe {
 
   void clientRequestInfo() {
     client.requestInfo();
+  }
+
+  void clientStartedGame() {
+    final state = UserGameStartedState.from(_userState$.value);
+    // TODO: need to send player info from server
+    // to compose ClientGameState and pass it in here
+    state.game.start();
+    _userState$.add(state);
   }
 
   void userSelectedLevel(String level) {

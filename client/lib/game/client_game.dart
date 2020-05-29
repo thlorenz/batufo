@@ -100,9 +100,9 @@ class ClientGame extends Game {
     );
   }
 
-  void start(ClientGameState gameState) {
+  void start() {
     if (_started) return;
-    this.gameState = gameState;
+    // this.gameState = gameState;
     _gameController = GameController(arena, gameState);
 
     for (final clientID in gameState.players.keys) {

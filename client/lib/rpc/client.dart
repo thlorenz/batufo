@@ -89,6 +89,7 @@ class Client {
       })
       ..once('game:started', (dynamic _) {
         _log.info('game started');
+        universe.clientStartedGame();
       })
       ..connect();
   }
