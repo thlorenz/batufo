@@ -135,6 +135,58 @@ export namespace PackedServerUpdate {
   }
 }
 
+export class PackedClientPlayerUpdate extends jspb.Message {
+  getClientid(): number;
+  setClientid(value: number): void;
+
+  hasPlayer(): boolean;
+  clearPlayer(): void;
+  getPlayer(): PackedPlayerModel | undefined;
+  setPlayer(value?: PackedPlayerModel): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PackedClientPlayerUpdate.AsObject;
+  static toObject(includeInstance: boolean, msg: PackedClientPlayerUpdate): PackedClientPlayerUpdate.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PackedClientPlayerUpdate, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PackedClientPlayerUpdate;
+  static deserializeBinaryFromReader(message: PackedClientPlayerUpdate, reader: jspb.BinaryReader): PackedClientPlayerUpdate;
+}
+
+export namespace PackedClientPlayerUpdate {
+  export type AsObject = {
+    clientid: number,
+    player?: PackedPlayerModel.AsObject,
+  }
+}
+
+export class PackedClientSpawnedBulletUpdate extends jspb.Message {
+  getClientid(): number;
+  setClientid(value: number): void;
+
+  hasSpawnedbullet(): boolean;
+  clearSpawnedbullet(): void;
+  getSpawnedbullet(): PackedBulletModel | undefined;
+  setSpawnedbullet(value?: PackedBulletModel): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PackedClientSpawnedBulletUpdate.AsObject;
+  static toObject(includeInstance: boolean, msg: PackedClientSpawnedBulletUpdate): PackedClientSpawnedBulletUpdate.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PackedClientSpawnedBulletUpdate, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PackedClientSpawnedBulletUpdate;
+  static deserializeBinaryFromReader(message: PackedClientSpawnedBulletUpdate, reader: jspb.BinaryReader): PackedClientSpawnedBulletUpdate;
+}
+
+export namespace PackedClientSpawnedBulletUpdate {
+  export type AsObject = {
+    clientid: number,
+    spawnedbullet?: PackedBulletModel.AsObject,
+  }
+}
+
 export class GameCreated extends jspb.Message {
   getGameid(): number;
   setGameid(value: number): void;

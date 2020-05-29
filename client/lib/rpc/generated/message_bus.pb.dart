@@ -189,6 +189,92 @@ class PackedServerUpdate extends $pb.GeneratedMessage {
   $core.List<PackedBulletModel> get spawnedBullets => $_getList(1);
 }
 
+class PackedClientPlayerUpdate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedClientPlayerUpdate', createEmptyInstance: create)
+    ..a<$core.int>(1, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
+    ..aOM<PackedPlayerModel>(2, 'player', subBuilder: PackedPlayerModel.create)
+    ..hasRequiredFields = false
+  ;
+
+  PackedClientPlayerUpdate._() : super();
+  factory PackedClientPlayerUpdate() => create();
+  factory PackedClientPlayerUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedClientPlayerUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedClientPlayerUpdate clone() => PackedClientPlayerUpdate()..mergeFromMessage(this);
+  PackedClientPlayerUpdate copyWith(void Function(PackedClientPlayerUpdate) updates) => super.copyWith((message) => updates(message as PackedClientPlayerUpdate));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PackedClientPlayerUpdate create() => PackedClientPlayerUpdate._();
+  PackedClientPlayerUpdate createEmptyInstance() => create();
+  static $pb.PbList<PackedClientPlayerUpdate> createRepeated() => $pb.PbList<PackedClientPlayerUpdate>();
+  @$core.pragma('dart2js:noInline')
+  static PackedClientPlayerUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedClientPlayerUpdate>(create);
+  static PackedClientPlayerUpdate _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get clientID => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set clientID($core.int v) { $_setUnsignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasClientID() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearClientID() => clearField(1);
+
+  @$pb.TagNumber(2)
+  PackedPlayerModel get player => $_getN(1);
+  @$pb.TagNumber(2)
+  set player(PackedPlayerModel v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPlayer() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPlayer() => clearField(2);
+  @$pb.TagNumber(2)
+  PackedPlayerModel ensurePlayer() => $_ensure(1);
+}
+
+class PackedClientSpawnedBulletUpdate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedClientSpawnedBulletUpdate', createEmptyInstance: create)
+    ..a<$core.int>(1, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
+    ..aOM<PackedBulletModel>(2, 'spawnedBullet', protoName: 'spawnedBullet', subBuilder: PackedBulletModel.create)
+    ..hasRequiredFields = false
+  ;
+
+  PackedClientSpawnedBulletUpdate._() : super();
+  factory PackedClientSpawnedBulletUpdate() => create();
+  factory PackedClientSpawnedBulletUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedClientSpawnedBulletUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedClientSpawnedBulletUpdate clone() => PackedClientSpawnedBulletUpdate()..mergeFromMessage(this);
+  PackedClientSpawnedBulletUpdate copyWith(void Function(PackedClientSpawnedBulletUpdate) updates) => super.copyWith((message) => updates(message as PackedClientSpawnedBulletUpdate));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PackedClientSpawnedBulletUpdate create() => PackedClientSpawnedBulletUpdate._();
+  PackedClientSpawnedBulletUpdate createEmptyInstance() => create();
+  static $pb.PbList<PackedClientSpawnedBulletUpdate> createRepeated() => $pb.PbList<PackedClientSpawnedBulletUpdate>();
+  @$core.pragma('dart2js:noInline')
+  static PackedClientSpawnedBulletUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedClientSpawnedBulletUpdate>(create);
+  static PackedClientSpawnedBulletUpdate _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get clientID => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set clientID($core.int v) { $_setUnsignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasClientID() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearClientID() => clearField(1);
+
+  @$pb.TagNumber(2)
+  PackedBulletModel get spawnedBullet => $_getN(1);
+  @$pb.TagNumber(2)
+  set spawnedBullet(PackedBulletModel v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSpawnedBullet() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSpawnedBullet() => clearField(2);
+  @$pb.TagNumber(2)
+  PackedBulletModel ensureSpawnedBullet() => $_ensure(1);
+}
+
 class GameCreated extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GameCreated', createEmptyInstance: create)
     ..a<$core.int>(1, 'gameID', $pb.PbFieldType.OU3, protoName: 'gameID')

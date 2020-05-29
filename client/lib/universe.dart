@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/client_game.dart';
 import 'package:batufo/rpc/client.dart';
+import 'package:batufo/rpc/client_player_update.dart';
+import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/states/connection_state.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:flutter/foundation.dart';
@@ -13,9 +17,17 @@ final _log = Log<Universe>();
 class Universe {
   final _userState$ = BehaviorSubject<UserState>();
   final _connectionState$ = BehaviorSubject<ConnectionState>();
+  final Duration clientPlayerUpdateThrottle;
+  final Duration clientSpawnedBulletUpdateThrottle;
   Client client;
+  StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
+  StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
 
-  Universe._({@required String serverHost}) {
+  Universe._({
+    @required String serverHost,
+    @required this.clientPlayerUpdateThrottle,
+    @required this.clientSpawnedBulletUpdateThrottle,
+  }) {
     _userState$.add(initialUserState);
     client = Client(serverHost: serverHost, universe: this);
   }
@@ -27,8 +39,16 @@ class Universe {
   Stream<ConnectionState> get connectionState$ => _connectionState$;
 
   static Universe _instance;
-  static Universe create({@required String serverHost}) {
-    return _instance = Universe._(serverHost: serverHost);
+  static Universe create({
+    @required String serverHost,
+    Duration clientPlayerUpdateThrottle = const Duration(milliseconds: 100),
+    Duration clientSpawnedBulletUpdateThrottle = Duration.zero,
+  }) {
+    return _instance = Universe._(
+      serverHost: serverHost,
+      clientPlayerUpdateThrottle: clientPlayerUpdateThrottle,
+      clientSpawnedBulletUpdateThrottle: clientSpawnedBulletUpdateThrottle,
+    );
   }
 
   static Universe get instance {
@@ -72,10 +92,9 @@ class Universe {
 
   void clientStartedGame() {
     final state = UserGameStartedState.from(_userState$.value);
-    // TODO: need to send player info from server
-    // to compose ClientGameState and pass it in here
     state.game.start();
     _addUserState(state);
+    _subscribeClientUpdates(state.game);
   }
 
   void userSelectedLevel(String level) {
@@ -87,7 +106,36 @@ class Universe {
     _userState$.add(state);
   }
 
+  void _subscribeClientUpdates(ClientGame game) {
+    _disposeClientUpdateSubs();
+
+    _clientPlayerUpdateSub = game.clientPlayerUpdate$
+        .throttleTime(clientPlayerUpdateThrottle)
+        .listen(_onClientPlayerUpdate);
+
+    _clientSpawnedBulletUpdateSub =
+        (clientSpawnedBulletUpdateThrottle == Duration.zero
+                ? game.clientSpawnedBulletUpdate$
+                : game.clientSpawnedBulletUpdate$
+                    .throttleTime(clientSpawnedBulletUpdateThrottle))
+            .listen(_onClientSpawnedBulletUpdate);
+  }
+
+  void _onClientPlayerUpdate(ClientPlayerUpdate update) {
+    client.sendClientPlayerUpdate(update);
+  }
+
+  void _onClientSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
+    client.sendClientSpawnedBulletUpdate(update);
+  }
+
+  void _disposeClientUpdateSubs() {
+    _clientPlayerUpdateSub?.cancel();
+    _clientSpawnedBulletUpdateSub?.cancel();
+  }
+
   void dispose() {
     if (!_userState$.isClosed) _userState$.close();
+    _disposeClientUpdateSubs();
   }
 }

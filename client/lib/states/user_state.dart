@@ -23,7 +23,7 @@ enum UserStates {
   RequestingInfo,
   SelectingLevel,
   GameCreated,
-  GameRunning,
+  GameStarted,
 }
 
 class UserState extends Equatable {
@@ -60,7 +60,7 @@ class UserGameStartedState extends UserState {
   const UserGameStartedState({
     @required ServerInfo serverInfo,
     @required ClientGame game,
-  }) : super(UserStates.GameRunning, serverInfo: serverInfo, game: game);
+  }) : super(UserStates.GameStarted, serverInfo: serverInfo, game: game);
 
   factory UserGameStartedState.from(UserState state) {
     return UserGameStartedState(serverInfo: state.serverInfo, game: state.game);

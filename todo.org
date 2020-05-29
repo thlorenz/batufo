@@ -6,27 +6,9 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Networking
 
-** [ ] Fix Problem after Game Started
-
-- only affects player at index 0
-
-#+BEGIN_SRC
-The following RangeError was thrown during a scheduler callback:
-RangeError (index): Invalid value: Not in range 0..285, inclusive: -2
-
-When the exception was thrown, this was the stack:
-#0      List.[] (dart:core-patch/array.dart:14:52)
-#1      Colliders._wallAt (package:batufo/controllers/helpers/colliders.dart:52:42)
-#2      Colliders.playerCollidingAt (package:batufo/controllers/helpers/colliders.dart:47:12)
-#3      PlayerController._checkWallCollision (package:batufo/controllers/player_controller.dart:97:26)
-#4      PlayerController.update (package:batufo/controllers/player_controller.dart:43:19)
-
-#+END_SRC
-
-
 ** Server Relays Player Updates to other Players
 
- - [ ] players need to send updates to server
+ - [X] players need to send updates to server
  - [ ] server needs to propagate them
  - [ ] cleints need to sync other players accordingly
 

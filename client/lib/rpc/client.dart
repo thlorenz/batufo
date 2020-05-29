@@ -2,6 +2,8 @@ import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/rpc/client_player_update.dart';
+import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart'
     show InfoRequest, InfoResponse, PlayRequest, GameCreated;
 import 'package:batufo/states/user_state.dart';
@@ -39,7 +41,7 @@ class Client {
         });
 
   void _connectMain(Function onConnected) {
-    final socket = _mainSocket
+    _mainSocket
       ..once('connect', (dynamic _) {
         universe.clientConnected();
         onConnected();
@@ -94,6 +96,18 @@ class Client {
       })
       ..connect();
   }
+
+  void sendClientPlayerUpdate(ClientPlayerUpdate update) {
+    assert(_gameSocket != null, 'cannot send update without a connected game');
+    assert(update != null, 'need a valid non-null update');
+    _log.info('sending client update: $update');
+    final packed = update.pack();
+    final buf = packed.writeToBuffer();
+    _gameSocket.emitWithBinary('game:client-update', buf);
+  }
+
+  // TODO:
+  void sendClientSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {}
 
   void _onGameCreatedMessage(dynamic data) {
     final list = listFromData(data);

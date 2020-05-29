@@ -37,7 +37,10 @@ Future<void> main() async {
     serverIP = LOCALHOST;
   }
 
-  final universe = Universe.create(serverHost: serverIP);
+  final universe = Universe.create(
+    serverHost: serverIP,
+    clientPlayerUpdateThrottle: Duration(seconds: 2),
+  );
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Scaffold(
@@ -77,7 +80,7 @@ class UniverseWidget extends StatelessWidget {
           );
         } else if (snapshot.data.kind == UserStates.GameCreated) {
           return GameCreatedWidget(game: snapshot.data.game);
-        } else if (snapshot.data.kind == UserStates.GameRunning) {
+        } else if (snapshot.data.kind == UserStates.GameStarted) {
           return GameRunningWidget(game: snapshot.data.game);
         }
         return null;

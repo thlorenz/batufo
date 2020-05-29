@@ -19,7 +19,10 @@ import 'package:batufo/game/inputs/keyboard.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/rpc/client_player_update.dart';
+import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:flutter/foundation.dart';
+import 'package:rxdart/rxdart.dart';
 
 final _log = Log<ClientGame>();
 
@@ -30,6 +33,11 @@ class ClientGame extends Game {
   final Walls _walls;
   final InputProcessor _inputProcessor;
   final int clientID;
+  final ClientPlayerUpdate _clientPlayerUpdate;
+  final ClientSpawnedBulletUpdate _clientSpawnedBulletUpdate;
+  final _clientPlayerUpdate$ = BehaviorSubject<ClientPlayerUpdate>();
+  final _clientSpawnedBulletUpdate$ =
+      BehaviorSubject<ClientSpawnedBulletUpdate>();
 
   ClientGameState gameState;
   GameController _gameController;
@@ -46,12 +54,19 @@ class ClientGame extends Game {
   bool get started => _started;
   bool get ready => !_disposed && _started;
 
+  Stream<ClientPlayerUpdate> get clientPlayerUpdate$ =>
+      _clientPlayerUpdate$.stream;
+  Stream<ClientSpawnedBulletUpdate> get clientSpawnedBulletUpdate$ =>
+      _clientSpawnedBulletUpdate$.stream;
+
   ClientGame({
     @required this.arena,
     @required this.clientID,
     @required int playerIndex,
   })  : _disposed = false,
         _started = false,
+        _clientPlayerUpdate = ClientPlayerUpdate(clientID),
+        _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(clientID),
         _grid = Grid(arena.tileSize.toDouble()),
         _background = Background(
           arena.floorTiles,
@@ -112,13 +127,18 @@ class ClientGame extends Game {
 
   void update(double dt, double ts) {
     if (!ready) return;
-    if (!PlayerStatus(clientPlayer).isDead) {
+    final player = clientPlayer;
+    if (!PlayerStatus(player).isDead) {
       final pressedKeys = GameKeyboard.pressedKeys;
       final gestures = GameGestures.instance.aggregatedGestures;
 
-      _inputProcessor.udate(dt, pressedKeys, gestures, clientPlayer);
+      _inputProcessor.udate(dt, pressedKeys, gestures, player);
     }
     _gameController.update(dt, ts);
+    // TODO: if player.shotBullet we need to get a hold of it
+    //  and _clientSpawnedBulletUpdate$.add()
+    _clientPlayerUpdate.player = player;
+    _clientPlayerUpdate$.add(_clientPlayerUpdate);
   }
 
   void updateUI(double dt, double ts) {
@@ -209,6 +229,13 @@ class ClientGame extends Game {
 
   void dispose() {
     _log.fine('disposing');
+    if (_clientPlayerUpdate$ != null && !_clientPlayerUpdate$.isClosed) {
+      _clientPlayerUpdate$.close();
+    }
+    if (_clientSpawnedBulletUpdate$ != null &&
+        !_clientSpawnedBulletUpdate$.isClosed) {
+      _clientSpawnedBulletUpdate$.close();
+    }
     _disposed = true;
   }
 }
