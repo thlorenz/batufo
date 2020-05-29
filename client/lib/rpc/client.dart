@@ -4,6 +4,7 @@ import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart'
     show InfoRequest, InfoResponse, PlayRequest, GameCreated;
+import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
