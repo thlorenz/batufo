@@ -16,7 +16,7 @@ const PORT = 2222;
 Future<void> main() async {
   Log.activateConsole();
   Log.rootLevel = Level.FINE;
-  Log.messageFilter = (String s) => !s.contains('socket_io_client:engine');
+  Log.loggerFilter = (String s) => !s.contains('socket_io');
 
   WorldPosition.tileSize = GameProps.tileSize;
   WidgetsFlutterBinding.ensureInitialized();

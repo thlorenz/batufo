@@ -32,6 +32,7 @@ class Log<T extends Object> {
     messageFilter = (s) => s.startsWith('creat') || s.startsWith('dispos');
   }
 
+  static bool Function(String) loggerFilter;
   static bool Function(String) messageFilter;
 
   static set rootLevel(Level value) {
@@ -48,7 +49,8 @@ class Log<T extends Object> {
 
   static void activateConsole() {
     Logger.root.onRecord.listen((record) {
-      if (messageFilter != null && messageFilter(record.message)) {
+      if ((loggerFilter != null && !loggerFilter(record.loggerName)) ||
+          (messageFilter != null && !messageFilter(record.message))) {
         return;
       }
       final icon = iconFromText(record.message) ?? iconFromLevel(record.level);
