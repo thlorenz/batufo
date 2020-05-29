@@ -12,6 +12,8 @@ import 'package:batufo/widgets/game/menu_widget.dart';
 import 'package:flutter/material.dart';
 
 const PORT = 2222;
+const LOCALHOST = 'http://localhost:$PORT';
+const LOCALBOX = 'http://192.168.1.7:$PORT';
 
 Future<void> main() async {
   Log.activateConsole();
@@ -27,9 +29,13 @@ Future<void> main() async {
     assets.bulletExplosion.imagePath,
     assets.skull.imagePath,
   ]);
-  final serverIP = Platform.isAndroid
-      ? 'http://192.168.1.7:$PORT'
-      : 'http://localhost:$PORT';
+  String serverIP;
+  try {
+    serverIP = Platform.isAndroid ? LOCALBOX : LOCALHOST;
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
+    serverIP = LOCALHOST;
+  }
 
   final universe = Universe.create(serverHost: serverIP);
   runApp(MaterialApp(
