@@ -9,6 +9,7 @@ import {
   LevelInfo,
 } from './generated/message_bus_pb'
 import { games } from './server-game'
+import { GameSockets } from './rpc/game-sockets'
 
 const PORT = process.env.PORT || 2222
 const logInfo = debug('app:info')
@@ -33,6 +34,8 @@ function onRequest(_req: http.IncomingMessage, res: http.ServerResponse) {
   res.writeHead(404)
   res.end('Not a real server, please connect via a socket.io client instead')
 }
+
+const gameSockets = new GameSockets()
 
 io.on('connection', (socket: socketio.Socket) => {
   logDebug('on:connection')
@@ -62,7 +65,7 @@ io.on('connection', (socket: socketio.Socket) => {
       createdGame.setPlayerindex(playerIndex)
 
       socket.emit('game:created', createdGame.serializeBinary().toString())
-      // TODO: now create or find namespaced socket connection, see ./src/rpc/game-sockets.ts
+      gameSockets.addSocketFor(io, game)
     })
 })
 

@@ -27,8 +27,7 @@ class Client {
   final String serverHost;
   final Universe universe;
   final io.Socket _mainSocket;
-
-  // io.Socket _gameSocket;
+  io.Socket _gameSocket;
 
   Client({
     @required this.serverHost,
@@ -82,10 +81,14 @@ class Client {
     final list = listFromData(data);
     final client = GameCreated.fromBuffer(list);
 
-    // TODO: use gameID to subscribe to server updates for that channel
-    // final gameID = client.gameID;
+    final gameID = client.gameID;
     final arena = Arena.unpack(client.arena);
     universe.clientCreatedGame(client.clientID, client.playerIndex, arena);
+    _gameSocket = io.io('$serverHost/$gameID', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+    })
+      ..connect();
   }
 
   void dispose() {

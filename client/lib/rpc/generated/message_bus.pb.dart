@@ -307,9 +307,10 @@ class PackedArena extends $pb.GeneratedMessage {
 
 class PlayingClientEvent extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayingClientEvent', createEmptyInstance: create)
-    ..aOM<GameCreated>(1, 'client', subBuilder: GameCreated.create)
-    ..aOM<PackedBulletModel>(2, 'spawnedBullet', protoName: 'spawnedBullet', subBuilder: PackedBulletModel.create)
-    ..aOM<PackedPlayerModel>(3, 'player', subBuilder: PackedPlayerModel.create)
+    ..a<$core.int>(1, 'gameID', $pb.PbFieldType.OU3, protoName: 'gameID')
+    ..a<$core.int>(2, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
+    ..aOM<PackedBulletModel>(3, 'spawnedBullet', protoName: 'spawnedBullet', subBuilder: PackedBulletModel.create)
+    ..aOM<PackedPlayerModel>(4, 'player', subBuilder: PackedPlayerModel.create)
     ..hasRequiredFields = false
   ;
 
@@ -329,37 +330,44 @@ class PlayingClientEvent extends $pb.GeneratedMessage {
   static PlayingClientEvent _defaultInstance;
 
   @$pb.TagNumber(1)
-  GameCreated get client => $_getN(0);
+  $core.int get gameID => $_getIZ(0);
   @$pb.TagNumber(1)
-  set client(GameCreated v) { setField(1, v); }
+  set gameID($core.int v) { $_setUnsignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasClient() => $_has(0);
+  $core.bool hasGameID() => $_has(0);
   @$pb.TagNumber(1)
-  void clearClient() => clearField(1);
-  @$pb.TagNumber(1)
-  GameCreated ensureClient() => $_ensure(0);
+  void clearGameID() => clearField(1);
 
   @$pb.TagNumber(2)
-  PackedBulletModel get spawnedBullet => $_getN(1);
+  $core.int get clientID => $_getIZ(1);
   @$pb.TagNumber(2)
-  set spawnedBullet(PackedBulletModel v) { setField(2, v); }
+  set clientID($core.int v) { $_setUnsignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasSpawnedBullet() => $_has(1);
+  $core.bool hasClientID() => $_has(1);
   @$pb.TagNumber(2)
-  void clearSpawnedBullet() => clearField(2);
-  @$pb.TagNumber(2)
-  PackedBulletModel ensureSpawnedBullet() => $_ensure(1);
+  void clearClientID() => clearField(2);
 
   @$pb.TagNumber(3)
-  PackedPlayerModel get player => $_getN(2);
+  PackedBulletModel get spawnedBullet => $_getN(2);
   @$pb.TagNumber(3)
-  set player(PackedPlayerModel v) { setField(3, v); }
+  set spawnedBullet(PackedBulletModel v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasPlayer() => $_has(2);
+  $core.bool hasSpawnedBullet() => $_has(2);
   @$pb.TagNumber(3)
-  void clearPlayer() => clearField(3);
+  void clearSpawnedBullet() => clearField(3);
   @$pb.TagNumber(3)
-  PackedPlayerModel ensurePlayer() => $_ensure(2);
+  PackedBulletModel ensureSpawnedBullet() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  PackedPlayerModel get player => $_getN(3);
+  @$pb.TagNumber(4)
+  set player(PackedPlayerModel v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPlayer() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPlayer() => clearField(4);
+  @$pb.TagNumber(4)
+  PackedPlayerModel ensurePlayer() => $_ensure(3);
 }
 
 class PackedPlayerModel extends $pb.GeneratedMessage {

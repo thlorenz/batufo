@@ -1878,7 +1878,8 @@ proto.PlayingClientEvent.prototype.toObject = function(opt_includeInstance) {
  */
 proto.PlayingClientEvent.toObject = function(includeInstance, msg) {
   var f, obj = {
-    client: (f = msg.getClient()) && proto.GameCreated.toObject(includeInstance, f),
+    gameid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    clientid: jspb.Message.getFieldWithDefault(msg, 2, 0),
     spawnedbullet: (f = msg.getSpawnedbullet()) && proto.PackedBulletModel.toObject(includeInstance, f),
     player: (f = msg.getPlayer()) && proto.PackedPlayerModel.toObject(includeInstance, f)
   };
@@ -1918,16 +1919,19 @@ proto.PlayingClientEvent.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new proto.GameCreated;
-      reader.readMessage(value,proto.GameCreated.deserializeBinaryFromReader);
-      msg.setClient(value);
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setGameid(value);
       break;
     case 2:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setClientid(value);
+      break;
+    case 3:
       var value = new proto.PackedBulletModel;
       reader.readMessage(value,proto.PackedBulletModel.deserializeBinaryFromReader);
       msg.setSpawnedbullet(value);
       break;
-    case 3:
+    case 4:
       var value = new proto.PackedPlayerModel;
       reader.readMessage(value,proto.PackedPlayerModel.deserializeBinaryFromReader);
       msg.setPlayer(value);
@@ -1961,18 +1965,24 @@ proto.PlayingClientEvent.prototype.serializeBinary = function() {
  */
 proto.PlayingClientEvent.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getClient();
-  if (f != null) {
-    writer.writeMessage(
+  f = message.getGameid();
+  if (f !== 0) {
+    writer.writeUint32(
       1,
-      f,
-      proto.GameCreated.serializeBinaryToWriter
+      f
+    );
+  }
+  f = message.getClientid();
+  if (f !== 0) {
+    writer.writeUint32(
+      2,
+      f
     );
   }
   f = message.getSpawnedbullet();
   if (f != null) {
     writer.writeMessage(
-      2,
+      3,
       f,
       proto.PackedBulletModel.serializeBinaryToWriter
     );
@@ -1980,7 +1990,7 @@ proto.PlayingClientEvent.serializeBinaryToWriter = function(message, writer) {
   f = message.getPlayer();
   if (f != null) {
     writer.writeMessage(
-      3,
+      4,
       f,
       proto.PackedPlayerModel.serializeBinaryToWriter
     );
@@ -1989,49 +1999,48 @@ proto.PlayingClientEvent.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional GameCreated client = 1;
- * @return {?proto.GameCreated}
+ * optional uint32 gameID = 1;
+ * @return {number}
  */
-proto.PlayingClientEvent.prototype.getClient = function() {
-  return /** @type{?proto.GameCreated} */ (
-    jspb.Message.getWrapperField(this, proto.GameCreated, 1));
+proto.PlayingClientEvent.prototype.getGameid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {?proto.GameCreated|undefined} value
- * @return {!proto.PlayingClientEvent} returns this
-*/
-proto.PlayingClientEvent.prototype.setClient = function(value) {
-  return jspb.Message.setWrapperField(this, 1, value);
-};
-
-
-/**
- * Clears the message field making it undefined.
+ * @param {number} value
  * @return {!proto.PlayingClientEvent} returns this
  */
-proto.PlayingClientEvent.prototype.clearClient = function() {
-  return this.setClient(undefined);
+proto.PlayingClientEvent.prototype.setGameid = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
 };
 
 
 /**
- * Returns whether this field is set.
- * @return {boolean}
+ * optional uint32 clientID = 2;
+ * @return {number}
  */
-proto.PlayingClientEvent.prototype.hasClient = function() {
-  return jspb.Message.getField(this, 1) != null;
+proto.PlayingClientEvent.prototype.getClientid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
 /**
- * optional PackedBulletModel spawnedBullet = 2;
+ * @param {number} value
+ * @return {!proto.PlayingClientEvent} returns this
+ */
+proto.PlayingClientEvent.prototype.setClientid = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional PackedBulletModel spawnedBullet = 3;
  * @return {?proto.PackedBulletModel}
  */
 proto.PlayingClientEvent.prototype.getSpawnedbullet = function() {
   return /** @type{?proto.PackedBulletModel} */ (
-    jspb.Message.getWrapperField(this, proto.PackedBulletModel, 2));
+    jspb.Message.getWrapperField(this, proto.PackedBulletModel, 3));
 };
 
 
@@ -2040,7 +2049,7 @@ proto.PlayingClientEvent.prototype.getSpawnedbullet = function() {
  * @return {!proto.PlayingClientEvent} returns this
 */
 proto.PlayingClientEvent.prototype.setSpawnedbullet = function(value) {
-  return jspb.Message.setWrapperField(this, 2, value);
+  return jspb.Message.setWrapperField(this, 3, value);
 };
 
 
@@ -2058,17 +2067,17 @@ proto.PlayingClientEvent.prototype.clearSpawnedbullet = function() {
  * @return {boolean}
  */
 proto.PlayingClientEvent.prototype.hasSpawnedbullet = function() {
-  return jspb.Message.getField(this, 2) != null;
+  return jspb.Message.getField(this, 3) != null;
 };
 
 
 /**
- * optional PackedPlayerModel player = 3;
+ * optional PackedPlayerModel player = 4;
  * @return {?proto.PackedPlayerModel}
  */
 proto.PlayingClientEvent.prototype.getPlayer = function() {
   return /** @type{?proto.PackedPlayerModel} */ (
-    jspb.Message.getWrapperField(this, proto.PackedPlayerModel, 3));
+    jspb.Message.getWrapperField(this, proto.PackedPlayerModel, 4));
 };
 
 
@@ -2077,7 +2086,7 @@ proto.PlayingClientEvent.prototype.getPlayer = function() {
  * @return {!proto.PlayingClientEvent} returns this
 */
 proto.PlayingClientEvent.prototype.setPlayer = function(value) {
-  return jspb.Message.setWrapperField(this, 3, value);
+  return jspb.Message.setWrapperField(this, 4, value);
 };
 
 
@@ -2095,7 +2104,7 @@ proto.PlayingClientEvent.prototype.clearPlayer = function() {
  * @return {boolean}
  */
 proto.PlayingClientEvent.prototype.hasPlayer = function() {
-  return jspb.Message.getField(this, 3) != null;
+  return jspb.Message.getField(this, 4) != null;
 };
 
 

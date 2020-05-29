@@ -212,10 +212,11 @@ export namespace PackedArena {
 }
 
 export class PlayingClientEvent extends jspb.Message {
-  hasClient(): boolean;
-  clearClient(): void;
-  getClient(): GameCreated | undefined;
-  setClient(value?: GameCreated): void;
+  getGameid(): number;
+  setGameid(value: number): void;
+
+  getClientid(): number;
+  setClientid(value: number): void;
 
   hasSpawnedbullet(): boolean;
   clearSpawnedbullet(): void;
@@ -239,7 +240,8 @@ export class PlayingClientEvent extends jspb.Message {
 
 export namespace PlayingClientEvent {
   export type AsObject = {
-    client?: GameCreated.AsObject,
+    gameid: number,
+    clientid: number,
     spawnedbullet?: PackedBulletModel.AsObject,
     player?: PackedPlayerModel.AsObject,
   }

@@ -12,7 +12,7 @@ function generateID() {
   return millis + Math.floor(Math.random() * 1e3)
 }
 
-class ServerGame {
+export class ServerGame {
   readonly clientIDs: number[] = []
   readonly deadClientIDs: number[] = []
   constructor(readonly gameID: number, readonly nplayers: number) {}
