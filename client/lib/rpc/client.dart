@@ -38,8 +38,8 @@ class Client {
         });
 
   void _connectMain(Function onConnected) {
-    _mainSocket
-      ..once('connect', (dynamic connection) {
+    final socket = _mainSocket
+      ..once('connect', (dynamic _) {
         universe.clientConnected();
         onConnected();
         _log.info('main socket connected');
@@ -77,18 +77,29 @@ class Client {
     _mainSocket.emitWithBinary('play:request', buf);
   }
 
-  void _onGameCreatedMessage(dynamic data) {
-    final list = listFromData(data);
-    final client = GameCreated.fromBuffer(list);
-
-    final gameID = client.gameID;
-    final arena = Arena.unpack(client.arena);
-    universe.clientCreatedGame(client.clientID, client.playerIndex, arena);
+  void connectGameSocket(GameCreated createdGame) {
+    final gameID = createdGame.gameID;
+    // TODO: need to handle unexpected disconnect
     _gameSocket = io.io('$serverHost/$gameID', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     })
+      ..once('connect', (dynamic _) {
+        _log.info('game socket connected');
+      })
       ..connect();
+  }
+
+  void _onGameCreatedMessage(dynamic data) {
+    final list = listFromData(data);
+    final createdGame = GameCreated.fromBuffer(list);
+    final arena = Arena.unpack(createdGame.arena);
+    universe.clientCreatedGame(
+      createdGame.clientID,
+      createdGame.playerIndex,
+      arena,
+    );
+    connectGameSocket(createdGame);
   }
 
   void dispose() {
