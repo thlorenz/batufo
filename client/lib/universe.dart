@@ -1,10 +1,13 @@
 import 'package:batufo/arena/arena.dart';
+import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/game/client_game.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/states/connection_state.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+
+final _log = Log<Universe>();
 
 class Universe {
   final _userState$ = BehaviorSubject<UserState>();
@@ -44,7 +47,7 @@ class Universe {
 
   void clientReceivedInfo(ServerInfo info) {
     final state = UserSelectingLevelState(info);
-    _userState$.add(state);
+    _addUserState(state);
   }
 
   void clientCreatedGame(
@@ -58,7 +61,7 @@ class Universe {
       playerIndex: playerIndex,
     );
     final state = UserGameCreatedState.from(_userState$.value, game);
-    _userState$.add(state);
+    _addUserState(state);
   }
 
   void clientRequestInfo() {
@@ -70,11 +73,16 @@ class Universe {
     // TODO: need to send player info from server
     // to compose ClientGameState and pass it in here
     state.game.start();
-    _userState$.add(state);
+    _addUserState(state);
   }
 
   void userSelectedLevel(String level) {
     client.requestPlay(level);
+  }
+
+  void _addUserState(UserState state) {
+    _log.fine('${state.kind}');
+    _userState$.add(state);
   }
 
   void dispose() {
