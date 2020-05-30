@@ -14,6 +14,7 @@ import { GameSockets } from './rpc/game-sockets'
 const PORT = process.env.PORT || 2222
 const logInfo = debug('app:info')
 const logDebug = debug('app:debug')
+const logError = debug('app:error')
 
 const info = new InfoResponse()
 info.setLevelsList(
@@ -42,31 +43,43 @@ io.on('connection', (socket: socketio.Socket) => {
   socket
     .once('info:request', () => {
       logInfo('got info request')
-      socket.emit('info:response', info.serializeBinary().toString())
+      try {
+        socket.emit('info:response', info.serializeBinary().toString())
+      } catch (err) {
+        logError('info:request', err)
+      }
     })
     .once('play:request', (data) => {
-      const req = PlayRequest.deserializeBinary(data)
-      logInfo('got play request for level [%s]', req.getLevelname())
+      try {
+        const req = PlayRequest.deserializeBinary(data)
+        logInfo('got play request for level [%s]', req.getLevelname())
 
-      const levelName = req.getLevelname()
-      const level = levels.get(levelName)
-      if (level == null) {
-        // TODO: socket.emit('error:level-not-found') or something similar
-        return
+        const levelName = req.getLevelname()
+        const level = levels.get(levelName)
+        if (level == null) {
+          // TODO: socket.emit('error:level-not-found') or something similar
+          return
+        }
+        const { game, clientID, arena, playerIndex } = games.addClientToGame(
+          level
+        )
+
+        const createdGame = new GameCreated()
+        createdGame.setGameid(game.gameID)
+        createdGame.setClientid(clientID)
+        createdGame.setArena(arena.pack())
+        createdGame.setPlayerindex(playerIndex)
+
+        socket.emit('game:created', createdGame.serializeBinary().toString())
+        gameSockets.addSocketFor(io, game)
+      } catch (err) {
+        logError('play:request', err)
       }
-      const { game, clientID, arena, playerIndex } = games.addClientToGame(
-        level
-      )
-
-      const createdGame = new GameCreated()
-      createdGame.setGameid(game.gameID)
-      createdGame.setClientid(clientID)
-      createdGame.setArena(arena.pack())
-      createdGame.setPlayerindex(playerIndex)
-
-      socket.emit('game:created', createdGame.serializeBinary().toString())
-      gameSockets.addSocketFor(io, game)
     })
+})
+
+process.on('uncaughtException', (err: Error) => {
+  logError('unhandled', err)
 })
 
 app.listen(PORT)

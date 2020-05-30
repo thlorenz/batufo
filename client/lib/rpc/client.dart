@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
@@ -139,7 +137,7 @@ class Client {
     // TODO: why is this only working here instead of being parsed as JSON?
     // since this is just rebroadcast directly by the server
     // we don't need to pull things out of a string
-    final list = data as Uint8List;
+    final list = listFromData(data);
     final packed = PackedClientPlayerUpdate.fromBuffer(list);
     final update = ClientPlayerUpdate.unpack(packed);
 
@@ -148,7 +146,7 @@ class Client {
   }
 
   void _onClientSpawnedBulletMessage(dynamic data) {
-    final list = data as Uint8List;
+    final list = listFromData(data);
     final packed = PackedClientSpawnedBulletUpdate.fromBuffer(list);
     final update = ClientSpawnedBulletUpdate.unpack(packed);
 

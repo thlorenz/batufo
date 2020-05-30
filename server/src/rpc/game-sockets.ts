@@ -3,7 +3,12 @@ import { ServerGame } from '../server-game'
 
 import socketio from 'socket.io'
 import debug from 'debug'
+import {
+  PackedClientPlayerUpdate,
+  PackedClientSpawnedBulletUpdate,
+} from '../generated/message_bus_pb'
 const logDebug = debug('game-socket:debug')
+const logError = debug('game-socket:error')
 const logTrace = debug('game-socket:trace')
 
 // TODO: https://socket.io/docs/rooms-and-namespaces/
@@ -21,11 +26,27 @@ class GameSocket {
 
       socket.on('game:client-update', (data: Uint8Array) => {
         logTrace('got playing client message -> broadcasting')
-        socket.broadcast.emit('game:client-update', data)
+        try {
+          const req = PackedClientPlayerUpdate.deserializeBinary(data)
+          socket.broadcast.emit(
+            'game:client-update',
+            req.serializeBinary().toString()
+          )
+        } catch (err) {
+          logError('game:client-update', err)
+        }
       })
       socket.on('game:spawned-bullet', (data: Uint8Array) => {
         logTrace('got spawned bullet message -> broadcasting')
-        socket.broadcast.emit('game:spawned-bullet', data)
+        try {
+          const req = PackedClientSpawnedBulletUpdate.deserializeBinary(data)
+          socket.broadcast.emit(
+            'game:spawned-bullet',
+            req.serializeBinary().toString()
+          )
+        } catch (err) {
+          logError('game:spawned-bullet', err)
+        }
       })
     })
   }
@@ -33,7 +54,10 @@ class GameSocket {
   _tellClientsIfGameIsReady() {
     if (!this.game.full) return
     logDebug('game is full, sending game:started')
-    this.nsp.emit('game:started')
+    try {
+      this.nsp.emit('game:started')
+    } finally {
+    }
   }
 }
 
