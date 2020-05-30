@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
@@ -16,33 +14,51 @@ bool didBulletHitPlayer(
   return distanceY <= playerRadius;
 }
 
+enum BulletTargets { Wall, Player, None }
+
+class BulletTarget {
+  final BulletTargets kind;
+  final PlayerModel player;
+
+  BulletTarget._(this.kind, {this.player});
+
+  factory BulletTarget.none() => BulletTarget._(BulletTargets.None);
+  factory BulletTarget.wall() => BulletTarget._(BulletTargets.Wall);
+  factory BulletTarget.player(PlayerModel player) =>
+      BulletTarget._(BulletTargets.Player, player: player);
+}
+
 class Colliders {
   final int nrows;
   final int ncols;
   final List<bool> _walls;
   final double playerRadius;
-  final double bulletHitsPlayerHealthToll;
   Colliders(
     this.nrows,
     this.ncols, {
     @required List<TilePosition> walls,
     @required this.playerRadius,
-    @required this.bulletHitsPlayerHealthToll,
   }) : _walls = List<bool>(nrows * ncols)..fillRange(0, nrows * ncols, false) {
     for (final wall in walls) {
       _walls[wall.row * ncols + wall.col] = true;
     }
   }
 
-  bool bulletCollidingAt(Iterable<PlayerModel> players, TilePosition tp) {
-    if (_wallAt(tp)) return true;
+  BulletTarget bulletCollidingAt(
+    Iterable<PlayerModel> players,
+    TilePosition tp,
+  ) {
+    if (_wallAt(tp)) return BulletTarget.wall();
     for (final player in players) {
-      if (didBulletHitPlayer(player.tilePosition, tp, playerRadius)) {
-        player.health = max(player.health - bulletHitsPlayerHealthToll, 0.0);
-        return true;
+      if (didBulletHitPlayer(
+        player.tilePosition,
+        tp,
+        playerRadius,
+      )) {
+        return BulletTarget.player(player);
       }
     }
-    return false;
+    return BulletTarget.none();
   }
 
   bool playerCollidingAt(TilePosition tp) {

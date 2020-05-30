@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/controllers/bullets_controller.dart';
 import 'package:batufo/controllers/helpers/bullets_spawner.dart';
@@ -30,7 +32,6 @@ class GameController {
       _arena.ncols,
       walls: _arena.walls,
       playerRadius: playerSize,
-      bulletHitsPlayerHealthToll: GameProps.bulletHitsPlayerHealthToll,
     );
 
     _playerController = PlayerController(
@@ -44,6 +45,7 @@ class GameController {
     _bulletsController = BulletsController(
       _gameState.bullets,
       bulletCollidingAt: colliders.bulletCollidingAt,
+      onPlayerHitByBullet: _onPlayerHitByBullet,
       tileSize: _arena.tileSize.toDouble(),
     );
   }
@@ -60,6 +62,23 @@ class GameController {
     _bulletsController.update(dt, _gameState.players.values);
 
     return _gameState;
+  }
+
+  void _onPlayerHitByBullet(PlayerModel player) {
+    final health =
+        max(player.health - GameProps.bulletHitsPlayerHealthToll, 0.0);
+    if (player.id == gameState.clientID) {
+      // if we are hit, we deal a health toll to ourselves
+      player.health = health;
+    } else {
+      // if we (think) we hit someone, we gain score even if the someone doesn't
+      // end up detecting he's hit. This is a bit inconsistent, but much easier
+      // than having that someone communicate to us that he's hit.
+      // In the worst case we get a bit more points.
+      final score = health == 0 ? GameProps.scoreOnKill : GameProps.scoreOnHit;
+      _log.info('scored', score);
+      // TODO: onIncreaseScore
+    }
   }
 
   void cleanup() {

@@ -33,4 +33,7 @@ class GameProps {
   static const playerInputSyncIntervalMs = 50.0;
   static const timeBetweenThrustsMs = 500.0;
   static const timeBetweenBulletsMs = 750.0;
+
+  static const scoreOnHit = 100;
+  static const scoreOnKill = 500;
 }

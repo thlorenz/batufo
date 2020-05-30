@@ -1,5 +1,6 @@
 import 'dart:ui' show Offset;
 
+import 'package:batufo/controllers/helpers/colliders.dart';
 import 'package:batufo/engine/physics.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/bullet_model.dart';
@@ -7,12 +8,15 @@ import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
 
 class BulletsController {
-  final bool Function(Iterable<PlayerModel>, TilePosition) bulletCollidingAt;
+  final BulletTarget Function(Iterable<PlayerModel>, TilePosition)
+      bulletCollidingAt;
+  final void Function(PlayerModel player) onPlayerHitByBullet;
   final List<BulletModel> _bullets;
   final double tileSize;
   BulletsController(
     this._bullets, {
     @required this.bulletCollidingAt,
+    @required this.onPlayerHitByBullet,
     @required this.tileSize,
   });
 
@@ -29,8 +33,19 @@ class BulletsController {
 
       if (bullet.collided) {
         collidedInPreviousFrame.add(bullet);
-      } else if (bulletCollidingAt(players, bullet.tilePosition)) {
-        _handleCollision(bullet, previousPosition);
+      } else {
+        final target = bulletCollidingAt(players, bullet.tilePosition);
+        switch (target.kind) {
+          case BulletTargets.Wall:
+            _handleCollision(bullet, previousPosition);
+            break;
+          case BulletTargets.Player:
+            _handleCollision(bullet, previousPosition);
+            onPlayerHitByBullet(target.player);
+            break;
+          case BulletTargets.None:
+            break;
+        }
       }
     }
 
