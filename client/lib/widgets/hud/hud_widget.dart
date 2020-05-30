@@ -4,6 +4,7 @@ import 'package:batufo/widgets/hud/health_widget.dart';
 import 'package:batufo/widgets/hud/players_alive_widget.dart';
 import 'package:batufo/widgets/hud/ready_to_shoot.dart';
 import 'package:batufo/widgets/hud/ready_to_thrust_widget.dart';
+import 'package:batufo/widgets/hud/score_widget.dart';
 import 'package:flutter/material.dart';
 
 class HudWidget extends StatelessWidget {
@@ -28,6 +29,7 @@ class HudWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  ScoreWidget(score: stats.score),
                   HealthWidget(health: stats.health),
                   Column(
                     mainAxisSize: MainAxisSize.min,

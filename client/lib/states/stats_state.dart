@@ -8,6 +8,7 @@ class StatsState extends Equatable {
   final int totalPlayers;
   final int percentReadyToShoot;
   final int percentReadyToThrust;
+  final int score;
 
   const StatsState({
     @required this.health,
@@ -15,10 +16,29 @@ class StatsState extends Equatable {
     @required this.playersAlive,
     @required this.percentReadyToShoot,
     @required this.percentReadyToThrust,
+    @required this.score,
   });
 
+  StatsState copyWith({
+    double health,
+    int playersAlive,
+    int totalPlayers,
+    int percentReadyToShoot,
+    int percentReadyToThrust,
+    int score,
+  }) {
+    return StatsState(
+      health: health ?? this.health,
+      playersAlive: playersAlive ?? this.playersAlive,
+      totalPlayers: totalPlayers ?? this.totalPlayers,
+      percentReadyToShoot: percentReadyToShoot ?? this.percentReadyToShoot,
+      percentReadyToThrust: percentReadyToThrust ?? this.percentReadyToThrust,
+      score: score ?? this.score,
+    );
+  }
+
   String toString() {
-    return 'Stats [ $health, $playersAlive/$totalPlayers ]';
+    return 'Stats [ $health, $playersAlive/$totalPlayers, $score ]';
   }
 
   static StatsState initial(int totalPlayers) {
@@ -28,6 +48,7 @@ class StatsState extends Equatable {
       totalPlayers: totalPlayers,
       percentReadyToShoot: 100,
       percentReadyToThrust: 100,
+      score: 0,
     );
   }
 
@@ -38,5 +59,6 @@ class StatsState extends Equatable {
         playersAlive,
         percentReadyToShoot,
         percentReadyToThrust,
+        score,
       ];
 }

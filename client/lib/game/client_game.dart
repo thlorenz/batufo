@@ -63,8 +63,9 @@ class ClientGame extends Game {
     @required this.inputProcessor,
     @required this.arena,
     @required this.clientID,
-    @required int playerIndex,
     @required this.onGameStateUpdated,
+    @required void Function(int score) onScored,
+    @required int playerIndex,
   })  : _disposed = false,
         _started = false,
         _clientPlayerUpdate = ClientPlayerUpdate(),
@@ -86,7 +87,11 @@ class ClientGame extends Game {
     assert(playerIndex < arena.players.length,
         '$playerIndex is out of range for ${arena.players}');
     _players = <int, Player>{clientID: _initPlayer()};
-    _gameController = GameController(arena, _preStartGameState(playerIndex));
+    _gameController = GameController(
+      arena,
+      _preStartGameState(playerIndex),
+      onScored,
+    );
   }
 
   ClientGameState get gameState => _gameController.gameState;

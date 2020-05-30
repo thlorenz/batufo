@@ -103,6 +103,7 @@ class Universe {
       clientID: clientID,
       playerIndex: playerIndex,
       onGameStateUpdated: _onGameStateUpdated,
+      onScored: _onScored,
     );
     final state = UserGameCreatedState.from(_userState$.value, game);
     _addUserState(state);
@@ -150,13 +151,19 @@ class Universe {
   void _onGameStateUpdated(ClientGameState state) {
     final hero = state.hero;
     assert(hero != null, 'could not find hero player');
-    final stats = StatsState(
+    final stats = (_statsState$.value ?? initialStatsState).copyWith(
       health: hero.health,
       totalPlayers: state.totalPlayers,
       playersAlive: state.playersAlive,
       percentReadyToShoot: inputProcessor.percentReadyToShoot,
       percentReadyToThrust: inputProcessor.percentReadyToThrust,
     );
+    _statsState$.add(stats);
+  }
+
+  void _onScored(int score) {
+    final current = _statsState$.value ?? initialStatsState;
+    final stats = current.copyWith(score: current.score + score);
     _statsState$.add(stats);
   }
 

@@ -11,7 +11,7 @@ class PlayersAliveWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       '$playersAlive/$totalPlayers  🎮',
-      style: TextStyle(color: Colors.amber),
+      style: TextStyle(color: Colors.amber, fontSize: 10),
     );
   }
 }

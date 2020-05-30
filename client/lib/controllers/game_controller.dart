@@ -15,14 +15,18 @@ final _log = Log<GameController>();
 
 class GameController {
   final BulletsSpawner _bulletsSpawner;
+  final void Function(int score) onScored;
   PlayerController _playerController;
   BulletsController _bulletsController;
   final ClientGameState _gameState;
 
   final Arena _arena;
 
-  GameController(this._arena, this._gameState)
-      : _bulletsSpawner = BulletsSpawner(
+  GameController(
+    this._arena,
+    this._gameState,
+    this.onScored,
+  ) : _bulletsSpawner = BulletsSpawner(
           bulletForce: GameProps.bulletForce,
           playerSize: GameProps.playerSizeFactor * _arena.tileSize,
         ) {
@@ -76,8 +80,7 @@ class GameController {
       // than having that someone communicate to us that he's hit.
       // In the worst case we get a bit more points.
       final score = health == 0 ? GameProps.scoreOnKill : GameProps.scoreOnHit;
-      _log.info('scored', score);
-      // TODO: onIncreaseScore
+      onScored(score);
     }
   }
 
