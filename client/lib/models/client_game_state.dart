@@ -1,7 +1,7 @@
+import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/player_model.dart';
-import 'package:batufo/rpc/server_update.dart';
 import 'package:flutter/foundation.dart';
 
 const SYNC_ONLY_ONCE = false;
@@ -33,6 +33,8 @@ class Stats {
   }
 }
 
+final _log = Log<ClientGameState>();
+
 class ClientGameState {
   final int clientID;
   final Map<int, PlayerModel> players;
@@ -42,34 +44,10 @@ class ClientGameState {
 
   ClientGameState({@required this.clientID, this.players, this.bullets});
 
-  void sync(ServerUpdate serverUpdate) {
-    for (final entry in serverUpdate.players.entries) {
-      final player = entry.value;
-      final id = entry.key;
-      if (!synced || !SYNC_ONLY_ONCE) {
-        players[id] = player;
-        synced = true;
-      }
-
-      if (id == clientID) {
-        _addStats(
-          player,
-          ServerUpdate.playersAlive(serverUpdate),
-        );
-      }
-    }
-
-    clearBullets();
-    // TODO: don't add our own bullets possibly via a clientSpawnID
-    // on the bullet
-    for (final bullet in serverUpdate.spawnedBullets) {
-      addBullet(bullet);
-    }
-  }
-
-  void addPlayer(int id, PlayerModel player) {
+  void updatePlayer(PlayerModel player) {
     assert(player != null, 'cannot add null as player');
-    players[id] = player;
+    players[player.id] = player;
+    _log.finest('updated player now have ${players.length} players');
   }
 
   void addBullet(BulletModel bullet) {
@@ -93,18 +71,6 @@ class ClientGameState {
       players: clonedPlayers,
       bullets: clonedBullets,
     );
-  }
-
-  void _addStats(PlayerModel player, int playersAlive) {
-    /* TODO:
-    final stats = Stats(
-      health: player.health,
-      playersAlive: playersAlive,
-    );
-    if (stats == _currentStats) return;
-    _currentStats = stats;
-    _stats$.add(stats);
-     */
   }
 
   String toString() {

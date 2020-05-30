@@ -108,7 +108,6 @@ class Client {
   void sendClientPlayerUpdate(ClientPlayerUpdate update) {
     assert(_gameSocket != null, 'cannot send update without a connected game');
     assert(update != null, 'need a valid non-null update');
-    _log.finer('sending client update: $update');
     final packed = update.pack();
     final buf = packed.writeToBuffer();
     _gameSocket.emitWithBinary('game:client-update', buf);
@@ -135,8 +134,10 @@ class Client {
     // we don't need to pull things out of a string
     final list = data as Uint8List;
     final packed = PackedClientPlayerUpdate.fromBuffer(list);
-    final clientPlayerUpdate = ClientPlayerUpdate.unpack(packed);
-    universe.receivedClientPlayerUpdate(clientPlayerUpdate);
+    final update = ClientPlayerUpdate.unpack(packed);
+
+    _log.finest('received: $update');
+    universe.receivedClientPlayerUpdate(update);
   }
 
   void dispose() {

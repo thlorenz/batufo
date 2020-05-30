@@ -6,6 +6,8 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart'
 import 'package:batufo/rpc/packing_types.dart';
 import 'package:flutter/foundation.dart';
 
+const int VELOCITY_FACTOR = 1000;
+
 class PlayerModel {
   int id;
   TilePosition tilePosition;
@@ -29,7 +31,10 @@ class PlayerModel {
 
   PackedPlayerModel pack() {
     final tp = tilePosition.pack();
-    final v = FractionalPoint(velocity.dx, velocity.dy).pack();
+    final v = FractionalPoint(
+      velocity.dx,
+      velocity.dy,
+    ).pack(factor: VELOCITY_FACTOR);
     final a = packFourDecimals(angle);
     final h = packTwoDecimals(health);
     return PackedPlayerModel()
@@ -42,7 +47,8 @@ class PlayerModel {
 
   factory PlayerModel.unpack(PackedPlayerModel data) {
     final tp = TilePosition.unpack(data.tilePosition);
-    final p = FractionalPoint.unpack(data.velocity);
+    final p = FractionalPoint.unpack(data.velocity, factor: VELOCITY_FACTOR);
+
     final v = Offset(p.x, p.y);
     final a = unpackFourDecimals(data.angle);
     final h = unpackTwoDecimals(data.health);

@@ -7,18 +7,14 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart';
 // 90% of emitted values are ignored due to throttling.
 class ClientPlayerUpdate {
   final int clientID;
-  PlayerModel _player;
+  PlayerModel player;
 
   ClientPlayerUpdate(this.clientID);
-
-  set player(PlayerModel value) {
-    _player = value;
-  }
 
   PackedClientPlayerUpdate pack() {
     final packedUpdate = PackedClientPlayerUpdate();
     packedUpdate.clientID = clientID;
-    packedUpdate.player = _player?.pack();
+    packedUpdate.player = player?.pack();
     return packedUpdate;
   }
 
@@ -29,7 +25,7 @@ class ClientPlayerUpdate {
 
   String toString() {
     return '''ClientPlayerUpdate {
-  player: $_player
+  player: $player
 }''';
   }
 }

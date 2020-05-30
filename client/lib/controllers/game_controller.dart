@@ -3,9 +3,12 @@ import 'package:batufo/controllers/bullets_controller.dart';
 import 'package:batufo/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/controllers/helpers/colliders.dart';
 import 'package:batufo/controllers/player_controller.dart';
+import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/player_model.dart';
+
+final _log = Log<GameController>();
 
 class GameController {
   final BulletsSpawner _bulletsSpawner;
@@ -47,10 +50,10 @@ class GameController {
   ClientGameState get gameState => _gameState;
 
   ClientGameState update(double dt, double ts) {
-    for (final x in _gameState.players.entries) {
-      final player = x.value;
+    final players = _gameState.players;
+    _log.finest('game loop ${players.length} players');
+    for (final player in players.values) {
       _playerController.update(dt, player);
-
       if (player.shotBullet) _spawnBullet(player);
     }
     _bulletsController.update(dt, _gameState.players.values);
@@ -64,9 +67,9 @@ class GameController {
     }
   }
 
-  void addPlayer(PlayerModel player) {
+  void updatePlayer(PlayerModel player) {
     assert(player != null, 'cannot add null as player');
-    _gameState.addPlayer(player.id, player);
+    _gameState.updatePlayer(player);
   }
 
   void _spawnBullet(PlayerModel player) {

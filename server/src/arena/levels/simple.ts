@@ -11,8 +11,8 @@ export default Level.fromLevelString(
 (   d |  |        )
 (     |--|        )
 (----             -------)
-(   +             p      )
-(    p                ---)
+(   +                    )
+(    p p              ---)
 (---------------------)
 `
 )

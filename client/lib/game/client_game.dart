@@ -39,7 +39,6 @@ class ClientGame extends Game {
   final _clientSpawnedBulletUpdate$ =
       BehaviorSubject<ClientSpawnedBulletUpdate>();
 
-  ClientGameState gameState;
   GameController _gameController;
   Map<int, Player> _players;
   Bullets _bullets;
@@ -90,9 +89,10 @@ class ClientGame extends Game {
     assert(playerIndex < arena.players.length,
         '$playerIndex is out of range for ${arena.players}');
     _players = <int, Player>{clientID: _initPlayer()};
-    gameState = _preStartGameState(playerIndex);
-    _gameController = GameController(arena, gameState);
+    _gameController = GameController(arena, _preStartGameState(playerIndex));
   }
+
+  ClientGameState get gameState => _gameController.gameState;
 
   PlayerModel get clientPlayer {
     final player = gameState.players[clientID];
@@ -116,6 +116,14 @@ class ClientGame extends Game {
     );
   }
 
+  void sync(ClientPlayerUpdate update) {
+    final id = update.player.id;
+    _gameController.updatePlayer(update.player);
+    // TODO: this may not be necessary if start() gets a game state
+    // with all players in it
+    _players.putIfAbsent(id, _initPlayer);
+  }
+
   void start() {
     if (_started) return;
     // this.gameState = gameState;
@@ -137,7 +145,7 @@ class ClientGame extends Game {
     _gameController.update(dt, ts);
     // TODO: if player.shotBullet we need to get a hold of it
     //  and _clientSpawnedBulletUpdate$.add()
-    _clientPlayerUpdate.player = player;
+    _clientPlayerUpdate.player = gameState.players[clientID];
     _clientPlayerUpdate$.add(_clientPlayerUpdate);
   }
 
@@ -179,7 +187,7 @@ class ClientGame extends Game {
     for (final entry in gameState.players.entries) {
       final player = _players[entry.key];
       if (player == null) continue;
-      _players[clientID].render(canvas, entry.value);
+      _players[entry.key].render(canvas, entry.value);
     }
     _bullets.render(canvas, gameState.bullets);
   }

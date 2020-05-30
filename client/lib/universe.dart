@@ -140,6 +140,7 @@ class Universe {
   }
 
   void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {
-    _log.fine(clientPlayerUpdate.toString());
+    final game = _userState$.value.game;
+    game.sync(clientPlayerUpdate);
   }
 }

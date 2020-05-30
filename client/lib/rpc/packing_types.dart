@@ -60,7 +60,7 @@ class FractionalPoint {
 
   const FractionalPoint(this.x, this.y);
 
-  PackedFractionalPoint pack() {
+  PackedFractionalPoint pack({int factor = FractionalPoint.factor}) {
     final sintX = (x * factor).floor();
     final sintY = (y * factor).floor();
 
@@ -72,7 +72,10 @@ class FractionalPoint {
     return PackedFractionalPoint()..xy = xy;
   }
 
-  factory FractionalPoint.unpack(PackedFractionalPoint data) {
+  factory FractionalPoint.unpack(
+    PackedFractionalPoint data, {
+    int factor = FractionalPoint.factor,
+  }) {
     final xy = data.xy;
     final intY = xy & mask;
     final intX = xy >> 16;
@@ -81,5 +84,9 @@ class FractionalPoint {
     final x = xSigned ? -(intX & unsignMask) : intX;
     final y = ySigned ? -(intY & unsignMask) : intY;
     return FractionalPoint(x / factor, y / factor);
+  }
+
+  String toString() {
+    return 'FractionalPoint{x: $x, y: $y}';
   }
 }
