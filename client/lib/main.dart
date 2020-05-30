@@ -10,6 +10,7 @@ import 'package:batufo/widgets/game/game_created_widget.dart';
 import 'package:batufo/widgets/game/game_running_widget.dart';
 import 'package:batufo/widgets/game/menu_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 const PORT = 2222;
 const LOCALHOST = 'http://localhost:$PORT';
@@ -21,6 +22,7 @@ Future<void> main() async {
   Log.loggerFilter = (String s) => !s.contains('socket_io');
 
   WidgetsFlutterBinding.ensureInitialized();
+
   await Images.instance.load([
     assets.floorTiles.imagePath,
     assets.player.imagePath,
@@ -32,6 +34,9 @@ Future<void> main() async {
   String serverIP;
   try {
     serverIP = Platform.isAndroid ? LOCALBOX : LOCALHOST;
+    // only do the below if the above didn't throw as the below basically
+    // stops the browser in its tracks (not just throwing)
+    await SystemChrome.setEnabledSystemUIOverlays([]);
     // ignore: avoid_catches_without_on_clauses
   } catch (e) {
     serverIP = LOCALHOST;
@@ -42,13 +47,14 @@ Future<void> main() async {
     clientPlayerUpdateThrottle: Duration(milliseconds: 100),
   );
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Scaffold(
-      body: UniverseWidget(
-        universe: universe,
-      ),
-    ),
-  ));
+      debugShowCheckedModeBanner: false,
+      home: SafeArea(
+        child: Scaffold(
+          body: UniverseWidget(
+            universe: universe,
+          ),
+        ),
+      )));
 
   universe.clientRequestInfo();
 }
