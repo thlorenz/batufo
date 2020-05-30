@@ -10,13 +10,20 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
  - [X] players need to send updates to server
  - [X] server needs to propagate them
- - [ ] figure out why ~Offset~ is always ~Offset.zero~
- - [ ] clients need to sync other players accordingly
+ - [X] figure out why ~Offset~ is always ~Offset.zero~
+ - [X] clients need to sync other players accordingly
 
 ** Server Relays Spawned Bullest to other Players
 
  - [ ] when player shoots bullet it updates server either as part of player update or separate event
  - [ ] server updates all clients with spawned bullet info
+
+** Optimizations
+
+*** [ ] Smoothing Prediction Correction
+
+Right now whenever a player's position is synced that is different from the predicted one we just directly jump to it.
+It would be better to smooth this out by adapting the velocity so that eventually prediction and reality converge.
 
 ** DONE PlayerRequest -> PlayingClient Init [7/7]
 :LOGBOOK:
