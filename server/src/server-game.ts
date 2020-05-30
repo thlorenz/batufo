@@ -12,6 +12,8 @@ function generateID() {
   return millis + Math.floor(Math.random() * 1e3)
 }
 
+export class ServerStats {}
+
 export class ServerGame {
   readonly clientIDs: number[] = []
   readonly deadClientIDs: number[] = []
@@ -36,7 +38,7 @@ export class ServerGame {
   }
 }
 
-class ServerGames {
+export class ServerGames {
   readonly _gamesByLevel: Map<string, Map<number, ServerGame>> = new Map()
   readonly _arenasByLevel: Map<string, Arena> = new Map()
   readonly _gamesByID: Map<number, ServerGame> = new Map()
@@ -91,6 +93,28 @@ class ServerGames {
     if (game == null) return
     game.declareClientDead(clientID)
     this._clearGameIfFinished(gameID, game)
+  }
+
+  totals() {
+    const totalGames = this._gamesByID.size
+    const runningLevelsCounts: Map<string, number> = new Map()
+    const waitingForLevelsCounts: Map<string, number> = new Map()
+    let totalPlayers = 0
+    for (const [k, map] of this._gamesByLevel) {
+      runningLevelsCounts.set(k, map.size)
+      for (const game of map.values()) {
+        const players = game.clientIDs.length
+        totalPlayers += players
+        if (game.full) continue
+        waitingForLevelsCounts.set(k, players)
+      }
+    }
+    return {
+      totalGames,
+      totalPlayers,
+      runningLevelsCounts,
+      waitingForLevelsCounts,
+    }
   }
 }
 

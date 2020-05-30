@@ -11,6 +11,13 @@ message InfoResponse {
   repeated LevelInfo levels = 1;
 }
 
+message ServerStatsUpdate {
+  uint32 totalGames = 1;
+  uint32 totalPlayers = 2;
+  map<string, uint32> runningLevelsCounts = 3;
+  map<string, uint32> waitingForLevelsCounts = 4;
+}
+
 // Responses
 
 message LevelInfo {

@@ -61,6 +61,36 @@ export namespace InfoResponse {
   }
 }
 
+export class ServerStatsUpdate extends jspb.Message {
+  getTotalgames(): number;
+  setTotalgames(value: number): void;
+
+  getTotalplayers(): number;
+  setTotalplayers(value: number): void;
+
+  getRunninglevelscountsMap(): jspb.Map<string, number>;
+  clearRunninglevelscountsMap(): void;
+  getWaitingforlevelscountsMap(): jspb.Map<string, number>;
+  clearWaitingforlevelscountsMap(): void;
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ServerStatsUpdate.AsObject;
+  static toObject(includeInstance: boolean, msg: ServerStatsUpdate): ServerStatsUpdate.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ServerStatsUpdate, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ServerStatsUpdate;
+  static deserializeBinaryFromReader(message: ServerStatsUpdate, reader: jspb.BinaryReader): ServerStatsUpdate;
+}
+
+export namespace ServerStatsUpdate {
+  export type AsObject = {
+    totalgames: number,
+    totalplayers: number,
+    runninglevelscountsMap: Array<[string, number]>,
+    waitingforlevelscountsMap: Array<[string, number]>,
+  }
+}
+
 export class LevelInfo extends jspb.Message {
   getName(): string;
   setName(value: string): void;

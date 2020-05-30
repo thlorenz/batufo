@@ -86,6 +86,55 @@ class InfoResponse extends $pb.GeneratedMessage {
   $core.List<LevelInfo> get levels => $_getList(0);
 }
 
+class ServerStatsUpdate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('ServerStatsUpdate', createEmptyInstance: create)
+    ..a<$core.int>(1, 'totalGames', $pb.PbFieldType.OU3, protoName: 'totalGames')
+    ..a<$core.int>(2, 'totalPlayers', $pb.PbFieldType.OU3, protoName: 'totalPlayers')
+    ..m<$core.String, $core.int>(3, 'runningLevelsCounts', protoName: 'runningLevelsCounts', entryClassName: 'ServerStatsUpdate.RunningLevelsCountsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OU3)
+    ..m<$core.String, $core.int>(4, 'waitingForLevelsCounts', protoName: 'waitingForLevelsCounts', entryClassName: 'ServerStatsUpdate.WaitingForLevelsCountsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false
+  ;
+
+  ServerStatsUpdate._() : super();
+  factory ServerStatsUpdate() => create();
+  factory ServerStatsUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ServerStatsUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ServerStatsUpdate clone() => ServerStatsUpdate()..mergeFromMessage(this);
+  ServerStatsUpdate copyWith(void Function(ServerStatsUpdate) updates) => super.copyWith((message) => updates(message as ServerStatsUpdate));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ServerStatsUpdate create() => ServerStatsUpdate._();
+  ServerStatsUpdate createEmptyInstance() => create();
+  static $pb.PbList<ServerStatsUpdate> createRepeated() => $pb.PbList<ServerStatsUpdate>();
+  @$core.pragma('dart2js:noInline')
+  static ServerStatsUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ServerStatsUpdate>(create);
+  static ServerStatsUpdate _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get totalGames => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set totalGames($core.int v) { $_setUnsignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTotalGames() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTotalGames() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get totalPlayers => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set totalPlayers($core.int v) { $_setUnsignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTotalPlayers() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotalPlayers() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.Map<$core.String, $core.int> get runningLevelsCounts => $_getMap(2);
+
+  @$pb.TagNumber(4)
+  $core.Map<$core.String, $core.int> get waitingForLevelsCounts => $_getMap(3);
+}
+
 class LevelInfo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('LevelInfo', createEmptyInstance: create)
     ..aOS(1, 'name')

@@ -10,6 +10,7 @@ import {
 } from './generated/message_bus_pb'
 import { games } from './server-game'
 import { GameSockets } from './rpc/game-sockets'
+import { StatsUpdates } from './rpc/stats-updates'
 
 const PORT = process.env.PORT || 2222
 const logInfo = debug('app:info')
@@ -30,6 +31,8 @@ const app = http
   .on('listening', () => logInfo('listening on http://locahost:%d', PORT))
 
 const io = socketio(app)
+const statsUpdates = new StatsUpdates(io, games)
+statsUpdates.start()
 
 function onRequest(_req: http.IncomingMessage, res: http.ServerResponse) {
   res.writeHead(404)
