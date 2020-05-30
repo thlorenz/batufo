@@ -4,26 +4,80 @@
 
 Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #TypeScript
 
-* Networking
 
-** Server Relays Player Updates to other Players
+* Client Side
+
+** Inputs
+
+- [ ] make panning to rotate work
+- [ ] make tapping to shoot work
+- [ ] ensure this works on phone
+
+** Hud
+
+- [ ] show health in hud
+- [ ] show how many players left in game in hud
+- [ ] show score in hud
+- [ ] show time to shoot in hud
+
+** Game Cycle
+
+- [ ] detect when game is over
+- [ ] show winner screen for last player around
+- [ ] show looser screen for each player that is killed
+- [ ] provide /Back to Menu/ button which allows player to select another level
+- [ ] provide /Try Again/ button which restarts player in the same level
+- [ ] recycle game + related socket on server for ended games
+
+** Stats
+
+- [ ] server regularly emits a stats message
+- [ ] show how many players online in main menu
+- [ ] show how many players are in games that aren't full, i.e. 3/4 waiting on 1
+
+
+* WAIT Nice to Have
+
+** WAIT God View
+
+This god view shows all games going on in their own canvas box.
+Each canvas would be downsized to show the entire level view.
+Most likely this would be a hidden admin feature.
+
+It could help in detecting problems with game recycling.
+
+- [ ] show all games going on by selecting this in main menu
+- [ ] server sends all game IDs of active games
+- [ ] open view rendering canvas for each game that is active
+- [ ] each sub game subscribes to the respective namespace
+
+** WAIT Optimizations
+
+*** [ ] Smoothing Prediction Correction
+
+Right now whenever a player's position is synced that is different from the predicted one we just directly jump to it.
+It would be better to smooth this out by adapting the velocity so that eventually prediction and reality converge.
+
+*** [ ] Playability
+
+Multiple tweaks to enhance playability.
+
+- [ ] assuming we show time to shoot in hud experiment with increasing it in order to avoid players just shooting randomly all over the place
+
+
+* DONE Networking
+
+** DONE Server Relays Player Updates to other Players
 
  - [X] players need to send updates to server
  - [X] server needs to propagate them
  - [X] figure out why ~Offset~ is always ~Offset.zero~
  - [X] clients need to sync other players accordingly
 
-** Server Relays Spawned Bullest to other Players
+** DONE Server Relays Spawned Bullest to other Players
 
- - [ ] when player shoots bullet it updates server either as part of player update or separate event
- - [ ] server updates all clients with spawned bullet info
-
-** Optimizations
-
-*** [ ] Smoothing Prediction Correction
-
-Right now whenever a player's position is synced that is different from the predicted one we just directly jump to it.
-It would be better to smooth this out by adapting the velocity so that eventually prediction and reality converge.
+ - [X] when player shoots bullet it updates server either as part of player update or separate event
+ - [X] server updates all clients with spawned bullet info
 
 ** DONE PlayerRequest -> PlayingClient Init [7/7]
 :LOGBOOK:
