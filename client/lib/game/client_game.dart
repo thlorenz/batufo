@@ -32,7 +32,7 @@ class ClientGame extends Game {
   final Background _background;
   final Grid _grid;
   final Walls _walls;
-  final InputProcessor _inputProcessor;
+  final InputProcessor inputProcessor;
   final int clientID;
   final ClientPlayerUpdate _clientPlayerUpdate;
   final ClientSpawnedBulletUpdate _clientSpawnedBulletUpdate;
@@ -60,6 +60,7 @@ class ClientGame extends Game {
       _clientSpawnedBulletUpdate$.stream;
 
   ClientGame({
+    @required this.inputProcessor,
     @required this.arena,
     @required this.clientID,
     @required int playerIndex,
@@ -75,12 +76,6 @@ class ClientGame extends Game {
           GameProps.renderBackground,
         ),
         _walls = Walls(arena.walls, arena.tileSize.toDouble()),
-        _inputProcessor = InputProcessor(
-          keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
-          keyboardThrustForce: GameProps.playerThrustForce,
-          timeBetweenThrusts: GameProps.timeBetweenThrustsMs,
-          timeBetweenBullets: GameProps.timeBetweenBulletsMs,
-        ),
         _camera = Offset.zero,
         _backgroundCamera = Offset.zero {
     _bullets = Bullets(
@@ -147,7 +142,7 @@ class ClientGame extends Game {
       final pressedKeys = GameKeyboard.pressedKeys;
       final gestures = GameGestures.instance.aggregatedGestures;
 
-      _inputProcessor.udate(dt, pressedKeys, gestures, player);
+      inputProcessor.udate(dt, pressedKeys, gestures, player);
     }
     _gameController.update(dt, ts);
     _clientPlayerUpdate.player = gameState.players[clientID];

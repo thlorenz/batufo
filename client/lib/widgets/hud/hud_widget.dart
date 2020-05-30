@@ -2,6 +2,7 @@ import 'package:batufo/states/stats_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/hud/health_widget.dart';
 import 'package:batufo/widgets/hud/players_alive_widget.dart';
+import 'package:batufo/widgets/hud/ready_to_shoot.dart';
 import 'package:flutter/material.dart';
 
 class HudWidget extends StatelessWidget {
@@ -22,6 +23,9 @@ class HudWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   HealthWidget(health: stats.health),
+                  ReadyToShootWidget(
+                    percentReadyToShoot: stats.percentReadyToShoot,
+                  ),
                   PlayersAliveWidget(
                     totalPlayers: stats.totalPlayers,
                     playersAlive: stats.playersAlive,

@@ -6,12 +6,13 @@ class StatsState extends Equatable {
   final double health;
   final int playersAlive;
   final int totalPlayers;
+  final int percentReadyToShoot;
 
-  const StatsState({
-    @required this.health,
-    @required this.totalPlayers,
-    @required this.playersAlive,
-  });
+  const StatsState(
+      {@required this.health,
+      @required this.totalPlayers,
+      @required this.playersAlive,
+      @required this.percentReadyToShoot});
 
   String toString() {
     return 'Stats [ $health, $playersAlive/$totalPlayers ]';
@@ -22,9 +23,15 @@ class StatsState extends Equatable {
       health: GameProps.playerTotalHealth,
       playersAlive: totalPlayers,
       totalPlayers: totalPlayers,
+      percentReadyToShoot: 100,
     );
   }
 
   @override
-  List<Object> get props => [health, totalPlayers, playersAlive];
+  List<Object> get props => [
+        health,
+        totalPlayers,
+        playersAlive,
+        percentReadyToShoot,
+      ];
 }

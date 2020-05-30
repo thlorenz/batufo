@@ -15,7 +15,7 @@ class InputProcessor {
   double timeSinceLastThrust;
   double timeSinceLastBullet;
 
-  InputProcessor({
+  InputProcessor._({
     @required this.keyboardThrustForce,
     @required this.keyboardRotationFactor,
     @required this.timeBetweenThrusts,
@@ -32,6 +32,9 @@ class InputProcessor {
   bool get canShootBullet {
     return timeBetweenBullets <= timeSinceLastBullet;
   }
+
+  int get percentReadyToShoot =>
+      (timeSinceLastBullet / timeBetweenBullets * 100).floor();
 
   void udate(
     double dt,
@@ -76,5 +79,23 @@ class InputProcessor {
   double _increaseAngle(double angle, double delta) {
     final res = angle + delta;
     return res > twopi ? res - twopi : res;
+  }
+
+  static InputProcessor _instance;
+  static InputProcessor get instance => _instance;
+
+  static void create({
+    @required double keyboardThrustForce,
+    @required double keyboardRotationFactor,
+    @required double timeBetweenThrusts,
+    @required double timeBetweenBullets,
+  }) {
+    assert(_instance == null, 'input processor should only be created once');
+    _instance = InputProcessor._(
+      keyboardThrustForce: keyboardThrustForce,
+      keyboardRotationFactor: keyboardRotationFactor,
+      timeBetweenThrusts: timeBetweenThrusts,
+      timeBetweenBullets: timeBetweenBullets,
+    );
   }
 }

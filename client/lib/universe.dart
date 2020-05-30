@@ -4,6 +4,8 @@ import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/client_game.dart';
+import 'package:batufo/game/inputs/input_processor.dart';
+import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/rpc/client_player_update.dart';
@@ -18,6 +20,7 @@ final _log = Log<Universe>();
 
 class Universe {
   final Duration clientPlayerUpdateThrottle;
+  final InputProcessor inputProcessor;
   Client client;
 
   final _userState$ = BehaviorSubject<UserState>();
@@ -28,6 +31,7 @@ class Universe {
 
   Universe._({
     @required String serverHost,
+    @required this.inputProcessor,
     @required this.clientPlayerUpdateThrottle,
   }) {
     _userState$.add(initialUserState);
@@ -50,8 +54,15 @@ class Universe {
     Duration clientPlayerUpdateThrottle = const Duration(milliseconds: 100),
     Duration clientSpawnedBulletUpdateThrottle = Duration.zero,
   }) {
+    InputProcessor.create(
+      keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
+      keyboardThrustForce: GameProps.playerThrustForce,
+      timeBetweenThrusts: GameProps.timeBetweenThrustsMs,
+      timeBetweenBullets: GameProps.timeBetweenBulletsMs,
+    );
     return _instance = Universe._(
       serverHost: serverHost,
+      inputProcessor: InputProcessor.instance,
       clientPlayerUpdateThrottle: clientPlayerUpdateThrottle,
     );
   }
@@ -84,6 +95,7 @@ class Universe {
     WorldPosition.tileSize = arena.tileSize.toDouble();
     final game = ClientGame(
       arena: arena,
+      inputProcessor: inputProcessor,
       clientID: clientID,
       playerIndex: playerIndex,
       onGameStateUpdated: _onGameStateUpdated,
@@ -138,6 +150,7 @@ class Universe {
       health: hero.health,
       totalPlayers: state.totalPlayers,
       playersAlive: state.playersAlive,
+      percentReadyToShoot: inputProcessor.percentReadyToShoot,
     );
     _statsState$.add(stats);
   }

@@ -7,13 +7,6 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Client Side
 
-** Hud
-
-- [X] show hud widget on top of game
-- [X] show health in hud
-- [X] show how many players left in game in hud
-- [ ] show time to shoot in hud
-
 ** Scoring
 
 - [ ] player gains score whenever his bullet hits a player
@@ -36,6 +29,13 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [ ] server regularly emits a stats message
 - [ ] show how many players online in main menu
 - [ ] show how many players are in games that aren't full, i.e. 3/4 waiting on 1
+
+** DONE Hud
+
+- [X] show hud widget on top of game
+- [X] show health in hud
+- [X] show how many players left in game in hud
+- [X] show time to shoot in hud
 
 ** DONE Chores
 
