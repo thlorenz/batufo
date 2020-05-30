@@ -150,8 +150,6 @@ class ClientGame extends Game {
       _inputProcessor.udate(dt, pressedKeys, gestures, player);
     }
     _gameController.update(dt, ts);
-    // TODO: if player.shotBullet we need to get a hold of it
-    //  and _clientSpawnedBulletUpdate$.add()
     _clientPlayerUpdate.player = gameState.players[clientID];
     _clientPlayerUpdate$.add(_clientPlayerUpdate);
 

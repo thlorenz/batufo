@@ -7,7 +7,7 @@ class HealthWidget extends StatelessWidget {
   const HealthWidget({this.health}) : super();
 
   Widget build(BuildContext context) {
-    final totalWidth = MediaQuery.of(context).size.width * 0.8;
+    final totalWidth = MediaQuery.of(context).size.width * 0.5;
     final healthWidth = (health / GameProps.playerTotalHealth) * totalWidth;
     return Container(
       height: 20,

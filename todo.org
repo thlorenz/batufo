@@ -9,9 +9,9 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 ** Hud
 
-- [ ] show hud widget on top of game
-- [ ] show health in hud
-- [ ] show how many players left in game in hud
+- [X] show hud widget on top of game
+- [X] show health in hud
+- [X] show how many players left in game in hud
 - [ ] show time to shoot in hud
 
 ** Scoring
@@ -22,6 +22,7 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 ** Game Cycle
 
+- [ ] dead players communicate themselves as killed to server
 - [ ] detect when game is over
 - [ ] show winner screen for last player around
 - [ ] show looser screen for each player that is killed

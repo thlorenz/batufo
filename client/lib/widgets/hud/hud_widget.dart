@@ -1,6 +1,7 @@
 import 'package:batufo/states/stats_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/hud/health_widget.dart';
+import 'package:batufo/widgets/hud/players_alive_widget.dart';
 import 'package:flutter/material.dart';
 
 class HudWidget extends StatelessWidget {
@@ -12,6 +13,7 @@ class HudWidget extends StatelessWidget {
         stream: universe.statsState$,
         initialData: universe.initialStatsState,
         builder: (context, snapshot) {
+          final stats = snapshot.data;
           return Container(
             color: Color(0x66000000),
             child: Padding(
@@ -19,7 +21,11 @@ class HudWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  HealthWidget(health: snapshot.data.health),
+                  HealthWidget(health: stats.health),
+                  PlayersAliveWidget(
+                    totalPlayers: stats.totalPlayers,
+                    playersAlive: stats.playersAlive,
+                  ),
                 ],
               ),
             ),
