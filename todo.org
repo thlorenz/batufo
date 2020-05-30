@@ -13,7 +13,7 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [X] show health in hud
 - [X] show how many players left in game in hud
 - [X] show time to shoot in hud
-- [ ] show time to thrust in hud
+- [X] show time to thrust in hud
 
 
 ** Scoring
@@ -52,6 +52,11 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [X] ensure this works on phone
 
 ** Fixes
+
+*** [ ] Browser
+
+Currently not working in browser due to socket.io issue. May be fixable if we convert messages we broadcast to strings like we do for the messages that DO work in the browser.
+
 *** [ ] Bullet Problem
 
 Some bullets explode right in front of player when they are shot. Possibly they actually collide with the player itself which will be easier to triage once we have the health in the hud.

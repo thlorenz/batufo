@@ -3,6 +3,7 @@ import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/hud/health_widget.dart';
 import 'package:batufo/widgets/hud/players_alive_widget.dart';
 import 'package:batufo/widgets/hud/ready_to_shoot.dart';
+import 'package:batufo/widgets/hud/ready_to_thrust_widget.dart';
 import 'package:flutter/material.dart';
 
 class HudWidget extends StatelessWidget {
@@ -10,6 +11,11 @@ class HudWidget extends StatelessWidget {
   const HudWidget({@required this.universe}) : super();
 
   Widget build(BuildContext context) {
+    // TODO: ideally we wouldn't rebuild the health + player widgets
+    //  whenever our percent to shoot/apply thrust changes, so we should
+    // consider splitting these into separate streams.
+    // This would also allow us to remove the throttle on those stats that
+    // change often (see universe.dart).
     return StreamBuilder<StatsState>(
         stream: universe.statsState$,
         initialData: universe.initialStatsState,
@@ -23,8 +29,17 @@ class HudWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   HealthWidget(health: stats.health),
-                  ReadyToShootWidget(
-                    percentReadyToShoot: stats.percentReadyToShoot,
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ReadyToThrustWidget(
+                        percentReadyToThrust: stats.percentReadyToThrust,
+                      ),
+                      ReadyToShootWidget(
+                        percentReadyToShoot: stats.percentReadyToShoot,
+                      ),
+                    ],
                   ),
                   PlayersAliveWidget(
                     totalPlayers: stats.totalPlayers,

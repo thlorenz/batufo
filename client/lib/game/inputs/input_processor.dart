@@ -36,6 +36,9 @@ class InputProcessor {
   int get percentReadyToShoot =>
       (timeSinceLastBullet / timeBetweenBullets * 100).floor();
 
+  int get percentReadyToThrust =>
+      (timeSinceLastThrust / timeBetweenThrusts * 100).floor();
+
   void udate(
     double dt,
     GameKeys keys,

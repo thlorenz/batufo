@@ -7,12 +7,15 @@ class StatsState extends Equatable {
   final int playersAlive;
   final int totalPlayers;
   final int percentReadyToShoot;
+  final int percentReadyToThrust;
 
-  const StatsState(
-      {@required this.health,
-      @required this.totalPlayers,
-      @required this.playersAlive,
-      @required this.percentReadyToShoot});
+  const StatsState({
+    @required this.health,
+    @required this.totalPlayers,
+    @required this.playersAlive,
+    @required this.percentReadyToShoot,
+    @required this.percentReadyToThrust,
+  });
 
   String toString() {
     return 'Stats [ $health, $playersAlive/$totalPlayers ]';
@@ -24,6 +27,7 @@ class StatsState extends Equatable {
       playersAlive: totalPlayers,
       totalPlayers: totalPlayers,
       percentReadyToShoot: 100,
+      percentReadyToThrust: 100,
     );
   }
 
@@ -33,5 +37,6 @@ class StatsState extends Equatable {
         totalPlayers,
         playersAlive,
         percentReadyToShoot,
+        percentReadyToThrust,
       ];
 }

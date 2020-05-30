@@ -20,6 +20,7 @@ final _log = Log<Universe>();
 
 class Universe {
   final Duration clientPlayerUpdateThrottle;
+  final Duration statsThrottle;
   final InputProcessor inputProcessor;
   Client client;
 
@@ -33,6 +34,7 @@ class Universe {
     @required String serverHost,
     @required this.inputProcessor,
     @required this.clientPlayerUpdateThrottle,
+    @required this.statsThrottle,
   }) {
     _userState$.add(initialUserState);
     client = Client(serverHost: serverHost, universe: this);
@@ -46,13 +48,14 @@ class Universe {
 
   Stream<UserState> get userState$ => _userState$.stream.distinct();
   Stream<ConnectionState> get connectionState$ => _connectionState$.distinct();
-  Stream<StatsState> get statsState$ => _statsState$.distinct();
+  Stream<StatsState> get statsState$ =>
+      _statsState$.throttleTime(statsThrottle).distinct();
 
   static Universe _instance;
   static Universe create({
     @required String serverHost,
     Duration clientPlayerUpdateThrottle = const Duration(milliseconds: 100),
-    Duration clientSpawnedBulletUpdateThrottle = Duration.zero,
+    Duration statsThrottle = const Duration(milliseconds: 20),
   }) {
     InputProcessor.create(
       keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
@@ -64,6 +67,7 @@ class Universe {
       serverHost: serverHost,
       inputProcessor: InputProcessor.instance,
       clientPlayerUpdateThrottle: clientPlayerUpdateThrottle,
+      statsThrottle: statsThrottle,
     );
   }
 
@@ -151,6 +155,7 @@ class Universe {
       totalPlayers: state.totalPlayers,
       playersAlive: state.playersAlive,
       percentReadyToShoot: inputProcessor.percentReadyToShoot,
+      percentReadyToThrust: inputProcessor.percentReadyToThrust,
     );
     _statsState$.add(stats);
   }
