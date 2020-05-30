@@ -43,6 +43,6 @@ class BulletModel {
   }
 
   String toString() {
-    return 'BulletModel [ $tilePosition, $velocity, $collided ]';
+    return 'BulletModel $tilePosition, $velocity, $collided';
   }
 }

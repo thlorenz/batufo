@@ -116,12 +116,16 @@ class ClientGame extends Game {
     );
   }
 
-  void sync(ClientPlayerUpdate update) {
+  void updatePlayers(ClientPlayerUpdate update) {
     final id = update.player.id;
     _gameController.updatePlayer(update.player);
     // TODO: this may not be necessary if start() gets a game state
     // with all players in it
     _players.putIfAbsent(id, _initPlayer);
+  }
+
+  void updateBullets(ClientSpawnedBulletUpdate update) {
+    _gameController.addBullet(update.spawnedBullet);
   }
 
   void start() {
@@ -147,6 +151,11 @@ class ClientGame extends Game {
     //  and _clientSpawnedBulletUpdate$.add()
     _clientPlayerUpdate.player = gameState.players[clientID];
     _clientPlayerUpdate$.add(_clientPlayerUpdate);
+
+    if (player.shotBullet) {
+      _clientSpawnedBulletUpdate.spawnedBullet = gameState.bullets.last;
+      _clientSpawnedBulletUpdate$.add(_clientSpawnedBulletUpdate);
+    }
   }
 
   void updateUI(double dt, double ts) {

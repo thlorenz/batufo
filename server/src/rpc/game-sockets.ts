@@ -23,6 +23,10 @@ class GameSocket {
         logTrace('got playing client message -> broadcasting')
         socket.broadcast.emit('game:client-update', data)
       })
+      socket.on('game:spawned-bullet', (data: Uint8Array) => {
+        logTrace('got spawned bullet message -> broadcasting')
+        socket.broadcast.emit('game:spawned-bullet', data)
+      })
     })
   }
 

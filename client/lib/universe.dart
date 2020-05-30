@@ -18,7 +18,6 @@ class Universe {
   final _userState$ = BehaviorSubject<UserState>();
   final _connectionState$ = BehaviorSubject<ConnectionState>();
   final Duration clientPlayerUpdateThrottle;
-  final Duration clientSpawnedBulletUpdateThrottle;
   Client client;
   StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
   StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
@@ -26,7 +25,6 @@ class Universe {
   Universe._({
     @required String serverHost,
     @required this.clientPlayerUpdateThrottle,
-    @required this.clientSpawnedBulletUpdateThrottle,
   }) {
     _userState$.add(initialUserState);
     client = Client(serverHost: serverHost, universe: this);
@@ -47,7 +45,6 @@ class Universe {
     return _instance = Universe._(
       serverHost: serverHost,
       clientPlayerUpdateThrottle: clientPlayerUpdateThrottle,
-      clientSpawnedBulletUpdateThrottle: clientSpawnedBulletUpdateThrottle,
     );
   }
 
@@ -114,11 +111,7 @@ class Universe {
         .listen(_onClientPlayerUpdate);
 
     _clientSpawnedBulletUpdateSub =
-        (clientSpawnedBulletUpdateThrottle == Duration.zero
-                ? game.clientSpawnedBulletUpdate$
-                : game.clientSpawnedBulletUpdate$
-                    .throttleTime(clientSpawnedBulletUpdateThrottle))
-            .listen(_onClientSpawnedBulletUpdate);
+        game.clientSpawnedBulletUpdate$.listen(_onClientSpawnedBulletUpdate);
   }
 
   void _onClientPlayerUpdate(ClientPlayerUpdate update) {
@@ -141,6 +134,11 @@ class Universe {
 
   void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {
     final game = _userState$.value.game;
-    game.sync(clientPlayerUpdate);
+    game.updatePlayers(clientPlayerUpdate);
+  }
+
+  void receivedSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
+    final game = _userState$.value.game;
+    game.updateBullets(update);
   }
 }

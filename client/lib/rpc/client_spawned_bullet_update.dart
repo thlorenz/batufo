@@ -3,24 +3,27 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart';
 
 class ClientSpawnedBulletUpdate {
   final int clientID;
-  BulletModel _spawnedBullet;
+  BulletModel spawnedBullet;
 
   ClientSpawnedBulletUpdate(this.clientID);
-
-  set spawnedBullet(BulletModel value) {
-    _spawnedBullet = value;
-  }
 
   PackedClientSpawnedBulletUpdate pack() {
     final packedUpdate = PackedClientSpawnedBulletUpdate();
     packedUpdate.clientID = clientID;
-    packedUpdate.spawnedBullet = _spawnedBullet?.pack();
+    packedUpdate.spawnedBullet = spawnedBullet?.pack();
     return packedUpdate;
+  }
+
+  factory ClientSpawnedBulletUpdate.unpack(
+      PackedClientSpawnedBulletUpdate packed) {
+    final spawnedBullet = BulletModel.unpack(packed.spawnedBullet);
+    return ClientSpawnedBulletUpdate(packed.clientID)
+      ..spawnedBullet = spawnedBullet;
   }
 
   String toString() {
     return '''
-    spawnedBullets $_spawnedBullet
+    spawnedBullets $spawnedBullet
     ''';
   }
 }

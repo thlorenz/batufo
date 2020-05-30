@@ -12,6 +12,7 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart'
         InfoRequest,
         InfoResponse,
         PackedClientPlayerUpdate,
+        PackedClientSpawnedBulletUpdate,
         PlayRequest;
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
@@ -102,6 +103,7 @@ class Client {
         universe.clientStartedGame();
       })
       ..on('game:client-update', _onClientPlayerUpdateMessage)
+      ..on('game:spawned-bullet', _onClientSpawnedBulletMessage)
       ..connect();
   }
 
@@ -113,8 +115,13 @@ class Client {
     _gameSocket.emitWithBinary('game:client-update', buf);
   }
 
-  // TODO:
-  void sendClientSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {}
+  void sendClientSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
+    assert(_gameSocket != null, 'cannot send update without a connected game');
+    assert(update != null, 'need a valid non-null update');
+    final packed = update.pack();
+    final buf = packed.writeToBuffer();
+    _gameSocket.emitWithBinary('game:spawned-bullet', buf);
+  }
 
   void _onGameCreatedMessage(dynamic data) {
     final list = listFromData(data);
@@ -138,6 +145,15 @@ class Client {
 
     _log.finest('received: $update');
     universe.receivedClientPlayerUpdate(update);
+  }
+
+  void _onClientSpawnedBulletMessage(dynamic data) {
+    final list = data as Uint8List;
+    final packed = PackedClientSpawnedBulletUpdate.fromBuffer(list);
+    final update = ClientSpawnedBulletUpdate.unpack(packed);
+
+    _log.finest('received: $update');
+    universe.receivedSpawnedBulletUpdate(update);
   }
 
   void dispose() {

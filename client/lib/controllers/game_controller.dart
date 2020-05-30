@@ -5,6 +5,7 @@ import 'package:batufo/controllers/helpers/colliders.dart';
 import 'package:batufo/controllers/player_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/game_props.dart';
+import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/player_model.dart';
 
@@ -70,6 +71,10 @@ class GameController {
   void updatePlayer(PlayerModel player) {
     assert(player != null, 'cannot add null as player');
     _gameState.updatePlayer(player);
+  }
+
+  void addBullet(BulletModel bullet) {
+    gameState.addBullet(bullet);
   }
 
   void _spawnBullet(PlayerModel player) {
