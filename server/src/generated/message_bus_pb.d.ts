@@ -19,6 +19,26 @@ export namespace InfoRequest {
   }
 }
 
+export class PlayRequest extends jspb.Message {
+  getLevelname(): string;
+  setLevelname(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PlayRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: PlayRequest): PlayRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PlayRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PlayRequest;
+  static deserializeBinaryFromReader(message: PlayRequest, reader: jspb.BinaryReader): PlayRequest;
+}
+
+export namespace PlayRequest {
+  export type AsObject = {
+    levelname: string,
+  }
+}
+
 export class InfoResponse extends jspb.Message {
   clearLevelsList(): void;
   getLevelsList(): Array<LevelInfo>;
@@ -62,76 +82,6 @@ export namespace LevelInfo {
   export type AsObject = {
     name: string,
     nplayers: number,
-  }
-}
-
-export class PlayRequest extends jspb.Message {
-  getLevelname(): string;
-  setLevelname(value: string): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): PlayRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: PlayRequest): PlayRequest.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: PlayRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): PlayRequest;
-  static deserializeBinaryFromReader(message: PlayRequest, reader: jspb.BinaryReader): PlayRequest;
-}
-
-export namespace PlayRequest {
-  export type AsObject = {
-    levelname: string,
-  }
-}
-
-export class GameStateEvent extends jspb.Message {
-  hasGamestate(): boolean;
-  clearGamestate(): void;
-  getGamestate(): PackedServerUpdate | undefined;
-  setGamestate(value?: PackedServerUpdate): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GameStateEvent.AsObject;
-  static toObject(includeInstance: boolean, msg: GameStateEvent): GameStateEvent.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: GameStateEvent, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GameStateEvent;
-  static deserializeBinaryFromReader(message: GameStateEvent, reader: jspb.BinaryReader): GameStateEvent;
-}
-
-export namespace GameStateEvent {
-  export type AsObject = {
-    gamestate?: PackedServerUpdate.AsObject,
-  }
-}
-
-export class PackedServerUpdate extends jspb.Message {
-  clearPlayersList(): void;
-  getPlayersList(): Array<PackedPlayerModel>;
-  setPlayersList(value: Array<PackedPlayerModel>): void;
-  addPlayers(value?: PackedPlayerModel, index?: number): PackedPlayerModel;
-
-  clearSpawnedbulletsList(): void;
-  getSpawnedbulletsList(): Array<PackedBulletModel>;
-  setSpawnedbulletsList(value: Array<PackedBulletModel>): void;
-  addSpawnedbullets(value?: PackedBulletModel, index?: number): PackedBulletModel;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): PackedServerUpdate.AsObject;
-  static toObject(includeInstance: boolean, msg: PackedServerUpdate): PackedServerUpdate.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: PackedServerUpdate, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): PackedServerUpdate;
-  static deserializeBinaryFromReader(message: PackedServerUpdate, reader: jspb.BinaryReader): PackedServerUpdate;
-}
-
-export namespace PackedServerUpdate {
-  export type AsObject = {
-    playersList: Array<PackedPlayerModel.AsObject>,
-    spawnedbulletsList: Array<PackedBulletModel.AsObject>,
   }
 }
 

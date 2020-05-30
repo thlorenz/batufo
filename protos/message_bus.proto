@@ -1,28 +1,21 @@
 syntax = "proto3";
 
+// Requests
 message InfoRequest {}
-
-message InfoResponse {
-  repeated LevelInfo levels = 1;
-}
-
-message LevelInfo {
-  string name = 1;
-  uint32 nplayers = 2;
-}
 
 message PlayRequest {
   string levelName = 1;
 }
 
-message GameStateEvent {
-  // TODO: possibly needs id and timestamp
-  PackedServerUpdate gameState = 1;
+message InfoResponse {
+  repeated LevelInfo levels = 1;
 }
 
-message PackedServerUpdate {
-  repeated PackedPlayerModel players = 1;
-  repeated PackedBulletModel spawnedBullets = 2;
+// Responses
+
+message LevelInfo {
+  string name = 1;
+  uint32 nplayers = 2;
 }
 
 message PackedClientPlayerUpdate {

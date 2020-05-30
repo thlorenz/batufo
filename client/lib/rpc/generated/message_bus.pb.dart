@@ -30,6 +30,37 @@ class InfoRequest extends $pb.GeneratedMessage {
   static InfoRequest _defaultInstance;
 }
 
+class PlayRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayRequest', createEmptyInstance: create)
+    ..aOS(1, 'levelName', protoName: 'levelName')
+    ..hasRequiredFields = false
+  ;
+
+  PlayRequest._() : super();
+  factory PlayRequest() => create();
+  factory PlayRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PlayRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PlayRequest clone() => PlayRequest()..mergeFromMessage(this);
+  PlayRequest copyWith(void Function(PlayRequest) updates) => super.copyWith((message) => updates(message as PlayRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PlayRequest create() => PlayRequest._();
+  PlayRequest createEmptyInstance() => create();
+  static $pb.PbList<PlayRequest> createRepeated() => $pb.PbList<PlayRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PlayRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayRequest>(create);
+  static PlayRequest _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get levelName => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set levelName($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLevelName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLevelName() => clearField(1);
+}
+
 class InfoResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('InfoResponse', createEmptyInstance: create)
     ..pc<LevelInfo>(1, 'levels', $pb.PbFieldType.PM, subBuilder: LevelInfo.create)
@@ -94,99 +125,6 @@ class LevelInfo extends $pb.GeneratedMessage {
   $core.bool hasNplayers() => $_has(1);
   @$pb.TagNumber(2)
   void clearNplayers() => clearField(2);
-}
-
-class PlayRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayRequest', createEmptyInstance: create)
-    ..aOS(1, 'levelName', protoName: 'levelName')
-    ..hasRequiredFields = false
-  ;
-
-  PlayRequest._() : super();
-  factory PlayRequest() => create();
-  factory PlayRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory PlayRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  PlayRequest clone() => PlayRequest()..mergeFromMessage(this);
-  PlayRequest copyWith(void Function(PlayRequest) updates) => super.copyWith((message) => updates(message as PlayRequest));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static PlayRequest create() => PlayRequest._();
-  PlayRequest createEmptyInstance() => create();
-  static $pb.PbList<PlayRequest> createRepeated() => $pb.PbList<PlayRequest>();
-  @$core.pragma('dart2js:noInline')
-  static PlayRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayRequest>(create);
-  static PlayRequest _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get levelName => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set levelName($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasLevelName() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearLevelName() => clearField(1);
-}
-
-class GameStateEvent extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GameStateEvent', createEmptyInstance: create)
-    ..aOM<PackedServerUpdate>(1, 'gameState', protoName: 'gameState', subBuilder: PackedServerUpdate.create)
-    ..hasRequiredFields = false
-  ;
-
-  GameStateEvent._() : super();
-  factory GameStateEvent() => create();
-  factory GameStateEvent.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory GameStateEvent.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  GameStateEvent clone() => GameStateEvent()..mergeFromMessage(this);
-  GameStateEvent copyWith(void Function(GameStateEvent) updates) => super.copyWith((message) => updates(message as GameStateEvent));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static GameStateEvent create() => GameStateEvent._();
-  GameStateEvent createEmptyInstance() => create();
-  static $pb.PbList<GameStateEvent> createRepeated() => $pb.PbList<GameStateEvent>();
-  @$core.pragma('dart2js:noInline')
-  static GameStateEvent getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GameStateEvent>(create);
-  static GameStateEvent _defaultInstance;
-
-  @$pb.TagNumber(1)
-  PackedServerUpdate get gameState => $_getN(0);
-  @$pb.TagNumber(1)
-  set gameState(PackedServerUpdate v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasGameState() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearGameState() => clearField(1);
-  @$pb.TagNumber(1)
-  PackedServerUpdate ensureGameState() => $_ensure(0);
-}
-
-class PackedServerUpdate extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedServerUpdate', createEmptyInstance: create)
-    ..pc<PackedPlayerModel>(1, 'players', $pb.PbFieldType.PM, subBuilder: PackedPlayerModel.create)
-    ..pc<PackedBulletModel>(2, 'spawnedBullets', $pb.PbFieldType.PM, protoName: 'spawnedBullets', subBuilder: PackedBulletModel.create)
-    ..hasRequiredFields = false
-  ;
-
-  PackedServerUpdate._() : super();
-  factory PackedServerUpdate() => create();
-  factory PackedServerUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory PackedServerUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  PackedServerUpdate clone() => PackedServerUpdate()..mergeFromMessage(this);
-  PackedServerUpdate copyWith(void Function(PackedServerUpdate) updates) => super.copyWith((message) => updates(message as PackedServerUpdate));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static PackedServerUpdate create() => PackedServerUpdate._();
-  PackedServerUpdate createEmptyInstance() => create();
-  static $pb.PbList<PackedServerUpdate> createRepeated() => $pb.PbList<PackedServerUpdate>();
-  @$core.pragma('dart2js:noInline')
-  static PackedServerUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedServerUpdate>(create);
-  static PackedServerUpdate _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.List<PackedPlayerModel> get players => $_getList(0);
-
-  @$pb.TagNumber(2)
-  $core.List<PackedBulletModel> get spawnedBullets => $_getList(1);
 }
 
 class PackedClientPlayerUpdate extends $pb.GeneratedMessage {
