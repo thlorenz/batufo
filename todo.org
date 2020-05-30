@@ -7,15 +7,6 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Client Side
 
-** Hud
-
-- [X] show hud widget on top of game
-- [X] show health in hud
-- [X] show how many players left in game in hud
-- [X] show time to shoot in hud
-- [X] show time to thrust in hud
-
-
 ** Scoring
 
 - [ ] player gains score whenever his bullet hits a player
@@ -39,6 +30,15 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [ ] show how many players online in main menu
 - [ ] show how many players are in games that aren't full, i.e. 3/4 waiting on 1
 
+** DONE Hud
+
+- [X] show hud widget on top of game
+- [X] show health in hud
+- [X] show how many players left in game in hud
+- [X] show time to shoot in hud
+- [X] show time to thrust in hud
+
+
 ** DONE Chores
 
 - [X] bullets need to include clientID in the model in order to identify shooter when they hit
@@ -56,6 +56,31 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 *** [ ] Browser
 
 Currently not working in browser due to socket.io issue. May be fixable if we convert messages we broadcast to strings like we do for the messages that DO work in the browser.
+
+Found reason for things blowing up via the browser is that for some reason the angle that is sent gets packed to be larger than 31-bit, so when we started round tripping the serialization and sending as ~string~ like with the other message we run into problems.
+
+We blow up during ~serialization~. Here are the min/max values I found in the source.
+In particular we are above ~jspb.BinaryConstants.TWO_TO_31 = 2147483648~ which causes the crash.
+
+The actual value in one case was ~4294964949~
+
+#+BEGIN_SRC
+jspb.BinaryConstants.FLOAT32_EPS = 1.401298464324817E-45;
+jspb.BinaryConstants.FLOAT32_MIN = 1.1754943508222875E-38;
+jspb.BinaryConstants.FLOAT32_MAX = 3.4028234663852886E38;
+jspb.BinaryConstants.FLOAT64_EPS = 4.9E-324;
+jspb.BinaryConstants.FLOAT64_MIN = 2.2250738585072014E-308;
+jspb.BinaryConstants.FLOAT64_MAX = 1.7976931348623157E308;
+jspb.BinaryConstants.TWO_TO_20 = 1048576;
+jspb.BinaryConstants.TWO_TO_23 = 8388608;
+jspb.BinaryConstants.TWO_TO_31 = 2147483648;
+jspb.BinaryConstants.TWO_TO_32 = 4294967296;
+jspb.BinaryConstants.TWO_TO_52 = 4503599627370496;
+jspb.BinaryConstants.TWO_TO_63 = 0x7fffffffffffffff;
+jspb.BinaryConstants.TWO_TO_64 = 1.8446744073709552E19;
+#+END_SRC
+
+- fix1: ensuring that we never send a negative angle
 
 *** [ ] Bullet Problem
 
