@@ -1,3 +1,4 @@
+import 'package:batufo/widgets/hud/labeled_scalar_widget.dart';
 import 'package:flutter/material.dart';
 
 class ScoreWidget extends StatelessWidget {
@@ -7,13 +8,13 @@ class ScoreWidget extends StatelessWidget {
   }) : super();
 
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 0.1;
-    return Container(
-      width: width,
-      child: Text(
-        ' 🏆  $score',
+    return LabeledScalarWidget(
+      screenWidthPercent: 0.1,
+      scalar: Text(
+        '$score',
         style: TextStyle(color: Colors.greenAccent, fontSize: 10),
       ),
+      label: '🏆',
     );
   }
 }

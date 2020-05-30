@@ -1,3 +1,4 @@
+import 'package:batufo/widgets/hud/labeled_scalar_widget.dart';
 import 'package:flutter/material.dart';
 
 class PlayersAliveWidget extends StatelessWidget {
@@ -9,9 +10,13 @@ class PlayersAliveWidget extends StatelessWidget {
   }) : super();
 
   Widget build(BuildContext context) {
-    return Text(
-      '$playersAlive/$totalPlayers  🎮',
-      style: TextStyle(color: Colors.amber, fontSize: 10),
+    return LabeledScalarWidget(
+      screenWidthPercent: 0.1,
+      scalar: Text(
+        '$playersAlive/$totalPlayers',
+        style: TextStyle(color: Colors.amber, fontSize: 10),
+      ),
+      label: '🎮',
     );
   }
 }
