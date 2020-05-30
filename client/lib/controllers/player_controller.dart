@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui' show Offset;
 
 import 'package:batufo/controllers/helpers/math_utils.dart';
@@ -44,7 +45,7 @@ class PlayerController {
     player
       ..velocity = _normalizeVelocity(check.first)
       ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt)
-      ..health = player.health - check.second;
+      ..health = max(player.health - check.second, 0.0);
   }
 
   void cleanup(PlayerModel player) {

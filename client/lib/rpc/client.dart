@@ -134,9 +134,6 @@ class Client {
   }
 
   void _onClientPlayerUpdateMessage(dynamic data) {
-    // TODO: why is this only working here instead of being parsed as JSON?
-    // since this is just rebroadcast directly by the server
-    // we don't need to pull things out of a string
     final list = listFromData(data);
     final packed = PackedClientPlayerUpdate.fromBuffer(list);
     final update = ClientPlayerUpdate.unpack(packed);

@@ -81,7 +81,12 @@ class InputProcessor {
 
   double _increaseAngle(double angle, double delta) {
     final res = angle + delta;
-    return res > twopi ? res - twopi : res;
+    // Make sure angle is never < 0 nor too large.
+    // This is important for network communication as the double is packed
+    // and sending negative value causes problems due to 31-bit limit in V8.
+    if (res > twopi) return res - twopi;
+    if (res < 0) return res + twopi;
+    return res;
   }
 
   static InputProcessor _instance;

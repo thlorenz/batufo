@@ -30,6 +30,8 @@ class PlayerModel {
         shotBullet = shotBullet ?? false;
 
   PackedPlayerModel pack() {
+    assert(health >= 0, 'negative health will cause problems in the browser');
+    assert(angle >= 0, 'negative angle will cause problems in the browser');
     final tp = tilePosition.pack();
     final v = FractionalPoint(
       velocity.dx,

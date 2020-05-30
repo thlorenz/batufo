@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
@@ -36,7 +38,7 @@ class Colliders {
     if (_wallAt(tp)) return true;
     for (final player in players) {
       if (didBulletHitPlayer(player.tilePosition, tp, playerRadius)) {
-        player.health -= bulletHitsPlayerHealthToll;
+        player.health = max(player.health - bulletHitsPlayerHealthToll, 0.0);
         return true;
       }
     }
