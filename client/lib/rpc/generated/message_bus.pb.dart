@@ -129,8 +129,7 @@ class LevelInfo extends $pb.GeneratedMessage {
 
 class PackedClientPlayerUpdate extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedClientPlayerUpdate', createEmptyInstance: create)
-    ..a<$core.int>(1, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
-    ..aOM<PackedPlayerModel>(2, 'player', subBuilder: PackedPlayerModel.create)
+    ..aOM<PackedPlayerModel>(1, 'player', subBuilder: PackedPlayerModel.create)
     ..hasRequiredFields = false
   ;
 
@@ -150,30 +149,20 @@ class PackedClientPlayerUpdate extends $pb.GeneratedMessage {
   static PackedClientPlayerUpdate _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get clientID => $_getIZ(0);
+  PackedPlayerModel get player => $_getN(0);
   @$pb.TagNumber(1)
-  set clientID($core.int v) { $_setUnsignedInt32(0, v); }
+  set player(PackedPlayerModel v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasClientID() => $_has(0);
+  $core.bool hasPlayer() => $_has(0);
   @$pb.TagNumber(1)
-  void clearClientID() => clearField(1);
-
-  @$pb.TagNumber(2)
-  PackedPlayerModel get player => $_getN(1);
-  @$pb.TagNumber(2)
-  set player(PackedPlayerModel v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasPlayer() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearPlayer() => clearField(2);
-  @$pb.TagNumber(2)
-  PackedPlayerModel ensurePlayer() => $_ensure(1);
+  void clearPlayer() => clearField(1);
+  @$pb.TagNumber(1)
+  PackedPlayerModel ensurePlayer() => $_ensure(0);
 }
 
 class PackedClientSpawnedBulletUpdate extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedClientSpawnedBulletUpdate', createEmptyInstance: create)
-    ..a<$core.int>(1, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
-    ..aOM<PackedBulletModel>(2, 'spawnedBullet', protoName: 'spawnedBullet', subBuilder: PackedBulletModel.create)
+    ..aOM<PackedBulletModel>(1, 'spawnedBullet', protoName: 'spawnedBullet', subBuilder: PackedBulletModel.create)
     ..hasRequiredFields = false
   ;
 
@@ -193,24 +182,15 @@ class PackedClientSpawnedBulletUpdate extends $pb.GeneratedMessage {
   static PackedClientSpawnedBulletUpdate _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get clientID => $_getIZ(0);
+  PackedBulletModel get spawnedBullet => $_getN(0);
   @$pb.TagNumber(1)
-  set clientID($core.int v) { $_setUnsignedInt32(0, v); }
+  set spawnedBullet(PackedBulletModel v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasClientID() => $_has(0);
+  $core.bool hasSpawnedBullet() => $_has(0);
   @$pb.TagNumber(1)
-  void clearClientID() => clearField(1);
-
-  @$pb.TagNumber(2)
-  PackedBulletModel get spawnedBullet => $_getN(1);
-  @$pb.TagNumber(2)
-  set spawnedBullet(PackedBulletModel v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasSpawnedBullet() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearSpawnedBullet() => clearField(2);
-  @$pb.TagNumber(2)
-  PackedBulletModel ensureSpawnedBullet() => $_ensure(1);
+  void clearSpawnedBullet() => clearField(1);
+  @$pb.TagNumber(1)
+  PackedBulletModel ensureSpawnedBullet() => $_ensure(0);
 }
 
 class GameCreated extends $pb.GeneratedMessage {
@@ -420,8 +400,9 @@ class PackedPlayerModel extends $pb.GeneratedMessage {
 
 class PackedBulletModel extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedBulletModel', createEmptyInstance: create)
-    ..aOM<PackedTilePosition>(1, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
-    ..aOM<PackedFractionalPoint>(2, 'velocity', subBuilder: PackedFractionalPoint.create)
+    ..a<$core.int>(1, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
+    ..aOM<PackedTilePosition>(2, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
+    ..aOM<PackedFractionalPoint>(3, 'velocity', subBuilder: PackedFractionalPoint.create)
     ..hasRequiredFields = false
   ;
 
@@ -441,26 +422,35 @@ class PackedBulletModel extends $pb.GeneratedMessage {
   static PackedBulletModel _defaultInstance;
 
   @$pb.TagNumber(1)
-  PackedTilePosition get tilePosition => $_getN(0);
+  $core.int get clientID => $_getIZ(0);
   @$pb.TagNumber(1)
-  set tilePosition(PackedTilePosition v) { setField(1, v); }
+  set clientID($core.int v) { $_setUnsignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasTilePosition() => $_has(0);
+  $core.bool hasClientID() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTilePosition() => clearField(1);
-  @$pb.TagNumber(1)
-  PackedTilePosition ensureTilePosition() => $_ensure(0);
+  void clearClientID() => clearField(1);
 
   @$pb.TagNumber(2)
-  PackedFractionalPoint get velocity => $_getN(1);
+  PackedTilePosition get tilePosition => $_getN(1);
   @$pb.TagNumber(2)
-  set velocity(PackedFractionalPoint v) { setField(2, v); }
+  set tilePosition(PackedTilePosition v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasVelocity() => $_has(1);
+  $core.bool hasTilePosition() => $_has(1);
   @$pb.TagNumber(2)
-  void clearVelocity() => clearField(2);
+  void clearTilePosition() => clearField(2);
   @$pb.TagNumber(2)
-  PackedFractionalPoint ensureVelocity() => $_ensure(1);
+  PackedTilePosition ensureTilePosition() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  PackedFractionalPoint get velocity => $_getN(2);
+  @$pb.TagNumber(3)
+  set velocity(PackedFractionalPoint v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasVelocity() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearVelocity() => clearField(3);
+  @$pb.TagNumber(3)
+  PackedFractionalPoint ensureVelocity() => $_ensure(2);
 }
 
 class PackedTilePosition extends $pb.GeneratedMessage {

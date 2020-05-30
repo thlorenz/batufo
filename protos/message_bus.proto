@@ -19,13 +19,11 @@ message LevelInfo {
 }
 
 message PackedClientPlayerUpdate {
-  uint32 clientID = 1;
-  PackedPlayerModel player = 2;
+  PackedPlayerModel player = 1;
 }
 
 message PackedClientSpawnedBulletUpdate {
-  uint32 clientID = 1;
-  PackedBulletModel spawnedBullet = 2;
+  PackedBulletModel spawnedBullet = 1;
 }
 
 message GameCreated {
@@ -53,8 +51,9 @@ message PackedPlayerModel {
 }
 
 message PackedBulletModel {
-  PackedTilePosition tilePosition = 1;
-  PackedFractionalPoint velocity = 2;
+  uint32 clientID = 1;
+  PackedTilePosition tilePosition = 2;
+  PackedFractionalPoint velocity = 3;
 }
 
 // colRow: tile column and row

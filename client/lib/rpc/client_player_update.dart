@@ -6,21 +6,18 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart';
 // The rpc/client packs it whenever sending a message anyways while
 // 90% of emitted values are ignored due to throttling.
 class ClientPlayerUpdate {
-  final int clientID;
   PlayerModel player;
 
-  ClientPlayerUpdate(this.clientID);
+  ClientPlayerUpdate();
 
   PackedClientPlayerUpdate pack() {
     final packedUpdate = PackedClientPlayerUpdate();
-    packedUpdate.clientID = clientID;
     packedUpdate.player = player?.pack();
     return packedUpdate;
   }
 
   factory ClientPlayerUpdate.unpack(PackedClientPlayerUpdate update) {
-    return ClientPlayerUpdate(update.clientID)
-      ..player = PlayerModel.unpack(update.player);
+    return ClientPlayerUpdate()..player = PlayerModel.unpack(update.player);
   }
 
   String toString() {

@@ -4,10 +4,12 @@ import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/client_game.dart';
+import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/states/connection_state.dart';
+import 'package:batufo/states/stats_state.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,10 +17,12 @@ import 'package:rxdart/rxdart.dart';
 final _log = Log<Universe>();
 
 class Universe {
-  final _userState$ = BehaviorSubject<UserState>();
-  final _connectionState$ = BehaviorSubject<ConnectionState>();
   final Duration clientPlayerUpdateThrottle;
   Client client;
+
+  final _userState$ = BehaviorSubject<UserState>();
+  final _connectionState$ = BehaviorSubject<ConnectionState>();
+  final _statsState$ = BehaviorSubject<StatsState>();
   StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
   StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
 
@@ -33,8 +37,12 @@ class Universe {
   UserState get initialUserState => UserRequestingInfoState();
   ConnectionState get initialConnectionState =>
       ConnectionState(ConnectionStates.Initializing);
-  Stream<UserState> get userState$ => _userState$.stream;
-  Stream<ConnectionState> get connectionState$ => _connectionState$;
+  StatsState get initialStatsState =>
+      StatsState.initial(_userState$.value?.game?.totalPlayers);
+
+  Stream<UserState> get userState$ => _userState$.stream.distinct();
+  Stream<ConnectionState> get connectionState$ => _connectionState$.distinct();
+  Stream<StatsState> get statsState$ => _statsState$.distinct();
 
   static Universe _instance;
   static Universe create({
@@ -78,6 +86,7 @@ class Universe {
       arena: arena,
       clientID: clientID,
       playerIndex: playerIndex,
+      onGameStateUpdated: _onGameStateUpdated,
     );
     final state = UserGameCreatedState.from(_userState$.value, game);
     _addUserState(state);
@@ -122,6 +131,17 @@ class Universe {
     client.sendClientSpawnedBulletUpdate(update);
   }
 
+  void _onGameStateUpdated(ClientGameState state) {
+    final hero = state.hero;
+    assert(hero != null, 'could not find hero player');
+    final stats = StatsState(
+      health: hero.health,
+      totalPlayers: state.totalPlayers,
+      playersAlive: state.playersAlive,
+    );
+    _statsState$.add(stats);
+  }
+
   void _disposeClientUpdateSubs() {
     _clientPlayerUpdateSub?.cancel();
     _clientSpawnedBulletUpdateSub?.cancel();
@@ -130,6 +150,7 @@ class Universe {
   void dispose() {
     if (!_userState$.isClosed) _userState$.close();
     _disposeClientUpdateSubs();
+    if (!_statsState$.isClosed) _statsState$.close();
   }
 
   void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {

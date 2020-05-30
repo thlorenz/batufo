@@ -38,7 +38,7 @@ class Player {
   }
 
   void updateSprites(PlayerModel player, double dt) {
-    if (PlayerStatus(player).isDead) return;
+    if (PlayerStatus.isDead(player)) return;
     if (player.appliedThrust) thrustSprite.reset();
     thrustSprite.update(dt);
   }
@@ -47,7 +47,7 @@ class Player {
     final playerTilePosition = player.tilePosition;
     final center = WorldPosition.fromTilePosition(playerTilePosition);
     final playerSprite =
-        PlayerStatus(player).isDead ? deadPlayerSprite : alivePlayerSprite;
+        PlayerStatus.isDead(player) ? deadPlayerSprite : alivePlayerSprite;
     canvas.save();
     {
       canvas

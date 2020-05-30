@@ -17,7 +17,7 @@ const LOCALBOX = 'http://192.168.1.7:$PORT';
 
 Future<void> main() async {
   Log.activateConsole();
-  Log.rootLevel = Level.FINE;
+  Log.rootLevel = Level.FINER;
   Log.loggerFilter = (String s) => !s.contains('socket_io');
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +39,7 @@ Future<void> main() async {
 
   final universe = Universe.create(
     serverHost: serverIP,
-    clientPlayerUpdateThrottle: Duration(seconds: 2),
+    clientPlayerUpdateThrottle: Duration(milliseconds: 100),
   );
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -65,9 +65,9 @@ class UniverseWidget extends StatelessWidget {
   }
 
   Widget _selectWidget(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<UserState>(
       initialData: universe.initialUserState,
-      builder: (BuildContext context, AsyncSnapshot<UserState> snapshot) {
+      builder: (context, snapshot) {
         if (!snapshot.hasData ||
             snapshot.data.kind == UserStates.RequestingInfo) {
           return Container(child: Text('Connecting ...'));
@@ -81,7 +81,8 @@ class UniverseWidget extends StatelessWidget {
         } else if (snapshot.data.kind == UserStates.GameCreated) {
           return GameCreatedWidget(game: snapshot.data.game);
         } else if (snapshot.data.kind == UserStates.GameStarted) {
-          return GameRunningWidget(game: snapshot.data.game);
+          return GameRunningWidget(
+              universe: universe, game: snapshot.data.game);
         }
         return null;
       },

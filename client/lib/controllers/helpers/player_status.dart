@@ -1,10 +1,9 @@
 import 'package:batufo/models/player_model.dart';
 
 class PlayerStatus {
-  final PlayerModel player;
-  PlayerStatus(this.player);
-
-  bool get isDead {
+  static bool isDead(PlayerModel player) {
     return player.health <= 0;
   }
+
+  static bool isAlive(PlayerModel player) => !isDead(player);
 }

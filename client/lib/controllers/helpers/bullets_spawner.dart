@@ -13,6 +13,7 @@ class BulletsSpawner {
 
   BulletModel spawnFor(PlayerModel player) {
     return BulletModel(
+      clientID: player.id,
       tilePosition: Physics.scaleAlongAngle(
         player.tilePosition,
         player.angle,

@@ -86,9 +86,6 @@ export namespace LevelInfo {
 }
 
 export class PackedClientPlayerUpdate extends jspb.Message {
-  getClientid(): number;
-  setClientid(value: number): void;
-
   hasPlayer(): boolean;
   clearPlayer(): void;
   getPlayer(): PackedPlayerModel | undefined;
@@ -106,15 +103,11 @@ export class PackedClientPlayerUpdate extends jspb.Message {
 
 export namespace PackedClientPlayerUpdate {
   export type AsObject = {
-    clientid: number,
     player?: PackedPlayerModel.AsObject,
   }
 }
 
 export class PackedClientSpawnedBulletUpdate extends jspb.Message {
-  getClientid(): number;
-  setClientid(value: number): void;
-
   hasSpawnedbullet(): boolean;
   clearSpawnedbullet(): void;
   getSpawnedbullet(): PackedBulletModel | undefined;
@@ -132,7 +125,6 @@ export class PackedClientSpawnedBulletUpdate extends jspb.Message {
 
 export namespace PackedClientSpawnedBulletUpdate {
   export type AsObject = {
-    clientid: number,
     spawnedbullet?: PackedBulletModel.AsObject,
   }
 }
@@ -262,6 +254,9 @@ export namespace PackedPlayerModel {
 }
 
 export class PackedBulletModel extends jspb.Message {
+  getClientid(): number;
+  setClientid(value: number): void;
+
   hasTileposition(): boolean;
   clearTileposition(): void;
   getTileposition(): PackedTilePosition | undefined;
@@ -284,6 +279,7 @@ export class PackedBulletModel extends jspb.Message {
 
 export namespace PackedBulletModel {
   export type AsObject = {
+    clientid: number,
     tileposition?: PackedTilePosition.AsObject,
     velocity?: PackedFractionalPoint.AsObject,
   }

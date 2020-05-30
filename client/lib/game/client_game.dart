@@ -28,6 +28,7 @@ final _log = Log<ClientGame>();
 
 class ClientGame extends Game {
   final Arena arena;
+  final void Function(ClientGameState state) onGameStateUpdated;
   final Background _background;
   final Grid _grid;
   final Walls _walls;
@@ -62,10 +63,11 @@ class ClientGame extends Game {
     @required this.arena,
     @required this.clientID,
     @required int playerIndex,
+    @required this.onGameStateUpdated,
   })  : _disposed = false,
         _started = false,
-        _clientPlayerUpdate = ClientPlayerUpdate(clientID),
-        _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(clientID),
+        _clientPlayerUpdate = ClientPlayerUpdate(),
+        _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(),
         _grid = Grid(arena.tileSize.toDouble()),
         _background = Background(
           arena.floorTiles,
@@ -93,6 +95,7 @@ class ClientGame extends Game {
   }
 
   ClientGameState get gameState => _gameController.gameState;
+  int get totalPlayers => arena.players.length;
 
   PlayerModel get clientPlayer {
     final player = gameState.players[clientID];
@@ -140,7 +143,7 @@ class ClientGame extends Game {
   void update(double dt, double ts) {
     if (!ready) return;
     final player = clientPlayer;
-    if (!PlayerStatus(player).isDead) {
+    if (!PlayerStatus.isDead(player)) {
       final pressedKeys = GameKeyboard.pressedKeys;
       final gestures = GameGestures.instance.aggregatedGestures;
 
@@ -156,6 +159,7 @@ class ClientGame extends Game {
       _clientSpawnedBulletUpdate.spawnedBullet = gameState.bullets.last;
       _clientSpawnedBulletUpdate$.add(_clientSpawnedBulletUpdate);
     }
+    onGameStateUpdated(gameState);
   }
 
   void updateUI(double dt, double ts) {

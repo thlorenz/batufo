@@ -29,7 +29,7 @@ class PlayerController {
     double dt,
     PlayerModel player,
   ) {
-    if (PlayerStatus(player).isDead) return;
+    if (PlayerStatus.isDead(player)) return;
 
     if (player.appliedThrust) {
       final velocity = Physics.increaseVelocity(

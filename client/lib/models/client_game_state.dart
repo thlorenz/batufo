@@ -1,37 +1,8 @@
+import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/diagnostics/logger.dart';
-import 'package:batufo/game_props.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
-
-const SYNC_ONLY_ONCE = false;
-
-class Stats {
-  final double health;
-  final int playersAlive;
-
-  Stats({@required this.health, @required this.playersAlive});
-
-  String toString() {
-    return 'Stats [ $health, $playersAlive ]';
-  }
-
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Stats &&
-          runtimeType == other.runtimeType &&
-          health == other.health &&
-          playersAlive == other.playersAlive;
-
-  int get hashCode => health.hashCode ^ playersAlive.hashCode;
-
-  static Stats initial(int playersAlive) {
-    return Stats(
-      health: GameProps.playerTotalHealth,
-      playersAlive: playersAlive,
-    );
-  }
-}
 
 final _log = Log<ClientGameState>();
 
@@ -43,6 +14,10 @@ class ClientGameState {
   bool synced = false;
 
   ClientGameState({@required this.clientID, this.players, this.bullets});
+
+  PlayerModel get hero => players[clientID];
+  int get totalPlayers => players.length;
+  int get playersAlive => players.values.where(PlayerStatus.isAlive).length;
 
   void updatePlayer(PlayerModel player) {
     assert(player != null, 'cannot add null as player');

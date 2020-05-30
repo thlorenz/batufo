@@ -925,7 +925,6 @@ proto.PackedClientPlayerUpdate.prototype.toObject = function(opt_includeInstance
  */
 proto.PackedClientPlayerUpdate.toObject = function(includeInstance, msg) {
   var f, obj = {
-    clientid: jspb.Message.getFieldWithDefault(msg, 1, 0),
     player: (f = msg.getPlayer()) && proto.PackedPlayerModel.toObject(includeInstance, f)
   };
 
@@ -964,10 +963,6 @@ proto.PackedClientPlayerUpdate.deserializeBinaryFromReader = function(msg, reade
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setClientid(value);
-      break;
-    case 2:
       var value = new proto.PackedPlayerModel;
       reader.readMessage(value,proto.PackedPlayerModel.deserializeBinaryFromReader);
       msg.setPlayer(value);
@@ -1001,17 +996,10 @@ proto.PackedClientPlayerUpdate.prototype.serializeBinary = function() {
  */
 proto.PackedClientPlayerUpdate.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getClientid();
-  if (f !== 0) {
-    writer.writeUint32(
-      1,
-      f
-    );
-  }
   f = message.getPlayer();
   if (f != null) {
     writer.writeMessage(
-      2,
+      1,
       f,
       proto.PackedPlayerModel.serializeBinaryToWriter
     );
@@ -1020,30 +1008,12 @@ proto.PackedClientPlayerUpdate.serializeBinaryToWriter = function(message, write
 
 
 /**
- * optional uint32 clientID = 1;
- * @return {number}
- */
-proto.PackedClientPlayerUpdate.prototype.getClientid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.PackedClientPlayerUpdate} returns this
- */
-proto.PackedClientPlayerUpdate.prototype.setClientid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional PackedPlayerModel player = 2;
+ * optional PackedPlayerModel player = 1;
  * @return {?proto.PackedPlayerModel}
  */
 proto.PackedClientPlayerUpdate.prototype.getPlayer = function() {
   return /** @type{?proto.PackedPlayerModel} */ (
-    jspb.Message.getWrapperField(this, proto.PackedPlayerModel, 2));
+    jspb.Message.getWrapperField(this, proto.PackedPlayerModel, 1));
 };
 
 
@@ -1052,7 +1022,7 @@ proto.PackedClientPlayerUpdate.prototype.getPlayer = function() {
  * @return {!proto.PackedClientPlayerUpdate} returns this
 */
 proto.PackedClientPlayerUpdate.prototype.setPlayer = function(value) {
-  return jspb.Message.setWrapperField(this, 2, value);
+  return jspb.Message.setWrapperField(this, 1, value);
 };
 
 
@@ -1070,7 +1040,7 @@ proto.PackedClientPlayerUpdate.prototype.clearPlayer = function() {
  * @return {boolean}
  */
 proto.PackedClientPlayerUpdate.prototype.hasPlayer = function() {
-  return jspb.Message.getField(this, 2) != null;
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
@@ -1106,7 +1076,6 @@ proto.PackedClientSpawnedBulletUpdate.prototype.toObject = function(opt_includeI
  */
 proto.PackedClientSpawnedBulletUpdate.toObject = function(includeInstance, msg) {
   var f, obj = {
-    clientid: jspb.Message.getFieldWithDefault(msg, 1, 0),
     spawnedbullet: (f = msg.getSpawnedbullet()) && proto.PackedBulletModel.toObject(includeInstance, f)
   };
 
@@ -1145,10 +1114,6 @@ proto.PackedClientSpawnedBulletUpdate.deserializeBinaryFromReader = function(msg
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setClientid(value);
-      break;
-    case 2:
       var value = new proto.PackedBulletModel;
       reader.readMessage(value,proto.PackedBulletModel.deserializeBinaryFromReader);
       msg.setSpawnedbullet(value);
@@ -1182,17 +1147,10 @@ proto.PackedClientSpawnedBulletUpdate.prototype.serializeBinary = function() {
  */
 proto.PackedClientSpawnedBulletUpdate.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getClientid();
-  if (f !== 0) {
-    writer.writeUint32(
-      1,
-      f
-    );
-  }
   f = message.getSpawnedbullet();
   if (f != null) {
     writer.writeMessage(
-      2,
+      1,
       f,
       proto.PackedBulletModel.serializeBinaryToWriter
     );
@@ -1201,30 +1159,12 @@ proto.PackedClientSpawnedBulletUpdate.serializeBinaryToWriter = function(message
 
 
 /**
- * optional uint32 clientID = 1;
- * @return {number}
- */
-proto.PackedClientSpawnedBulletUpdate.prototype.getClientid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.PackedClientSpawnedBulletUpdate} returns this
- */
-proto.PackedClientSpawnedBulletUpdate.prototype.setClientid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional PackedBulletModel spawnedBullet = 2;
+ * optional PackedBulletModel spawnedBullet = 1;
  * @return {?proto.PackedBulletModel}
  */
 proto.PackedClientSpawnedBulletUpdate.prototype.getSpawnedbullet = function() {
   return /** @type{?proto.PackedBulletModel} */ (
-    jspb.Message.getWrapperField(this, proto.PackedBulletModel, 2));
+    jspb.Message.getWrapperField(this, proto.PackedBulletModel, 1));
 };
 
 
@@ -1233,7 +1173,7 @@ proto.PackedClientSpawnedBulletUpdate.prototype.getSpawnedbullet = function() {
  * @return {!proto.PackedClientSpawnedBulletUpdate} returns this
 */
 proto.PackedClientSpawnedBulletUpdate.prototype.setSpawnedbullet = function(value) {
-  return jspb.Message.setWrapperField(this, 2, value);
+  return jspb.Message.setWrapperField(this, 1, value);
 };
 
 
@@ -1251,7 +1191,7 @@ proto.PackedClientSpawnedBulletUpdate.prototype.clearSpawnedbullet = function() 
  * @return {boolean}
  */
 proto.PackedClientSpawnedBulletUpdate.prototype.hasSpawnedbullet = function() {
-  return jspb.Message.getField(this, 2) != null;
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
@@ -2218,6 +2158,7 @@ proto.PackedBulletModel.prototype.toObject = function(opt_includeInstance) {
  */
 proto.PackedBulletModel.toObject = function(includeInstance, msg) {
   var f, obj = {
+    clientid: jspb.Message.getFieldWithDefault(msg, 1, 0),
     tileposition: (f = msg.getTileposition()) && proto.PackedTilePosition.toObject(includeInstance, f),
     velocity: (f = msg.getVelocity()) && proto.PackedFractionalPoint.toObject(includeInstance, f)
   };
@@ -2257,11 +2198,15 @@ proto.PackedBulletModel.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setClientid(value);
+      break;
+    case 2:
       var value = new proto.PackedTilePosition;
       reader.readMessage(value,proto.PackedTilePosition.deserializeBinaryFromReader);
       msg.setTileposition(value);
       break;
-    case 2:
+    case 3:
       var value = new proto.PackedFractionalPoint;
       reader.readMessage(value,proto.PackedFractionalPoint.deserializeBinaryFromReader);
       msg.setVelocity(value);
@@ -2295,10 +2240,17 @@ proto.PackedBulletModel.prototype.serializeBinary = function() {
  */
 proto.PackedBulletModel.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getClientid();
+  if (f !== 0) {
+    writer.writeUint32(
+      1,
+      f
+    );
+  }
   f = message.getTileposition();
   if (f != null) {
     writer.writeMessage(
-      1,
+      2,
       f,
       proto.PackedTilePosition.serializeBinaryToWriter
     );
@@ -2306,7 +2258,7 @@ proto.PackedBulletModel.serializeBinaryToWriter = function(message, writer) {
   f = message.getVelocity();
   if (f != null) {
     writer.writeMessage(
-      2,
+      3,
       f,
       proto.PackedFractionalPoint.serializeBinaryToWriter
     );
@@ -2315,12 +2267,30 @@ proto.PackedBulletModel.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional PackedTilePosition tilePosition = 1;
+ * optional uint32 clientID = 1;
+ * @return {number}
+ */
+proto.PackedBulletModel.prototype.getClientid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.PackedBulletModel} returns this
+ */
+proto.PackedBulletModel.prototype.setClientid = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional PackedTilePosition tilePosition = 2;
  * @return {?proto.PackedTilePosition}
  */
 proto.PackedBulletModel.prototype.getTileposition = function() {
   return /** @type{?proto.PackedTilePosition} */ (
-    jspb.Message.getWrapperField(this, proto.PackedTilePosition, 1));
+    jspb.Message.getWrapperField(this, proto.PackedTilePosition, 2));
 };
 
 
@@ -2329,7 +2299,7 @@ proto.PackedBulletModel.prototype.getTileposition = function() {
  * @return {!proto.PackedBulletModel} returns this
 */
 proto.PackedBulletModel.prototype.setTileposition = function(value) {
-  return jspb.Message.setWrapperField(this, 1, value);
+  return jspb.Message.setWrapperField(this, 2, value);
 };
 
 
@@ -2347,17 +2317,17 @@ proto.PackedBulletModel.prototype.clearTileposition = function() {
  * @return {boolean}
  */
 proto.PackedBulletModel.prototype.hasTileposition = function() {
-  return jspb.Message.getField(this, 1) != null;
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
 /**
- * optional PackedFractionalPoint velocity = 2;
+ * optional PackedFractionalPoint velocity = 3;
  * @return {?proto.PackedFractionalPoint}
  */
 proto.PackedBulletModel.prototype.getVelocity = function() {
   return /** @type{?proto.PackedFractionalPoint} */ (
-    jspb.Message.getWrapperField(this, proto.PackedFractionalPoint, 2));
+    jspb.Message.getWrapperField(this, proto.PackedFractionalPoint, 3));
 };
 
 
@@ -2366,7 +2336,7 @@ proto.PackedBulletModel.prototype.getVelocity = function() {
  * @return {!proto.PackedBulletModel} returns this
 */
 proto.PackedBulletModel.prototype.setVelocity = function(value) {
-  return jspb.Message.setWrapperField(this, 2, value);
+  return jspb.Message.setWrapperField(this, 3, value);
 };
 
 
@@ -2384,7 +2354,7 @@ proto.PackedBulletModel.prototype.clearVelocity = function() {
  * @return {boolean}
  */
 proto.PackedBulletModel.prototype.hasVelocity = function() {
-  return jspb.Message.getField(this, 2) != null;
+  return jspb.Message.getField(this, 3) != null;
 };
 
 

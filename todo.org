@@ -9,10 +9,16 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 ** Hud
 
+- [ ] show hud widget on top of game
 - [ ] show health in hud
 - [ ] show how many players left in game in hud
-- [ ] show score in hud
 - [ ] show time to shoot in hud
+
+** Scoring
+
+- [ ] player gains score whenever his bullet hits a player
+- [ ] player gains lots more score if he kills a player
+- [ ] show score in hud
 
 ** Game Cycle
 
@@ -22,12 +28,19 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [ ] provide /Back to Menu/ button which allows player to select another level
 - [ ] provide /Try Again/ button which restarts player in the same level
 - [ ] recycle game + related socket on server for ended games
+- [ ] as a bonus server could detect games from which all clients disconnected and/or haven't gotten any updates in a long time and recycle those regularly
 
 ** Stats
 
 - [ ] server regularly emits a stats message
 - [ ] show how many players online in main menu
 - [ ] show how many players are in games that aren't full, i.e. 3/4 waiting on 1
+
+** DONE Chores
+
+- [X] bullets need to include clientID in the model in order to identify shooter when they hit
+- [X] spawned bullet updates no longer need to include clientID
+- [X] player updates no longer need to include clientID
 
 ** DONE Inputs
 
@@ -55,6 +68,14 @@ Fix2 is very simple to implement (in minutes) but would theoretically allow play
 
 
 * WAIT Nice to Have
+
+** WAIT Devices and Fairness
+
+Considering that players on Desktop are at an advantage we could try to match up players by device. Obviously this only works/becomes an issue once we have a certain amount of players online.
+
+** WAIT Visual Cues
+
+- [ ] make any player who is almost dying blink
 
 ** WAIT God View
 
