@@ -3,10 +3,6 @@ import { ServerGame } from '../server-game'
 
 import socketio from 'socket.io'
 import debug from 'debug'
-import {
-  PackedClientPlayerUpdate,
-  PackedClientSpawnedBulletUpdate,
-} from '../generated/message_bus_pb'
 const logDebug = debug('game-socket:debug')
 const logError = debug('game-socket:error')
 const logTrace = debug('game-socket:trace')
@@ -24,26 +20,20 @@ class GameSocket {
       )
       this._tellClientsIfGameIsReady()
 
-      socket.on('game:client-update', (data: Uint8Array) => {
+      socket.on('game:client-update', (data: Buffer) => {
         logTrace('got playing client message -> broadcasting')
         try {
-          const req = PackedClientPlayerUpdate.deserializeBinary(data)
-          socket.broadcast.emit(
-            'game:client-update',
-            req.serializeBinary().toString()
-          )
+          const array = Uint8Array.from(data)
+          socket.broadcast.emit('game:client-update', array.toString())
         } catch (err) {
           logError('game:client-update', err)
         }
       })
-      socket.on('game:spawned-bullet', (data: Uint8Array) => {
+      socket.on('game:spawned-bullet', (data: Buffer) => {
         logTrace('got spawned bullet message -> broadcasting')
         try {
-          const req = PackedClientSpawnedBulletUpdate.deserializeBinary(data)
-          socket.broadcast.emit(
-            'game:spawned-bullet',
-            req.serializeBinary().toString()
-          )
+          const array = Uint8Array.from(data)
+          socket.broadcast.emit('game:spawned-bullet', array.toString())
         } catch (err) {
           logError('game:spawned-bullet', err)
         }
