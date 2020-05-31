@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/images.dart';
 import 'package:batufo/game/assets/assets.dart';
+import 'package:batufo/rpc/server_stats.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/game/game_created_widget.dart';
@@ -50,9 +51,8 @@ Future<void> main() async {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
-          body: UniverseWidget(
-            universe: universe,
-          ),
+          backgroundColor: Colors.grey,
+          body: UniverseWidget(universe: universe),
         ),
       )));
 
@@ -67,7 +67,7 @@ class UniverseWidget extends StatelessWidget {
   }) : super();
 
   Widget build(BuildContext context) {
-    return Scaffold(body: _selectWidget(context));
+    return _selectWidget(context);
   }
 
   Widget _selectWidget(BuildContext context) {
@@ -80,10 +80,7 @@ class UniverseWidget extends StatelessWidget {
         } else if (snapshot.data.kind == UserStates.SelectingLevel) {
           final serverInfo = snapshot.data.serverInfo;
           assert(serverInfo != null, 'cannot select level without server info');
-          return MenuWidget(
-            universe: universe,
-            levels: serverInfo.levels,
-          );
+          return _menuWidget(context, serverInfo.levels);
         } else if (snapshot.data.kind == UserStates.GameCreated) {
           return GameCreatedWidget(game: snapshot.data.game);
         } else if (snapshot.data.kind == UserStates.GameStarted) {
@@ -93,6 +90,20 @@ class UniverseWidget extends StatelessWidget {
         return null;
       },
       stream: universe.userState$,
+    );
+  }
+
+  Widget _menuWidget(BuildContext context, List<LevelInfo> levels) {
+    return StreamBuilder<ServerStats>(
+      stream: universe.serverStats$,
+      initialData: universe.initialServerStats,
+      builder: (context, snapshot) {
+        return MenuWidget(
+          universe: universe,
+          levels: levels,
+          serverStats: snapshot.data,
+        );
+      },
     );
   }
 }

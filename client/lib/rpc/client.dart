@@ -11,7 +11,8 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart'
         InfoResponse,
         PackedClientPlayerUpdate,
         PackedClientSpawnedBulletUpdate,
-        PlayRequest;
+        PlayRequest,
+        ServerStatsUpdate;
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:flutter/foundation.dart';
@@ -57,6 +58,7 @@ class Client {
           (dynamic reason) => universe.clientDisconnected(reason as String))
       ..once('info:response', _onInfoMessage)
       ..once('game:created', _onGameCreatedMessage)
+      ..on('server:stats', _onServerStatsMessage)
       ..connect();
   }
 
@@ -74,6 +76,12 @@ class Client {
     final List<LevelInfo> levels =
         info.levels.map((x) => LevelInfo(x.name, x.nplayers)).toList();
     universe.clientReceivedInfo(ServerInfo(levels: levels));
+  }
+
+  void _onServerStatsMessage(dynamic data) {
+    final list = listFromData(data);
+    final stats = ServerStatsUpdate.fromBuffer(list);
+    universe.receivedServerStatsUpdate(stats);
   }
 
   void requestPlay(String level) {

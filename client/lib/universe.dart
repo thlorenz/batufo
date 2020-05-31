@@ -10,6 +10,8 @@ import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
+import 'package:batufo/rpc/generated/message_bus.pb.dart';
+import 'package:batufo/rpc/server_stats.dart';
 import 'package:batufo/states/connection_state.dart';
 import 'package:batufo/states/stats_state.dart';
 import 'package:batufo/states/user_state.dart';
@@ -27,6 +29,7 @@ class Universe {
   final _userState$ = BehaviorSubject<UserState>();
   final _connectionState$ = BehaviorSubject<ConnectionState>();
   final _statsState$ = BehaviorSubject<StatsState>();
+  final _serverStats$ = BehaviorSubject<ServerStats>();
   StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
   StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
 
@@ -45,11 +48,13 @@ class Universe {
       ConnectionState(ConnectionStates.Initializing);
   StatsState get initialStatsState =>
       StatsState.initial(_userState$.value?.game?.totalPlayers);
+  ServerStats get initialServerStats => ServerStats.empty();
 
   Stream<UserState> get userState$ => _userState$.stream.distinct();
   Stream<ConnectionState> get connectionState$ => _connectionState$.distinct();
   Stream<StatsState> get statsState$ =>
       _statsState$.throttleTime(statsThrottle).distinct();
+  Stream<ServerStats> get serverStats$ => _serverStats$.stream.distinct();
 
   static Universe _instance;
   static Universe create({
@@ -176,6 +181,7 @@ class Universe {
     if (!_userState$.isClosed) _userState$.close();
     _disposeClientUpdateSubs();
     if (!_statsState$.isClosed) _statsState$.close();
+    if (!_serverStats$.isClosed) _serverStats$.close();
   }
 
   void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {
@@ -186,5 +192,11 @@ class Universe {
   void receivedSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
     final game = _userState$.value.game;
     game.updateBullets(update);
+  }
+
+  void receivedServerStatsUpdate(ServerStatsUpdate update) {
+    final stats = ServerStats.fromServerStatsUpdate(update);
+    _log.fine('stats: $stats');
+    _serverStats$.add(stats);
   }
 }

@@ -9,7 +9,7 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 ** Game Stats
 
-- [ ] server regularly emits a stats message
+- [X] server regularly emits a stats message
 - [ ] show how many players online in main menu
 - [ ] show how many players are in games that aren't full, i.e. 3/4 waiting on 1
 
