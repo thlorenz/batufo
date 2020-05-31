@@ -7,22 +7,39 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Client Side
 
-** Game Stats
-
-- [X] server regularly emits a stats message
-- [ ] show how many players online in main menu
-- [ ] show how many players are in games that aren't full, i.e. 3/4 waiting on 1
-
 ** Game Cycle
 
-- [ ] dead players communicate themselves as killed to server
-- [ ] detect when game is over
-- [ ] show winner screen for last player around
+Players already communicate their health to other players which show them as dead.
+All that is missing is a regular check client side how many players are still alive.
+If only one is alive then we won. (except in single player modus)
+If we die we lost.
+
+- [ ] detect when game is over either way
+- [ ] show winner screen if we are last player around
 - [ ] show looser screen for each player that is killed
 - [ ] provide /Back to Menu/ button which allows player to select another level
 - [ ] provide /Try Again/ button which restarts player in the same level
 - [ ] recycle game + related socket on server for ended games
 - [ ] as a bonus server could detect games from which all clients disconnected and/or haven't gotten any updates in a long time and recycle those regularly
+
+** Exit Game Prematurely
+
+- [ ] provide exit game button
+
+*** Waiting on Players
+
+- [ ] communicate to server that we left and then close socket connection for game
+- [ ] server removes player from the client list
+- [ ] if no more players remain the game is cleaned up and removed
+
+*** Game Started
+
+- [ ] when a player exits game like this he communicates his health as 0 to the server
+
+*** Disconnected
+
+When we don't hear from a player for a while we need to declare it dead, i.e. send a fake update to all other players with health set to 0.
+Otherwise that player becomes invincible as it never reports its health status which the other players rely on to show him as dead.
 
 ** Pickups
 
@@ -37,6 +54,20 @@ We wanna add some pickups back in. Most importantly are health packets, but some
 - [ ] increase score on colission
 - [ ] show score animation as was present in single player version
 
+
+** Dead Game Removal
+
+Even though we could try to detect when a game is over due to a winner we need a more generic solution anyways.
+In the case that all players loose interest and disconnect we still need to collect the game eventually.
+
+Therefore a more consistent approach would be to collect any game that didn't get an update from any client for more than 5 secs or so.
+Server just runs that check every 5 secs which suffices to weed out dead games.
+
+** DONE Game Stats
+
+- [X] server regularly emits a stats message
+- [X] show how many players online in main menu
+- [X] show how many players are in games that aren't full, i.e. 3/4 waiting on 1
 
 ** DONE Scoring
 
