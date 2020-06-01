@@ -5,6 +5,20 @@
 Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #TypeScript
 
 
+* Server Side
+
+** Rooms
+
+It seems that for our app it makes more sense to create a /room/ per game instead of a /namespace/.
+As explained [[https://stackoverflow.com/a/17276952][here]] create namespaces dynamically on a running app you use them mainly as *predefined* separate sections of you application.
+However our games are not predefined.
+
+If, on the other hand you need to create ad hoc compartments, on the fly, to accommodate groups of users/connections, it is best to use rooms.
+
+That is much closer to what our games are.
+
+- [ ] use rooms instead of namespaces
+
 * Client Side
 
 ** Game Cycle
@@ -17,8 +31,8 @@ If we die we lost.
 - [X] detect when game is over either way
 - [X] show winner screen if we are last player around
 - [X] show looser screen for each player that is killed
-- [ ] provide /Back to Menu/ button which allows player to select another level
-- [ ] provide /Try Again/ button which restarts player in the same level
+- [X] provide /Back to Menu/ button which allows player to select another level
+- [X] provide /Try Again/ button which restarts player in the same level
 - [ ] in both the above cases clean up game specific socket, possible dis->reconnect client entirely
 - [ ] recycle game + related socket on server for ended games
 - [ ] as a bonus server could detect games from which all clients disconnected and/or haven't gotten any updates in a long time and recycle those regularly
