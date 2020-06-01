@@ -239,7 +239,7 @@ class Universe {
   }
 
   void _disposeCurrentGame() {
-    client.disconnectGame();
+    client.leaveGame();
     _userState$.value?.game?.dispose();
     _disposeClientUpdateSubs();
   }

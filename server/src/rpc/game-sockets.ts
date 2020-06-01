@@ -1,4 +1,4 @@
-import { Namespace, Server } from 'socket.io'
+import { Server } from 'socket.io'
 import { ServerGame } from '../server-game'
 
 import socketio from 'socket.io'
@@ -7,46 +7,48 @@ const logDebug = debug('game-socket:debug')
 const logError = debug('game-socket:error')
 const logTrace = debug('game-socket:trace')
 
-// TODO: https://socket.io/docs/rooms-and-namespaces/
 class GameSocket {
-  readonly nsp: Namespace
+  private readonly _gameID: string
   constructor(readonly io: Server, readonly game: ServerGame) {
-    this.nsp = io.of(`/${game.gameID}`)
-    this.nsp.on('connection', (socket: socketio.Socket) => {
-      logDebug(
-        'namespaced connection game: %s, socket: %s',
-        game.gameID,
-        socket.id
-      )
-      this._tellClientsIfGameIsReady()
-
-      socket.on('game:client-update', (data: Buffer) => {
-        logTrace('got playing client message -> broadcasting')
-        try {
-          const array = Uint8Array.from(data)
-          socket.broadcast.emit('game:client-update', array.toString())
-        } catch (err) {
-          logError('game:client-update', err)
-        }
-      })
-      socket.on('game:spawned-bullet', (data: Buffer) => {
-        logTrace('got spawned bullet message -> broadcasting')
-        try {
-          const array = Uint8Array.from(data)
-          socket.broadcast.emit('game:spawned-bullet', array.toString())
-        } catch (err) {
-          logError('game:spawned-bullet', err)
-        }
-      })
+    this._gameID = `${game.gameID}`
+  }
+  addSocket(socket: socketio.Socket) {
+    socket.join(this._gameID)
+    socket.on('game:client-update', (data: Buffer) => {
+      logTrace('got playing client message -> broadcasting')
+      try {
+        const array = Uint8Array.from(data)
+        socket.broadcast
+          .to(this._gameID)
+          .emit('game:client-update', array.toString())
+      } catch (err) {
+        logError('game:client-update', err)
+      }
     })
+    socket.on('game:spawned-bullet', (data: Buffer) => {
+      logTrace('got spawned bullet message -> broadcasting')
+      try {
+        const array = Uint8Array.from(data)
+        socket.broadcast
+          .to(this._gameID)
+          .emit('game:spawned-bullet', array.toString())
+      } catch (err) {
+        logError('game:spawned-bullet', err)
+      }
+    })
+    this._tellClientsIfGameIsReady()
   }
 
   _tellClientsIfGameIsReady() {
+    logTrace(
+      `game has ${this.game.clientIDs.length}/${this.game.nplayers} players`
+    )
     if (!this.game.full) return
     logDebug('game is full, sending game:started')
     try {
-      this.nsp.emit('game:started')
-    } finally {
+      this.io.sockets.in(this._gameID).emit('game:started')
+    } catch (err) {
+      logError('game:started', err)
     }
   }
 }
@@ -54,9 +56,10 @@ class GameSocket {
 export class GameSockets {
   readonly gameSockets: Map<number, GameSocket> = new Map()
 
-  addSocketFor(io: Server, game: ServerGame) {
-    if (this.gameSockets.has(game.gameID)) return
-    const gameSocket = new GameSocket(io, game)
+  addSocketFor(io: Server, socket: socketio.Socket, game: ServerGame) {
+    const gameSocket =
+      this.gameSockets.get(game.gameID) ?? new GameSocket(io, game)
     this.gameSockets.set(game.gameID, gameSocket)
+    gameSocket.addSocket(socket)
   }
 }

@@ -5,20 +5,6 @@
 Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #TypeScript
 
 
-* Server Side
-
-** Rooms
-
-It seems that for our app it makes more sense to create a /room/ per game instead of a /namespace/.
-As explained [[https://stackoverflow.com/a/17276952][here]] create namespaces dynamically on a running app you use them mainly as *predefined* separate sections of you application.
-However our games are not predefined.
-
-If, on the other hand you need to create ad hoc compartments, on the fly, to accommodate groups of users/connections, it is best to use rooms.
-
-That is much closer to what our games are.
-
-- [ ] use rooms instead of namespaces
-
 * Client Side
 
 ** Game Cycle
@@ -191,6 +177,22 @@ jspb.BinaryConstants.TWO_TO_64 = 1.8446744073709552E19;
 - [X] fix2: ensuring that health is never negative
 
 
+* DONE Server Side
+
+** DONE Rooms
+
+It seems that for our app it makes more sense to create a /room/ per game instead of a /namespace/.
+As explained [[https://stackoverflow.com/a/17276952][here]] create namespaces dynamically on a running app you use them mainly as *predefined* separate sections of you application.
+However our games are not predefined.
+
+If, on the other hand you need to create ad hoc compartments, on the fly, to accommodate groups of users/connections, it is best to use rooms.
+
+That is much closer to what our games are.
+
+- [X] use rooms instead of namespaces
+- [X] restore current functionality
+
+
 * WAIT Nice to Have
 
 ** WAIT Devices and Fairness
@@ -220,6 +222,8 @@ It could help in detecting problems with game recycling.
 
 Right now whenever a player's position is synced that is different from the predicted one we just directly jump to it.
 It would be better to smooth this out by adapting the velocity so that eventually prediction and reality converge.
+
+- [ ] send updates immediately on thrust and spawned bullet while sending others like angle change + position changes at an interval
 
 *** [ ] Playability
 
