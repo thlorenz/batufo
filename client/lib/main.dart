@@ -18,6 +18,22 @@ const PORT = 2222;
 const LOCALHOST = 'http://localhost:$PORT';
 const LOCALBOX = 'http://192.168.1.7:$PORT';
 
+Map<String, String> getEnvVars() {
+  final envVars = {'TITLE': 'batufo'};
+  try {
+    final platEnvTitle = Platform.environment['TITLE'];
+    final stringEnvTitle = String.fromEnvironment(
+      'TITLE',
+      defaultValue: envVars['TITLE'],
+    );
+    envVars['TITLE'] = platEnvTitle != null && platEnvTitle.isNotEmpty
+        ? platEnvTitle
+        : stringEnvTitle;
+    // ignore: avoid_catches_without_on_clauses, empty_catches
+  } catch (err) {}
+  return envVars;
+}
+
 Future<void> main() async {
   Log.activateConsole();
   Log.rootLevel = Level.FINER;
@@ -34,6 +50,7 @@ Future<void> main() async {
     assets.skull.imagePath,
   ]);
   String serverIP;
+  final envVars = getEnvVars();
   try {
     serverIP = Platform.isAndroid ? LOCALBOX : LOCALHOST;
     // only do the below if the above didn't throw as the below basically
@@ -42,14 +59,17 @@ Future<void> main() async {
     // ignore: avoid_catches_without_on_clauses
   } catch (e) {
     serverIP = LOCALHOST;
+    envVars['TITLE'] = 'batufo-web';
   }
 
   final universe = Universe.create(
+    appTitle: envVars['TITLE'],
     serverHost: serverIP,
     clientPlayerUpdateThrottle: Duration(milliseconds: 100),
   );
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: envVars['TITLE'],
       home: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.grey,

@@ -198,6 +198,8 @@ That is much closer to what our games are.
 
 Considering that players on Desktop are at an advantage we could try to match up players by device. Obviously this only works/becomes an issue once we have a certain amount of players online.
 
+The [[https://github.com/google/flutter-desktop-embedding/tree/master/plugins/window_size][window size plugin]] could provide a way to enforce a max window size.
+
 ** WAIT Visual Cues
 
 - [ ] make any player who is almost dying blink

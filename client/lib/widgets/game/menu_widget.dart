@@ -4,10 +4,15 @@ import 'package:batufo/universe.dart';
 import 'package:flutter/material.dart';
 
 class TotalStatsWidget extends StatelessWidget {
+  final String appTitle;
   final int totalGames;
   final int totalPlayers;
 
-  const TotalStatsWidget(this.totalGames, this.totalPlayers);
+  const TotalStatsWidget({
+    @required this.appTitle,
+    @required this.totalGames,
+    @required this.totalPlayers,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,7 @@ class TotalStatsWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text('🎲  $totalGames', style: totalsStyle),
-            Text('Batufo', style: headerStyle),
+            Text(appTitle, style: headerStyle),
             Text('$totalPlayers  🎮', style: totalsStyle),
           ],
         ),
@@ -56,7 +61,10 @@ class MenuWidget extends StatelessWidget {
         levels.map((LevelInfo level) => _levelBox(context, level)).toList();
     return Stack(
       children: [
-        TotalStatsWidget(serverStats.totalGames, serverStats.totalPlayers),
+        TotalStatsWidget(
+            appTitle: universe.appTitle,
+            totalGames: serverStats.totalGames,
+            totalPlayers: serverStats.totalPlayers),
         Container(
           padding: EdgeInsets.only(top: 50.0),
           child: Wrap(children: levelBoxes),

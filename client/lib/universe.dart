@@ -21,6 +21,7 @@ import 'package:rxdart/rxdart.dart';
 final _log = Log<Universe>();
 
 class Universe {
+  final String appTitle;
   final Duration clientPlayerUpdateThrottle;
   final Duration statsThrottle;
   final InputProcessor inputProcessor;
@@ -37,6 +38,7 @@ class Universe {
 
   Universe._({
     @required String serverHost,
+    @required this.appTitle,
     @required this.inputProcessor,
     @required this.clientPlayerUpdateThrottle,
     @required this.statsThrottle,
@@ -58,6 +60,7 @@ class Universe {
 
   static Universe _instance;
   static Universe create({
+    @required String appTitle,
     @required String serverHost,
     Duration clientPlayerUpdateThrottle = const Duration(milliseconds: 100),
     Duration statsThrottle = const Duration(milliseconds: 20),
@@ -69,6 +72,7 @@ class Universe {
       timeBetweenBullets: GameProps.timeBetweenBulletsMs,
     );
     return _instance = Universe._(
+      appTitle: appTitle,
       serverHost: serverHost,
       inputProcessor: InputProcessor.instance,
       clientPlayerUpdateThrottle: clientPlayerUpdateThrottle,
