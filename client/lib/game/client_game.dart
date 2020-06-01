@@ -254,6 +254,7 @@ class ClientGame extends Game {
   }
 
   void dispose() {
+    _finished = true;
     if (_disposed) return;
     _log.fine('disposing');
     if (_clientPlayerUpdate$ != null && !_clientPlayerUpdate$.isClosed) {

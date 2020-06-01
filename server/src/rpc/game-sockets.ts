@@ -12,30 +12,36 @@ class GameSocket {
   constructor(readonly io: Server, readonly game: ServerGame) {
     this._gameID = `${game.gameID}`
   }
-  addSocket(socket: socketio.Socket) {
-    socket.join(this._gameID)
-    socket.on('game:client-update', (data: Buffer) => {
-      logTrace('got playing client message -> broadcasting')
-      try {
-        const array = Uint8Array.from(data)
-        socket.broadcast
-          .to(this._gameID)
-          .emit('game:client-update', array.toString())
-      } catch (err) {
-        logError('game:client-update', err)
-      }
-    })
-    socket.on('game:spawned-bullet', (data: Buffer) => {
-      logTrace('got spawned bullet message -> broadcasting')
-      try {
-        const array = Uint8Array.from(data)
-        socket.broadcast
-          .to(this._gameID)
-          .emit('game:spawned-bullet', array.toString())
-      } catch (err) {
-        logError('game:spawned-bullet', err)
-      }
-    })
+  addSocket(socket: socketio.Socket, clientID: number) {
+    socket
+      .on('game:client-update', (data: Buffer) => {
+        logTrace('got playing client message -> broadcasting')
+        try {
+          const array = Uint8Array.from(data)
+          socket.broadcast
+            .to(this._gameID)
+            .emit('game:client-update', array.toString())
+        } catch (err) {
+          logError('game:client-update', err)
+        }
+      })
+      .on('game:spawned-bullet', (data: Buffer) => {
+        logTrace('got spawned bullet message -> broadcasting')
+        try {
+          const array = Uint8Array.from(data)
+          socket.broadcast
+            .to(this._gameID)
+            .emit('game:spawned-bullet', array.toString())
+        } catch (err) {
+          logError('game:spawned-bullet', err)
+        }
+      })
+      .on('game:leave', (_data: Buffer) => {
+        logDebug('client [%d] is leaving', clientID)
+        socket.leaveAll()
+      })
+      .join(this._gameID)
+
     this._tellClientsIfGameIsReady()
   }
 
@@ -56,10 +62,15 @@ class GameSocket {
 export class GameSockets {
   readonly gameSockets: Map<number, GameSocket> = new Map()
 
-  addSocketFor(io: Server, socket: socketio.Socket, game: ServerGame) {
+  addSocketFor(
+    io: Server,
+    socket: socketio.Socket,
+    game: ServerGame,
+    clientID: number
+  ) {
     const gameSocket =
       this.gameSockets.get(game.gameID) ?? new GameSocket(io, game)
     this.gameSockets.set(game.gameID, gameSocket)
-    gameSocket.addSocket(socket)
+    gameSocket.addSocket(socket, clientID)
   }
 }

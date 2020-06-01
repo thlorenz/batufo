@@ -29,7 +29,7 @@ class Universe {
   final _userState$ = BehaviorSubject<UserState>();
   final _connectionState$ = BehaviorSubject<ConnectionState>();
   final _statsState$ = BehaviorSubject<StatsState>();
-  final _serverStats$ = BehaviorSubject<ServerStats>();
+  final _serverStats$ = PublishSubject<ServerStats>();
   StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
   StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
 
@@ -48,8 +48,6 @@ class Universe {
   UserState get initialUserState => UserRequestingInfoState();
   ConnectionState get initialConnectionState =>
       ConnectionState(ConnectionStates.Initializing);
-  StatsState get initialStatsState =>
-      StatsState.initial(_userState$.value?.game?.totalPlayers);
   ServerStats get initialServerStats => ServerStats.empty();
 
   Stream<UserState> get userState$ => _userState$.stream.distinct();
@@ -112,6 +110,7 @@ class Universe {
       onGameStateUpdated: _onGameStateUpdated,
       onScored: _onScored,
     );
+    _addStatsState(StatsState.initial(arena.players.length));
     final state = UserGameCreatedState.from(_userState$.value, game);
     _addUserState(state);
   }
@@ -128,8 +127,8 @@ class Universe {
   }
 
   void userSelectedLevel(String level) {
-    _disposeCurrentGame();
     _currentLevel = level;
+    _addStatsState(StatsState.empty);
     client.requestPlay(level);
   }
 
@@ -141,18 +140,22 @@ class Universe {
   }
 
   void userReplayLevel() {
-    _disposeCurrentGame();
     assert(_currentLevel != null, 'cannot replay level if none was selected');
+    _disposeCurrentGame();
     final stateForNow = UserSelectingLevelState(_userState$.value?.serverInfo);
-    // TODO: currently broken
     _userState$.add(stateForNow);
     _log.info('replaying level', _userState$.value);
     userSelectedLevel(_currentLevel);
   }
 
   void _addUserState(UserState state) {
-    _log.fine('${state.kind}');
+    if (state != _userState$.value) _log.fine('user: ${state.kind}');
     _userState$.add(state);
+  }
+
+  void _addStatsState(StatsState state) {
+    if (state != _statsState$.value) _log.fine('stats: $state');
+    _statsState$.add(state);
   }
 
   void _subscribeClientUpdates(ClientGame game) {
@@ -175,16 +178,19 @@ class Universe {
   }
 
   void _onGameStateUpdated(ClientGameState gameState) {
+    final game = _userState$.value?.game;
+    if (game == null || game.finished || game.disposed) return;
+
     final hero = gameState.hero;
     assert(hero != null, 'could not find hero player');
-    final stats = (_statsState$.value ?? initialStatsState).copyWith(
+    final stats = _statsState$.value.copyWith(
       health: hero.health,
       totalPlayers: gameState.totalPlayers,
       playersAlive: gameState.playersAlive,
       percentReadyToShoot: inputProcessor.percentReadyToShoot,
       percentReadyToThrust: inputProcessor.percentReadyToThrust,
     );
-    _statsState$.add(stats);
+    _addStatsState(stats);
     _detectGameOutcome(gameState, hero.health);
   }
 
@@ -199,7 +205,7 @@ class Universe {
         GameOutcomes.Lost,
         _statsState$.value?.score ?? 0,
       );
-      _userState$.add(state);
+      _addUserState(state);
       return;
     }
     // Single player games only end when hero dies at this point
@@ -212,24 +218,26 @@ class Universe {
         GameOutcomes.Won,
         _statsState$.value?.score ?? 0,
       );
-      _userState$.add(state);
+      _addUserState(state);
       return;
     }
   }
 
   void _onScored(int score) {
-    final current = _statsState$.value ?? initialStatsState;
+    final current = _statsState$.value;
     final stats = current.copyWith(score: current.score + score);
-    _statsState$.add(stats);
+    _addStatsState(stats);
   }
 
   void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {
     final game = _userState$.value.game;
+    if (game == null) return;
     game.updatePlayers(clientPlayerUpdate);
   }
 
   void receivedSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
     final game = _userState$.value.game;
+    if (game == null) return;
     game.updateBullets(update);
   }
 
@@ -239,7 +247,7 @@ class Universe {
   }
 
   void _disposeCurrentGame() {
-    client.leaveGame();
+    client.requestLeave();
     _userState$.value?.game?.dispose();
     _disposeClientUpdateSubs();
   }

@@ -44,7 +44,7 @@ const gameSockets = new GameSockets()
 io.on('connection', (socket: socketio.Socket) => {
   logDebug('on:connection')
   socket
-    .once('info:request', () => {
+    .on('info:request', () => {
       logInfo('got info request')
       try {
         socket.emit('info:response', info.serializeBinary().toString())
@@ -52,7 +52,9 @@ io.on('connection', (socket: socketio.Socket) => {
         logError('info:request', err)
       }
     })
-    .once('play:request', (data) => {
+    .on('play:request', (data) => {
+      // TODO: should we check here if the socket didn't properly /leave/ another
+      // game? Should be simple enough by walking through gameSockets.
       try {
         const req = PlayRequest.deserializeBinary(data)
         logInfo('got play request for level [%s]', req.getLevelname())
@@ -74,7 +76,7 @@ io.on('connection', (socket: socketio.Socket) => {
         createdGame.setPlayerindex(playerIndex)
 
         socket.emit('game:created', createdGame.serializeBinary().toString())
-        gameSockets.addSocketFor(io, socket, game)
+        gameSockets.addSocketFor(io, socket, game, clientID)
       } catch (err) {
         logError('play:request', err)
       }

@@ -19,9 +19,11 @@ class HudWidget extends StatelessWidget {
     // change often (see universe.dart).
     return StreamBuilder<StatsState>(
         stream: universe.statsState$,
-        initialData: universe.initialStatsState,
+        initialData: StatsState.empty,
         builder: (context, snapshot) {
           final stats = snapshot.data;
+          assert(stats != null,
+              'should only build this once game was created with stats');
           return Container(
             color: Color(0x66000000),
             child: Padding(

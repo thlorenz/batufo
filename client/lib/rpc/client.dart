@@ -36,22 +36,22 @@ class GameStarted {
 class Client {
   final String serverHost;
   final Universe universe;
-  final io.Socket _mainSocket;
+  final io.Socket _socket;
 
   Client({
     @required this.serverHost,
     @required this.universe,
-  }) : _mainSocket = io.io(serverHost, <String, dynamic>{
+  }) : _socket = io.io(serverHost, <String, dynamic>{
           'transports': ['websocket'],
           'autoConnect': false,
         });
 
   void _ensureMainSocketConnected(Function onConnected) {
-    if (_mainSocket.connected) {
+    if (_socket.connected) {
       onConnected();
       return;
     }
-    _mainSocket
+    _socket
       ..once('connect', (dynamic _) {
         universe.clientConnected();
         onConnected();
@@ -69,7 +69,7 @@ class Client {
     _ensureMainSocketConnected(() {
       final infoRequest = InfoRequest();
       final buf = infoRequest.writeToBuffer();
-      _mainSocket
+      _socket
         ..once('info:response', _onInfoMessage)
         ..emitWithBinary('info:request', buf);
       _log.fine('info:request');
@@ -87,12 +87,12 @@ class Client {
 
   void requestPlay(String level) {
     assert(
-      _mainSocket.connected,
+      _socket.connected,
       'main socket should have connected when getting info',
     );
     final playRequest = PlayRequest()..levelName = level;
     final buf = playRequest.writeToBuffer();
-    _mainSocket
+    _socket
       ..once('game:created', _onGameCreatedMessage)
       ..once('game:started', _onGameStartedMessage)
       ..emitWithBinary('play:request', buf);
@@ -116,6 +116,11 @@ class Client {
     universe.clientStartedGame();
   }
 
+  void requestLeave() {
+    _log.fine('leaving game');
+    _socket.emit('game:leave');
+  }
+
   void _onServerStatsMessage(dynamic data) {
     final list = listFromData(data);
     final stats = ServerStatsUpdate.fromBuffer(list);
@@ -126,14 +131,14 @@ class Client {
     assert(update != null, 'need a valid non-null update');
     final packed = update.pack();
     final buf = packed.writeToBuffer();
-    _mainSocket.emitWithBinary('game:client-update', buf);
+    _socket.emitWithBinary('game:client-update', buf);
   }
 
   void sendClientSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
     assert(update != null, 'need a valid non-null update');
     final packed = update.pack();
     final buf = packed.writeToBuffer();
-    _mainSocket.emitWithBinary('game:spawned-bullet', buf);
+    _socket.emitWithBinary('game:spawned-bullet', buf);
   }
 
   void _onClientPlayerUpdateMessage(dynamic data) {
@@ -155,16 +160,10 @@ class Client {
   }
 
   void disconnect() {
-    leaveGame();
-    if (_mainSocket == null || !_mainSocket.connected) return;
-    _mainSocket.disconnect();
+    requestLeave();
+    if (_socket == null || !_socket.connected) return;
+    _socket.disconnect();
     _log.fine('disconnecting main socket');
-  }
-
-  void leaveGame() {
-    // TODO: send server a message that we're done so it can 'leave'
-    // from the room
-    _log.fine('disconnecting game');
   }
 
   void dispose() {

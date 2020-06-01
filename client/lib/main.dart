@@ -60,6 +60,8 @@ Future<void> main() async {
   universe.clientRequestInfo();
 }
 
+final _log = Log<UniverseWidget>();
+
 class UniverseWidget extends StatelessWidget {
   final Universe universe;
 
@@ -75,19 +77,25 @@ class UniverseWidget extends StatelessWidget {
     return StreamBuilder<UserState>(
       initialData: universe.initialUserState,
       builder: (context, snapshot) {
+        _log.fine('building ${snapshot.data?.kind}');
+
         if (!snapshot.hasData ||
             snapshot.data.kind == UserStates.RequestingInfo) {
           return Container(child: Text('Connecting ...'));
-        } else if (snapshot.data.kind == UserStates.SelectingLevel) {
+        }
+        if (snapshot.data.kind == UserStates.SelectingLevel) {
           final serverInfo = snapshot.data.serverInfo;
           assert(serverInfo != null, 'cannot select level without server info');
           return _menuWidget(context, serverInfo.levels);
-        } else if (snapshot.data.kind == UserStates.GameCreated) {
+        }
+        if (snapshot.data.kind == UserStates.GameCreated) {
           return GameCreatedWidget(game: snapshot.data.game);
-        } else if (snapshot.data.kind == UserStates.GameStarted) {
+        }
+        if (snapshot.data.kind == UserStates.GameStarted) {
           return GameRunningWidget(
               universe: universe, game: snapshot.data.game);
-        } else if (snapshot.data.kind == UserStates.GameOutcome) {
+        }
+        if (snapshot.data.kind == UserStates.GameOutcome) {
           return GameOutcomeWidget(
             universe: universe,
             game: snapshot.data.game,

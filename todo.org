@@ -19,8 +19,7 @@ If we die we lost.
 - [X] show looser screen for each player that is killed
 - [X] provide /Back to Menu/ button which allows player to select another level
 - [X] provide /Try Again/ button which restarts player in the same level
-- [ ] in both the above cases clean up game specific socket, possible dis->reconnect client entirely
-- [ ] recycle game + related socket on server for ended games
+- [ ] recycle game + related rooms on server for ended games
 - [ ] as a bonus server could detect games from which all clients disconnected and/or haven't gotten any updates in a long time and recycle those regularly
 
 ** Exit Game Prematurely

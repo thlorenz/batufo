@@ -52,6 +52,15 @@ class StatsState extends Equatable {
     );
   }
 
+  static StatsState get empty => StatsState(
+        health: 0,
+        playersAlive: 0,
+        totalPlayers: 0,
+        percentReadyToShoot: 0,
+        percentReadyToThrust: 0,
+        score: 0,
+      );
+
   @override
   List<Object> get props => [
         health,
