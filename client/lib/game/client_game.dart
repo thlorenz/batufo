@@ -49,10 +49,12 @@ class ClientGame extends Game {
   Size _size;
   bool _disposed;
   bool _started;
+  bool _finished;
 
   bool get disposed => _disposed;
   bool get started => _started;
-  bool get ready => !_disposed && _started;
+  bool get finished => _finished;
+  bool get ready => _started && !_disposed;
 
   Stream<ClientPlayerUpdate> get clientPlayerUpdate$ =>
       _clientPlayerUpdate$.stream;
@@ -66,8 +68,9 @@ class ClientGame extends Game {
     @required this.onGameStateUpdated,
     @required void Function(int score) onScored,
     @required int playerIndex,
-  })  : _disposed = false,
-        _started = false,
+  })  : _started = false,
+        _finished = false,
+        _disposed = false,
         _clientPlayerUpdate = ClientPlayerUpdate(),
         _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(),
         _grid = Grid(arena.tileSize.toDouble()),
@@ -244,6 +247,10 @@ class ClientGame extends Game {
       hitSize: playerSize,
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
     );
+  }
+
+  void finish() {
+    _finished = true;
   }
 
   void dispose() {

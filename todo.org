@@ -14,11 +14,12 @@ All that is missing is a regular check client side how many players are still al
 If only one is alive then we won. (except in single player modus)
 If we die we lost.
 
-- [ ] detect when game is over either way
-- [ ] show winner screen if we are last player around
-- [ ] show looser screen for each player that is killed
+- [X] detect when game is over either way
+- [X] show winner screen if we are last player around
+- [X] show looser screen for each player that is killed
 - [ ] provide /Back to Menu/ button which allows player to select another level
 - [ ] provide /Try Again/ button which restarts player in the same level
+- [ ] in both the above cases clean up game specific socket, possible dis->reconnect client entirely
 - [ ] recycle game + related socket on server for ended games
 - [ ] as a bonus server could detect games from which all clients disconnected and/or haven't gotten any updates in a long time and recycle those regularly
 

@@ -1,0 +1,102 @@
+import 'package:batufo/engine/game_widget.dart';
+import 'package:batufo/game/client_game.dart';
+import 'package:batufo/states/user_state.dart';
+import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/hud/score_widget.dart';
+import 'package:flutter/material.dart';
+
+class GameOutcomeWidget extends StatelessWidget {
+  final Universe universe;
+  final ClientGame game;
+  final GameOutcomes gameOutcome;
+  final int score;
+
+  const GameOutcomeWidget({
+    @required this.game,
+    @required this.gameOutcome,
+    @required this.score,
+    @required this.universe,
+  }) : super();
+
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      GameWidget(game),
+      Container(
+        color: Colors.black.withAlpha(0xAA),
+        child: Center(child: _overlay(context)),
+      )
+    ]);
+  }
+
+  Widget _overlay(BuildContext context) {
+    switch (gameOutcome) {
+      case GameOutcomes.Won:
+        return GameWonWidget(score: score);
+      case GameOutcomes.Lost:
+        return GameOverWidget(score: score);
+      case GameOutcomes.None:
+        return GameInterruptedWidget();
+      default:
+        return GameInterruptedWidget();
+    }
+  }
+}
+
+class GameOverWidget extends StatelessWidget {
+  final int score;
+  const GameOverWidget({@required this.score}) : super();
+
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '😭 You Lost 😭',
+          style: TextStyle(
+            color: Colors.redAccent,
+            fontSize: 18,
+          ),
+        ),
+        ScoreWidget(
+          score: score,
+          fontSize: 18,
+        )
+      ],
+    );
+  }
+}
+
+class GameWonWidget extends StatelessWidget {
+  final int score;
+  const GameWonWidget({@required this.score}) : super();
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '🎉 You Won 🎉',
+          style: TextStyle(
+            color: Colors.greenAccent,
+            fontSize: 18,
+          ),
+        ),
+        ScoreWidget(
+          score: score,
+          fontSize: 18,
+        )
+      ],
+    );
+  }
+}
+
+class GameInterruptedWidget extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Text(
+      '😟 What happened? 😟',
+      style: TextStyle(
+        color: Colors.blueAccent,
+        fontSize: 18,
+      ),
+    );
+  }
+}

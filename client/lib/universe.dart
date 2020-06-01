@@ -153,17 +153,47 @@ class Universe {
     client.sendClientSpawnedBulletUpdate(update);
   }
 
-  void _onGameStateUpdated(ClientGameState state) {
-    final hero = state.hero;
+  void _onGameStateUpdated(ClientGameState gameState) {
+    final hero = gameState.hero;
     assert(hero != null, 'could not find hero player');
     final stats = (_statsState$.value ?? initialStatsState).copyWith(
       health: hero.health,
-      totalPlayers: state.totalPlayers,
-      playersAlive: state.playersAlive,
+      totalPlayers: gameState.totalPlayers,
+      playersAlive: gameState.playersAlive,
       percentReadyToShoot: inputProcessor.percentReadyToShoot,
       percentReadyToThrust: inputProcessor.percentReadyToThrust,
     );
     _statsState$.add(stats);
+    _detectGameOutcome(gameState, hero.health);
+  }
+
+  void _detectGameOutcome(ClientGameState gameState, double heroHealth) {
+    final game = _userState$.value?.game;
+    if (game == null || game.finished || game.disposed) return;
+
+    if (heroHealth <= 0) {
+      game?.finish();
+      final state = UserGameOutcomeState.from(
+        _userState$.value,
+        GameOutcomes.Lost,
+        _statsState$.value?.score ?? 0,
+      );
+      _userState$.add(state);
+      return;
+    }
+    // Single player games only end when hero dies at this point
+    if (gameState.totalPlayers == 1) return;
+
+    if (gameState.playersAlive == 1) {
+      game?.finish();
+      final state = UserGameOutcomeState.from(
+        _userState$.value,
+        GameOutcomes.Won,
+        _statsState$.value?.score ?? 0,
+      );
+      _userState$.add(state);
+      return;
+    }
   }
 
   void _onScored(int score) {
@@ -196,7 +226,6 @@ class Universe {
 
   void receivedServerStatsUpdate(ServerStatsUpdate update) {
     final stats = ServerStats.fromServerStatsUpdate(update);
-    _log.fine('stats: $stats');
     _serverStats$.add(stats);
   }
 }

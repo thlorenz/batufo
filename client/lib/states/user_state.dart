@@ -24,16 +24,33 @@ enum UserStates {
   SelectingLevel,
   GameCreated,
   GameStarted,
+  GameOutcome,
 }
+
+enum GameOutcomes { Won, Lost, None }
 
 class UserState extends Equatable {
   final UserStates kind;
   final ClientGame game;
   final ServerInfo serverInfo;
-  const UserState(this.kind, {this.serverInfo, this.game});
+  final GameOutcomes gameOutcome;
+  final int score;
+  const UserState(
+    this.kind, {
+    this.serverInfo,
+    this.game,
+    this.gameOutcome = GameOutcomes.None,
+    this.score = 0,
+  });
 
   @override
-  List<Object> get props => [kind, serverInfo, game?.gameState?.clientID];
+  List<Object> get props => [
+        kind,
+        serverInfo,
+        game?.gameState?.clientID,
+        gameOutcome,
+        score,
+      ];
 }
 
 class UserRequestingInfoState extends UserState {
@@ -64,5 +81,30 @@ class UserGameStartedState extends UserState {
 
   factory UserGameStartedState.from(UserState state) {
     return UserGameStartedState(serverInfo: state.serverInfo, game: state.game);
+  }
+}
+
+class UserGameOutcomeState extends UserState {
+  const UserGameOutcomeState({
+    @required ServerInfo serverInfo,
+    @required ClientGame game,
+    @required GameOutcomes gameOutcome,
+    @required int score,
+  }) : super(UserStates.GameOutcome,
+            serverInfo: serverInfo,
+            game: game,
+            gameOutcome: gameOutcome,
+            score: score);
+
+  factory UserGameOutcomeState.from(
+    UserState state,
+    GameOutcomes gameOutcome,
+    int score,
+  ) {
+    return UserGameOutcomeState(
+        serverInfo: state.serverInfo,
+        game: state.game,
+        gameOutcome: gameOutcome,
+        score: score);
   }
 }

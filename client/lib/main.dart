@@ -8,6 +8,7 @@ import 'package:batufo/rpc/server_stats.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/game/game_created_widget.dart';
+import 'package:batufo/widgets/game/game_outcome_widget.dart';
 import 'package:batufo/widgets/game/game_running_widget.dart';
 import 'package:batufo/widgets/game/menu_widget.dart';
 import 'package:flutter/material.dart';
@@ -86,6 +87,13 @@ class UniverseWidget extends StatelessWidget {
         } else if (snapshot.data.kind == UserStates.GameStarted) {
           return GameRunningWidget(
               universe: universe, game: snapshot.data.game);
+        } else if (snapshot.data.kind == UserStates.GameOutcome) {
+          return GameOutcomeWidget(
+            universe: universe,
+            game: snapshot.data.game,
+            gameOutcome: snapshot.data.gameOutcome,
+            score: snapshot.data.score,
+          );
         }
         return null;
       },
