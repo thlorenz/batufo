@@ -33,6 +33,8 @@ class Universe {
   StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
   StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
 
+  String _currentLevel;
+
   Universe._({
     @required String serverHost,
     @required this.inputProcessor,
@@ -126,7 +128,26 @@ class Universe {
   }
 
   void userSelectedLevel(String level) {
+    _disposeCurrentGame();
+    _currentLevel = level;
     client.requestPlay(level);
+  }
+
+  void userBackToHome() {
+    _disposeCurrentGame();
+    final state = UserRequestingInfoState();
+    _userState$.add(state);
+    _log.info('returning  home', _userState$.value);
+  }
+
+  void userReplayLevel() {
+    _disposeCurrentGame();
+    assert(_currentLevel != null, 'cannot replay level if none was selected');
+    final stateForNow = UserSelectingLevelState(_userState$.value?.serverInfo);
+    // TODO: currently broken
+    _userState$.add(stateForNow);
+    _log.info('replaying level', _userState$.value);
+    userSelectedLevel(_currentLevel);
   }
 
   void _addUserState(UserState state) {
@@ -202,14 +223,20 @@ class Universe {
     _statsState$.add(stats);
   }
 
+  void _disposeCurrentGame() {
+    client.disconnectGame();
+    _userState$.value?.game?.dispose();
+    _disposeClientUpdateSubs();
+  }
+
   void _disposeClientUpdateSubs() {
     _clientPlayerUpdateSub?.cancel();
     _clientSpawnedBulletUpdateSub?.cancel();
   }
 
   void dispose() {
+    _disposeCurrentGame();
     if (!_userState$.isClosed) _userState$.close();
-    _disposeClientUpdateSubs();
     if (!_statsState$.isClosed) _statsState$.close();
     if (!_serverStats$.isClosed) _serverStats$.close();
   }

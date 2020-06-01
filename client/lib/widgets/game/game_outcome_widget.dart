@@ -31,9 +31,15 @@ class GameOutcomeWidget extends StatelessWidget {
   Widget _overlay(BuildContext context) {
     switch (gameOutcome) {
       case GameOutcomes.Won:
-        return GameWonWidget(score: score);
+        return GameWonWidget(
+          score: score,
+          universe: universe,
+        );
       case GameOutcomes.Lost:
-        return GameOverWidget(score: score);
+        return GameOverWidget(
+          score: score,
+          universe: universe,
+        );
       case GameOutcomes.None:
         return GameInterruptedWidget();
       default:
@@ -44,7 +50,9 @@ class GameOutcomeWidget extends StatelessWidget {
 
 class GameOverWidget extends StatelessWidget {
   final int score;
-  const GameOverWidget({@required this.score}) : super();
+  final Universe universe;
+  const GameOverWidget({@required this.universe, @required this.score})
+      : super();
 
   Widget build(BuildContext context) {
     return Column(
@@ -60,7 +68,15 @@ class GameOverWidget extends StatelessWidget {
         ScoreWidget(
           score: score,
           fontSize: 18,
-        )
+        ),
+        FinishedGameActionWidget(
+          message: 'Play Again',
+          action: universe.userReplayLevel,
+        ),
+        FinishedGameActionWidget(
+          message: 'Play Other Level',
+          action: universe.userBackToHome,
+        ),
       ],
     );
   }
@@ -68,7 +84,9 @@ class GameOverWidget extends StatelessWidget {
 
 class GameWonWidget extends StatelessWidget {
   final int score;
-  const GameWonWidget({@required this.score}) : super();
+  final Universe universe;
+  const GameWonWidget({@required this.universe, @required this.score})
+      : super();
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -83,8 +101,30 @@ class GameWonWidget extends StatelessWidget {
         ScoreWidget(
           score: score,
           fontSize: 18,
-        )
+        ),
+        FinishedGameActionWidget(
+          message: 'Play Again',
+          action: universe.userReplayLevel,
+        ),
+        FinishedGameActionWidget(
+          message: 'Play Other Level',
+          action: universe.userBackToHome,
+        ),
       ],
+    );
+  }
+}
+
+class FinishedGameActionWidget extends StatelessWidget {
+  final String message;
+  final VoidCallback action;
+
+  const FinishedGameActionWidget({this.message, this.action}) : super();
+
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      child: Text(message),
+      onPressed: action,
     );
   }
 }

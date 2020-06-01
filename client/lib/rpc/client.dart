@@ -113,6 +113,11 @@ class Client {
       ..connect();
   }
 
+  void disconnectGame() {
+    if (_gameSocket == null || !_gameSocket.connected) return;
+    _gameSocket.disconnect();
+  }
+
   void sendClientPlayerUpdate(ClientPlayerUpdate update) {
     assert(_gameSocket != null, 'cannot send update without a connected game');
     assert(update != null, 'need a valid non-null update');
