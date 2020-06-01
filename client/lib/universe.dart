@@ -223,6 +223,21 @@ class Universe {
     _statsState$.add(stats);
   }
 
+  void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {
+    final game = _userState$.value.game;
+    game.updatePlayers(clientPlayerUpdate);
+  }
+
+  void receivedSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
+    final game = _userState$.value.game;
+    game.updateBullets(update);
+  }
+
+  void receivedServerStatsUpdate(ServerStatsUpdate update) {
+    final stats = ServerStats.fromServerStatsUpdate(update);
+    _serverStats$.add(stats);
+  }
+
   void _disposeCurrentGame() {
     client.disconnectGame();
     _userState$.value?.game?.dispose();
@@ -239,20 +254,5 @@ class Universe {
     if (!_userState$.isClosed) _userState$.close();
     if (!_statsState$.isClosed) _statsState$.close();
     if (!_serverStats$.isClosed) _serverStats$.close();
-  }
-
-  void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {
-    final game = _userState$.value.game;
-    game.updatePlayers(clientPlayerUpdate);
-  }
-
-  void receivedSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
-    final game = _userState$.value.game;
-    game.updateBullets(update);
-  }
-
-  void receivedServerStatsUpdate(ServerStatsUpdate update) {
-    final stats = ServerStats.fromServerStatsUpdate(update);
-    _serverStats$.add(stats);
   }
 }

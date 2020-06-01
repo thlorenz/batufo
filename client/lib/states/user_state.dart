@@ -51,6 +51,11 @@ class UserState extends Equatable {
         gameOutcome,
         score,
       ];
+
+  @override
+  String toString() {
+    return 'UserState { kind: $kind }';
+  }
 }
 
 class UserRequestingInfoState extends UserState {
