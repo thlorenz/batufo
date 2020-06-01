@@ -47,7 +47,11 @@ class Client {
           'autoConnect': false,
         });
 
-  void _connectMain(Function onConnected) {
+  void _ensureMainSocketConnected(Function onConnected) {
+    if (_mainSocket.connected) {
+      onConnected();
+      return;
+    }
     _mainSocket
       ..once('connect', (dynamic _) {
         universe.clientConnected();
@@ -56,17 +60,18 @@ class Client {
       })
       ..once('disconnect',
           (dynamic reason) => universe.clientDisconnected(reason as String))
-      ..once('info:response', _onInfoMessage)
-      ..once('game:created', _onGameCreatedMessage)
       ..on('server:stats', _onServerStatsMessage)
       ..connect();
   }
 
   void requestInfo() {
-    _connectMain(() {
+    _ensureMainSocketConnected(() {
       final infoRequest = InfoRequest();
       final buf = infoRequest.writeToBuffer();
-      _mainSocket.emitWithBinary('info:request', buf);
+      _mainSocket
+        ..once('info:response', _onInfoMessage)
+        ..emitWithBinary('info:request', buf);
+      _log.fine('info:request');
     });
   }
 
@@ -76,12 +81,7 @@ class Client {
     final List<LevelInfo> levels =
         info.levels.map((x) => LevelInfo(x.name, x.nplayers)).toList();
     universe.clientReceivedInfo(ServerInfo(levels: levels));
-  }
-
-  void _onServerStatsMessage(dynamic data) {
-    final list = listFromData(data);
-    final stats = ServerStatsUpdate.fromBuffer(list);
-    universe.receivedServerStatsUpdate(stats);
+    _log.fine('info:message', info.levels);
   }
 
   void requestPlay(String level) {
@@ -91,7 +91,29 @@ class Client {
     );
     final playRequest = PlayRequest()..levelName = level;
     final buf = playRequest.writeToBuffer();
-    _mainSocket.emitWithBinary('play:request', buf);
+    _mainSocket
+      ..once('game:created', _onGameCreatedMessage)
+      ..emitWithBinary('play:request', buf);
+    _log.fine('play:request', level);
+  }
+
+  void _onGameCreatedMessage(dynamic data) {
+    final list = listFromData(data);
+    final createdGame = GameCreated.fromBuffer(list);
+    final arena = Arena.unpack(createdGame.arena);
+    universe.clientCreatedGame(
+      createdGame.clientID,
+      createdGame.playerIndex,
+      arena,
+    );
+    connectGameSocket(createdGame);
+    _log.fine('game:created', [createdGame.gameID, createdGame.clientID]);
+  }
+
+  void _onServerStatsMessage(dynamic data) {
+    final list = listFromData(data);
+    final stats = ServerStatsUpdate.fromBuffer(list);
+    universe.receivedServerStatsUpdate(stats);
   }
 
   void connectGameSocket(GameCreated createdGame) {
@@ -102,20 +124,15 @@ class Client {
       'autoConnect': false,
     })
       ..once('connect', (dynamic _) {
-        _log.info('game socket connected');
+        _log.info('game-socket:connect');
       })
       ..once('game:started', (dynamic _) {
-        _log.info('game started');
+        _log.info('game:started');
         universe.clientStartedGame();
       })
       ..on('game:client-update', _onClientPlayerUpdateMessage)
       ..on('game:spawned-bullet', _onClientSpawnedBulletMessage)
       ..connect();
-  }
-
-  void disconnectGame() {
-    if (_gameSocket == null || !_gameSocket.connected) return;
-    _gameSocket.disconnect();
   }
 
   void sendClientPlayerUpdate(ClientPlayerUpdate update) {
@@ -132,18 +149,6 @@ class Client {
     final packed = update.pack();
     final buf = packed.writeToBuffer();
     _gameSocket.emitWithBinary('game:spawned-bullet', buf);
-  }
-
-  void _onGameCreatedMessage(dynamic data) {
-    final list = listFromData(data);
-    final createdGame = GameCreated.fromBuffer(list);
-    final arena = Arena.unpack(createdGame.arena);
-    universe.clientCreatedGame(
-      createdGame.clientID,
-      createdGame.playerIndex,
-      arena,
-    );
-    connectGameSocket(createdGame);
   }
 
   void _onClientPlayerUpdateMessage(dynamic data) {
@@ -164,9 +169,21 @@ class Client {
     universe.receivedSpawnedBulletUpdate(update);
   }
 
+  void disconnect() {
+    disconnectGame();
+    if (_mainSocket == null || !_mainSocket.connected) return;
+    _mainSocket.disconnect();
+    _log.fine('disconnecting main socket');
+  }
+
+  void disconnectGame() {
+    if (_gameSocket == null || !_gameSocket.connected) return;
+    _gameSocket.disconnect();
+    _log.fine('disconnecting game socket');
+  }
+
   void dispose() {
-    _mainSocket?.once('disconnect',
-        (dynamic reason) => universe.clientDisconnected(reason as String));
-    _mainSocket?.disconnect();
+    disconnect();
+    _log.info('disposing');
   }
 }
