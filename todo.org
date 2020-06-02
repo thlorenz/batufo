@@ -7,6 +7,23 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Client Side
 
+** Exit Game Prematurely
+
+- [X] provide exit game button
+- [ ] pressing it takes us back to select level screen
+- [ ] waiting screen should include that button
+- [ ] when all players but one exited last player wins and game ends
+
+
+*** Waiting on Players
+
+- [X] communicate to server that we left and then close socket connection for game
+
+*** Disconnected
+
+When we don't hear from a player for a while we need to declare it dead, i.e. send a fake update to all other players with health set to 0.
+Otherwise that player becomes invincible as it never reports its health status which the other players rely on to show him as dead.
+
 ** Game Cycle
 
 Players already communicate their health to other players which show them as dead.
@@ -23,6 +40,7 @@ If we die we lost.
 - [X] if player leaves server sends ~'game:player-departed'~ to the client
 - [X] client removes that player from the list of players
 - [ ] as a bonus server could detect games from which all clients disconnected and/or haven't gotten any updates in a long time and recycle those regularly
+- [ ] additionally clients could send a leave when app is about to be closed
 
 
 ** Issues
@@ -30,25 +48,6 @@ If we die we lost.
 - [ ] scroll levels so I can get to all of them
 - [ ] only score if *my* bullet killed a player
 
-
-** Exit Game Prematurely
-
-- [ ] provide exit game button
-
-*** Waiting on Players
-
-- [ ] communicate to server that we left and then close socket connection for game
-- [ ] server removes player from the client list
-- [ ] if no more players remain the game is cleaned up and removed
-
-*** Game Started
-
-- [ ] when a player exits game like this he communicates his health as 0 to the server
-
-*** Disconnected
-
-When we don't hear from a player for a while we need to declare it dead, i.e. send a fake update to all other players with health set to 0.
-Otherwise that player becomes invincible as it never reports its health status which the other players rely on to show him as dead.
 
 ** Pickups
 
@@ -185,22 +184,6 @@ jspb.BinaryConstants.TWO_TO_64 = 1.8446744073709552E19;
 - [X] fix2: ensuring that health is never negative
 
 
-* DONE Server Side
-
-** DONE Rooms
-
-It seems that for our app it makes more sense to create a /room/ per game instead of a /namespace/.
-As explained [[https://stackoverflow.com/a/17276952][here]] create namespaces dynamically on a running app you use them mainly as *predefined* separate sections of you application.
-However our games are not predefined.
-
-If, on the other hand you need to create ad hoc compartments, on the fly, to accommodate groups of users/connections, it is best to use rooms.
-
-That is much closer to what our games are.
-
-- [X] use rooms instead of namespaces
-- [X] restore current functionality
-
-
 * WAIT Nice to Have
 
 ** WAIT Devices and Fairness
@@ -240,6 +223,22 @@ It would be better to smooth this out by adapting the velocity so that eventuall
 Multiple tweaks to enhance playability.
 
 - [ ] assuming we show time to shoot in hud experiment with increasing it in order to avoid players just shooting randomly all over the place
+
+
+* DONE Server Side
+
+** DONE Rooms
+
+It seems that for our app it makes more sense to create a /room/ per game instead of a /namespace/.
+As explained [[https://stackoverflow.com/a/17276952][here]] create namespaces dynamically on a running app you use them mainly as *predefined* separate sections of you application.
+However our games are not predefined.
+
+If, on the other hand you need to create ad hoc compartments, on the fly, to accommodate groups of users/connections, it is best to use rooms.
+
+That is much closer to what our games are.
+
+- [X] use rooms instead of namespaces
+- [X] restore current functionality
 
 
 * DONE Networking
@@ -336,3 +335,10 @@ This allows us to use proto definitions and smaller /albeit not ideal/ payloads 
 - [ ] determine small format to send, most likely flat arrays
   
   
+
+
+* Resources
+
+** UI
+
+- [[https://material.io/resources/icons/?style=baseline][material icons]]

@@ -1,5 +1,6 @@
 import 'package:batufo/states/stats_state.dart';
 import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/hud/exit_game_widget.dart';
 import 'package:batufo/widgets/hud/health_widget.dart';
 import 'package:batufo/widgets/hud/players_alive_widget.dart';
 import 'package:batufo/widgets/hud/ready_to_shoot.dart';
@@ -49,6 +50,7 @@ class HudWidget extends StatelessWidget {
                     totalPlayers: stats.totalPlayers,
                     playersAlive: stats.playersAlive,
                   ),
+                  ExitGameWidget(onExit: universe.userPlayOtherLevel),
                 ],
               ),
             ),
