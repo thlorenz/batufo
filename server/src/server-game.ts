@@ -1,6 +1,8 @@
 import { strict as assert } from 'assert'
 import { Arena, levelNames } from './arena'
 import { Level } from './arena/level'
+import { EventEmitter } from 'events'
+import debug from 'debug'
 
 function generateID() {
   const now = new Date(Date.now())
@@ -12,19 +14,21 @@ function generateID() {
   return millis + Math.floor(Math.random() * 1e3)
 }
 
-export class ServerStats {}
+const logDebug = debug('game:debug')
 
-export class ServerGame {
+export class ServerGame extends EventEmitter {
   readonly clientIDs: number[] = []
-  readonly deadClientIDs: number[] = []
-  constructor(readonly gameID: number, readonly nplayers: number) {}
+  readonly departedClientIDs: number[] = []
+  constructor(readonly gameID: number, readonly nplayers: number) {
+    super()
+  }
 
   get full() {
     return this.clientIDs.length === this.nplayers
   }
 
   get finished() {
-    return this.deadClientIDs.length === this.nplayers
+    return this.departedClientIDs.length === this.nplayers
   }
 
   addClient(clientID: number): number {
@@ -33,14 +37,21 @@ export class ServerGame {
     return this.clientIDs.length - 1
   }
 
-  declareClientDead(clientID: number) {
-    this.deadClientIDs.push(clientID)
+  departClient(clientID: number) {
+    this.departedClientIDs.push(clientID)
+    this._disposeIfFinished()
+  }
+
+  _disposeIfFinished() {
+    if (!this.finished) return
+    logDebug('disposing')
+    this.emit('disposed', this.gameID)
   }
 }
 
 export class ServerGames {
-  readonly _gamesByLevel: Map<string, Map<number, ServerGame>> = new Map()
   readonly _arenasByLevel: Map<string, Arena> = new Map()
+  readonly _gamesByLevel: Map<string, Map<number, ServerGame>> = new Map()
   readonly _gamesByID: Map<number, ServerGame> = new Map()
 
   constructor(levels: string[], tileSize: number) {
@@ -57,14 +68,11 @@ export class ServerGames {
   ) {
     gamesForLevel.set(gameID, game)
     this._gamesByID.set(gameID, game)
-  }
-
-  private _clearGameIfFinished(gameID: number, game: ServerGame) {
-    if (!game.finished) return
-    this._gamesByID.delete(gameID)
-    for (const gamesForLevel of this._gamesByLevel.values()) {
+    game.once('disposed', (gameID) => {
+      logDebug('removing game %d', gameID)
+      this._gamesByID.delete(gameID)
       gamesForLevel.delete(gameID)
-    }
+    })
   }
 
   private _vacantGame(level: Level): ServerGame {
@@ -86,13 +94,6 @@ export class ServerGames {
     const arena = this._arenasByLevel.get(level.name)
     assert(arena != null, `missing arena for level ${level.name}`)
     return { game, clientID, arena, playerIndex }
-  }
-
-  declareClientDead(gameID: number, clientID: number) {
-    const game = this._gamesByID.get(gameID)
-    if (game == null) return
-    game.declareClientDead(clientID)
-    this._clearGameIfFinished(gameID, game)
   }
 
   totals() {

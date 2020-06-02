@@ -12,6 +12,7 @@ class GameSocket {
   constructor(readonly io: Server, readonly game: ServerGame) {
     this._gameID = `${game.gameID}`
   }
+
   addSocket(socket: socketio.Socket, clientID: number) {
     socket
       .on('game:client-update', (data: Buffer) => {
@@ -39,6 +40,7 @@ class GameSocket {
       .on('game:leave', (_data: Buffer) => {
         logDebug('client [%d] is leaving', clientID)
         socket.leave(this._gameID)
+        this.game.departClient(clientID)
       })
       .join(this._gameID)
 
@@ -68,9 +70,17 @@ export class GameSockets {
     game: ServerGame,
     clientID: number
   ) {
-    const gameSocket =
-      this.gameSockets.get(game.gameID) ?? new GameSocket(io, game)
-    this.gameSockets.set(game.gameID, gameSocket)
+    let gameSocket
+    gameSocket = this.gameSockets.get(game.gameID)
+    if (gameSocket == null) {
+      gameSocket = new GameSocket(io, game)
+      this.gameSockets.set(game.gameID, gameSocket)
+      game.once('disposed', (gameID) => {
+        logDebug('removing socket for %d', gameID)
+        this.gameSockets.delete(gameID)
+      })
+    }
+
     gameSocket.addSocket(socket, clientID)
   }
 }
