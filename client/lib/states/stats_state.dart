@@ -38,7 +38,7 @@ class StatsState extends Equatable {
   }
 
   String toString() {
-    return 'Stats [ $health, $playersAlive/$totalPlayers, $score ]';
+    return 'Stats [ $health, $playersAlive/$totalPlayers, $score, $percentReadyToShoot, $percentReadyToThrust ]';
   }
 
   static StatsState initial(int totalPlayers) {

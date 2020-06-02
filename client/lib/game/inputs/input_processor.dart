@@ -34,10 +34,10 @@ class InputProcessor {
   }
 
   int get percentReadyToShoot =>
-      max((timeSinceLastBullet / timeBetweenBullets * 100).floor(), 100);
+      min((timeSinceLastBullet / timeBetweenBullets * 100).floor(), 100);
 
   int get percentReadyToThrust =>
-      max((timeSinceLastThrust / timeBetweenThrusts * 100).floor(), 100);
+      min((timeSinceLastThrust / timeBetweenThrusts * 100).floor(), 100);
 
   void udate(
     double dt,
