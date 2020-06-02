@@ -18,6 +18,11 @@ message ServerStatsUpdate {
   map<string, uint32> waitingForLevelsCounts = 4;
 }
 
+// ServerMessages
+message PlayerDeparted {
+  uint32 clientID = 1;
+}
+
 // Responses
 
 message LevelInfo {

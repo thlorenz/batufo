@@ -135,6 +135,37 @@ class ServerStatsUpdate extends $pb.GeneratedMessage {
   $core.Map<$core.String, $core.int> get waitingForLevelsCounts => $_getMap(3);
 }
 
+class PlayerDeparted extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayerDeparted', createEmptyInstance: create)
+    ..a<$core.int>(1, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
+    ..hasRequiredFields = false
+  ;
+
+  PlayerDeparted._() : super();
+  factory PlayerDeparted() => create();
+  factory PlayerDeparted.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PlayerDeparted.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PlayerDeparted clone() => PlayerDeparted()..mergeFromMessage(this);
+  PlayerDeparted copyWith(void Function(PlayerDeparted) updates) => super.copyWith((message) => updates(message as PlayerDeparted));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PlayerDeparted create() => PlayerDeparted._();
+  PlayerDeparted createEmptyInstance() => create();
+  static $pb.PbList<PlayerDeparted> createRepeated() => $pb.PbList<PlayerDeparted>();
+  @$core.pragma('dart2js:noInline')
+  static PlayerDeparted getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayerDeparted>(create);
+  static PlayerDeparted _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get clientID => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set clientID($core.int v) { $_setUnsignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasClientID() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearClientID() => clearField(1);
+}
+
 class LevelInfo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('LevelInfo', createEmptyInstance: create)
     ..aOS(1, 'name')

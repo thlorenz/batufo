@@ -250,6 +250,12 @@ class Universe {
     game.updateBullets(update);
   }
 
+  void receivedPlayerDeparted(int clientID) {
+    final game = _userState$.value.game;
+    if (game == null) return;
+    game.removePlayer(clientID);
+  }
+
   void receivedServerStatsUpdate(ServerStatsUpdate update) {
     final stats = ServerStats.fromServerStatsUpdate(update);
     _addServerStats(stats);

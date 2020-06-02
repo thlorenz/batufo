@@ -91,6 +91,26 @@ export namespace ServerStatsUpdate {
   }
 }
 
+export class PlayerDeparted extends jspb.Message {
+  getClientid(): number;
+  setClientid(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PlayerDeparted.AsObject;
+  static toObject(includeInstance: boolean, msg: PlayerDeparted): PlayerDeparted.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PlayerDeparted, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PlayerDeparted;
+  static deserializeBinaryFromReader(message: PlayerDeparted, reader: jspb.BinaryReader): PlayerDeparted;
+}
+
+export namespace PlayerDeparted {
+  export type AsObject = {
+    clientid: number,
+  }
+}
+
 export class LevelInfo extends jspb.Message {
   getName(): string;
   setName(value: string): void;

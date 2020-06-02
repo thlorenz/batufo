@@ -130,6 +130,11 @@ class ClientGame extends Game {
     _players.putIfAbsent(id, _initPlayer);
   }
 
+  void removePlayer(int clientID) {
+    _gameController.removePlayer(clientID);
+    _players.remove(clientID);
+  }
+
   void updateBullets(ClientSpawnedBulletUpdate update) {
     _gameController.addBullet(update.spawnedBullet);
   }

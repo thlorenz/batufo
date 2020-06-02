@@ -1,5 +1,6 @@
 import { Server } from 'socket.io'
 import { ServerGame } from '../server-game'
+import { PlayerDeparted } from '../generated/message_bus_pb'
 
 import socketio from 'socket.io'
 import debug from 'debug'
@@ -41,6 +42,14 @@ class GameSocket {
         logDebug('client [%d] is leaving', clientID)
         socket.leave(this._gameID)
         this.game.departClient(clientID)
+        const playerDeparted = new PlayerDeparted()
+        playerDeparted.setClientid(clientID)
+        socket.broadcast
+          .to(this._gameID)
+          .emit(
+            'game:player-departed',
+            playerDeparted.serializeBinary().toString()
+          )
       })
       .join(this._gameID)
 

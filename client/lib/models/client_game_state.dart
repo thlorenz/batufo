@@ -25,6 +25,10 @@ class ClientGameState {
     _log.finest('updated player now have ${players.length} players');
   }
 
+  void removePlayer(int clientID) {
+    players.remove(clientID);
+  }
+
   void addBullet(BulletModel bullet) {
     bullets.add(bullet);
   }

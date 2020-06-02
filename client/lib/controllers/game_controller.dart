@@ -71,7 +71,7 @@ class GameController {
   void _onPlayerHitByBullet(PlayerModel player) {
     final health =
         max(player.health - GameProps.bulletHitsPlayerHealthToll, 0.0);
-    if (player.id == gameState.clientID) {
+    if (player.id == _gameState.clientID) {
       // if we are hit, we deal a health toll to ourselves
       player.health = health;
     } else {
@@ -95,8 +95,12 @@ class GameController {
     _gameState.updatePlayer(player);
   }
 
+  void removePlayer(int clientID) {
+    _gameState.removePlayer(clientID);
+  }
+
   void addBullet(BulletModel bullet) {
-    gameState.addBullet(bullet);
+    _gameState.addBullet(bullet);
   }
 
   void _spawnBullet(PlayerModel player) {
