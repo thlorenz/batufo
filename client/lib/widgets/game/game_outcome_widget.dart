@@ -75,7 +75,7 @@ class GameOverWidget extends StatelessWidget {
         ),
         FinishedGameActionWidget(
           message: 'Play Other Level',
-          action: universe.userBackToHome,
+          action: universe.userPlayOtherLevel,
         ),
       ],
     );
@@ -108,7 +108,7 @@ class GameWonWidget extends StatelessWidget {
         ),
         FinishedGameActionWidget(
           message: 'Play Other Level',
-          action: universe.userBackToHome,
+          action: universe.userPlayOtherLevel,
         ),
       ],
     );

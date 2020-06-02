@@ -38,7 +38,7 @@ class GameSocket {
       })
       .on('game:leave', (_data: Buffer) => {
         logDebug('client [%d] is leaving', clientID)
-        socket.leaveAll()
+        socket.leave(this._gameID)
       })
       .join(this._gameID)
 

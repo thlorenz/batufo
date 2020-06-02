@@ -30,7 +30,7 @@ class Universe {
   final _userState$ = BehaviorSubject<UserState>();
   final _connectionState$ = BehaviorSubject<ConnectionState>();
   final _statsState$ = BehaviorSubject<StatsState>();
-  final _serverStats$ = PublishSubject<ServerStats>();
+  final _serverStats$ = BehaviorSubject<ServerStats>();
   StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
   StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
 
@@ -136,18 +136,18 @@ class Universe {
     client.requestPlay(level);
   }
 
-  void userBackToHome() {
+  void userPlayOtherLevel() {
     _disposeCurrentGame();
-    final state = UserRequestingInfoState();
-    _userState$.add(state);
-    _log.info('returning  home', _userState$.value);
+    final state = UserSelectingLevelState(_userState$.value?.serverInfo);
+    _addUserState(state);
+    _log.info('playing other level', _userState$.value);
   }
 
   void userReplayLevel() {
     assert(_currentLevel != null, 'cannot replay level if none was selected');
     _disposeCurrentGame();
     final stateForNow = UserSelectingLevelState(_userState$.value?.serverInfo);
-    _userState$.add(stateForNow);
+    _addUserState(stateForNow);
     _log.info('replaying level', _userState$.value);
     userSelectedLevel(_currentLevel);
   }
@@ -158,8 +158,13 @@ class Universe {
   }
 
   void _addStatsState(StatsState state) {
-    if (state != _statsState$.value) _log.fine('stats: $state');
+    if (state != _statsState$.value) _log.finest('stats: $state');
     _statsState$.add(state);
+  }
+
+  void _addServerStats(ServerStats stats) {
+    if (stats != _serverStats$.value) _log.fine('serverStats: $stats');
+    _serverStats$.add(stats);
   }
 
   void _subscribeClientUpdates(ClientGame game) {
@@ -247,7 +252,7 @@ class Universe {
 
   void receivedServerStatsUpdate(ServerStatsUpdate update) {
     final stats = ServerStats.fromServerStatsUpdate(update);
-    _serverStats$.add(stats);
+    _addServerStats(stats);
   }
 
   void _disposeCurrentGame() {

@@ -32,7 +32,7 @@ const app = http
 
 const io = socketio(app)
 const statsUpdates = new StatsUpdates(io, games)
-statsUpdates.start()
+statsUpdates.start(1000)
 
 function onRequest(_req: http.IncomingMessage, res: http.ServerResponse) {
   res.writeHead(404)
