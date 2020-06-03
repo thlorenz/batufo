@@ -111,6 +111,30 @@ export namespace PlayerDeparted {
   }
 }
 
+export class PlayerJoined extends jspb.Message {
+  getClientid(): number;
+  setClientid(value: number): void;
+
+  getPlayerindex(): number;
+  setPlayerindex(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PlayerJoined.AsObject;
+  static toObject(includeInstance: boolean, msg: PlayerJoined): PlayerJoined.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PlayerJoined, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PlayerJoined;
+  static deserializeBinaryFromReader(message: PlayerJoined, reader: jspb.BinaryReader): PlayerJoined;
+}
+
+export namespace PlayerJoined {
+  export type AsObject = {
+    clientid: number,
+    playerindex: number,
+  }
+}
+
 export class LevelInfo extends jspb.Message {
   getName(): string;
   setName(value: string): void;

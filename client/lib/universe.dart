@@ -7,6 +7,7 @@ import 'package:batufo/game/client_game.dart';
 import 'package:batufo/game/inputs/input_processor.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
+import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
@@ -241,13 +242,36 @@ class Universe {
   void receivedClientPlayerUpdate(ClientPlayerUpdate clientPlayerUpdate) {
     final game = _userState$.value.game;
     if (game == null) return;
-    game.updatePlayers(clientPlayerUpdate);
+    game.updatePlayers(clientPlayerUpdate.player);
   }
 
   void receivedSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
     final game = _userState$.value.game;
     if (game == null) return;
     game.updateBullets(update);
+  }
+
+  void receivedPlayerJoined(int clientID, int playerIndex) {
+    final game = _userState$.value.game;
+    if (game == null) return;
+    if (game.hasPlayer(clientID)) return;
+
+    final initialPosition = game.arena.players[playerIndex];
+    assert(
+      initialPosition != null,
+      'no player in arena for index $playerIndex',
+    );
+    final playerModel = PlayerModel.forInitialPosition(
+      clientID,
+      initialPosition,
+      GameProps.playerTotalHealth,
+    );
+    game.updatePlayers(playerModel);
+
+    final current = _statsState$.value;
+    assert(current != null, 'should have some stats by now');
+    final stats = current.copyWith(playersAlive: game.gameState.playersAlive);
+    _addStatsState(stats);
   }
 
   void receivedPlayerDeparted(int clientID) {

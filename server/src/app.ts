@@ -76,7 +76,7 @@ io.on('connection', (socket: socketio.Socket) => {
         createdGame.setPlayerindex(playerIndex)
 
         socket.emit('game:created', createdGame.serializeBinary().toString())
-        gameSockets.addSocketFor(io, socket, game, clientID)
+        gameSockets.addSocketFor(io, socket, game, clientID, playerIndex)
       } catch (err) {
         logError('play:request', err)
       }

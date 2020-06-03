@@ -55,6 +55,7 @@ class ClientGame extends Game {
   bool get started => _started;
   bool get finished => _finished;
   bool get ready => _started && !_disposed;
+  bool hasPlayer(int clientID) => gameState.hasPlayer(clientID);
 
   Stream<ClientPlayerUpdate> get clientPlayerUpdate$ =>
       _clientPlayerUpdate$.stream;
@@ -92,7 +93,7 @@ class ClientGame extends Game {
     _players = <int, Player>{clientID: _initPlayer()};
     _gameController = GameController(
       arena,
-      _preStartGameState(playerIndex),
+      _heroOnlyGameState(playerIndex),
       onScored,
     );
   }
@@ -106,14 +107,12 @@ class ClientGame extends Game {
     return player;
   }
 
-  ClientGameState _preStartGameState(int playerIndex) {
+  ClientGameState _heroOnlyGameState(int playerIndex) {
     final playerStartPosition = arena.players[playerIndex];
-    final hero = PlayerModel(
-      id: clientID,
-      health: GameProps.playerTotalHealth,
-      velocity: Offset.zero,
-      tilePosition: playerStartPosition,
-      angle: 0,
+    final hero = PlayerModel.forInitialPosition(
+      clientID,
+      playerStartPosition,
+      GameProps.playerTotalHealth,
     );
     return ClientGameState(
       clientID: clientID,
@@ -123,11 +122,9 @@ class ClientGame extends Game {
     );
   }
 
-  void updatePlayers(ClientPlayerUpdate update) {
-    final id = update.player.id;
-    _gameController.updatePlayer(update.player);
-    // TODO: this may not be necessary if start() gets a game state
-    // with all players in it
+  void updatePlayers(PlayerModel player) {
+    final id = player.id;
+    _gameController.updatePlayer(player);
     _players.putIfAbsent(id, _initPlayer);
   }
 

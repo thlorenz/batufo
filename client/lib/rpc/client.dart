@@ -13,6 +13,7 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart'
         PackedClientSpawnedBulletUpdate,
         PlayRequest,
         PlayerDeparted,
+        PlayerJoined,
         ServerStatsUpdate;
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
@@ -63,6 +64,7 @@ class Client {
       ..on('server:stats', _onServerStatsMessage)
       ..on('game:client-update', _onClientPlayerUpdateMessage)
       ..on('game:spawned-bullet', _onClientSpawnedBulletMessage)
+      ..on('game:player-joined', _onPlayerJoinedMessage)
       ..on('game:player-departed', _onPlayerDepartedMessage)
       ..connect();
   }
@@ -159,6 +161,15 @@ class Client {
 
     _log.finest('received: $update');
     universe.receivedSpawnedBulletUpdate(update);
+  }
+
+  void _onPlayerJoinedMessage(dynamic data) {
+    final list = listFromData(data);
+    final playerJoined = PlayerJoined.fromBuffer(list);
+    final clientID = playerJoined.clientID;
+    final playerIndex = playerJoined.playerIndex;
+    _log.fine('player joined: $clientID at index $playerIndex');
+    universe.receivedPlayerJoined(clientID, playerIndex);
   }
 
   void _onPlayerDepartedMessage(dynamic data) {

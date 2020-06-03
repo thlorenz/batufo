@@ -166,6 +166,47 @@ class PlayerDeparted extends $pb.GeneratedMessage {
   void clearClientID() => clearField(1);
 }
 
+class PlayerJoined extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayerJoined', createEmptyInstance: create)
+    ..a<$core.int>(1, 'clientID', $pb.PbFieldType.OU3, protoName: 'clientID')
+    ..a<$core.int>(2, 'playerIndex', $pb.PbFieldType.OU3, protoName: 'playerIndex')
+    ..hasRequiredFields = false
+  ;
+
+  PlayerJoined._() : super();
+  factory PlayerJoined() => create();
+  factory PlayerJoined.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PlayerJoined.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PlayerJoined clone() => PlayerJoined()..mergeFromMessage(this);
+  PlayerJoined copyWith(void Function(PlayerJoined) updates) => super.copyWith((message) => updates(message as PlayerJoined));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PlayerJoined create() => PlayerJoined._();
+  PlayerJoined createEmptyInstance() => create();
+  static $pb.PbList<PlayerJoined> createRepeated() => $pb.PbList<PlayerJoined>();
+  @$core.pragma('dart2js:noInline')
+  static PlayerJoined getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PlayerJoined>(create);
+  static PlayerJoined _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get clientID => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set clientID($core.int v) { $_setUnsignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasClientID() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearClientID() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get playerIndex => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set playerIndex($core.int v) { $_setUnsignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPlayerIndex() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPlayerIndex() => clearField(2);
+}
+
 class LevelInfo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('LevelInfo', createEmptyInstance: create)
     ..aOS(1, 'name')

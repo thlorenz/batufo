@@ -1,6 +1,6 @@
 import { Server } from 'socket.io'
 import { ServerGame } from '../server-game'
-import { PlayerDeparted } from '../generated/message_bus_pb'
+import { PlayerDeparted, PlayerJoined } from '../generated/message_bus_pb'
 
 import socketio from 'socket.io'
 import debug from 'debug'
@@ -8,13 +8,22 @@ const logDebug = debug('game-socket:debug')
 const logError = debug('game-socket:error')
 const logTrace = debug('game-socket:trace')
 
+function getJoiningPlayer(clientID: number, playerIndex: number) {
+  const joiningPlayer = new PlayerJoined()
+  joiningPlayer.setClientid(clientID)
+  joiningPlayer.setPlayerindex(playerIndex)
+  return joiningPlayer
+}
+
 class GameSocket {
   private readonly _gameID: string
   constructor(readonly io: Server, readonly game: ServerGame) {
     this._gameID = `${game.gameID}`
   }
 
-  addSocket(socket: socketio.Socket, clientID: number) {
+  addSocket(socket: socketio.Socket, clientID: number, playerIndex: number) {
+    this._tellClientsPlayerJoined(clientID, playerIndex)
+
     socket
       .on('game:client-update', (data: Buffer) => {
         logTrace('got playing client message -> broadcasting')
@@ -51,9 +60,37 @@ class GameSocket {
             playerDeparted.serializeBinary().toString()
           )
       })
-      .join(this._gameID)
+      .join(this._gameID, (err: Error) => {
+        if (err) logError(err)
+        this._tellPlayerAboutPreviousJoins(socket)
+        this._tellClientsIfGameIsReady()
+      })
+  }
 
-    this._tellClientsIfGameIsReady()
+  _tellClientsPlayerJoined(clientID: number, playerIndex: number) {
+    try {
+      logDebug('client [%d] is joining at index [%d]', clientID, playerIndex)
+      const playerJoined = getJoiningPlayer(clientID, playerIndex)
+      this.io.sockets
+        .in(this._gameID)
+        .emit('game:player-joined', playerJoined.serializeBinary().toString())
+    } catch (err) {
+      logError('game:player-joined', err)
+    }
+  }
+
+  _tellPlayerAboutPreviousJoins(socket: socketio.Socket) {
+    for (const [clientID, playerIndex] of this.game.playerIndexes) {
+      const joinedPlayer = getJoiningPlayer(clientID, playerIndex)
+      try {
+        socket.emit(
+          'game:player-joined',
+          joinedPlayer.serializeBinary().toString()
+        )
+      } catch (err) {
+        logError('game:player-joined (multi)', err)
+      }
+    }
   }
 
   _tellClientsIfGameIsReady() {
@@ -77,19 +114,22 @@ export class GameSockets {
     io: Server,
     socket: socketio.Socket,
     game: ServerGame,
-    clientID: number
+    clientID: number,
+    playerIndex: number
   ) {
     let gameSocket
     gameSocket = this.gameSockets.get(game.gameID)
+
     if (gameSocket == null) {
       gameSocket = new GameSocket(io, game)
       this.gameSockets.set(game.gameID, gameSocket)
+
       game.once('disposed', (gameID) => {
         logDebug('removing socket for %d', gameID)
         this.gameSockets.delete(gameID)
       })
     }
 
-    gameSocket.addSocket(socket, clientID)
+    gameSocket.addSocket(socket, clientID, playerIndex)
   }
 }

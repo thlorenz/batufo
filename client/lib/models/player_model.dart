@@ -29,6 +29,20 @@ class PlayerModel {
         appliedThrust = appliedThrust ?? false,
         shotBullet = shotBullet ?? false;
 
+  factory PlayerModel.forInitialPosition(
+    int clientID,
+    TilePosition tp,
+    double initialHealth,
+  ) {
+    return PlayerModel(
+      id: clientID,
+      health: initialHealth,
+      velocity: Offset.zero,
+      tilePosition: tp,
+      angle: 0,
+    );
+  }
+
   PackedPlayerModel pack() {
     assert(health >= 0, 'negative health will cause problems in the browser');
     assert(angle >= 0, 'negative angle will cause problems in the browser');

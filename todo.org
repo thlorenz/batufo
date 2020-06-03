@@ -14,7 +14,7 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [X] waiting screen should also include amount of players waiting, i.e. 2/3
 - [X] waiting screen should include exit button
 - [X] when all players but one exited last player wins and game ends
-- [ ] server sends each time a player joins to prevent game from starting before we know about all players client side
+- [X] server sends each time a player joins to prevent game from starting before we know about all players client side
 
 
 

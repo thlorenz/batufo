@@ -24,6 +24,7 @@ class ClientGameState {
   PlayerModel get hero => players[clientID];
   int get remainingPlayers => players.length;
   int get playersAlive => players.values.where(PlayerStatus.isAlive).length;
+  bool hasPlayer(int clientID) => players.containsKey(clientID);
 
   void updatePlayer(PlayerModel player) {
     assert(player != null, 'cannot add null as player');

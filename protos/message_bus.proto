@@ -23,6 +23,11 @@ message PlayerDeparted {
   uint32 clientID = 1;
 }
 
+message PlayerJoined {
+  uint32 clientID = 1;
+  uint32 playerIndex = 2;
+}
+
 // Responses
 
 message LevelInfo {

@@ -19,6 +19,8 @@ const logDebug = debug('game:debug')
 export class ServerGame extends EventEmitter {
   readonly clientIDs: number[] = []
   readonly departedClientIDs: number[] = []
+  readonly playerIndexes: Map<number, number> = new Map()
+
   constructor(readonly gameID: number, readonly nplayers: number) {
     super()
   }
@@ -34,7 +36,9 @@ export class ServerGame extends EventEmitter {
   addClient(clientID: number): number {
     assert(!this.full, 'cannot add players to a full game')
     this.clientIDs.push(clientID)
-    return this.clientIDs.length - 1
+    const playerIndex = this.clientIDs.length - 1
+    this.playerIndexes.set(clientID, playerIndex)
+    return playerIndex
   }
 
   departClient(clientID: number) {
