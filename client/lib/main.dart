@@ -109,7 +109,8 @@ class UniverseWidget extends StatelessWidget {
           return _menuWidget(context, serverInfo.levels);
         }
         if (snapshot.data.kind == UserStates.GameCreated) {
-          return GameCreatedWidget(game: snapshot.data.game);
+          return GameCreatedWidget(
+              universe: universe, game: snapshot.data.game);
         }
         if (snapshot.data.kind == UserStates.GameStarted) {
           return GameRunningWidget(

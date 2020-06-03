@@ -44,7 +44,7 @@ class StatsState extends Equatable {
   static StatsState initial(int totalPlayers) {
     return StatsState(
       health: GameProps.playerTotalHealth,
-      playersAlive: totalPlayers,
+      playersAlive: 1,
       totalPlayers: totalPlayers,
       percentReadyToShoot: 100,
       percentReadyToThrust: 100,

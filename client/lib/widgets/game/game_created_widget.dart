@@ -1,11 +1,15 @@
 import 'package:batufo/engine/game_widget.dart';
 import 'package:batufo/game/client_game.dart';
+import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/hud/hud_widget.dart';
 import 'package:flutter/material.dart';
 
 class GameCreatedWidget extends StatelessWidget {
   final ClientGame game;
+  final Universe universe;
 
-  const GameCreatedWidget({@required this.game}) : super();
+  const GameCreatedWidget({@required this.universe, @required this.game})
+      : super();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,8 @@ class GameCreatedWidget extends StatelessWidget {
             ),
           ),
         ),
-      )
+      ),
+      HudWidget(universe: universe),
     ]);
   }
 }

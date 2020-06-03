@@ -118,6 +118,7 @@ class ClientGame extends Game {
     return ClientGameState(
       clientID: clientID,
       bullets: [],
+      totalPlayers: arena.players.length,
       players: {clientID: hero},
     );
   }

@@ -8,15 +8,21 @@ final _log = Log<ClientGameState>();
 
 class ClientGameState {
   final int clientID;
+  final int totalPlayers;
   final Map<int, PlayerModel> players;
   final List<BulletModel> bullets;
 
   bool synced = false;
 
-  ClientGameState({@required this.clientID, this.players, this.bullets});
+  ClientGameState({
+    @required this.totalPlayers,
+    @required this.clientID,
+    @required this.players,
+    @required this.bullets,
+  });
 
   PlayerModel get hero => players[clientID];
-  int get totalPlayers => players.length;
+  int get remainingPlayers => players.length;
   int get playersAlive => players.values.where(PlayerStatus.isAlive).length;
 
   void updatePlayer(PlayerModel player) {
@@ -46,6 +52,7 @@ class ClientGameState {
 
     final clonedBullets = bullets.map((x) => x.clone()).toList();
     return ClientGameState(
+      totalPlayers: totalPlayers,
       clientID: clientID,
       players: clonedPlayers,
       bullets: clonedBullets,
