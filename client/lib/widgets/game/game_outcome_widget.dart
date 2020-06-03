@@ -2,6 +2,7 @@ import 'package:batufo/engine/game_widget.dart';
 import 'package:batufo/game/client_game.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/hud/hud_widget.dart';
 import 'package:batufo/widgets/hud/score_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,8 @@ class GameOutcomeWidget extends StatelessWidget {
       Container(
         color: Colors.black.withAlpha(0xAA),
         child: Center(child: _overlay(context)),
-      )
+      ),
+      HudWidget(universe: universe)
     ]);
   }
 
