@@ -8,6 +8,9 @@ const logDebug = debug('game-socket:debug')
 const logError = debug('game-socket:error')
 const logTrace = debug('game-socket:trace')
 
+const LEAVE_AFTER_INCOMMUNICADO = 15e3
+const CHECK_INCOMMUNICADOS_INTERVAL = 5e3
+
 function getJoiningPlayer(clientID: number, playerIndex: number) {
   const joiningPlayer = new PlayerJoined()
   joiningPlayer.setClientid(clientID)
@@ -17,16 +20,27 @@ function getJoiningPlayer(clientID: number, playerIndex: number) {
 
 class GameSocket {
   private readonly _gameID: string
-  constructor(readonly io: Server, readonly game: ServerGame) {
+  private readonly _incommunicadosTimeout: NodeJS.Timeout
+  constructor(
+    readonly io: Server,
+    readonly game: ServerGame,
+    readonly leaveAfterIncommunicado = LEAVE_AFTER_INCOMMUNICADO,
+    checkIncommunicadosInterval = CHECK_INCOMMUNICADOS_INTERVAL
+  ) {
     this._gameID = `${game.gameID}`
+    this._incommunicadosTimeout = setInterval(
+      this._departIncommunicados,
+      checkIncommunicadosInterval
+    )
   }
-
   addSocket(socket: socketio.Socket, clientID: number, playerIndex: number) {
     this._tellClientsPlayerJoined(clientID, playerIndex)
+    this.game.clientCommunicated(clientID)
 
     socket
       .on('game:client-update', (data: Buffer) => {
         logTrace('got playing client message -> broadcasting')
+        this.game.clientCommunicated(clientID)
         try {
           const array = Uint8Array.from(data)
           socket.broadcast
@@ -38,6 +52,7 @@ class GameSocket {
       })
       .on('game:spawned-bullet', (data: Buffer) => {
         logTrace('got spawned bullet message -> broadcasting')
+        this.game.clientCommunicated(clientID)
         try {
           const array = Uint8Array.from(data)
           socket.broadcast
@@ -59,6 +74,10 @@ class GameSocket {
             'game:player-departed',
             playerDeparted.serializeBinary().toString()
           )
+      })
+      .on('client:ping', (_data: Buffer) => {
+        logTrace('client [%d] ', clientID)
+        this.game.clientCommunicated(clientID)
       })
       .join(this._gameID, (err: Error) => {
         if (err) logError(err)
@@ -95,7 +114,7 @@ class GameSocket {
 
   _tellClientsIfGameIsReady() {
     logTrace(
-      `game has ${this.game.clientIDs.length}/${this.game.nplayers} players`
+      `game has ${this.game.clientIDs.size}/${this.game.nplayers} players`
     )
     if (!this.game.full) return
     logDebug('game is full, sending game:started')
@@ -104,6 +123,40 @@ class GameSocket {
     } catch (err) {
       logError('game:started', err)
     }
+  }
+
+  _departIncommunicados = () => {
+    const now = Date.now()
+    const clientIDs: Set<number> = this.game.activeClients
+    for (const clientID of clientIDs) {
+      if (
+        now - this.game.lastClientCommunication(clientID) >
+        this.leaveAfterIncommunicado
+      ) {
+        this._departIncommunicado(clientID)
+      }
+    }
+  }
+
+  _departIncommunicado(clientID: number) {
+    logDebug(`departing incommunicado ${clientID}`)
+    try {
+      this.game.departClient(clientID)
+      const playerDeparted = new PlayerDeparted()
+      playerDeparted.setClientid(clientID)
+      this.io.sockets
+        .in(this._gameID)
+        .emit(
+          'game:player-departed',
+          playerDeparted.serializeBinary().toString()
+        )
+    } catch (err) {
+      logError('game:started', err)
+    }
+  }
+
+  dispose() {
+    clearInterval(this._incommunicadosTimeout)
   }
 }
 
@@ -126,6 +179,7 @@ export class GameSockets {
 
       game.once('disposed', (gameID) => {
         logDebug('removing socket for %d', gameID)
+        this.gameSockets.get(gameID)?.dispose()
         this.gameSockets.delete(gameID)
       })
     }

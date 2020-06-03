@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
@@ -26,6 +28,8 @@ List<int> listFromData(dynamic data) {
   return (data as String).split(',').map(int.parse).toList();
 }
 
+const PING_TIMEOUT = Duration(seconds: 5);
+
 class GameStarted {
   final Client client;
   final PlayerModel player;
@@ -39,14 +43,19 @@ class Client {
   final String serverHost;
   final Universe universe;
   final io.Socket _socket;
+  final Duration pingTimeout;
+  Timer _pingTimer;
 
   Client({
     @required this.serverHost,
     @required this.universe,
+    this.pingTimeout = PING_TIMEOUT,
   }) : _socket = io.io(serverHost, <String, dynamic>{
           'transports': ['websocket'],
           'autoConnect': false,
-        });
+        }) {
+    _pingTimer = Timer.periodic(pingTimeout, _sendPing);
+  }
 
   void _ensureMainSocketConnected(Function onConnected) {
     if (_socket.connected) {
@@ -67,6 +76,13 @@ class Client {
       ..on('game:player-joined', _onPlayerJoinedMessage)
       ..on('game:player-departed', _onPlayerDepartedMessage)
       ..connect();
+  }
+
+  void _sendPing(Timer timer) {
+    if (_socket == null || !_socket.connected || !universe.involvedInGame) {
+      return;
+    }
+    _socket.emit('client:ping');
   }
 
   void requestInfo() {
@@ -189,6 +205,7 @@ class Client {
 
   void dispose() {
     disconnect();
+    _pingTimer?.cancel();
     _log.info('disposing');
   }
 }

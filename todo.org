@@ -7,7 +7,7 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Client Side
 
-** Exit Game Prematurely
+** DONE Exit Game Prematurely
 
 - [X] provide exit game button
 - [X] pressing it takes us back to select level screen
@@ -18,14 +18,9 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 
 
-*** Waiting on Players
+*** DONE Waiting on Players
 
 - [X] communicate to server that we left and then close socket connection for game
-
-*** Disconnected
-
-When we don't hear from a player for a while we need to declare it dead, i.e. send a fake update to all other players with health set to 0.
-Otherwise that player becomes invincible as it never reports its health status which the other players rely on to show him as dead.
 
 ** Game Cycle
 
@@ -42,12 +37,18 @@ If we die we lost.
 - [X] recycle game + related rooms on server for ended games
 - [X] if player leaves server sends ~'game:player-departed'~ to the client
 - [X] client removes that player from the list of players
-- [ ] as a bonus server could detect games from which all clients disconnected and/or haven't gotten any updates in a long time and recycle those regularly
-- [ ] additionally clients could send a leave when app is about to be closed
+- [X] as another measure clients who we haven't heard of in a long time (i.e. 1 min) we need to /leave/ them
+- [X] as a bonus server could detect games from which all clients disconnected and/or haven't gotten any updates in a long time and recycle those regularly
 
+
+*** DONE Disconnected
+
+When we don't hear from a player for a while we need to declare it dead, i.e. send a fake update to all other players with health set to 0.
+Otherwise that player becomes invincible as it never reports its health status which the other players rely on to show him as dead.
 
 ** Issues
 
+- [ ] when player leaves while others are waiting, that is not accounted for
 - [ ] scroll levels so I can get to all of them
 - [ ] only score if *my* bullet killed a player
 

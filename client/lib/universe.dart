@@ -285,6 +285,9 @@ class Universe {
     _addServerStats(stats);
   }
 
+  bool get involvedInGame =>
+      _userState$.value?.game != null && !_userState$.value.game.disposed;
+
   void _disposeCurrentGame() {
     client.requestLeave();
     _userState$.value?.game?.dispose();

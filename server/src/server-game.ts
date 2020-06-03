@@ -17,33 +17,60 @@ function generateID() {
 const logDebug = debug('game:debug')
 
 export class ServerGame extends EventEmitter {
-  readonly clientIDs: number[] = []
-  readonly departedClientIDs: number[] = []
+  readonly clientIDs: Set<number> = new Set()
+  readonly departedClientIDs: Set<number> = new Set()
   readonly playerIndexes: Map<number, number> = new Map()
+  private readonly _communications: Map<number, number> = new Map()
 
   constructor(readonly gameID: number, readonly nplayers: number) {
     super()
   }
 
   get full() {
-    return this.clientIDs.length === this.nplayers
+    return this.clientIDs.size === this.nplayers
   }
 
   get finished() {
-    return this.departedClientIDs.length === this.nplayers
+    return this.departedClientIDs.size === this.nplayers
+  }
+
+  get activeClients() {
+    const set: Set<number> = new Set()
+    for (const clientID of this.clientIDs) {
+      if (!this.departedClientIDs.has(clientID)) set.add(clientID)
+    }
+    return set
   }
 
   addClient(clientID: number): number {
     assert(!this.full, 'cannot add players to a full game')
-    this.clientIDs.push(clientID)
-    const playerIndex = this.clientIDs.length - 1
+    this.clientIDs.add(clientID)
+    const playerIndex = this.clientIDs.size - 1
     this.playerIndexes.set(clientID, playerIndex)
     return playerIndex
   }
 
   departClient(clientID: number) {
-    this.departedClientIDs.push(clientID)
+    this.departedClientIDs.add(clientID)
     this._disposeIfFinished()
+  }
+
+  clientCommunicated(clientID: number) {
+    const now = Date.now()
+    this._communications.set(clientID, now)
+  }
+
+  lastClientCommunication(clientID: number) {
+    const timestamp = this._communications.get(clientID)
+    return timestamp == null ? 0 : timestamp
+  }
+
+  lastOverallCommunication() {
+    let max = 0
+    for (const timestamp of this._communications.values()) {
+      max = Math.max(max, timestamp)
+    }
+    return max
   }
 
   _disposeIfFinished() {
@@ -108,7 +135,7 @@ export class ServerGames {
     for (const [k, map] of this._gamesByLevel) {
       runningLevelsCounts.set(k, map.size)
       for (const game of map.values()) {
-        const players = game.clientIDs.length
+        const players = game.clientIDs.size
         totalPlayers += players
         if (game.full) continue
         waitingForLevelsCounts.set(k, players)
