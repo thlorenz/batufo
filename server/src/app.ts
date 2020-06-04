@@ -53,8 +53,6 @@ io.on('connection', (socket: socketio.Socket) => {
       }
     })
     .on('play:request', (data) => {
-      // TODO: should we check here if the socket didn't properly /leave/ another
-      // game? Should be simple enough by walking through gameSockets.
       try {
         const req = PlayRequest.deserializeBinary(data)
         logInfo('got play request for level [%s]', req.getLevelname())

@@ -22,6 +22,8 @@ export class ServerGame extends EventEmitter {
   readonly availablePlayerIndexes: Set<number> = new Set()
   private readonly _communications: Map<number, number> = new Map()
 
+  started: boolean = false
+
   constructor(readonly gameID: number, readonly nplayers: number) {
     super()
     for (let i = 0; i < nplayers; i++) this.availablePlayerIndexes.add(i)
@@ -114,7 +116,7 @@ export class ServerGames {
     const gamesForLevel = this._gamesByLevel.get(level.name)
     assert(gamesForLevel != null, `games for level ${level} don't exist`)
     for (const game of gamesForLevel.values()) {
-      if (!game.full && !game.finished) return game
+      if (!game.full && !game.finished && !game.started) return game
     }
     const gameID = generateID()
     const game = new ServerGame(gameID, level.nplayers)
@@ -141,7 +143,7 @@ export class ServerGames {
       for (const game of map.values()) {
         const players = game.clientIDs.size
         totalPlayers += players
-        if (game.full) continue
+        if (game.full || game.started) continue
         waitingForLevelsCounts.set(k, players)
       }
     }

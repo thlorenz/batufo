@@ -140,6 +140,7 @@ class GameSocket {
     )
     if (!this.game.full) return
     logDebug('game is full, sending game:started')
+    this.game.started = true
     try {
       this.io.sockets.in(this._gameID).emit('game:started')
     } catch (err) {
