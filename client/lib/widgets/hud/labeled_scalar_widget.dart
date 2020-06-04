@@ -14,7 +14,7 @@ class LabeledScalarWidget extends StatelessWidget {
       : super();
 
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 0.1;
+    final width = MediaQuery.of(context).size.width * screenWidthPercent;
     return Container(
         width: width,
         child: Column(

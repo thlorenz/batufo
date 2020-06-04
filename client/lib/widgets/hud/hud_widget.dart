@@ -32,7 +32,10 @@ class HudWidget extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  ScoreWidget(score: stats.score),
+                  ScoreWidget(
+                    score: stats.score,
+                    screenWidthPercent: 0.1,
+                  ),
                   HealthWidget(health: stats.health),
                   Column(
                     mainAxisSize: MainAxisSize.min,
