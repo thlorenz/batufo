@@ -11,8 +11,9 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 - [X] when player leaves while others are waiting, that is not accounted for
 - [X] stop recycling started games
-- [ ] scroll levels so I can get to all of them
+- [X] scroll levels so I can get to all of them
 - [ ] only score if *my* bullet killed a player
+- [ ] scoring is still not right, sometimes we don't score when we hit a player and it seems like the player htat got hit scored instead
 
 ** Pickups
 

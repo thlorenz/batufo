@@ -17,7 +17,7 @@ class BulletsSpawner {
       tilePosition: Physics.scaleAlongAngle(
         player.tilePosition,
         player.angle,
-        playerSize * 1.0,
+        playerSize * 0.6,
       ),
       velocity: Physics.increaseVelocity(
         player.velocity,

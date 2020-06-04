@@ -16,6 +16,7 @@ final _log = Log<GameController>();
 class GameController {
   final BulletsSpawner _bulletsSpawner;
   final void Function(int score) onScored;
+  final int clientID;
   PlayerController _playerController;
   BulletsController _bulletsController;
   final ClientGameState _gameState;
@@ -26,6 +27,7 @@ class GameController {
     this._arena,
     this._gameState,
     this.onScored,
+    this.clientID,
   ) : _bulletsSpawner = BulletsSpawner(
           bulletForce: GameProps.bulletForce,
           playerSize: GameProps.playerSizeFactor * _arena.tileSize,

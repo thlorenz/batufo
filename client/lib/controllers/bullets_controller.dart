@@ -40,6 +40,8 @@ class BulletsController {
             _handleCollision(bullet, previousPosition);
             break;
           case BulletTargets.Player:
+            // We cannot be hit by our own bullets
+            if (target.player.id == bullet.clientID) break;
             _handleCollision(bullet, previousPosition);
             onPlayerHitByBullet(target.player);
             break;

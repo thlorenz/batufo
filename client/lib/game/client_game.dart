@@ -95,6 +95,7 @@ class ClientGame extends Game {
       arena,
       _heroOnlyGameState(playerIndex),
       onScored,
+      clientID,
     );
   }
 
