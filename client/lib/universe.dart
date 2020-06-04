@@ -267,22 +267,26 @@ class Universe {
       GameProps.playerTotalHealth,
     );
     game.updatePlayers(playerModel);
-
-    final current = _statsState$.value;
-    assert(current != null, 'should have some stats by now');
-    final stats = current.copyWith(playersAlive: game.gameState.playersAlive);
-    _addStatsState(stats);
+    _refreshAlivePlayers(game);
   }
 
   void receivedPlayerDeparted(int clientID) {
     final game = _userState$.value.game;
     if (game == null) return;
     game.removePlayer(clientID);
+    _refreshAlivePlayers(game);
   }
 
   void receivedServerStatsUpdate(ServerStatsUpdate update) {
     final stats = ServerStats.fromServerStatsUpdate(update);
     _addServerStats(stats);
+  }
+
+  void _refreshAlivePlayers(ClientGame game) {
+    final current = _statsState$.value;
+    assert(current != null, 'should have some stats by now');
+    final stats = current.copyWith(playersAlive: game.gameState.playersAlive);
+    _addStatsState(stats);
   }
 
   bool get involvedInGame =>

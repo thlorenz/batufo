@@ -18,12 +18,13 @@ const logDebug = debug('game:debug')
 
 export class ServerGame extends EventEmitter {
   readonly clientIDs: Set<number> = new Set()
-  readonly departedClientIDs: Set<number> = new Set()
   readonly playerIndexes: Map<number, number> = new Map()
+  readonly availablePlayerIndexes: Set<number> = new Set()
   private readonly _communications: Map<number, number> = new Map()
 
   constructor(readonly gameID: number, readonly nplayers: number) {
     super()
+    for (let i = 0; i < nplayers; i++) this.availablePlayerIndexes.add(i)
   }
 
   get full() {
@@ -31,27 +32,30 @@ export class ServerGame extends EventEmitter {
   }
 
   get finished() {
-    return this.departedClientIDs.size === this.nplayers
+    return this.clientIDs.size === 0
   }
 
-  get activeClients() {
-    const set: Set<number> = new Set()
-    for (const clientID of this.clientIDs) {
-      if (!this.departedClientIDs.has(clientID)) set.add(clientID)
-    }
-    return set
+  _getNextPlayerIndex() {
+    const val = this.availablePlayerIndexes.values().next().value
+    this.availablePlayerIndexes.delete(val)
+    return val
   }
 
   addClient(clientID: number): number {
     assert(!this.full, 'cannot add players to a full game')
     this.clientIDs.add(clientID)
-    const playerIndex = this.clientIDs.size - 1
+    const playerIndex = this._getNextPlayerIndex()
+    assert(playerIndex != null, 'should still have player index')
     this.playerIndexes.set(clientID, playerIndex)
     return playerIndex
   }
 
   departClient(clientID: number) {
-    this.departedClientIDs.add(clientID)
+    const playerIndex = this.playerIndexes.get(clientID)
+    assert(playerIndex != null, 'departing client should have a player index')
+    this.clientIDs.delete(clientID)
+    this.playerIndexes.delete(clientID)
+    this.availablePlayerIndexes.add(playerIndex)
     this._disposeIfFinished()
   }
 
