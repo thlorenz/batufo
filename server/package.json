@@ -4,8 +4,9 @@
   "description": "Socket.io server for batufo game.",
   "main": "app.js",
   "scripts": {
-    "build": "tsc -b",
-    "watch": "tsc -b --watch"
+    "build": "tsc && cp -R ./src/generated ./dist/generated",
+    "watch": "tsc --watch",
+    "start": "DEBUG='app|gam*:debug|info|error' node ./dist/app.js"
   },
   "license": "MIT",
   "private": true,
@@ -20,6 +21,7 @@
     "@types/google-protobuf": "^3.7.2",
     "@types/socket.io": "^2.1.4",
     "@types/socket.io-client": "^1.4.32",
-    "ts-protoc-gen": "^0.12.0"
+    "ts-protoc-gen": "^0.12.0",
+    "typescript": "^3.9.3"
   }
 }
