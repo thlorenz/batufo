@@ -1,6 +1,7 @@
 import { strict as assert } from 'assert'
 import largeLevel from './levels/large'
 import simpleLevel from './levels/simple'
+import crowdedLevel from './levels/crowded'
 import singlePlayerLevel from './levels/single-player'
 import { Tilemap } from './tilemap'
 import { Level } from './level'
@@ -16,6 +17,7 @@ export class Levels {
 export const levels: Map<string, Level> = new Map([
   [singlePlayerLevel.name, singlePlayerLevel],
   [simpleLevel.name, simpleLevel],
+  [crowdedLevel.name, crowdedLevel],
   [largeLevel.name, largeLevel],
 ])
 
