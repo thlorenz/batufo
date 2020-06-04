@@ -1,6 +1,7 @@
 import 'package:batufo/rpc/server_stats.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/game/level_widget.dart';
 import 'package:flutter/material.dart';
 
 class TotalStatsWidget extends StatelessWidget {
@@ -29,6 +30,7 @@ class TotalStatsWidget extends StatelessWidget {
     );
     return Container(
       color: Color(0x66000000),
+      height: 40,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -57,54 +59,34 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final levelBoxes =
-        levels.map((LevelInfo level) => _levelBox(context, level)).toList();
-    return Stack(
+    final levelBoxes = levels.map(_levelBox).toList();
+    return Column(
       children: [
         TotalStatsWidget(
             appTitle: universe.appTitle,
             totalGames: serverStats.totalGames,
             totalPlayers: serverStats.totalPlayers),
-        Container(
-          padding: EdgeInsets.only(top: 50.0),
-          child: Wrap(children: levelBoxes),
+        Expanded(
+          child: Container(
+            child: ListView(
+              children: levelBoxes,
+            ),
+          ),
         ),
       ],
     );
   }
 
-  Widget _levelBox(BuildContext context, LevelInfo level) {
-    final waiting = serverStats.waitingForLevesCounts[level.name] ?? 0;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: RaisedButton(
-          onPressed: () {
-            _onLevelSelected(level.name);
-          },
-          child: Column(
-            children: [
-              Text(level.name, style: TextStyle(fontSize: 18)),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-              ),
-              Text('${level.nplayers}', style: TextStyle(fontSize: 28)),
-              Text('🚀', style: TextStyle(fontSize: 28)),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-              ),
-              Text('waiting $waiting ', style: TextStyle(fontSize: 14)),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-              ),
-            ],
-          ),
-        ),
-      ),
+  Widget _levelBox(LevelInfo level) {
+    final playersWaiting = serverStats.waitingForLevesCounts[level.name] ?? 0;
+    return LevelWidget(
+      level: level,
+      onLevelSelected: _onLevelSelected,
+      playersWaiting: playersWaiting,
     );
   }
 
-  void _onLevelSelected([String level = 'simple']) {
+  void _onLevelSelected(String level) {
     universe.userSelectedLevel(level);
   }
 }
