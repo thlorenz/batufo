@@ -6,7 +6,12 @@
   "scripts": {
     "build": "tsc && cp -R ./src/generated ./dist/generated",
     "watch": "tsc --watch",
-    "start": "DEBUG='app|gam*:debug|info|error' node ./dist/app.js"
+    "start": "DEBUG_COLORS=1 DEBUG='app|gam*:debug|info|error' node ./dist/app.js",
+    "gc:init": "gcloud config set project batufo-game",
+    "gc:deploy": "gcloud app deploy",
+    "gc:console": "gcloud app open-console",
+    "gc:log": "gcloud app logs read",
+    "gc:tail": "gcloud app logs tail"
   },
   "license": "MIT",
   "private": true,
@@ -14,6 +19,7 @@
     "debug": "^4.1.1",
     "google-protobuf": "^3.12.0",
     "socket.io": "^2.3.0",
+    "supports-color": "^7.1.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
