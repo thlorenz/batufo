@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 // alternative ⏏️
 // return Container(
@@ -16,13 +17,16 @@ class ExitGameWidget extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      child: IconButton(
-        color: Colors.blueGrey,
-        icon: Icon(Icons.exit_to_app),
-        iconSize: height,
-        padding: const EdgeInsets.all(0.0),
-        alignment: Alignment.topCenter,
-        onPressed: onExit,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: onExit,
+          child: Icon(
+            Icons.exit_to_app,
+            size: height,
+            color: Colors.blueGrey,
+          ),
+        ),
       ),
     );
   }
