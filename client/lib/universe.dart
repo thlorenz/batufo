@@ -13,6 +13,7 @@ import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart';
 import 'package:batufo/rpc/server_stats.dart';
+import 'package:batufo/setup/config.dart';
 import 'package:batufo/states/connection_state.dart';
 import 'package:batufo/states/stats_state.dart';
 import 'package:batufo/states/user_state.dart';
@@ -22,6 +23,7 @@ import 'package:rxdart/rxdart.dart';
 final _log = Log<Universe>();
 
 class Universe {
+  final PlatformType platform;
   final String appTitle;
   final Duration clientPlayerUpdateThrottle;
   final Duration statsThrottle;
@@ -38,6 +40,7 @@ class Universe {
   String _currentLevel;
 
   Universe._({
+    @required this.platform,
     @required String serverHost,
     @required this.appTitle,
     @required this.inputProcessor,
@@ -61,6 +64,7 @@ class Universe {
 
   static Universe _instance;
   static Universe create({
+    @required PlatformType platform,
     @required String appTitle,
     @required String serverHost,
     Duration clientPlayerUpdateThrottle = const Duration(milliseconds: 100),
@@ -78,6 +82,7 @@ class Universe {
       inputProcessor: InputProcessor.instance,
       clientPlayerUpdateThrottle: clientPlayerUpdateThrottle,
       statsThrottle: statsThrottle,
+      platform: platform,
     );
   }
 
