@@ -54,15 +54,12 @@ Another way is to make bullet packets appear randomly, i.e. not only the ones de
 
 ** Fixes
 
-*** Focus on Exit Button Issue
+*** DONE Focus on Exit Button Issue
 
 The exit button gets focused when entering a game and activates when the space bar is hit. We need to find a way to prevent that.
 This seems to only happen when using arrow keys. It seems we need to do either of the two below points and/or eat up the arrow keys or somehow prevent the hud from accepting keyboard input.
 
-- [ ] see if a Flutter item can be made unfocusable, or not a Tab target
-- [ ] if above does not work try to force the focus on another item when the player enters
-- [ ] additionally try to /eat/ the key strokes sent to the game
-- [ ] and/or prevent hud from accepting inputs
+Fixed by replacing ~IconButton~ with a ~GestureDetector~ with an ~Icon~. The ~GestureDetector~ doesn't receive focus via the keyboard.
 
 *** Ghost in Single Player Game
 

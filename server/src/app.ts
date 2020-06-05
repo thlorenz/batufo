@@ -28,7 +28,7 @@ info.setLevelsList(
 )
 const app = http
   .createServer(onRequest)
-  .on('listening', () => logInfo('listening on http://locahost:%d', PORT))
+  .on('listening', () => logInfo('listening on port %d', PORT))
 
 const io = socketio(app)
 const statsUpdates = new StatsUpdates(io, games)
