@@ -4,21 +4,27 @@
 
 Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #TypeScript
 
+* Server Side
+
+** Device Stats
+
+It'd be nice to collect stats about which device/OS players are using when playing.
+
+- [ ] client needs a reliable way to send device via an enum
+- [ ] OSX, Android, iOS and Linux use ~Platform~
+- [ ] web is assumed when platform query fails
+- [ ] client send that enum as part of request info attempt
+- [ ] server maintains map of currently active devices and logs that regularly whenever totals are calculated
+- [ ] server keeps a life time map aggregating number of games entered by device
 
 * Client Side
-
-** Issues
-
-- [X] when player leaves while others are waiting, that is not accounted for
-- [X] stop recycling started games
-- [X] scroll levels so I can get to all of them
-- [ ] only score if *my* bullet killed a player
-- [ ] scoring is still not right, sometimes we don't score when we hit a player and it seems like the player htat got hit scored instead
 
 ** Pickups
 
 We wanna add some pickups back in. Most importantly are health packets, but some diamonds to up the score would be nice as well.
 
+- [ ] limit amount of bullets which deplete whe we shoot (show above health bar)
+- [ ] add bullet pickups to level
 - [ ] add health packets to level
 - [ ] detect colission with health packets
 - [ ] remove health packet on colission
@@ -28,8 +34,36 @@ We wanna add some pickups back in. Most importantly are health packets, but some
 - [ ] increase score on colission
 - [ ] show score animation as was present in single player version
 
+** Make Things Bigger
+
+Players reported things appearing too small at least on desktop.
+After going to 150% felt more comfortable. Resolution was ~1280*960~.
+
+- [ ] determine good tile size for desktop
+- [ ] keep server tile size constant since that gets sent to all players
+- [ ] however adapt rendering on client to device
+- [ ] most likely for mobile keep things the same
+- [ ] another idea is to determine size from window dimensions
+- [ ] so instead of showing more of the arena we show things bigger
+
+** Running Out of Bullets
+
+In order to not get stuck in the game we need a way to repleat bullets.
+One way would be to just refill everyone once all players have used up all their bullets.
+Another way is to make bullet packets appear randomly, i.e. not only the ones defined in Arena.
 
 ** Fixes
+
+*** Focus on Exit Button Issue
+
+The exit button gets focused when entering a game and activates when the space bar is hit. We need to find a way to prevent that.
+This seems to only happen when using arrow keys. It seems we need to do either of the two below points and/or eat up the arrow keys or somehow prevent the hud from accepting keyboard input.
+
+- [ ] see if a Flutter item can be made unfocusable, or not a Tab target
+- [ ] if above does not work try to force the focus on another item when the player enters
+- [ ] additionally try to /eat/ the key strokes sent to the game
+- [ ] and/or prevent hud from accepting inputs
+
 
 *** Bullets Getting Stuck
 
@@ -92,6 +126,14 @@ jspb.BinaryConstants.TWO_TO_64 = 1.8446744073709552E19;
 - [X] fix1: ensuring that we never send a negative angle
 - [X] fix2: ensuring that health is never negative
 
+
+** DONE Issues
+
+- [X] when player leaves while others are waiting, that is not accounted for
+- [X] stop recycling started games
+- [X] scroll levels so I can get to all of them
+- [X] only score if *my* bullet killed a player
+- [X] scoring is still not right, sometimes we don't score when we hit a player and it seems like the player htat got hit scored instead
 
 ** DONE Dead Game Removal
 
@@ -191,15 +233,38 @@ However when we hit someone else we score. We calculate prospected health and if
  
 * WAIT Nice to Have
 
+** WAIT Visual Cues
+
+- [ ] make any player who is almost dying blink
+
+** WAIT Game Features
+
+*** WAIT Different Weapons
+
+- [ ] plant mines (bombs) in path
+- [ ] volleys (shots that spread out) (slow to recharge)
+- [ ] laser beam that reflects of walls (slow to recharge)
+- [ ] possibly switch via back arrow | 's' | draw back
+- [ ] other option is you pick up that weapon and then can use it once (different icons)
+- [ ] if you have no special weapon shoot normal bullets
+
+*** WAIT Shields and Armor
+
+- [ ] pickup one type of shield in order to be protected from bullets
+- [ ] pickup another type of shield to protect from walls
+- [ ] shields last only a certain amount of time
+- [ ] for each type of shield player needs to be rendered slightly diffently and/or something around the player (could be similar to hit debug feature except round)
+- [ ] shield could also be signified via color change to player
+- [ ] empty circle in player center could have color changed
+- [ ] or shield icons can be rendered on top player
+
 ** WAIT Devices and Fairness
 
 Considering that players on Desktop are at an advantage we could try to match up players by device. Obviously this only works/becomes an issue once we have a certain amount of players online.
 
 The [[https://github.com/google/flutter-desktop-embedding/tree/master/plugins/window_size][window size plugin]] could provide a way to enforce a max window size.
 
-** WAIT Visual Cues
-
-- [ ] make any player who is almost dying blink
+This would be fixed if we make things larger on desktop
 
 ** WAIT God View
 
@@ -227,7 +292,7 @@ It would be better to smooth this out by adapting the velocity so that eventuall
 
 Multiple tweaks to enhance playability.
 
-- [ ] assuming we show time to shoot in hud experiment with increasing it in order to avoid players just shooting randomly all over the place
+- [X] assuming we show time to shoot in hud experiment with increasing it in order to avoid players just shooting randomly all over the place
 
 
 * DONE Server Side
