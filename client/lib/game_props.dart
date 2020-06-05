@@ -3,14 +3,14 @@ class GameProps {
   static const gesturePlayerMinThrustDelta = 2.2;
 
   static const keyboardPlayerRotationFactor = 0.004;
-  static const playerThrustForce = 0.05; // Newton
+  static const playerThrustForce = 0.07; // Newton
 
   // TODO(thlorenz): need to take those into account for above
   // thrust force value
   static const playerMass = 4000.0; // kg
   static const playerThrustAcceleration =
       playerThrustForce / playerMass; // m/s2
-  static const playerHitsWallSlowdown = 0.7;
+  static const playerHitsWallSlowdown = 0.3;
   static const playerSizeFactor = 0.75;
   static const playerTotalHealth = 100.0;
 
