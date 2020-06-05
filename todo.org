@@ -64,6 +64,10 @@ This seems to only happen when using arrow keys. It seems we need to do either o
 - [ ] additionally try to /eat/ the key strokes sent to the game
 - [ ] and/or prevent hud from accepting inputs
 
+*** Ghost in Single Player Game
+
+Sometimes two players are in the same spot when we start the single player level.
+Only one player is controlled by us, the other one just sits there and never dies.
 
 *** Bullets Getting Stuck
 
