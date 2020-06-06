@@ -22,7 +22,6 @@ Future<void> mainEntry({
   Log.rootLevel = logLevel;
   Log.loggerFilter = (String s) => !s.contains('socket_io');
 
-  WidgetsFlutterBinding.ensureInitialized();
   await Images.instance.load([
     assets.floorTiles.imagePath,
     assets.player.imagePath,
