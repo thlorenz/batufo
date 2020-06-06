@@ -32,7 +32,7 @@ const app = http
 
 const io = socketio(app)
 const statsUpdates = new StatsUpdates(io, games)
-statsUpdates.start(1000)
+statsUpdates.start(1e3, 30e3)
 
 function onRequest(_req: http.IncomingMessage, res: http.ServerResponse) {
   res.writeHead(404)
@@ -63,8 +63,10 @@ io.on('connection', (socket: socketio.Socket) => {
           // TODO: socket.emit('error:level-not-found') or something similar
           return
         }
+        const platform = req.getPlatform()
         const { game, clientID, arena, playerIndex } = games.addClientToGame(
-          level
+          level,
+          platform
         )
 
         const createdGame = new GameCreated()

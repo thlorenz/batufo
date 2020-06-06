@@ -17,6 +17,7 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart'
         PlayerDeparted,
         PlayerJoined,
         ServerStatsUpdate;
+import 'package:batufo/rpc/generated/message_bus.pbenum.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:flutter/foundation.dart';
@@ -110,7 +111,10 @@ class Client {
       _socket.connected,
       'main socket should have connected when getting info',
     );
-    final playRequest = PlayRequest()..levelName = level;
+    final playRequest = PlayRequest()
+      ..levelName = level
+      ..platform = Platform.values[universe.platform.index];
+
     final buf = playRequest.writeToBuffer();
     _socket
       ..once('game:created', _onGameCreatedMessage)

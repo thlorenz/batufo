@@ -9,6 +9,10 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'message_bus.pbenum.dart';
+
+export 'message_bus.pbenum.dart';
+
 class InfoRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('InfoRequest', createEmptyInstance: create)
     ..hasRequiredFields = false
@@ -33,6 +37,7 @@ class InfoRequest extends $pb.GeneratedMessage {
 class PlayRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PlayRequest', createEmptyInstance: create)
     ..aOS(1, 'levelName', protoName: 'levelName')
+    ..e<Platform>(2, 'platform', $pb.PbFieldType.OE, defaultOrMaker: Platform.MacOS, valueOf: Platform.valueOf, enumValues: Platform.values)
     ..hasRequiredFields = false
   ;
 
@@ -59,6 +64,15 @@ class PlayRequest extends $pb.GeneratedMessage {
   $core.bool hasLevelName() => $_has(0);
   @$pb.TagNumber(1)
   void clearLevelName() => clearField(1);
+
+  @$pb.TagNumber(2)
+  Platform get platform => $_getN(1);
+  @$pb.TagNumber(2)
+  set platform(Platform v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPlatform() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPlatform() => clearField(2);
 }
 
 class InfoResponse extends $pb.GeneratedMessage {

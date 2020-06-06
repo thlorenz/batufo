@@ -3,6 +3,7 @@ import { Arena, levelNames } from './arena'
 import { Level } from './arena/level'
 import { EventEmitter } from 'events'
 import debug from 'debug'
+import { Platforms } from './types'
 
 function generateID() {
   const now = new Date(Date.now())
@@ -20,6 +21,8 @@ export class ServerGame extends EventEmitter {
   readonly clientIDs: Set<number> = new Set()
   readonly playerIndexes: Map<number, number> = new Map()
   readonly availablePlayerIndexes: Set<number> = new Set()
+  readonly platformsByID: Map<number, number> = new Map()
+
   private readonly _communications: Map<number, number> = new Map()
 
   started: boolean = false
@@ -43,12 +46,13 @@ export class ServerGame extends EventEmitter {
     return val
   }
 
-  addClient(clientID: number): number {
+  addClient(clientID: number, platform: number): number {
     assert(!this.full, 'cannot add players to a full game')
     this.clientIDs.add(clientID)
     const playerIndex = this._getNextPlayerIndex()
     assert(playerIndex != null, 'should still have player index')
     this.playerIndexes.set(clientID, playerIndex)
+    this.platformsByID.set(clientID, platform)
     return playerIndex
   }
 
@@ -57,6 +61,7 @@ export class ServerGame extends EventEmitter {
     assert(playerIndex != null, 'departing client should have a player index')
     this.clientIDs.delete(clientID)
     this.playerIndexes.delete(clientID)
+    this.platformsByID.delete(clientID)
     this.availablePlayerIndexes.add(playerIndex)
     this._disposeIfFinished()
   }
@@ -124,10 +129,10 @@ export class ServerGames {
     return game
   }
 
-  addClientToGame(level: Level) {
+  addClientToGame(level: Level, platform: number) {
     const game = this._vacantGame(level)
     const clientID = generateID()
-    const playerIndex = game.addClient(clientID)
+    const playerIndex = game.addClient(clientID, platform)
     const arena = this._arenasByLevel.get(level.name)
     assert(arena != null, `missing arena for level ${level.name}`)
     return { game, clientID, arena, playerIndex }
@@ -153,6 +158,25 @@ export class ServerGames {
       runningLevelsCounts,
       waitingForLevelsCounts,
     }
+  }
+
+  platforms() {
+    if (this._gamesByID.size === 0) return null
+    const sums: number[] = Array(Platforms.length).fill(0)
+    for (const game of this._gamesByID.values()) {
+      for (const platform of game.platformsByID.values()) {
+        sums[platform] = sums[platform] + 1
+      }
+    }
+
+    let msg = ''
+    for (let idx = 0; idx < sums.length; idx++) {
+      const sum = sums[idx]
+      if (sum === 0) continue
+      const label = Platforms[idx]
+      msg += ` ${label}: ${sum}`
+    }
+    return msg
   }
 }
 

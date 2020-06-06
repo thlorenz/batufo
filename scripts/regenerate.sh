@@ -28,4 +28,3 @@ protoc \
     -Iprotos protos/message_bus.proto
 
 rm "${dart_generated_dir}/message_bus.pbjson.dart"
-rm "${dart_generated_dir}/message_bus.pbenum.dart"

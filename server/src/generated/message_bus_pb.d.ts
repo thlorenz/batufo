@@ -23,6 +23,9 @@ export class PlayRequest extends jspb.Message {
   getLevelname(): string;
   setLevelname(value: string): void;
 
+  getPlatform(): PlatformMap[keyof PlatformMap];
+  setPlatform(value: PlatformMap[keyof PlatformMap]): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PlayRequest.AsObject;
   static toObject(includeInstance: boolean, msg: PlayRequest): PlayRequest.AsObject;
@@ -36,6 +39,7 @@ export class PlayRequest extends jspb.Message {
 export namespace PlayRequest {
   export type AsObject = {
     levelname: string,
+    platform: PlatformMap[keyof PlatformMap],
   }
 }
 
@@ -466,4 +470,16 @@ export namespace DoubleFourDecimals {
     value: number,
   }
 }
+
+export interface PlatformMap {
+  MACOS: 0;
+  ANDROID: 1;
+  LINUX: 2;
+  WINDOWS: 3;
+  IOS: 4;
+  FUCHSIA: 5;
+  WEB: 6;
+}
+
+export const Platform: PlatformMap;
 

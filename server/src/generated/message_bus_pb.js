@@ -26,6 +26,7 @@ goog.exportSymbol('proto.PackedFractionalPoint', null, global);
 goog.exportSymbol('proto.PackedPlayerModel', null, global);
 goog.exportSymbol('proto.PackedPoint', null, global);
 goog.exportSymbol('proto.PackedTilePosition', null, global);
+goog.exportSymbol('proto.Platform', null, global);
 goog.exportSymbol('proto.PlayRequest', null, global);
 goog.exportSymbol('proto.PlayerDeparted', null, global);
 goog.exportSymbol('proto.PlayerJoined', null, global);
@@ -541,7 +542,8 @@ proto.PlayRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.PlayRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    levelname: jspb.Message.getFieldWithDefault(msg, 1, "")
+    levelname: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    platform: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -582,6 +584,10 @@ proto.PlayRequest.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setLevelname(value);
       break;
+    case 2:
+      var value = /** @type {!proto.Platform} */ (reader.readEnum());
+      msg.setPlatform(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -618,6 +624,13 @@ proto.PlayRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getPlatform();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      2,
+      f
+    );
+  }
 };
 
 
@@ -636,6 +649,24 @@ proto.PlayRequest.prototype.getLevelname = function() {
  */
 proto.PlayRequest.prototype.setLevelname = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional Platform platform = 2;
+ * @return {!proto.Platform}
+ */
+proto.PlayRequest.prototype.getPlatform = function() {
+  return /** @type {!proto.Platform} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {!proto.Platform} value
+ * @return {!proto.PlayRequest} returns this
+ */
+proto.PlayRequest.prototype.setPlatform = function(value) {
+  return jspb.Message.setProto3EnumField(this, 2, value);
 };
 
 
@@ -3661,5 +3692,18 @@ proto.DoubleFourDecimals.prototype.setValue = function(value) {
   return jspb.Message.setProto3IntField(this, 1, value);
 };
 
+
+/**
+ * @enum {number}
+ */
+proto.Platform = {
+  MACOS: 0,
+  ANDROID: 1,
+  LINUX: 2,
+  WINDOWS: 3,
+  IOS: 4,
+  FUCHSIA: 5,
+  WEB: 6
+};
 
 goog.object.extend(exports, proto);

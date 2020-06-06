@@ -7,17 +7,24 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 * Server Side
 
 ** Device Stats
+:LOGBOOK:
+CLOCK: [2020-06-05 Fri 23:05]
+:END:
 
 It'd be nice to collect stats about which device/OS players are using when playing.
 
-- [ ] client needs a reliable way to send device via an enum
-- [ ] OSX, Android, iOS and Linux use ~Platform~
-- [ ] web is assumed when platform query fails
-- [ ] client send that enum as part of request info attempt
-- [ ] server maintains map of currently active devices and logs that regularly whenever totals are calculated
-- [ ] server keeps a life time map aggregating number of games entered by device
+- [X] client needs a reliable way to send device via an enum
+- [X] OSX, Android, iOS and Linux use ~Platform~
+- [X] web is assumed when platform query fails
+- [X] client send that enum as part of request info attempt
+- [X] server maintains map of currently active devices and logs that regularly whenever totals are calculated
 
 * Client Side
+
+** Experience
+
+*** Background with Stars
+*** Sound Effects
 
 ** Pickups
 

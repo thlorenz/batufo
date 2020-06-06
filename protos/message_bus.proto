@@ -1,10 +1,24 @@
 syntax = "proto3";
 
+// What to watch out for when updating message types to not break old clients.
+// https://developers.google.com/protocol-buffers/docs/proto3#updating
+
 // Requests
 message InfoRequest {}
 
+enum Platform {
+  MacOS = 0;
+  Android = 1;
+  Linux = 2;
+  Windows = 3;
+  IOS = 4;
+  Fuchsia = 5;
+  Web = 6;
+}
+
 message PlayRequest {
   string levelName = 1;
+  Platform platform = 2;
 }
 
 message InfoResponse {
