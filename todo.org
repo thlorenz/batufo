@@ -6,10 +6,7 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Server Side
 
-** Device Stats
-:LOGBOOK:
-CLOCK: [2020-06-05 Fri 23:05]
-:END:
+** DONE Device Stats
 
 It'd be nice to collect stats about which device/OS players are using when playing.
 
@@ -24,7 +21,44 @@ It'd be nice to collect stats about which device/OS players are using when playi
 ** Experience
 
 *** Background with Stars
+
+We currently show a Grid underneath the actual game. This should show a universe.
+The simple solution would be just to add a large image there, but that would increase game size.
+A better solution would be to randomly create stars on a black background, possibly also planets, using the planets package we use for level backgrounds.
+
+- [ ] replace grid with black background
+- [ ] resize planets to not take too much space and fit best with the game (around tile size)
+- [ ] add planet images to assets and attribute them
+- [ ] walk through arena and randomly place nothing | one of 5 planet images | small whitish circle for a star
+
 *** Sound Effects
+
+Use the ~audioplayers: ^0.15.1~ package to play sounds on supported platforms.
+It seems to support all platforms now, just that only [[https://github.com/luanpotter/audioplayers#supported-formats][specific formats are available]] for each.
+From [[https://github.com/flame-engine/flame/blob/5a1c9e4949fd949f3fa44be3c43264db43e07c11/CHANGELOG.md#0191][flame changelog entry]] it looks like it supports web now.
+
+- For browser see [[https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API][web audio API]].
+- [[https://www.techotopia.com/index.php/Playing_Audio_on_iOS_8_using_AVAudioPlayer#Supported_Audio_Formats][iOS supported formats]]
+- [[https://stuff.mit.edu/afs/sipb/project/android/docs/guide/appendix/media-formats.html][android supported formats]]
+
+I see folders for all but ~web~, so not sure if it is really supported.
+
+- [ ] ceate a ~Sounds~ class that exposes methods to play game specific sounds, i.e. not just a generic ~play~, but ~playBullet~
+- [ ] pull in thrust sound from [[https://github.com/thlorenz/ufo_2d/tree/first-try/assets/audio][ufo_2d version]]
+- [ ] pull [[https://github.com/thlorenz/ufo_2d/blob/96639f53290823e2bfdc53d270192279980682ce/assets/attribs.txt][attributions]] with it
+- [ ] implement thrust sound
+- [ ] implement shooting sound
+- [ ] implement sound when hitting a wall
+- [ ] implement sound when bullet explodes
+- [ ] add option to turn sound off
+
+
+**** Resources
+
+- [[https://github.com/thlorenz/ufo_2d/blob/96bde3749da1102394b2b8dbec85435e6a9d818b/lib/audio/audio.dart][ufo_2d sounds relying on flame]]
+- [[https://github.com/flame-engine/flame/blob/master/lib/audio_pool.dart][flame: audio_pool.dart]]
+- [[https://github.com/flame-engine/flame/blob/master/lib/flame_audio.dart][flame: audio.dart]]
+
 
 ** Pickups
 
