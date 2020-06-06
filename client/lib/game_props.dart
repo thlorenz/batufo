@@ -26,6 +26,7 @@ class GameProps {
 
   static bool get debugPlayerHitTile => false;
   static bool get debugWallHitTile => false;
+  static bool get debugGrid => false;
 
   static bool get renderBackground => true;
 

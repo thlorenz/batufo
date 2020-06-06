@@ -18,6 +18,11 @@ It'd be nice to collect stats about which device/OS players are using when playi
 
 * Client Side
 
+quick first
+
+- show platform on play request as part of log message
+- deploy new version of game that sends platform and redeploy server
+
 ** Experience
 
 *** Background with Stars
@@ -26,10 +31,12 @@ We currently show a Grid underneath the actual game. This should show a universe
 The simple solution would be just to add a large image there, but that would increase game size.
 A better solution would be to randomly create stars on a black background, possibly also planets, using the planets package we use for level backgrounds.
 
-- [ ] replace grid with black background
+- [X] replace grid with black background
+- [X] generate and render stars
+- [ ] create planets layer
 - [ ] resize planets to not take too much space and fit best with the game (around tile size)
 - [ ] add planet images to assets and attribute them
-- [ ] walk through arena and randomly place nothing | one of 5 planet images | small whitish circle for a star
+- [ ] walk through arena and randomly place nothing | one of 5 planet images in planets layer
 
 *** Sound Effects
 

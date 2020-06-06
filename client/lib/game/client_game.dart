@@ -12,6 +12,7 @@ import 'package:batufo/game/entities/background.dart';
 import 'package:batufo/game/entities/bullets.dart';
 import 'package:batufo/game/entities/grid.dart';
 import 'package:batufo/game/entities/player.dart';
+import 'package:batufo/game/entities/stars.dart';
 import 'package:batufo/game/entities/walls.dart';
 import 'package:batufo/game/inputs/gestures.dart';
 import 'package:batufo/game/inputs/input_processor.dart';
@@ -31,6 +32,7 @@ class ClientGame extends Game {
   final void Function(ClientGameState state) onGameStateUpdated;
   final Background _background;
   final Grid _grid;
+  final Stars _stars;
   final Walls _walls;
   final InputProcessor inputProcessor;
   final int clientID;
@@ -45,7 +47,7 @@ class ClientGame extends Game {
   Bullets _bullets;
 
   Offset _camera;
-  Offset _backgroundCamera;
+  Offset _starsCamera;
   Size _size;
   bool _disposed;
   bool _started;
@@ -75,6 +77,7 @@ class ClientGame extends Game {
         _clientPlayerUpdate = ClientPlayerUpdate(),
         _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(),
         _grid = Grid(arena.tileSize.toDouble()),
+        _stars = Stars(arena.tileSize.toDouble()),
         _background = Background(
           arena.floorTiles,
           arena.tileSize.toDouble(),
@@ -82,7 +85,7 @@ class ClientGame extends Game {
         ),
         _walls = Walls(arena.walls, arena.tileSize.toDouble()),
         _camera = Offset.zero,
-        _backgroundCamera = Offset.zero {
+        _starsCamera = Offset.zero {
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
       tileSize: arena.tileSize.toDouble(),
@@ -186,10 +189,16 @@ class ClientGame extends Game {
   void _renderArena(Canvas canvas) {
     _lowerLeftCanvas(canvas, _size.height);
 
+    _stars.renderBackground(canvas, _size);
+
     canvas.save();
     {
-      canvas.translate(-_backgroundCamera.dx, -_backgroundCamera.dy);
-      _grid.render(canvas, arena.nrows, arena.ncols);
+      canvas.translate(-_starsCamera.dx, -_starsCamera.dy);
+      if (GameProps.debugGrid) {
+        _grid.render(canvas, arena.nrows, arena.ncols);
+      } else {
+        _stars.render(canvas, _size, arena.nrows, arena.ncols);
+      }
     }
     canvas.restore();
 
@@ -217,6 +226,7 @@ class ClientGame extends Game {
 
   void resize(Size size) {
     _size = size;
+    _stars.needsRegenerate = true;
   }
 
   void _cameraFollow(WorldPosition wp, double dt) {
@@ -226,11 +236,11 @@ class ClientGame extends Game {
     final moved = Offset(pos.dx - centerScreen.dx, pos.dy - centerScreen.dy);
 
     final lerp = min(0.0025 * dt, 1.0);
-    const backgroundLerp = 0.8;
+    const backgroundLerp = 0.2;
     final dx = (moved.dx - _camera.dx) * lerp;
     final dy = (moved.dy - _camera.dy) * lerp;
     _camera = _camera.translate(dx, dy);
-    _backgroundCamera = _backgroundCamera.translate(
+    _starsCamera = _starsCamera.translate(
       dx * backgroundLerp,
       dy * backgroundLerp,
     );

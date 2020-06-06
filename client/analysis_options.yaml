@@ -2,7 +2,8 @@ analyzer:
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
-  exclude: [lib/rpc/generated/message_bus.pb.dart]
+  exclude: [lib/rpc/generated/message_bus.pb.dart,
+            lib/rpc/generated/message_bus.pbenum.dart]
 
 # http://dart-lang.github.io/linter/lints/
 linter:
