@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc && cp -R ./src/generated ./dist/generated",
     "watch": "tsc --watch",
-    "start": "DEBUG_COLORS=1 DEBUG='app|gam*:debug|info|error' node ./dist/app.js",
+    "start": "DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' node ./dist/app.js",
+    "start:dev": "DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' ts-node ./src/app.ts",
     "gc:init": "gcloud config set project batufo-game",
     "gc:deploy": "gcloud app deploy",
     "gc:console": "gcloud app open-console",
