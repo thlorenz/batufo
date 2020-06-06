@@ -26,7 +26,7 @@
 
   <p>
     <a href="{latestReleaseURL}" target="_blank">Latest Release</a>
-    <span class="italic">try at your own risk</span>
+    <span class="italic">now with multi player support!</span>
   </p>
   <p>
     <a href="{githubSourceURL}" target="_blank">Source on Github</a>
