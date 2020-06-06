@@ -11,6 +11,7 @@ import 'package:batufo/game/assets/assets.dart';
 import 'package:batufo/game/entities/background.dart';
 import 'package:batufo/game/entities/bullets.dart';
 import 'package:batufo/game/entities/grid.dart';
+import 'package:batufo/game/entities/planets.dart';
 import 'package:batufo/game/entities/player.dart';
 import 'package:batufo/game/entities/stars.dart';
 import 'package:batufo/game/entities/walls.dart';
@@ -33,6 +34,7 @@ class ClientGame extends Game {
   final Background _background;
   final Grid _grid;
   final Stars _stars;
+  final Planets _planets;
   final Walls _walls;
   final InputProcessor inputProcessor;
   final int clientID;
@@ -48,6 +50,7 @@ class ClientGame extends Game {
 
   Offset _camera;
   Offset _starsCamera;
+  Offset _planetsCamera;
   Size _size;
   bool _disposed;
   bool _started;
@@ -77,7 +80,14 @@ class ClientGame extends Game {
         _clientPlayerUpdate = ClientPlayerUpdate(),
         _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(),
         _grid = Grid(arena.tileSize.toDouble()),
-        _stars = Stars(arena.tileSize.toDouble()),
+        _stars = Stars(
+          arena.tileSize.toDouble(),
+          GameProps.backgroundOversizeFactor,
+        ),
+        _planets = Planets(
+          arena.tileSize.toDouble(),
+          GameProps.backgroundOversizeFactor,
+        ),
         _background = Background(
           arena.floorTiles,
           arena.tileSize.toDouble(),
@@ -85,7 +95,8 @@ class ClientGame extends Game {
         ),
         _walls = Walls(arena.walls, arena.tileSize.toDouble()),
         _camera = Offset.zero,
-        _starsCamera = Offset.zero {
+        _starsCamera = Offset.zero,
+        _planetsCamera = Offset.zero {
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
       tileSize: arena.tileSize.toDouble(),
@@ -197,10 +208,19 @@ class ClientGame extends Game {
       if (GameProps.debugGrid) {
         _grid.render(canvas, arena.nrows, arena.ncols);
       } else {
-        _stars.render(canvas, _size, arena.nrows, arena.ncols);
+        _stars.render(canvas, _size);
       }
     }
+
     canvas.restore();
+    if (!GameProps.debugGrid) {
+      canvas.save();
+      {
+        canvas.translate(-_planetsCamera.dx, -_planetsCamera.dy);
+        _planets.render(canvas, _size);
+      }
+      canvas.restore();
+    }
 
     canvas.translate(-_camera.dx, -_camera.dy);
     _background.render(canvas);
@@ -227,6 +247,7 @@ class ClientGame extends Game {
   void resize(Size size) {
     _size = size;
     _stars.needsRegenerate = true;
+    _planets.needsRegenerate = true;
   }
 
   void _cameraFollow(WorldPosition wp, double dt) {
@@ -236,13 +257,18 @@ class ClientGame extends Game {
     final moved = Offset(pos.dx - centerScreen.dx, pos.dy - centerScreen.dy);
 
     final lerp = min(0.0025 * dt, 1.0);
-    const backgroundLerp = 0.2;
+    const starsLerp = 0.2;
+    const planetsLerp = 0.5;
     final dx = (moved.dx - _camera.dx) * lerp;
     final dy = (moved.dy - _camera.dy) * lerp;
     _camera = _camera.translate(dx, dy);
     _starsCamera = _starsCamera.translate(
-      dx * backgroundLerp,
-      dy * backgroundLerp,
+      dx * starsLerp,
+      dy * starsLerp,
+    );
+    _planetsCamera = _planetsCamera.translate(
+      dx * planetsLerp,
+      dy * planetsLerp,
     );
   }
 

@@ -40,6 +40,8 @@ class GameProps {
   static const scoreOnHit = 100;
   static const scoreOnKill = 500;
 
+  static const backgroundOversizeFactor = 4;
+
   static const localhost = 'http://localhost:$PORT';
   static const localbox = 'http://192.168.1.7:$PORT';
   static const cloudbox = 'https://batufo-game.appspot.com';

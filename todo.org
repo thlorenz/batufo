@@ -33,10 +33,13 @@ A better solution would be to randomly create stars on a black background, possi
 
 - [X] replace grid with black background
 - [X] generate and render stars
-- [ ] create planets layer
-- [ ] resize planets to not take too much space and fit best with the game (around tile size)
-- [ ] add planet images to assets and attribute them
-- [ ] walk through arena and randomly place nothing | one of 5 planet images in planets layer
+- [X] create planets layer
+- [X] resize planets to not take too much space and fit best with the game (around tile size)
+- [X] add planet images to assets and attribute them
+- [X] walk through arena and randomly place nothing | one of 5 planet images in planets layer
+- [ ] use two stars layers (one smaller stars, nearer larger stars)
+- [ ] do the same for planets
+
 
 *** Sound Effects
 

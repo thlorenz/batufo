@@ -11,6 +11,7 @@ class Star {
 }
 
 class Stars {
+  final int _oversizeFactor;
   final double _tileSize;
   final double _tileRangeMin;
   final double _tileRangeMax;
@@ -21,7 +22,7 @@ class Stars {
 
   bool needsRegenerate = true;
 
-  Stars(this._tileSize)
+  Stars(this._tileSize, this._oversizeFactor)
       : _starPaint = Paint()
           ..color = Colors.yellowAccent
           ..style = PaintingStyle.fill,
@@ -77,8 +78,11 @@ class Stars {
     );
   }
 
-  void render(Canvas canvas, Size size, int nrows, int ncols) {
-    _initStars(size.width ~/ _tileSize * 4, size.height ~/ _tileSize * 4);
+  void render(Canvas canvas, Size size) {
+    _initStars(
+      size.width ~/ _tileSize * _oversizeFactor,
+      size.height ~/ _tileSize * _oversizeFactor,
+    );
     for (final star in _stars) _renderStar(canvas, star);
   }
 }
