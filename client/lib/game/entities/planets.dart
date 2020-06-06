@@ -26,23 +26,31 @@ final _planetAssets = [
 
 class Planets {
   final int _oversizeFactor;
+  final int density;
   final double _tileSize;
   final double _tileRangeMin;
   final double _tileRangeMax;
+  final double minRadius;
+  final double maxRadius;
   final List<Planet> _planets = [];
   final RandomNumber _rnd;
 
   bool needsRegenerate = true;
 
-  Planets(this._tileSize, this._oversizeFactor)
-      : _rnd = RandomNumber(),
+  Planets(
+    this._tileSize,
+    this._oversizeFactor, {
+    this.minRadius = 0.1,
+    this.maxRadius = 0.4,
+    @required this.density,
+  })  : _rnd = RandomNumber(),
         _tileRangeMin = -(_tileSize / 2),
         _tileRangeMax = _tileSize / 2;
 
   ImageAsset _randomPlanetImage() {
     // purposely generating a number too large most of the time which means we
     // won't draw a planet
-    final idx = _rnd.nextInt(0, 200);
+    final idx = _rnd.nextInt(0, 10000 ~/ density);
     return idx >= _planetAssets.length ? null : _planetAssets[idx];
   }
 
@@ -52,7 +60,7 @@ class Planets {
     final dx = _rnd.nextDouble(_tileRangeMin, _tileRangeMax);
     final dy = _rnd.nextDouble(_tileRangeMin, _tileRangeMax);
     final tp = TilePosition(col, row, dx, dy);
-    final radiusFactor = _rnd.nextDouble(0.1, 0.5);
+    final radiusFactor = _rnd.nextDouble(minRadius, maxRadius);
     final planet = Planet(tp, imageAsset, radiusFactor * imageAsset.width);
     _planets.add(planet);
   }

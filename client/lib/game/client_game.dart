@@ -33,8 +33,11 @@ class ClientGame extends Game {
   final void Function(ClientGameState state) onGameStateUpdated;
   final Background _background;
   final Grid _grid;
-  final Stars _stars;
-  final Planets _planets;
+  final Stars _starsBack;
+  final Stars _starsMiddle;
+  final Stars _starsFront;
+  final Planets _planetsBack;
+  final Planets _planetsFront;
   final Walls _walls;
   final InputProcessor inputProcessor;
   final int clientID;
@@ -49,8 +52,11 @@ class ClientGame extends Game {
   Bullets _bullets;
 
   Offset _camera;
-  Offset _starsCamera;
-  Offset _planetsCamera;
+  Offset _starsBackCamera;
+  Offset _starsMiddleCamera;
+  Offset _starsFrontCamera;
+  Offset _planetsBackCamera;
+  Offset _planetsFrontCamera;
   Size _size;
   bool _disposed;
   bool _started;
@@ -80,13 +86,36 @@ class ClientGame extends Game {
         _clientPlayerUpdate = ClientPlayerUpdate(),
         _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(),
         _grid = Grid(arena.tileSize.toDouble()),
-        _stars = Stars(
+        _starsBack = Stars(
           arena.tileSize.toDouble(),
           GameProps.backgroundOversizeFactor,
+          density: 20,
         ),
-        _planets = Planets(
+        _starsMiddle = Stars(
           arena.tileSize.toDouble(),
           GameProps.backgroundOversizeFactor,
+          minRadius: 0.3,
+          maxRadius: 0.7,
+          density: 8,
+        ),
+        _starsFront = Stars(
+          arena.tileSize.toDouble(),
+          GameProps.backgroundOversizeFactor,
+          minRadius: 0.4,
+          maxRadius: 1.0,
+          density: 3,
+        ),
+        _planetsBack = Planets(
+          arena.tileSize.toDouble(),
+          GameProps.backgroundOversizeFactor,
+          density: 50,
+        ),
+        _planetsFront = Planets(
+          arena.tileSize.toDouble(),
+          GameProps.backgroundOversizeFactor,
+          minRadius: 0.4,
+          maxRadius: 0.8,
+          density: 5,
         ),
         _background = Background(
           arena.floorTiles,
@@ -95,8 +124,11 @@ class ClientGame extends Game {
         ),
         _walls = Walls(arena.walls, arena.tileSize.toDouble()),
         _camera = Offset.zero,
-        _starsCamera = Offset.zero,
-        _planetsCamera = Offset.zero {
+        _starsBackCamera = Offset.zero,
+        _starsMiddleCamera = Offset.zero,
+        _starsFrontCamera = Offset.zero,
+        _planetsBackCamera = Offset.zero,
+        _planetsFrontCamera = Offset.zero {
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
       tileSize: arena.tileSize.toDouble(),
@@ -200,31 +232,63 @@ class ClientGame extends Game {
   void _renderArena(Canvas canvas) {
     _lowerLeftCanvas(canvas, _size.height);
 
-    _stars.renderBackground(canvas, _size);
-
-    canvas.save();
-    {
-      canvas.translate(-_starsCamera.dx, -_starsCamera.dy);
-      if (GameProps.debugGrid) {
-        _grid.render(canvas, arena.nrows, arena.ncols);
-      } else {
-        _stars.render(canvas, _size);
-      }
-    }
-
-    canvas.restore();
-    if (!GameProps.debugGrid) {
-      canvas.save();
-      {
-        canvas.translate(-_planetsCamera.dx, -_planetsCamera.dy);
-        _planets.render(canvas, _size);
-      }
-      canvas.restore();
+    if (GameProps.debugGrid) {
+      _renderGrid(canvas);
+    } else {
+      _renderUniverse(canvas);
     }
 
     canvas.translate(-_camera.dx, -_camera.dy);
     _background.render(canvas);
     _walls.render(canvas);
+  }
+
+  void _renderGrid(Canvas canvas) {
+    canvas.save();
+    {
+      canvas.translate(-_starsBackCamera.dx, -_starsBackCamera.dy);
+      _grid.render(canvas, arena.nrows, arena.ncols);
+    }
+    canvas.restore();
+  }
+
+  void _renderUniverse(Canvas canvas) {
+    _starsBack.renderBackground(canvas, _size);
+
+    canvas.save();
+    {
+      canvas.translate(-_starsBackCamera.dx, -_starsBackCamera.dy);
+      _starsBack.render(canvas, _size);
+    }
+    canvas.restore();
+
+    canvas.save();
+    {
+      canvas.translate(-_starsMiddleCamera.dx, -_starsMiddleCamera.dy);
+      _starsMiddle.render(canvas, _size);
+    }
+    canvas.restore();
+
+    canvas.save();
+    {
+      canvas.translate(-_starsFrontCamera.dx, -_starsFrontCamera.dy);
+      _starsFront.render(canvas, _size);
+    }
+    canvas.restore();
+
+    canvas.save();
+    {
+      canvas.translate(-_planetsBackCamera.dx, -_planetsBackCamera.dy);
+      _planetsBack.render(canvas, _size);
+    }
+    canvas.restore();
+
+    canvas.save();
+    {
+      canvas.translate(-_planetsFrontCamera.dx, -_planetsFrontCamera.dy);
+      _planetsFront.render(canvas, _size);
+    }
+    canvas.restore();
   }
 
   void render(Canvas canvas) {
@@ -246,8 +310,8 @@ class ClientGame extends Game {
 
   void resize(Size size) {
     _size = size;
-    _stars.needsRegenerate = true;
-    _planets.needsRegenerate = true;
+    _starsBack.needsRegenerate = true;
+    _planetsBack.needsRegenerate = true;
   }
 
   void _cameraFollow(WorldPosition wp, double dt) {
@@ -257,18 +321,33 @@ class ClientGame extends Game {
     final moved = Offset(pos.dx - centerScreen.dx, pos.dy - centerScreen.dy);
 
     final lerp = min(0.0025 * dt, 1.0);
-    const starsLerp = 0.2;
-    const planetsLerp = 0.5;
+    const starsBackLerp = 0.15;
+    const starsMiddleLerp = 0.3;
+    const starsFrontLerp = 0.35;
+    const planetsBackLerp = 0.5;
+    const planetsFrontLerp = 0.7;
     final dx = (moved.dx - _camera.dx) * lerp;
     final dy = (moved.dy - _camera.dy) * lerp;
     _camera = _camera.translate(dx, dy);
-    _starsCamera = _starsCamera.translate(
-      dx * starsLerp,
-      dy * starsLerp,
+    _starsBackCamera = _starsBackCamera.translate(
+      dx * starsBackLerp,
+      dy * starsBackLerp,
     );
-    _planetsCamera = _planetsCamera.translate(
-      dx * planetsLerp,
-      dy * planetsLerp,
+    _starsMiddleCamera = _starsMiddleCamera.translate(
+      dx * starsMiddleLerp,
+      dy * starsMiddleLerp,
+    );
+    _starsFrontCamera = _starsFrontCamera.translate(
+      dx * starsFrontLerp,
+      dy * starsFrontLerp,
+    );
+    _planetsBackCamera = _planetsBackCamera.translate(
+      dx * planetsBackLerp,
+      dy * planetsBackLerp,
+    );
+    _planetsFrontCamera = _planetsFrontCamera.translate(
+      dx * planetsFrontLerp,
+      dy * planetsFrontLerp,
     );
   }
 

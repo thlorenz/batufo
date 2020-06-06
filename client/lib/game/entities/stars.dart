@@ -2,6 +2,7 @@ import 'dart:ui' show Canvas, Paint;
 
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/util/math.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors, PaintingStyle, Rect, Size;
 
 class Star {
@@ -12,18 +13,26 @@ class Star {
 
 class Stars {
   final int _oversizeFactor;
+  final int density;
   final double _tileSize;
   final double _tileRangeMin;
   final double _tileRangeMax;
   final Paint _starPaint;
   final Paint _backgroundPaint;
   final List<Star> _stars = [];
+  final double minRadius;
+  final double maxRadius;
   final RandomNumber _rnd;
 
   bool needsRegenerate = true;
 
-  Stars(this._tileSize, this._oversizeFactor)
-      : _starPaint = Paint()
+  Stars(
+    this._tileSize,
+    this._oversizeFactor, {
+    this.minRadius = 0.1,
+    this.maxRadius = 0.4,
+    @required this.density,
+  })  : _starPaint = Paint()
           ..color = Colors.yellowAccent
           ..style = PaintingStyle.fill,
         _backgroundPaint = Paint()
@@ -34,14 +43,14 @@ class Stars {
         _tileRangeMax = _tileSize / 2;
 
   int _howManyStars() {
-    return _rnd.nextInt(0, 5);
+    return _rnd.nextInt(0, density);
   }
 
   void _addStar(int col, int row) {
     final dx = _rnd.nextDouble(_tileRangeMin, _tileRangeMax);
     final dy = _rnd.nextDouble(_tileRangeMin, _tileRangeMax);
     final tp = TilePosition(col, row, dx, dy);
-    final radius = _rnd.nextDouble(0.2, 1);
+    final radius = _rnd.nextDouble(minRadius, maxRadius);
     final star = Star(tp, radius);
     _stars.add(star);
   }
