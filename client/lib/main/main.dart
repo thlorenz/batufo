@@ -24,11 +24,7 @@ Future<void> mainEntry({
 
   await Images.instance.load([
     assets.floorTiles.imagePath,
-    assets.planet1.imagePath,
-    assets.planet2.imagePath,
-    assets.planet3.imagePath,
-    assets.planet4.imagePath,
-    assets.planet5.imagePath,
+    assets.planets.imagePath,
     assets.player.imagePath,
     assets.thrust.imagePath,
     assets.wallMetal.imagePath,

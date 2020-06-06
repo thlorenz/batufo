@@ -1,28 +1,18 @@
-import 'dart:ui' show Canvas, Paint, Rect, Size;
+import 'dart:ui' show Canvas, Rect, Size;
 
-import 'package:batufo/engine/images.dart' show Images;
+import 'package:batufo/engine/sprite.dart';
+import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game/assets/assets.dart';
-import 'package:batufo/game/assets/image_asset.dart';
 import 'package:batufo/util/math.dart';
 import 'package:flutter/material.dart';
 
-final Paint _paint = Paint()..color = Colors.white;
-
 class Planet {
   final TilePosition tilePosition;
-  final ImageAsset imageAsset;
+  final Sprite sprite;
   final double radius;
-  const Planet(this.tilePosition, this.imageAsset, this.radius);
+  const Planet(this.tilePosition, this.sprite, this.radius);
 }
-
-final _planetAssets = [
-  assets.planet1,
-  assets.planet2,
-  assets.planet3,
-  assets.planet4,
-  assets.planet5,
-];
 
 class Planets {
   final int _oversizeFactor;
@@ -34,6 +24,7 @@ class Planets {
   final double maxRadius;
   final List<Planet> _planets = [];
   final RandomNumber _rnd;
+  final SpriteSheet planets;
 
   bool needsRegenerate = true;
 
@@ -45,23 +36,24 @@ class Planets {
     @required this.density,
   })  : _rnd = RandomNumber(),
         _tileRangeMin = -(_tileSize / 2),
-        _tileRangeMax = _tileSize / 2;
+        _tileRangeMax = _tileSize / 2,
+        planets = SpriteSheet.fromImageAsset(assets.planets);
 
-  ImageAsset _randomPlanetImage() {
+  Sprite _randomPlanetSprite() {
     // purposely generating a number too large most of the time which means we
     // won't draw a planet
     final idx = _rnd.nextInt(0, 10000 ~/ density);
-    return idx >= _planetAssets.length ? null : _planetAssets[idx];
+    return idx >= assets.planets.cols ? null : planets.getIndex(idx);
   }
 
   void _addPlanet(int col, int row) {
-    final imageAsset = _randomPlanetImage();
-    if (imageAsset == null) return;
+    final sprite = _randomPlanetSprite();
+    if (sprite == null) return;
     final dx = _rnd.nextDouble(_tileRangeMin, _tileRangeMax);
     final dy = _rnd.nextDouble(_tileRangeMin, _tileRangeMax);
     final tp = TilePosition(col, row, dx, dy);
     final radiusFactor = _rnd.nextDouble(minRadius, maxRadius);
-    final planet = Planet(tp, imageAsset, radiusFactor * imageAsset.width);
+    final planet = Planet(tp, sprite, radiusFactor * planets.spriteWidth);
     _planets.add(planet);
   }
 
@@ -82,15 +74,8 @@ class Planets {
 
   void _renderPlanet(Canvas canvas, Planet planet) {
     final worldOffset = planet.tilePosition.toWorldOffset();
-    final img = Images.instance.getImage(planet.imageAsset.imagePath);
-    final src = Rect.fromLTWH(
-      0,
-      0,
-      img.width.toDouble(),
-      img.height.toDouble(),
-    );
-    final dst = Rect.fromCircle(center: worldOffset, radius: planet.radius);
-    canvas.drawImageRect(img, src, dst, _paint);
+    final rect = Rect.fromCircle(center: worldOffset, radius: planet.radius);
+    planet.sprite.renderRect(canvas, rect);
   }
 
   void render(Canvas canvas, Size size) {

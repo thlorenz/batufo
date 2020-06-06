@@ -110,13 +110,15 @@ class ClientGame extends Game {
         _planetsBack = Planets(
           arena.tileSize.toDouble(),
           GameProps.backgroundOversizeFactor,
-          density: 10,
+          density: 8,
+          minRadius: 0.1,
+          maxRadius: 0.5,
         ),
         _planetsFront = Planets(
           arena.tileSize.toDouble(),
           GameProps.backgroundOversizeFactor,
-          minRadius: 0.4,
-          maxRadius: 0.8,
+          minRadius: 0.6,
+          maxRadius: 0.9,
           density: 2,
         ),
         _background = Background(

@@ -17,31 +17,14 @@ class _Assets {
     rows: 8,
     cols: 8,
   );
-  final ImageAsset planet1 = ImageAsset(
-    'assets/images/bg/planet1.png',
+  final ImageAsset planets = ImageAsset(
+    'assets/images/bg/planets.png',
+    1280,
     160,
-    160,
+    rows: 1,
+    cols: 8,
   );
-  final ImageAsset planet2 = ImageAsset(
-    'assets/images/bg/planet2.png',
-    160,
-    160,
-  );
-  final ImageAsset planet3 = ImageAsset(
-    'assets/images/bg/planet3.png',
-    160,
-    160,
-  );
-  final ImageAsset planet4 = ImageAsset(
-    'assets/images/bg/planet4.png',
-    160,
-    160,
-  );
-  final ImageAsset planet5 = ImageAsset(
-    'assets/images/bg/planet5.png',
-    160,
-    160,
-  );
+
   final ImageAsset wallMetal = ImageAsset(
     'assets/images/static/wall-metal.png',
     66,
