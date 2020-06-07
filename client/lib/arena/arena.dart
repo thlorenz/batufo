@@ -22,6 +22,15 @@ class Arena {
 
   bool isFull(int registeredPlayers) => players.length == registeredPlayers;
   TilePosition playerPosition(int idx) => players[idx];
+  bool isCoveredAt(int col, int row) {
+    final wall = walls.firstWhere((tp) => tp.col == col && tp.row == row,
+        orElse: () => null);
+    if (wall != null) return true;
+    final floorTile = floorTiles
+        .firstWhere((tp) => tp.col == col && tp.row == row, orElse: () => null);
+    if (floorTile != null) return true;
+    return false;
+  }
 
   factory Arena.fromTilemap(Tilemap tilemap, int tileSize) {
     final nrows = tilemap.nrows;
