@@ -26,12 +26,13 @@
 
   <p>
     <a href="{latestReleaseURL}" target="_blank">Latest Release</a>
-    <span class="italic">now with multi player support!</span>
+    <span class="italic">now with multi player support and a beautiful universe!</span>
   </p>
   <p>
     <a href="{githubSourceURL}" target="_blank">Source on Github</a>
   </p>
   <h2>Play the Web Version</h2>
+  <p>Keep in mind that the native applications performs much better</p>
   <iframe
     title="game"
     class="center"
