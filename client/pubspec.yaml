@@ -18,6 +18,8 @@ dependencies:
   equatable: ^1.1.1
   http: ^0.12.1
 
+  audioplayers: ^0.15.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -29,3 +31,4 @@ flutter:
     - assets/images/bg/
     - assets/images/sprites/
     - assets/images/static/
+    - assets/audio/
