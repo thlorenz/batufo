@@ -63,7 +63,13 @@ io.on('connection', (socket: socketio.Socket) => {
           // TODO: socket.emit('error:level-not-found') or something similar
           return
         }
-        const platform = req.getPlatform()
+        let platform = 0
+        try {
+          platform = req.getPlatform()
+        } catch (err) {
+          logError('play:request.getting platform', err)
+        }
+
         const { game, clientID, arena, playerIndex } = games.addClientToGame(
           level,
           platform
