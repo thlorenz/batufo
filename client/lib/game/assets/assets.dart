@@ -19,8 +19,8 @@ class _Assets {
   );
   final ImageAsset planets = ImageAsset(
     'assets/images/bg/planets.png',
-    1280,
-    160,
+    2560,
+    320,
     rows: 1,
     cols: 8,
   );

@@ -119,14 +119,14 @@ class ClientGame extends Game {
           arena.tileSize.toDouble(),
           lerpFactor: GameProps.planetsBackLerpFactor,
           density: 10,
-          minRadius: 0.1,
-          maxRadius: 0.5,
+          minRadius: 0.05,
+          maxRadius: 0.25,
         ),
         _planetsFront = Planets(
           arena.tileSize.toDouble(),
           lerpFactor: GameProps.planetsFrontLerpFactor,
-          minRadius: 0.6,
-          maxRadius: 0.9,
+          minRadius: 0.3,
+          maxRadius: 0.5,
           density: 2,
         ),
         _background = Background(
