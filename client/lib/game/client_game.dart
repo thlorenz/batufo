@@ -132,6 +132,7 @@ class ClientGame extends Game {
           walls: arena.walls,
           tileSize: arena.tileSize.toDouble(),
           isFloorActive: GameProps.renderFloor,
+          enableRecording: enableRecording,
         ),
         _camera = Offset.zero,
         _starsMiddleCamera = Offset.zero,
