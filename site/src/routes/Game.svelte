@@ -32,7 +32,6 @@
     <a href="{githubSourceURL}" target="_blank">Source on Github</a>
   </p>
   <h2>Play the Web Version</h2>
-  <p>The native applications perform much better and you should download those if you want to have a better playing experience.</p>
   <iframe
     title="game"
     class="center"
@@ -45,4 +44,8 @@
     allowfullscreen
     bind:this="{iframe}"
   ></iframe>
+ <p>
+   <a href="{gameWebURL}" target="_blank">Full Screen</a>
+   <em>Make sure to keep the window small or performance will suffer.</em>
+ </p>
 </main>
