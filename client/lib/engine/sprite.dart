@@ -42,12 +42,13 @@ class Sprite {
     return Sprite.fromImage(img, width: width, height: height);
   }
 
-  void renderRect(Canvas canvas, Rect rect) {
+  void renderRect(Canvas canvas, Rect rect, {Paint paint}) {
     render(
       canvas,
       rect.center,
       width: rect.size.width,
       height: rect.size.height,
+      paint: paint,
     );
   }
 
@@ -56,12 +57,13 @@ class Sprite {
     Offset center, {
     @required double width,
     @required double height,
+    Paint paint,
   }) {
     if (!_loaded) return;
     final x = center.dx;
     final y = center.dy;
     final dst = Rect.fromLTWH(x - width / 2, y - height / 2, width, height);
-    canvas.drawImageRect(image, src, dst, _paint);
+    canvas.drawImageRect(image, src, dst, paint ?? _paint);
   }
 
   void _init(Image img, double x, double y, double width, double height) {
