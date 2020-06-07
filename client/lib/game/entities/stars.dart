@@ -4,17 +4,13 @@ import 'package:batufo/arena/arena.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/util/math.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' show Colors, PaintingStyle, Rect, Size;
+import 'package:flutter/material.dart' show Colors, PaintingStyle, Size;
 
 class Star {
   final TilePosition tilePosition;
   final double radius;
   const Star(this.tilePosition, this.radius);
 }
-
-final _backgroundPaint = Paint()
-  ..color = Colors.black
-  ..style = PaintingStyle.fill;
 
 class Stars {
   final double _oversizeFactor;
@@ -27,14 +23,14 @@ class Stars {
   final double minRadius;
   final double maxRadius;
   final RandomNumber _rnd;
-  final bool isBackground;
+  final bool enableRecording;
 
   Picture _recordedPicture;
 
   Stars(
     Arena arena,
     this._oversizeFactor, {
-    @required this.isBackground,
+    @required this.enableRecording,
     @required this.minRadius,
     @required this.maxRadius,
     @required this.density,
@@ -88,17 +84,6 @@ class Stars {
     // TODO: why is this necessary? Related to oversizeFactor
     canvas.translate(-(size.width / 8), -(size.height / 4));
 
-    if (isBackground) {
-      canvas.drawRect(
-        Rect.fromLTWH(
-          0,
-          0,
-          size.width,
-          size.height,
-        ),
-        _backgroundPaint,
-      );
-    }
     canvas.translate(size.width / 2, size.height / 2);
     for (final star in _stars) _renderStar(canvas, star);
     return recorder.endRecording();
@@ -109,10 +94,15 @@ class Stars {
     final fullHeight = size.height * _oversizeFactor;
     final fullSize = Size(fullWidth, fullHeight);
     _initStars(fullSize);
-    _recordedPicture = _recordPicture(fullSize);
+    if (enableRecording) _recordedPicture = _recordPicture(fullSize);
   }
 
   void render(Canvas canvas, Size size) {
-    canvas.drawPicture(_recordedPicture);
+    if (enableRecording) {
+      canvas.drawPicture(_recordedPicture);
+    } else {
+      canvas.translate(size.width / 2, size.height / 2);
+      for (final star in _stars) _renderStar(canvas, star);
+    }
   }
 }

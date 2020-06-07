@@ -82,6 +82,7 @@ class Planets {
 
   void render(Canvas canvas, Size size) {
     _initPlanets(size);
+    canvas.translate(size.width / 2, size.height / 2);
     for (final planet in _planets) _renderPlanet(canvas, planet);
   }
 }

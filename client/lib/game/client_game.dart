@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'dart:ui' show Canvas, Offset, Size;
+import 'dart:ui' show Canvas, Offset, Paint, Rect, Size;
 
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/controllers/game_controller.dart';
@@ -24,9 +24,14 @@ import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 final _log = Log<ClientGame>();
+
+final _backgroundPaint = Paint()
+  ..color = Colors.black
+  ..style = PaintingStyle.fill;
 
 class ClientGame extends Game {
   final Arena arena;
@@ -80,6 +85,7 @@ class ClientGame extends Game {
     @required this.onGameStateUpdated,
     @required void Function(int score) onScored,
     @required int playerIndex,
+    @required bool enableRecording,
   })  : _started = false,
         _finished = false,
         _disposed = false,
@@ -89,15 +95,15 @@ class ClientGame extends Game {
         _starsBack = Stars(
           arena,
           GameProps.backgroundOversizeFactor,
-          isBackground: true,
+          enableRecording: enableRecording,
           minRadius: 0.1,
           maxRadius: 0.4,
-          density: 12,
+          density: 22,
         ),
         _starsMiddle = Stars(
           arena,
           GameProps.backgroundOversizeFactor,
-          isBackground: false,
+          enableRecording: enableRecording,
           minRadius: 0.3,
           maxRadius: 0.7,
           density: 6,
@@ -105,7 +111,7 @@ class ClientGame extends Game {
         _starsFront = Stars(
           arena,
           GameProps.backgroundOversizeFactor,
-          isBackground: false,
+          enableRecording: enableRecording,
           minRadius: 0.8,
           maxRadius: 1.2,
           density: 2,
@@ -113,7 +119,7 @@ class ClientGame extends Game {
         _planetsBack = Planets(
           arena.tileSize.toDouble(),
           GameProps.backgroundOversizeFactor,
-          density: 8,
+          density: 10,
           minRadius: 0.1,
           maxRadius: 0.5,
         ),
@@ -260,20 +266,50 @@ class ClientGame extends Game {
   }
 
   void _renderUniverse(Canvas canvas) {
+    _drawBackground(canvas);
+    // TODO: do the one translate here if recording is enabled then the others step by step
     canvas.save();
     {
       canvas.translate(-_starsBackCamera.dx, -_starsBackCamera.dy);
       _starsBack.render(canvas, _size);
+    }
+    canvas.restore();
+    canvas.save();
+    {
       canvas.translate(-_starsMiddleCamera.dx, -_starsMiddleCamera.dy);
       _starsMiddle.render(canvas, _size);
+    }
+    canvas.restore();
+    canvas.save();
+    {
       canvas.translate(-_starsFrontCamera.dx, -_starsFrontCamera.dy);
       _starsFront.render(canvas, _size);
+    }
+    canvas.restore();
+    canvas.save();
+    {
       canvas.translate(-_planetsBackCamera.dx, -_planetsBackCamera.dy);
       _planetsBack.render(canvas, _size);
+    }
+    canvas.restore();
+    canvas.save();
+    {
       canvas.translate(-_planetsFrontCamera.dx, -_planetsFrontCamera.dy);
       _planetsFront.render(canvas, _size);
     }
     canvas.restore();
+  }
+
+  void _drawBackground(Canvas canvas) {
+    canvas.drawRect(
+      Rect.fromLTWH(
+        0,
+        0,
+        _size.width,
+        _size.height,
+      ),
+      _backgroundPaint,
+    );
   }
 
   void render(Canvas canvas) {
@@ -310,10 +346,10 @@ class ClientGame extends Game {
 
     final lerp = min(0.0025 * dt, 1.0);
     const starsBackLerp = 0.15;
-    const starsMiddleLerp = 0.15;
-    const starsFrontLerp = 0.15;
-    const planetsBackLerp = 0.15;
-    const planetsFrontLerp = 0.15;
+    const starsMiddleLerp = 0.3;
+    const starsFrontLerp = 0.45;
+    const planetsBackLerp = 0.6;
+    const planetsFrontLerp = 0.75;
     final dx = (moved.dx - _camera.dx) * lerp;
     final dy = (moved.dy - _camera.dy) * lerp;
     _camera = _camera.translate(dx, dy);

@@ -115,6 +115,7 @@ class Universe {
     final game = ClientGame(
       arena: arena,
       inputProcessor: inputProcessor,
+      enableRecording: platform != PlatformType.Web,
       clientID: clientID,
       playerIndex: playerIndex,
       onGameStateUpdated: _onGameStateUpdated,

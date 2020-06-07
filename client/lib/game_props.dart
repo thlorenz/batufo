@@ -40,7 +40,7 @@ class GameProps {
   static const scoreOnHit = 100;
   static const scoreOnKill = 500;
 
-  static const backgroundOversizeFactor = 2.0;
+  static const backgroundOversizeFactor = 1.5;
 
   static const localhost = 'http://localhost:$PORT';
   static const localbox = 'http://192.168.1.7:$PORT';
