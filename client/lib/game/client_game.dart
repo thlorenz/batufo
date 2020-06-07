@@ -89,6 +89,7 @@ class ClientGame extends Game {
         _starsBack = Stars(
           arena,
           GameProps.backgroundOversizeFactor,
+          isBackground: true,
           minRadius: 0.1,
           maxRadius: 0.4,
           density: 12,
@@ -96,6 +97,7 @@ class ClientGame extends Game {
         _starsMiddle = Stars(
           arena,
           GameProps.backgroundOversizeFactor,
+          isBackground: false,
           minRadius: 0.3,
           maxRadius: 0.7,
           density: 6,
@@ -103,6 +105,7 @@ class ClientGame extends Game {
         _starsFront = Stars(
           arena,
           GameProps.backgroundOversizeFactor,
+          isBackground: false,
           minRadius: 0.8,
           maxRadius: 1.2,
           density: 2,
@@ -257,8 +260,6 @@ class ClientGame extends Game {
   }
 
   void _renderUniverse(Canvas canvas) {
-    _starsBack.renderBackground(canvas, _size);
-
     canvas.save();
     {
       canvas.translate(_size.width / 2, _size.height / 2);
@@ -295,9 +296,9 @@ class ClientGame extends Game {
 
   void resize(Size size) {
     _size = size;
-    _starsBack.needsRegenerate = true;
-    _starsMiddle.needsRegenerate = true;
-    _starsFront.needsRegenerate = true;
+    _starsBack.resize(size);
+    _starsMiddle.resize(size);
+    _starsFront.resize(size);
     _planetsBack.needsRegenerate = true;
     _planetsFront.needsRegenerate = true;
   }

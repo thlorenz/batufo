@@ -1,4 +1,4 @@
-import 'dart:ui' show Canvas, Paint;
+import 'dart:ui' show Canvas, Paint, Picture, PictureRecorder;
 
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/engine/tile_position.dart';
@@ -12,6 +12,10 @@ class Star {
   const Star(this.tilePosition, this.radius);
 }
 
+final _backgroundPaint = Paint()
+  ..color = Colors.black
+  ..style = PaintingStyle.fill;
+
 class Stars {
   final double _oversizeFactor;
   final int density;
@@ -19,26 +23,24 @@ class Stars {
   final double _tileRangeMin;
   final double _tileRangeMax;
   final Paint _starPaint;
-  final Paint _backgroundPaint;
   final List<Star> _stars = [];
   final double minRadius;
   final double maxRadius;
   final RandomNumber _rnd;
+  final bool isBackground;
 
-  bool needsRegenerate = true;
+  Picture _recordedPicture;
 
   Stars(
     Arena arena,
     this._oversizeFactor, {
-    this.minRadius = 0.1,
-    this.maxRadius = 0.4,
+    @required this.isBackground,
+    @required this.minRadius,
+    @required this.maxRadius,
     @required this.density,
   })  : _tileSize = arena.tileSize.toDouble(),
         _starPaint = Paint()
           ..color = Colors.yellowAccent
-          ..style = PaintingStyle.fill,
-        _backgroundPaint = Paint()
-          ..color = Colors.black
           ..style = PaintingStyle.fill,
         _rnd = RandomNumber(),
         _tileRangeMin = -(arena.tileSize / 2),
@@ -58,10 +60,10 @@ class Stars {
   }
 
   void _initStars(Size size) {
-    if (!needsRegenerate) return;
-    final ncols = (size.width / _tileSize * _oversizeFactor).toInt();
-    final nrows = (size.height / _tileSize * _oversizeFactor).toInt();
+    final ncols = size.width ~/ _tileSize;
+    final nrows = size.height ~/ _tileSize;
     _stars.clear();
+
     final xmax = ncols ~/ 2;
     final xmin = -xmax;
     final ymax = nrows ~/ 2;
@@ -73,7 +75,6 @@ class Stars {
         }
       }
     }
-    needsRegenerate = false;
   }
 
   void _renderStar(Canvas canvas, Star star) {
@@ -81,18 +82,34 @@ class Stars {
     canvas.drawCircle(worldOffset, star.radius, _starPaint);
   }
 
-  void renderBackground(
-    Canvas canvas,
-    Size size,
-  ) {
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      _backgroundPaint,
-    );
+  Picture _recordPicture(Size size) {
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+
+    if (isBackground) {
+      canvas.drawRect(
+        Rect.fromLTWH(
+          -(size.width / 2),
+          -(size.height / 2),
+          size.width,
+          size.height,
+        ),
+        _backgroundPaint,
+      );
+    }
+    for (final star in _stars) _renderStar(canvas, star);
+    return recorder.endRecording();
+  }
+
+  void resize(Size size) {
+    final fullWidth = size.width * _oversizeFactor;
+    final fullHeight = size.height * _oversizeFactor;
+    final fullSize = Size(fullWidth, fullHeight);
+    _initStars(fullSize);
+    _recordedPicture = _recordPicture(fullSize);
   }
 
   void render(Canvas canvas, Size size) {
-    _initStars(size);
-    for (final star in _stars) _renderStar(canvas, star);
+    canvas.drawPicture(_recordedPicture);
   }
 }
