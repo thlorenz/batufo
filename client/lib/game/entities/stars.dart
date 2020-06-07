@@ -13,7 +13,6 @@ class Star {
 }
 
 class Stars {
-  final Arena _arena;
   final double _oversizeFactor;
   final int density;
   final double _tileSize;
@@ -29,12 +28,12 @@ class Stars {
   bool needsRegenerate = true;
 
   Stars(
-    this._arena,
+    Arena arena,
     this._oversizeFactor, {
     this.minRadius = 0.1,
     this.maxRadius = 0.4,
     @required this.density,
-  })  : _tileSize = _arena.tileSize.toDouble(),
+  })  : _tileSize = arena.tileSize.toDouble(),
         _starPaint = Paint()
           ..color = Colors.yellowAccent
           ..style = PaintingStyle.fill,
@@ -42,8 +41,8 @@ class Stars {
           ..color = Colors.black
           ..style = PaintingStyle.fill,
         _rnd = RandomNumber(),
-        _tileRangeMin = -(_arena.tileSize / 2),
-        _tileRangeMax = _arena.tileSize / 2;
+        _tileRangeMin = -(arena.tileSize / 2),
+        _tileRangeMax = arena.tileSize / 2;
 
   int _howManyStars() {
     return _rnd.nextInt(0, density);
