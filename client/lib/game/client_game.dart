@@ -87,21 +87,21 @@ class ClientGame extends Game {
         _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(),
         _grid = Grid(arena.tileSize.toDouble()),
         _starsBack = Stars(
-          arena.tileSize.toDouble(),
+          arena,
           GameProps.backgroundOversizeFactor,
           minRadius: 0.1,
           maxRadius: 0.4,
           density: 12,
         ),
         _starsMiddle = Stars(
-          arena.tileSize.toDouble(),
+          arena,
           GameProps.backgroundOversizeFactor,
           minRadius: 0.3,
           maxRadius: 0.7,
           density: 6,
         ),
         _starsFront = Stars(
-          arena.tileSize.toDouble(),
+          arena,
           GameProps.backgroundOversizeFactor,
           minRadius: 0.8,
           maxRadius: 1.2,
@@ -261,6 +261,7 @@ class ClientGame extends Game {
 
     canvas.save();
     {
+      canvas.translate(_size.width / 2, _size.height / 2);
       canvas.translate(-_starsBackCamera.dx, -_starsBackCamera.dy);
       _starsBack.render(canvas, _size);
       canvas.translate(-_starsMiddleCamera.dx, -_starsMiddleCamera.dy);

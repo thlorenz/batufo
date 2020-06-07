@@ -1,5 +1,6 @@
 import 'dart:ui' show Canvas, Paint;
 
+import 'package:batufo/arena/arena.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/util/math.dart';
 import 'package:flutter/foundation.dart';
@@ -12,7 +13,8 @@ class Star {
 }
 
 class Stars {
-  final int _oversizeFactor;
+  final Arena _arena;
+  final double _oversizeFactor;
   final int density;
   final double _tileSize;
   final double _tileRangeMin;
@@ -27,20 +29,21 @@ class Stars {
   bool needsRegenerate = true;
 
   Stars(
-    this._tileSize,
+    this._arena,
     this._oversizeFactor, {
     this.minRadius = 0.1,
     this.maxRadius = 0.4,
     @required this.density,
-  })  : _starPaint = Paint()
+  })  : _tileSize = _arena.tileSize.toDouble(),
+        _starPaint = Paint()
           ..color = Colors.yellowAccent
           ..style = PaintingStyle.fill,
         _backgroundPaint = Paint()
           ..color = Colors.black
           ..style = PaintingStyle.fill,
         _rnd = RandomNumber(),
-        _tileRangeMin = -(_tileSize / 2),
-        _tileRangeMax = _tileSize / 2;
+        _tileRangeMin = -(_arena.tileSize / 2),
+        _tileRangeMax = _arena.tileSize / 2;
 
   int _howManyStars() {
     return _rnd.nextInt(0, density);
@@ -55,8 +58,10 @@ class Stars {
     _stars.add(star);
   }
 
-  void _initStars(int ncols, int nrows) {
+  void _initStars(Size size) {
     if (!needsRegenerate) return;
+    final ncols = (size.width / _tileSize * _oversizeFactor).toInt();
+    final nrows = (size.height / _tileSize * _oversizeFactor).toInt();
     _stars.clear();
     final xmax = ncols ~/ 2;
     final xmin = -xmax;
@@ -88,10 +93,7 @@ class Stars {
   }
 
   void render(Canvas canvas, Size size) {
-    _initStars(
-      size.width ~/ _tileSize * _oversizeFactor,
-      size.height ~/ _tileSize * _oversizeFactor,
-    );
+    _initStars(size);
     for (final star in _stars) _renderStar(canvas, star);
   }
 }

@@ -15,7 +15,7 @@ class Planet {
 }
 
 class Planets {
-  final int _oversizeFactor;
+  final double _oversizeFactor;
   final int density;
   final double _tileSize;
   final double _tileRangeMin;
@@ -57,8 +57,10 @@ class Planets {
     _planets.add(planet);
   }
 
-  void _initPlanets(int ncols, int nrows) {
+  void _initPlanets(Size size) {
     if (!needsRegenerate) return;
+    final ncols = size.width / _tileSize * _oversizeFactor;
+    final nrows = size.height / _tileSize * _oversizeFactor;
     _planets.clear();
     final xmax = ncols ~/ 2;
     final xmin = -xmax;
@@ -79,10 +81,7 @@ class Planets {
   }
 
   void render(Canvas canvas, Size size) {
-    _initPlanets(
-      size.width ~/ _tileSize * _oversizeFactor,
-      size.height ~/ _tileSize * _oversizeFactor,
-    );
+    _initPlanets(size);
     for (final planet in _planets) _renderPlanet(canvas, planet);
   }
 }
