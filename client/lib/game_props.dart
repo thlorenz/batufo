@@ -16,7 +16,7 @@ class GameProps {
   static const playerSizeFactor = 0.75;
   static const playerTotalHealth = 100.0;
 
-  static const playerHitsWallHealthFactor = 50.0;
+  static const playerHitsWallHealthFactor = 30.0;
   static const bulletHitsPlayerHealthToll = playerTotalHealth / 20;
 
   static const playerThrustAnimationDurationMs = 200.0;
