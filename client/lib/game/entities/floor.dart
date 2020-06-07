@@ -5,26 +5,26 @@ import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game/assets/assets.dart';
 
-class BackgroundSprite {
+class FloorTileSprite {
   final Rect rect;
   final Sprite sprite;
 
-  BackgroundSprite(this.rect, this.sprite);
+  FloorTileSprite(this.rect, this.sprite);
 
   void render(Canvas canvas) {
     sprite.renderRect(canvas, rect);
   }
 }
 
-class Background {
+class Floor {
   final SpriteSheet _spriteSheet;
   final List<TilePosition> _floorTiles;
-  final List<BackgroundSprite> _backgroundSprites;
+  final List<FloorTileSprite> _backgroundSprites;
   final double _tileSize;
   final bool _isActive;
-  Background(this._floorTiles, this._tileSize, this._isActive)
+  Floor(this._floorTiles, this._tileSize, this._isActive)
       : _spriteSheet = SpriteSheet.fromImageAsset(assets.floorTiles),
-        _backgroundSprites = <BackgroundSprite>[] {
+        _backgroundSprites = <FloorTileSprite>[] {
     _initTiles();
   }
 
@@ -50,7 +50,7 @@ class Background {
       final sheetRow = i % 7;
       final sheetCol = (i ~/ nrows) % 7;
       final sprite = _spriteSheet.getRowCol(sheetRow, sheetCol);
-      final backgroundSprite = BackgroundSprite(rect, sprite);
+      final backgroundSprite = FloorTileSprite(rect, sprite);
       _backgroundSprites.add(backgroundSprite);
     }
   }

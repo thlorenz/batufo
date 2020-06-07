@@ -8,13 +8,12 @@ import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/game.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/assets/assets.dart';
-import 'package:batufo/game/entities/background.dart';
+import 'package:batufo/game/entities/buildings.dart';
 import 'package:batufo/game/entities/bullets.dart';
 import 'package:batufo/game/entities/grid.dart';
 import 'package:batufo/game/entities/planets.dart';
 import 'package:batufo/game/entities/player.dart';
 import 'package:batufo/game/entities/stars.dart';
-import 'package:batufo/game/entities/walls.dart';
 import 'package:batufo/game/inputs/gestures.dart';
 import 'package:batufo/game/inputs/input_processor.dart';
 import 'package:batufo/game/inputs/keyboard.dart';
@@ -36,14 +35,13 @@ final _backgroundPaint = Paint()
 class ClientGame extends Game {
   final Arena arena;
   final void Function(ClientGameState state) onGameStateUpdated;
-  final Background _background;
+  final Buildings _buildings;
   final Grid _grid;
   final Stars _starsBack;
   final Stars _starsMiddle;
   final Stars _starsFront;
   final Planets _planetsBack;
   final Planets _planetsFront;
-  final Walls _walls;
   final InputProcessor inputProcessor;
   final int clientID;
   final ClientPlayerUpdate _clientPlayerUpdate;
@@ -129,12 +127,12 @@ class ClientGame extends Game {
           maxRadius: 0.5,
           density: 2,
         ),
-        _background = Background(
-          arena.floorTiles,
-          arena.tileSize.toDouble(),
-          GameProps.renderBackground,
+        _buildings = Buildings(
+          floorTiles: arena.floorTiles,
+          walls: arena.walls,
+          tileSize: arena.tileSize.toDouble(),
+          isFloorActive: GameProps.renderFloor,
         ),
-        _walls = Walls(arena.walls, arena.tileSize.toDouble()),
         _camera = Offset.zero,
         _starsMiddleCamera = Offset.zero,
         _starsFrontCamera = Offset.zero,
@@ -247,8 +245,7 @@ class ClientGame extends Game {
     }
 
     canvas.translate(-_camera.dx, -_camera.dy);
-    _background.render(canvas);
-    _walls.render(canvas);
+    _buildings.render(canvas);
   }
 
   void _renderGrid(Canvas canvas) {
