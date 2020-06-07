@@ -263,32 +263,12 @@ class ClientGame extends Game {
     {
       canvas.translate(-_starsBackCamera.dx, -_starsBackCamera.dy);
       _starsBack.render(canvas, _size);
-    }
-    canvas.restore();
-
-    canvas.save();
-    {
       canvas.translate(-_starsMiddleCamera.dx, -_starsMiddleCamera.dy);
       _starsMiddle.render(canvas, _size);
-    }
-    canvas.restore();
-
-    canvas.save();
-    {
       canvas.translate(-_starsFrontCamera.dx, -_starsFrontCamera.dy);
       _starsFront.render(canvas, _size);
-    }
-    canvas.restore();
-
-    canvas.save();
-    {
       canvas.translate(-_planetsBackCamera.dx, -_planetsBackCamera.dy);
       _planetsBack.render(canvas, _size);
-    }
-    canvas.restore();
-
-    canvas.save();
-    {
       canvas.translate(-_planetsFrontCamera.dx, -_planetsFrontCamera.dy);
       _planetsFront.render(canvas, _size);
     }
@@ -326,10 +306,10 @@ class ClientGame extends Game {
 
     final lerp = min(0.0025 * dt, 1.0);
     const starsBackLerp = 0.15;
-    const starsMiddleLerp = 0.3;
-    const starsFrontLerp = 0.35;
-    const planetsBackLerp = 0.5;
-    const planetsFrontLerp = 0.7;
+    const starsMiddleLerp = 0.15;
+    const starsFrontLerp = 0.15;
+    const planetsBackLerp = 0.15;
+    const planetsFrontLerp = 0.15;
     final dx = (moved.dx - _camera.dx) * lerp;
     final dy = (moved.dy - _camera.dy) * lerp;
     _camera = _camera.translate(dx, dy);
