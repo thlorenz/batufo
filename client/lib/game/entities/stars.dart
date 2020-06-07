@@ -41,7 +41,8 @@ class Stars {
         _tileRangeMax = _tileSize / 2;
 
   int _howManyStars() {
-    return _rnd.nextInt(0, density);
+    const clustering = 1;
+    return _rnd.nextInt(-(density * clustering), density * clustering);
   }
 
   void _addStar(int col, int row) {
@@ -60,7 +61,9 @@ class Stars {
 
     for (int row = 0; row < nrows; row++) {
       for (int col = 0; col < ncols; col++) {
-        for (int n = 0; n < _howManyStars(); n++) {
+        final nstars = _howManyStars();
+        if (nstars <= 0) continue;
+        for (int n = 0; n < nstars; n++) {
           _addStar(col, row);
         }
       }
