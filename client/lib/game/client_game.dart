@@ -262,7 +262,6 @@ class ClientGame extends Game {
   void _renderUniverse(Canvas canvas) {
     canvas.save();
     {
-      canvas.translate(_size.width / 2, _size.height / 2);
       canvas.translate(-_starsBackCamera.dx, -_starsBackCamera.dy);
       _starsBack.render(canvas, _size);
       canvas.translate(-_starsMiddleCamera.dx, -_starsMiddleCamera.dy);

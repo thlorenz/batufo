@@ -85,18 +85,21 @@ class Stars {
   Picture _recordPicture(Size size) {
     final recorder = PictureRecorder();
     final canvas = Canvas(recorder);
+    // TODO: why is this necessary? Related to oversizeFactor
+    canvas.translate(-(size.width / 8), -(size.height / 4));
 
     if (isBackground) {
       canvas.drawRect(
         Rect.fromLTWH(
-          -(size.width / 2),
-          -(size.height / 2),
+          0,
+          0,
           size.width,
           size.height,
         ),
         _backgroundPaint,
       );
     }
+    canvas.translate(size.width / 2, size.height / 2);
     for (final star in _stars) _renderStar(canvas, star);
     return recorder.endRecording();
   }
