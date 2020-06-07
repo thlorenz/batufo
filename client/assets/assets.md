@@ -11,3 +11,8 @@
 
 - [url](https://opengameart.org/content/16-planet-sprites)
 - CC-By-SA 3.0 -> needs attribution
+
+## sounds/thrust.mp3
+
+- https://opengameart.org/content/space-shooter-sound-effects
+- CC-By 3.0 -> needs attribution

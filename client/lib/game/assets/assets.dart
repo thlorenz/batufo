@@ -1,3 +1,4 @@
+import 'package:batufo/game/assets/audio_asset.dart';
 import 'package:batufo/game/assets/image_asset.dart';
 
 class _Assets {
@@ -47,6 +48,8 @@ class _Assets {
     rows: 1,
     cols: 1,
   );
+
+  final AudioAsset audioThrust = AudioAsset('audio/thrust.mp3');
 }
 
 final _Assets assets = _Assets();

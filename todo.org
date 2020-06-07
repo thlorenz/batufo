@@ -32,9 +32,9 @@ From [[https://github.com/flame-engine/flame/blob/5a1c9e4949fd949f3fa44be3c43264
 
 I see folders for all but ~web~, so not sure if it is really supported.
 
-- [ ] ceate a ~Sounds~ class that exposes methods to play game specific sounds, i.e. not just a generic ~play~, but ~playBullet~
-- [ ] pull in thrust sound from [[https://github.com/thlorenz/ufo_2d/tree/first-try/assets/audio][ufo_2d version]]
-- [ ] pull [[https://github.com/thlorenz/ufo_2d/blob/96639f53290823e2bfdc53d270192279980682ce/assets/attribs.txt][attributions]] with it
+- [X] ceate a ~Sounds~ class that exposes methods to play game specific sounds, i.e. not just a generic ~play~, but ~playBullet~
+- [X] pull in thrust sound from [[https://github.com/thlorenz/ufo_2d/tree/first-try/assets/audio][ufo_2d version]]
+- [X] pull [[https://github.com/thlorenz/ufo_2d/blob/96639f53290823e2bfdc53d270192279980682ce/assets/attribs.txt][attributions]] with it
 - [ ] implement thrust sound
 - [ ] implement shooting sound
 - [ ] implement sound when hitting a wall
@@ -114,6 +114,8 @@ In the worst case we'll have to disable that effect in the browser all together.
 Alternatively just remove the full screen link to force people to play inside the iframe, which I did for now.
 
 Improved by lowering density of stars + planets via parallax options for web.
+
+- [ ] limit size of game widget and thus of the canvas, see [[file:client/lib/engine/game_widget.dart::bool get sizedByParent => true;][sizing strategy]]
 
 *** Ghost in Single Player Game
 

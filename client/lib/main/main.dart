@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/images.dart';
 import 'package:batufo/game/assets/assets.dart';
+import 'package:batufo/game/sound/sound.dart';
 import 'package:batufo/rpc/server_stats.dart';
 import 'package:batufo/setup/config.dart';
 import 'package:batufo/states/user_state.dart';
@@ -31,6 +32,11 @@ Future<void> mainEntry({
     assets.bulletExplosion.imagePath,
     assets.skull.imagePath,
   ]);
+
+  if (config.platform != PlatformType.Web) {
+    await Sound.create({'thrust': assets.audioThrust});
+    await Sound.instance.playThrust();
+  }
 
   final universe = Universe.create(
     platform: config.platform,
