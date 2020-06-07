@@ -2,7 +2,7 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && cp ./public/build/bundle.js* ../build/",
     "dev": "rollup -c -w",
     "format": "prettier --write --plugin-search-dir=. \"{,!(node_modules,public)/**/}*.{svelte,js}\"",
     "start": "sirv public -s"
