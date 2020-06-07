@@ -8,8 +8,8 @@ BUILD=$ROOT/build/github
 
 (mkdir -p $BUILD && rm -f $BUILD/*)
 
-#$DIR/release-android.sh
-#$DIR/release-macos.sh
+$DIR/release-android.sh
+$DIR/release-macos.sh
 
 (cp $CLIENT/build/app/outputs/flutter-apk/app-release.apk \
     $BUILD/batufo.apk)
