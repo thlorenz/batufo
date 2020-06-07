@@ -40,7 +40,18 @@ class GameProps {
   static const scoreOnHit = 100;
   static const scoreOnKill = 500;
 
-  static const backgroundOversizeFactor = 1.5;
+  static const starsMiddleLerp = 0.15;
+  static const starsFrontLerp = 0.15;
+  static const planetsBackLerp = 0.15;
+  static const planetsFrontLerp = 0.15;
+
+  static const starsMiddleLerpFactor = 1.0 + GameProps.starsMiddleLerp * 2.0;
+  static const starsFrontLerpFactor =
+      GameProps.starsMiddleLerpFactor + GameProps.starsFrontLerp * 2.0;
+  static const planetsBackLerpFactor =
+      GameProps.starsFrontLerpFactor + GameProps.planetsBackLerp * 2.0;
+  static const planetsFrontLerpFactor =
+      GameProps.planetsBackLerpFactor + GameProps.planetsFrontLerp * 2.0;
 
   static const localhost = 'http://localhost:$PORT';
   static const localbox = 'http://192.168.1.7:$PORT';

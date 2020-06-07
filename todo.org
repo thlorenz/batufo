@@ -37,8 +37,9 @@ A better solution would be to randomly create stars on a black background, possi
 - [X] resize planets to not take too much space and fit best with the game (around tile size)
 - [X] add planet images to assets and attribute them
 - [X] walk through arena and randomly place nothing | one of 5 planet images in planets layer
-- [ ] use two stars layers (one smaller stars, nearer larger stars)
-- [ ] do the same for planets
+- [X] use two stars layers (one smaller stars, nearer larger stars)
+- [X] do the same for planets
+- [ ] support levels to have no floor tiles in the middle to get more of a star effect
 
 
 *** Sound Effects

@@ -15,7 +15,7 @@ class Planet {
 }
 
 class Planets {
-  final double _oversizeFactor;
+  final double lerpFactor;
   final int density;
   final double _tileSize;
   final double _tileRangeMin;
@@ -26,13 +26,11 @@ class Planets {
   final RandomNumber _rnd;
   final SpriteSheet planets;
 
-  bool needsRegenerate = true;
-
   Planets(
-    this._tileSize,
-    this._oversizeFactor, {
-    this.minRadius = 0.1,
-    this.maxRadius = 0.4,
+    this._tileSize, {
+    @required this.lerpFactor,
+    @required this.minRadius,
+    @required this.maxRadius,
     @required this.density,
   })  : _rnd = RandomNumber(),
         _tileRangeMin = -(_tileSize / 2),
@@ -58,20 +56,21 @@ class Planets {
   }
 
   void _initPlanets(Size size) {
-    if (!needsRegenerate) return;
-    final ncols = size.width / _tileSize * _oversizeFactor;
-    final nrows = size.height / _tileSize * _oversizeFactor;
+    final ncols = size.width / _tileSize + 1;
+    final nrows = size.height / _tileSize + 1;
     _planets.clear();
-    final xmax = ncols ~/ 2;
-    final xmin = -xmax;
-    final ymax = nrows ~/ 2;
-    final ymin = -ymax;
-    for (int row = ymin; row < ymax; row++) {
-      for (int col = xmin; col < xmax; col++) {
+    for (int row = 0; row < nrows; row++) {
+      for (int col = 0; col < ncols; col++) {
         _addPlanet(col, row);
       }
     }
-    needsRegenerate = false;
+  }
+
+  void resize(Size size) {
+    final fullWidth = size.width * lerpFactor;
+    final fullHeight = size.height * lerpFactor;
+    final fullSize = Size(fullWidth, fullHeight);
+    _initPlanets(fullSize);
   }
 
   void _renderPlanet(Canvas canvas, Planet planet) {
@@ -81,8 +80,6 @@ class Planets {
   }
 
   void render(Canvas canvas, Size size) {
-    _initPlanets(size);
-    canvas.translate(size.width / 2, size.height / 2);
     for (final planet in _planets) _renderPlanet(canvas, planet);
   }
 }
