@@ -296,7 +296,10 @@ class ClientGame extends Game {
   void resize(Size size) {
     _size = size;
     _starsBack.needsRegenerate = true;
+    _starsMiddle.needsRegenerate = true;
+    _starsFront.needsRegenerate = true;
     _planetsBack.needsRegenerate = true;
+    _planetsFront.needsRegenerate = true;
   }
 
   void _cameraFollow(WorldPosition wp, double dt) {
