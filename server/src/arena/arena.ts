@@ -28,7 +28,7 @@ export class Arena {
     for (let row = 0; row < nrows; row++) {
       for (let col = 0; col < ncols; col++) {
         const tile = tilemap.tiles[row * ncols + col]
-        if (!Tilemap.coversBackground(tile)) {
+        if (Tilemap.needsFloorTile(tile)) {
           floorTiles.push(new TilePosition(col, row, center, center))
         }
         if (tile === Tile.Wall || tile === Tile.Boundary) {

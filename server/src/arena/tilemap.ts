@@ -4,11 +4,12 @@ import { UnreachableCaseError } from '../types'
 export enum Tile {
   /* 0 */ OutOfBounds,
   /* 1 */ Empty,
-  /* 2 */ Boundary,
-  /* 3 */ Wall,
-  /* 4 */ Player,
-  /* 5 */ Diamond,
-  /* 6 */ Medkit,
+  /* 2 */ Hole,
+  /* 3 */ Boundary,
+  /* 4 */ Wall,
+  /* 5 */ Player,
+  /* 6 */ Diamond,
+  /* 7 */ Medkit,
 }
 
 const BOUNDS_START = '('
@@ -19,6 +20,7 @@ const TileKeys = [
   BOUNDS_START,
   BOUNDS_END,
   EMPTY,
+  'x',
   '1',
   '2',
   'p',
@@ -34,6 +36,7 @@ const charToTile: Map<TileKey, Tile> = new Map([
   [BOUNDS_START, Tile.Boundary],
   [BOUNDS_END, Tile.Boundary],
   [EMPTY, Tile.Empty],
+  ['x', Tile.Hole],
   ['1', Tile.Player],
   ['2', Tile.Player],
   ['p', Tile.Player],
@@ -96,17 +99,18 @@ export class Tilemap {
     return new Tilemap(tiles, nrows, ncols)
   }
 
-  static coversBackground(tile: Tile): boolean {
+  static needsFloorTile(tile: Tile): boolean {
     switch (tile) {
       case Tile.OutOfBounds:
       case Tile.Boundary:
       case Tile.Wall:
-        return true
+      case Tile.Hole:
+        return false
       case Tile.Empty:
       case Tile.Player:
       case Tile.Diamond:
       case Tile.Medkit:
-        return false
+        return true
       default:
         throw new UnreachableCaseError(tile)
     }

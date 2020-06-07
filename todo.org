@@ -25,23 +25,6 @@ quick first
 
 ** Experience
 
-*** Background with Stars
-
-We currently show a Grid underneath the actual game. This should show a universe.
-The simple solution would be just to add a large image there, but that would increase game size.
-A better solution would be to randomly create stars on a black background, possibly also planets, using the planets package we use for level backgrounds.
-
-- [X] replace grid with black background
-- [X] generate and render stars
-- [X] create planets layer
-- [X] resize planets to not take too much space and fit best with the game (around tile size)
-- [X] add planet images to assets and attribute them
-- [X] walk through arena and randomly place nothing | one of 5 planet images in planets layer
-- [X] use two stars layers (one smaller stars, nearer larger stars)
-- [X] do the same for planets
-- [ ] support levels to have no floor tiles in the middle to get more of a star effect
-
-
 *** Sound Effects
 
 Use the ~audioplayers: ^0.15.1~ package to play sounds on supported platforms.
@@ -69,6 +52,23 @@ I see folders for all but ~web~, so not sure if it is really supported.
 - [[https://github.com/thlorenz/ufo_2d/blob/96bde3749da1102394b2b8dbec85435e6a9d818b/lib/audio/audio.dart][ufo_2d sounds relying on flame]]
 - [[https://github.com/flame-engine/flame/blob/master/lib/audio_pool.dart][flame: audio_pool.dart]]
 - [[https://github.com/flame-engine/flame/blob/master/lib/flame_audio.dart][flame: audio.dart]]
+
+
+*** DONE Background with Stars
+
+We currently show a Grid underneath the actual game. This should show a universe.
+The simple solution would be just to add a large image there, but that would increase game size.
+A better solution would be to randomly create stars on a black background, possibly also planets, using the planets package we use for level backgrounds.
+
+- [X] replace grid with black background
+- [X] generate and render stars
+- [X] create planets layer
+- [X] resize planets to not take too much space and fit best with the game (around tile size)
+- [X] add planet images to assets and attribute them
+- [X] walk through arena and randomly place nothing | one of 5 planet images in planets layer
+- [X] use two stars layers (one smaller stars, nearer larger stars)
+- [X] do the same for planets
+- [X] support levels to have no floor tiles in the middle to get more of a star effect
 
 
 ** Pickups
@@ -106,12 +106,17 @@ Another way is to make bullet packets appear randomly, i.e. not only the ones de
 
 ** Fixes
 
-*** DONE Focus on Exit Button Issue
+*** Web Performance
 
-The exit button gets focused when entering a game and activates when the space bar is hit. We need to find a way to prevent that.
-This seems to only happen when using arrow keys. It seems we need to do either of the two below points and/or eat up the arrow keys or somehow prevent the hud from accepting keyboard input.
+Performance in the browser is lacking since the five level parallax effect was introduced.
+It is to the point of unplayability.
+The browser also doesn't support recording a picture.
 
-Fixed by replacing ~IconButton~ with a ~GestureDetector~ with an ~Icon~. The ~GestureDetector~ doesn't receive focus via the keyboard.
+Things are much better inside the iframe since that limits the size of the game.
+Improvements could be had by either limiting the density of stars and planets drastically and/or only drawing parts of the effect in the browser.
+
+In the worst case we'll have to disable that effect in the browser all together.
+Alternatively just remove the full screen link to force people to play inside the iframe, which I did for now.
 
 *** Ghost in Single Player Game
 
@@ -137,6 +142,13 @@ Since colission detection is simple it misses that player flew thru the wall.
 
 Fix1 is some work but catches flying thru any kind of wall as well.
 Fix2 is very simple to implement (in minutes) but would theoretically allow players to jump across walls that are in bounds.
+
+*** DONE Focus on Exit Button Issue
+
+The exit button gets focused when entering a game and activates when the space bar is hit. We need to find a way to prevent that.
+This seems to only happen when using arrow keys. It seems we need to do either of the two below points and/or eat up the arrow keys or somehow prevent the hud from accepting keyboard input.
+
+Fixed by replacing ~IconButton~ with a ~GestureDetector~ with an ~Icon~. The ~GestureDetector~ doesn't receive focus via the keyboard.
 
 *** DONE Bullet Killing Shooter Problem
 
