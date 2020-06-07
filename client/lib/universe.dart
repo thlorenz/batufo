@@ -120,6 +120,7 @@ class Universe {
       playerIndex: playerIndex,
       onGameStateUpdated: _onGameStateUpdated,
       onScored: _onScored,
+      parallaxProps: ParallaxProps.forPlatForm(platform),
     );
     _addStatsState(StatsState.initial(arena.players.length));
     final state = UserGameCreatedState.from(_userState$.value, game);

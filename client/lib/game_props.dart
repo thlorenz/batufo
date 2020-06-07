@@ -1,4 +1,62 @@
+import 'package:batufo/setup/config.dart';
+import 'package:flutter/foundation.dart';
+
 const PORT = 2222;
+
+class ParallaxProps {
+  final int starsBackDensity;
+  final int starsMiddleDensity;
+  final int starsFrontDensity;
+  final int planetsBackDensity;
+  final int planetsFrontDensity;
+
+  ParallaxProps({
+    @required this.starsBackDensity,
+    @required this.starsMiddleDensity,
+    @required this.starsFrontDensity,
+    @required this.planetsBackDensity,
+    @required this.planetsFrontDensity,
+  });
+
+  factory ParallaxProps.forDesktop() {
+    return ParallaxProps(
+        starsBackDensity: 22,
+        starsMiddleDensity: 6,
+        starsFrontDensity: 2,
+        planetsBackDensity: 10,
+        planetsFrontDensity: 2);
+  }
+
+  factory ParallaxProps.forMobile() {
+    return ParallaxProps.forDesktop();
+  }
+
+  factory ParallaxProps.forWeb() {
+    return ParallaxProps(
+        starsBackDensity: 8,
+        starsMiddleDensity: 3,
+        starsFrontDensity: 1,
+        planetsBackDensity: 4,
+        planetsFrontDensity: 1);
+  }
+
+  factory ParallaxProps.forPlatForm(PlatformType platform) {
+    switch (platform) {
+      case PlatformType.MacOS:
+      case PlatformType.Linux:
+      case PlatformType.Windows:
+      case PlatformType.Fuchsia:
+        return ParallaxProps.forDesktop();
+      case PlatformType.Android:
+      case PlatformType.IOS:
+        return ParallaxProps.forMobile();
+      case PlatformType.Web:
+        return ParallaxProps.forWeb();
+      default:
+        return ParallaxProps.forMobile();
+    }
+  }
+}
 
 class GameProps {
   static const gesturePlayerRotationFactor = 0.04;

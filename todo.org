@@ -18,11 +18,6 @@ It'd be nice to collect stats about which device/OS players are using when playi
 
 * Client Side
 
-quick first
-
-- show platform on play request as part of log message
-- deploy new version of game that sends platform and redeploy server
-
 ** Experience
 
 *** Sound Effects
@@ -117,6 +112,8 @@ Improvements could be had by either limiting the density of stars and planets dr
 
 In the worst case we'll have to disable that effect in the browser all together.
 Alternatively just remove the full screen link to force people to play inside the iframe, which I did for now.
+
+Improved by lowering density of stars + planets via parallax options for web.
 
 *** Ghost in Single Player Game
 

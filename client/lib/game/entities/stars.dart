@@ -83,6 +83,7 @@ class Stars {
   }
 
   void resize(Size size) {
+    if (density == 0) return;
     final fullWidth = size.width * lerpFactor;
     final fullHeight = size.height * lerpFactor;
     final fullSize = Size(fullWidth, fullHeight);
@@ -91,6 +92,7 @@ class Stars {
   }
 
   void render(Canvas canvas, Size size) {
+    if (density == 0) return;
     if (enableRecording) {
       canvas.drawPicture(_recordedPicture);
     } else {

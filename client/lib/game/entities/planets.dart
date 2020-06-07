@@ -66,20 +66,22 @@ class Planets {
     }
   }
 
-  void resize(Size size) {
-    final fullWidth = size.width * lerpFactor;
-    final fullHeight = size.height * lerpFactor;
-    final fullSize = Size(fullWidth, fullHeight);
-    _initPlanets(fullSize);
-  }
-
   void _renderPlanet(Canvas canvas, Planet planet) {
     final worldOffset = planet.tilePosition.toWorldOffset();
     final rect = Rect.fromCircle(center: worldOffset, radius: planet.radius);
     planet.sprite.renderRect(canvas, rect);
   }
 
+  void resize(Size size) {
+    if (density == 0) return;
+    final fullWidth = size.width * lerpFactor;
+    final fullHeight = size.height * lerpFactor;
+    final fullSize = Size(fullWidth, fullHeight);
+    _initPlanets(fullSize);
+  }
+
   void render(Canvas canvas, Size size) {
+    if (density == 0) return;
     for (final planet in _planets) _renderPlanet(canvas, planet);
   }
 }
