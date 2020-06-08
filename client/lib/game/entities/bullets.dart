@@ -1,5 +1,6 @@
 import 'dart:ui' show Canvas, Offset, Paint;
 
+import 'package:batufo/game/sound/sound.dart';
 import 'package:batufo/game/sprites/bullet_explosion_sprite.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:flutter/foundation.dart';
@@ -25,9 +26,14 @@ class Bullets {
   })  : paint = paint ?? _bulletPaint,
         _explodingBullets = <BulletExplosionSprite>[];
 
+  void _playBulletHitWallAudio() {
+    Sound.instance.playBulletHitWall();
+  }
+
   void updateSprites(Iterable<BulletModel> bullets, double dt) {
     for (final bullet in bullets) {
       if (bullet.collided) {
+        _playBulletHitWallAudio();
         _explodingBullets
             .add(_createBulletExplosion(bullet.tilePosition.toWorldOffset()));
       }

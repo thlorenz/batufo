@@ -6,6 +6,7 @@ import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/engine/hit_tiles.dart';
 import 'package:batufo/engine/physics.dart';
 import 'package:batufo/engine/tile_position.dart';
+import 'package:batufo/game/sound/sound.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/types.dart';
 import 'package:flutter/foundation.dart';
@@ -42,10 +43,18 @@ class PlayerController {
     }
 
     final check = _checkWallCollision(player, dt);
+    if (check.second > 0) _playUfoHitWallAudio();
     player
       ..velocity = _normalizeVelocity(check.first)
       ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt)
       ..health = max(player.health - check.second, 0.0);
+  }
+
+  void _playUfoHitWallAudio() {
+    // TODO: this should not be inside the controller, instead
+    // record this on player model including force of hit and
+    // play audio with volume adjusted to force
+    Sound.instance.playUfoHitWall();
   }
 
   void cleanup(PlayerModel player) {
