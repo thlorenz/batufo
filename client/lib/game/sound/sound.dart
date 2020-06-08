@@ -7,7 +7,6 @@ import 'package:batufo/game/assets/audio_asset.dart';
 class Sound {
   final Audio _audio;
   final Map<String, AudioAsset> _audioAssets;
-  AudioPlayer _thrust;
 
   Sound(this._audioAssets) : _audio = Audio.instance;
 
@@ -15,19 +14,34 @@ class Sound {
     return _audio.loadAll(_audioAssets.values.map((x) => x.audioPath).toList());
   }
 
-  Future<void> playThrust() async {
-    if (_thrust != null) {
-      await _thrust.stop();
-      await _thrust.seek(Duration.zero);
-      await _thrust.resume();
-    } else {
-      _thrust = await _audio.playSound(_audioAssets['thrust'].audioPath);
-    }
+  Future<AudioPlayer> playThrust() {
+    return _audio.playSound(
+      _audioAssets['thrust'].audioPath,
+      volume: 0.4,
+    );
   }
 
-  Future<void> stopThrust() {
-    if (_thrust == null) return Future.value();
-    return _thrust.stop();
+  Future<AudioPlayer> playBullet() {
+    return _audio.playSound(
+      _audioAssets['bullet'].audioPath,
+      volume: 0.6,
+    );
+  }
+
+  // TODO: adjust volume depending on distance of hero player
+  Future<AudioPlayer> playBulletHitWall() {
+    return _audio.playSound(
+      _audioAssets['bullet-hit-wall'].audioPath,
+      volume: 0.4,
+    );
+  }
+
+  // TODO: take power with which we hit the wall into acoount
+  Future<AudioPlayer> playUfoHitWall() {
+    return _audio.playSound(
+      _audioAssets['ufo-hit-wall'].audioPath,
+      volume: 0.6,
+    );
   }
 
   static Sound _instance;

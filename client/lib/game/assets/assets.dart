@@ -49,7 +49,10 @@ class _Assets {
     cols: 1,
   );
 
-  final AudioAsset audioThrust = AudioAsset('audio/thrust.mp3');
+  final AudioAsset audioThrust = AudioAsset('audio/thrust.wav');
+  final AudioAsset audioBullet = AudioAsset('audio/bullet.wav');
+  final AudioAsset audioBulletHitWall = AudioAsset('audio/bullet-hit-wall.wav');
+  final AudioAsset audioUfoHitWall = AudioAsset('audio/ufo-hit-wall.wav');
 }
 
 final _Assets assets = _Assets();

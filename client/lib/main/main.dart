@@ -34,8 +34,12 @@ Future<void> mainEntry({
   ]);
 
   if (config.platform != PlatformType.Web) {
-    await Sound.create({'thrust': assets.audioThrust});
-    await Sound.instance.playThrust();
+    await Sound.create({
+      'thrust': assets.audioThrust,
+      'bullet': assets.audioBullet,
+      'bullet-hit-wall': assets.audioBulletHitWall,
+      'ufo-hit-wall': assets.audioUfoHitWall,
+    });
   }
 
   final universe = Universe.create(
