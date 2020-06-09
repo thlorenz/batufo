@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:batufo/arena/arena.dart';
+import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/client_game.dart';
 import 'package:batufo/game/inputs/input_processor.dart';
+import 'package:batufo/game/sound/sound.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/player_model.dart';
@@ -28,6 +30,7 @@ class Universe {
   final Duration clientPlayerUpdateThrottle;
   final Duration statsThrottle;
   final InputProcessor inputProcessor;
+  final SoundController soundController;
   Client client;
 
   final _userState$ = BehaviorSubject<UserState>();
@@ -41,6 +44,7 @@ class Universe {
 
   Universe._({
     @required this.platform,
+    @required this.soundController,
     @required String serverHost,
     @required this.appTitle,
     @required this.inputProcessor,
@@ -67,10 +71,13 @@ class Universe {
     @required PlatformType platform,
     @required String appTitle,
     @required String serverHost,
+    @required Sound sound,
     Duration clientPlayerUpdateThrottle = const Duration(milliseconds: 100),
     Duration statsThrottle = const Duration(milliseconds: 20),
   }) {
+    final soundController = SoundController(sound);
     InputProcessor.create(
+      soundController: soundController,
       keyboardRotationFactor: GameProps.keyboardPlayerRotationFactor,
       keyboardThrustForce: GameProps.playerThrustForce,
       timeBetweenThrusts: GameProps.timeBetweenThrustsMs,
@@ -78,6 +85,7 @@ class Universe {
     );
     return _instance = Universe._(
       appTitle: appTitle,
+      soundController: soundController,
       serverHost: serverHost,
       inputProcessor: InputProcessor.instance,
       clientPlayerUpdateThrottle: clientPlayerUpdateThrottle,
@@ -114,6 +122,7 @@ class Universe {
     WorldPosition.tileSize = arena.tileSize.toDouble();
     final game = ClientGame(
       arena: arena,
+      soundController: soundController,
       inputProcessor: inputProcessor,
       enableRecording: platform != PlatformType.Web,
       clientID: clientID,

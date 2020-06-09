@@ -5,6 +5,7 @@ import 'package:batufo/controllers/bullets_controller.dart';
 import 'package:batufo/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/controllers/helpers/colliders.dart';
 import 'package:batufo/controllers/player_controller.dart';
+import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/bullet_model.dart';
@@ -17,17 +18,19 @@ class GameController {
   final BulletsSpawner _bulletsSpawner;
   final void Function(int score) onScored;
   final int clientID;
+  final SoundController soundController;
+  final ClientGameState _gameState;
+  final Arena _arena;
+
   PlayerController _playerController;
   BulletsController _bulletsController;
-  final ClientGameState _gameState;
-
-  final Arena _arena;
 
   GameController(
     this._arena,
     this._gameState,
     this.onScored,
     this.clientID,
+    this.soundController,
   ) : _bulletsSpawner = BulletsSpawner(
           bulletForce: GameProps.bulletForce,
           playerSize: GameProps.playerSizeFactor * _arena.tileSize,
@@ -41,6 +44,7 @@ class GameController {
     );
 
     _playerController = PlayerController(
+      soundController: soundController,
       hitSize: playerSize,
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,
       wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
@@ -50,6 +54,7 @@ class GameController {
 
     _bulletsController = BulletsController(
       _gameState.bullets,
+      soundController: soundController,
       bulletCollidingAt: colliders.bulletCollidingAt,
       onPlayerHitByBullet: _onPlayerHitByBullet,
       tileSize: _arena.tileSize.toDouble(),

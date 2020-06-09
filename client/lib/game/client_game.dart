@@ -4,6 +4,7 @@ import 'dart:ui' show Canvas, Offset, Paint, Rect, Size;
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/controllers/game_controller.dart';
 import 'package:batufo/controllers/helpers/player_status.dart';
+import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/game.dart';
 import 'package:batufo/engine/world_position.dart';
@@ -43,6 +44,7 @@ class ClientGame extends Game {
   final Planets _planetsBack;
   final Planets _planetsFront;
   final InputProcessor inputProcessor;
+  final SoundController soundController;
   final int clientID;
   final ClientPlayerUpdate _clientPlayerUpdate;
   final ClientSpawnedBulletUpdate _clientSpawnedBulletUpdate;
@@ -80,6 +82,7 @@ class ClientGame extends Game {
     @required this.arena,
     @required this.clientID,
     @required this.onGameStateUpdated,
+    @required this.soundController,
     @required void Function(int score) onScored,
     @required int playerIndex,
     @required ParallaxProps parallaxProps,
@@ -153,6 +156,7 @@ class ClientGame extends Game {
       _heroOnlyGameState(playerIndex),
       onScored,
       clientID,
+      soundController,
     );
   }
 
@@ -300,6 +304,8 @@ class ClientGame extends Game {
       _players[entry.key].render(canvas, entry.value);
     }
     _bullets.render(canvas, gameState.bullets);
+
+    soundController.processSounds();
   }
 
   void cleanup() {

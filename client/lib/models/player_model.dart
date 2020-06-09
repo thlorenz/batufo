@@ -9,11 +9,14 @@ import 'package:flutter/foundation.dart';
 const int VELOCITY_FACTOR = 1000;
 
 class PlayerModel {
+  // State
   int id;
   TilePosition tilePosition;
   Offset velocity;
   double angle;
   double health;
+
+  // Events
   bool appliedThrust;
   bool shotBullet;
   PlayerModel({

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/game/inputs/input_types.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
@@ -11,11 +12,13 @@ class InputProcessor {
   final double keyboardRotationFactor;
   final double timeBetweenThrusts;
   final double timeBetweenBullets;
+  final SoundController soundController;
 
   double timeSinceLastThrust;
   double timeSinceLastBullet;
 
   InputProcessor._({
+    @required this.soundController,
     @required this.keyboardThrustForce,
     @required this.keyboardRotationFactor,
     @required this.timeBetweenThrusts,
@@ -61,6 +64,7 @@ class InputProcessor {
     // bullets
     if (canShootBullet) {
       if (keys.contains(GameKey.Fire) || gestures.fire) {
+        soundController.playerFiredBullet();
         player.shotBullet = true;
         timeSinceLastBullet = 0.0;
       }
@@ -68,11 +72,8 @@ class InputProcessor {
 
     // thrust
     if (canApplyThrust) {
-      if (keys.contains(GameKey.Up)) {
-        player.appliedThrust = true;
-        timeSinceLastThrust = 0.0;
-      }
-      if (gestures.thrust != 0.0) {
+      if (keys.contains(GameKey.Up) || gestures.thrust != 0.0) {
+        soundController.playerAppliedThrust();
         player.appliedThrust = true;
         timeSinceLastThrust = 0.0;
       }
@@ -93,6 +94,7 @@ class InputProcessor {
   static InputProcessor get instance => _instance;
 
   static void create({
+    @required SoundController soundController,
     @required double keyboardThrustForce,
     @required double keyboardRotationFactor,
     @required double timeBetweenThrusts,
@@ -100,6 +102,7 @@ class InputProcessor {
   }) {
     assert(_instance == null, 'input processor should only be created once');
     _instance = InputProcessor._(
+      soundController: soundController,
       keyboardThrustForce: keyboardThrustForce,
       keyboardRotationFactor: keyboardRotationFactor,
       timeBetweenThrusts: timeBetweenThrusts,

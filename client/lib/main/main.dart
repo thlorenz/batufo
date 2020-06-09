@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 Future<void> mainEntry({
   @required String serverIP,
   @required Config config,
+  @required Sound sound,
   Level logLevel = Level.FINE,
 }) async {
   Log.activateConsole();
@@ -33,19 +34,11 @@ Future<void> mainEntry({
     assets.skull.imagePath,
   ]);
 
-  if (config.platform != PlatformType.Web) {
-    await Sound.create({
-      'thrust': assets.audioThrust,
-      'bullet': assets.audioBullet,
-      'bullet-hit-wall': assets.audioBulletHitWall,
-      'ufo-hit-wall': assets.audioUfoHitWall,
-    });
-  }
-
   final universe = Universe.create(
     platform: config.platform,
     appTitle: config.title,
     serverHost: serverIP,
+    sound: sound,
     clientPlayerUpdateThrottle: Duration(milliseconds: 100),
   );
   runApp(MaterialApp(

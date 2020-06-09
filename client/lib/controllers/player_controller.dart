@@ -3,16 +3,17 @@ import 'dart:ui' show Offset;
 
 import 'package:batufo/controllers/helpers/math_utils.dart';
 import 'package:batufo/controllers/helpers/player_status.dart';
+import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/engine/hit_tiles.dart';
 import 'package:batufo/engine/physics.dart';
 import 'package:batufo/engine/tile_position.dart';
-import 'package:batufo/game/sound/sound.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/types.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
 class PlayerController {
+  final SoundController soundController;
   final TilePositionPredicate playerCollidingAt;
   final double wallHitSlowdown;
   final double wallHitHealthTollFactor;
@@ -20,6 +21,7 @@ class PlayerController {
   final double thrustForce;
 
   const PlayerController({
+    @required this.soundController,
     @required this.hitSize,
     @required this.playerCollidingAt,
     @required this.wallHitSlowdown,
@@ -40,21 +42,20 @@ class PlayerController {
         thrustForce,
       );
       player.velocity = _normalizeVelocity(velocity);
+      soundController.playerAppliedThrust();
     }
 
     final check = _checkWallCollision(player, dt);
-    if (check.second > 0) _playUfoHitWallAudio();
+    double healthToll = 0;
+    if (check.second > 0) {
+      soundController.playerHitWallWithForce(check.second);
+      healthToll = check.second * wallHitHealthTollFactor;
+    }
     player
       ..velocity = _normalizeVelocity(check.first)
       ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt)
-      ..health = max(player.health - check.second, 0.0);
-  }
-
-  void _playUfoHitWallAudio() {
-    // TODO: this should not be inside the controller, instead
-    // record this on player model including force of hit and
-    // play audio with volume adjusted to force
-    Sound.instance.playUfoHitWall();
+      ..health = max(player.health - healthToll, 0.0);
+    soundController.setPlayerPosition(player.tilePosition);
   }
 
   void cleanup(PlayerModel player) {
@@ -83,20 +84,18 @@ class PlayerController {
     final nextHit = getHitTiles(next.toWorldPosition(), hitSize);
 
     Tuple<Offset, double> hitOnAxisX() {
-      final healthToll =
-          playerModel.velocity.dx.abs() * wallHitHealthTollFactor;
+      final hitForce = playerModel.velocity.dx.abs();
       return Tuple(
         playerModel.velocity.scale(-wallHitSlowdown, wallHitSlowdown),
-        healthToll,
+        hitForce,
       );
     }
 
     Tuple<Offset, double> hitOnAxisY() {
-      final healthToll =
-          playerModel.velocity.dy.abs() * wallHitHealthTollFactor;
+      final hitForce = playerModel.velocity.dy.abs();
       return Tuple(
         playerModel.velocity.scale(wallHitSlowdown, -wallHitSlowdown),
-        healthToll,
+        hitForce,
       );
     }
 

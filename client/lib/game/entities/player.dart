@@ -3,7 +3,6 @@ import 'dart:ui' show Canvas, Offset, Paint, PaintingStyle, Rect;
 import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/world_position.dart';
-import 'package:batufo/game/sound/sound.dart';
 import 'package:batufo/game/sprites/thrust_sprite.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/player_model.dart';
@@ -42,12 +41,6 @@ class Player {
     if (PlayerStatus.isDead(player)) return;
     if (player.appliedThrust) thrustSprite.reset();
     thrustSprite.update(dt);
-    _updateAudio(player);
-  }
-
-  void _updateAudio(PlayerModel player) {
-    if (player.shotBullet) Sound.instance.playBullet();
-    if (player.appliedThrust) Sound.instance.playThrust();
   }
 
   void render(Canvas canvas, PlayerModel player) {

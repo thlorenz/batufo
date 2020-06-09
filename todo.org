@@ -4,6 +4,12 @@
 
 Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #TypeScript
 
+* Fixes
+
+- [ ] dispose picture when creating a new one
+- [ ] alternatively test perf improvements when storing and ~Image~ vs. a ~Picture~ - do for stars only first [[https://github.com/flutter/flutter/issues/41731][related issue]]
+
+
 * Server Side
 
 ** DONE Device Stats
@@ -296,6 +302,10 @@ However when we hit someone else we score. We calculate prospected health and if
 
  
 * WAIT Nice to Have
+
+** WAIT Background Music
+
+So far [[https://www.youtube.com/watch?v=thCE35jUgA8&feature=youtu.be][this song]] was recommended, but license is unclear.
 
 ** WAIT Visual Cues
 
