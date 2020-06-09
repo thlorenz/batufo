@@ -41,10 +41,10 @@ I see folders for all but ~web~, so not sure if it is really supported.
 - [X] ceate a ~Sounds~ class that exposes methods to play game specific sounds, i.e. not just a generic ~play~, but ~playBullet~
 - [X] pull in thrust sound from [[https://github.com/thlorenz/ufo_2d/tree/first-try/assets/audio][ufo_2d version]]
 - [X] pull [[https://github.com/thlorenz/ufo_2d/blob/96639f53290823e2bfdc53d270192279980682ce/assets/attribs.txt][attributions]] with it
-- [ ] implement thrust sound
-- [ ] implement shooting sound
-- [ ] implement sound when hitting a wall
-- [ ] implement sound when bullet explodes
+- [X] implement thrust sound
+- [X] implement shooting sound
+- [X] implement sound when hitting a wall
+- [X] implement sound when bullet explodes
 - [ ] add option to turn sound off
 
 
