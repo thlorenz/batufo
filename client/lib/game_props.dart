@@ -98,18 +98,20 @@ class GameProps {
   static const scoreOnHit = 100;
   static const scoreOnKill = 500;
 
+  static const platformLerp = 1.0;
   static const starsMiddleLerp = 0.15;
   static const starsFrontLerp = 0.15;
   static const planetsBackLerp = 0.15;
   static const planetsFrontLerp = 0.15;
 
-  static const starsMiddleLerpFactor = 1.0 + GameProps.starsMiddleLerp * 2.0;
+  static const platformLerpFactor = (1.0 + platformLerp) * 2.0;
+  static const starsMiddleLerpFactor = (1.0 + starsMiddleLerp) * 2.0;
   static const starsFrontLerpFactor =
-      GameProps.starsMiddleLerpFactor + GameProps.starsFrontLerp * 2.0;
+      starsMiddleLerpFactor + starsFrontLerp * 2.0;
   static const planetsBackLerpFactor =
-      GameProps.starsFrontLerpFactor + GameProps.planetsBackLerp * 2.0;
+      starsFrontLerpFactor + planetsBackLerp * 2.0;
   static const planetsFrontLerpFactor =
-      GameProps.planetsBackLerpFactor + GameProps.planetsFrontLerp * 2.0;
+      planetsBackLerpFactor + planetsFrontLerp * 2.0;
 
   static bool get soundEnabled => true;
   static const maxFiredBulletVolume = 0.8;

@@ -133,6 +133,7 @@ class ClientGame extends Game {
         ),
         _buildings = Buildings(
           floorTiles: arena.floorTiles,
+          lerpFactor: GameProps.platformLerpFactor,
           walls: arena.walls,
           tileSize: arena.tileSize.toDouble(),
           isFloorActive: GameProps.renderFloor,
@@ -256,7 +257,7 @@ class ClientGame extends Game {
     }
 
     canvas.translate(-_camera.dx, -_camera.dy);
-    _buildings.render(canvas);
+    _buildings.render(canvas, _size);
   }
 
   void _renderGrid(Canvas canvas) {
@@ -325,6 +326,7 @@ class ClientGame extends Game {
     _starsFront.resize(size);
     _planetsBack.resize(size);
     _planetsFront.resize(size);
+    _buildings.resize(size);
   }
 
   void _cameraFollow(WorldPosition wp, double dt) {
@@ -333,7 +335,7 @@ class ClientGame extends Game {
     final centerScreen = Offset(_size.width / 2, _size.height / 2);
     final moved = Offset(pos.dx - centerScreen.dx, pos.dy - centerScreen.dy);
 
-    final lerp = min(0.0025 * dt, 1.0);
+    final lerp = min(0.0025 * dt, GameProps.platformLerp);
     final dx = (moved.dx - _camera.dx) * lerp;
     final dy = (moved.dy - _camera.dy) * lerp;
     _camera = _camera.translate(dx, dy);

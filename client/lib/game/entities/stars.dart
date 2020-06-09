@@ -1,6 +1,7 @@
-import 'dart:ui' show Canvas, Paint, Picture, PictureRecorder;
+import 'dart:ui' show Canvas, Paint;
 
 import 'package:batufo/engine/tile_position.dart';
+import 'package:batufo/game/entities/recordable.dart';
 import 'package:batufo/util/math.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors, PaintingStyle, Size;
@@ -11,7 +12,7 @@ class Star {
   const Star(this.tilePosition, this.radius);
 }
 
-class Stars {
+class Stars extends Recordable {
   final double lerpFactor;
   final int density;
   final double _tileSize;
@@ -22,14 +23,12 @@ class Stars {
   final double minRadius;
   final double maxRadius;
   final RandomNumber _rnd;
-  final bool enableRecording;
-
-  Picture _recordedPicture;
+  final bool _skipRender;
 
   Stars(
     this._tileSize, {
     @required this.lerpFactor,
-    @required this.enableRecording,
+    @required bool enableRecording,
     @required this.minRadius,
     @required this.maxRadius,
     @required this.density,
@@ -38,7 +37,11 @@ class Stars {
           ..style = PaintingStyle.fill,
         _rnd = RandomNumber(),
         _tileRangeMin = -(_tileSize / 2),
-        _tileRangeMax = _tileSize / 2;
+        _tileRangeMax = _tileSize / 2,
+        _skipRender = density <= 0,
+        super(enableRecording: enableRecording, sizeFactor: lerpFactor);
+
+  bool get skipRender => _skipRender;
 
   int _howManyStars() {
     const clustering = 1;
@@ -75,28 +78,11 @@ class Stars {
     canvas.drawCircle(worldOffset, star.radius, _starPaint);
   }
 
-  Picture _recordPicture(Size size) {
-    final recorder = PictureRecorder();
-    final canvas = Canvas(recorder);
-    for (final star in _stars) _renderStar(canvas, star);
-    return recorder.endRecording();
-  }
-
-  void resize(Size size) {
-    if (density == 0) return;
-    final fullWidth = size.width * lerpFactor;
-    final fullHeight = size.height * lerpFactor;
-    final fullSize = Size(fullWidth, fullHeight);
+  void resizeScene(Size fullSize) {
     _initStars(fullSize);
-    if (enableRecording) _recordedPicture = _recordPicture(fullSize);
   }
 
-  void render(Canvas canvas, Size size) {
-    if (density == 0) return;
-    if (enableRecording) {
-      canvas.drawPicture(_recordedPicture);
-    } else {
-      for (final star in _stars) _renderStar(canvas, star);
-    }
+  void renderScene(Canvas canvas, Size size) {
+    for (final star in _stars) _renderStar(canvas, star);
   }
 }
