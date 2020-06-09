@@ -42,8 +42,8 @@ class SoundController {
 
   void playerHitWallWithForce(TilePosition playerPosition, double force) {
     if (!GameProps.soundEnabled) return;
-    final distance = _distanceToPlayer(playerPosition);
-    final fullForceVolume = audibleDistanceFactor / distance;
+    final distance = min(_distanceToPlayer(playerPosition), 1.0);
+    final fullForceVolume = min(audibleDistanceFactor / distance, 1.0);
     final volume = min(
       fullForceVolume * force,
       GameProps.maxPlayerHitWallVolume,
