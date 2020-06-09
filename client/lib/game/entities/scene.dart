@@ -29,6 +29,7 @@ abstract class Scene {
 
     if (enableRecording) {
       _recordedImage = null;
+      _recordedPicture?.dispose();
       _recordedPicture = _recordPicture(fullSize);
       _recordedPicture
           .toImage(fullWidth.ceil(), fullHeight.ceil())
