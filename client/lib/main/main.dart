@@ -34,6 +34,8 @@ Future<void> mainEntry({
     assets.skull.imagePath,
   ]);
 
+  sound.disableLog();
+
   final universe = Universe.create(
     platform: config.platform,
     appTitle: config.title,

@@ -43,6 +43,10 @@ class EnabledSound implements Sound {
     );
   }
 
+  void disableLog() {
+    _audio.disableLog();
+  }
+
   static EnabledSound _instance;
   static Sound get instance => _instance;
   static Future<Sound> create(Map<String, AudioAsset> audioAssets) async {

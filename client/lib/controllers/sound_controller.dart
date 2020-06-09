@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game/sound/sound.dart';
+import 'package:batufo/game_props.dart';
 import 'package:batufo/models/sound_model.dart';
+
+// final _log = Log<SoundController>();
 
 class SoundController {
   final Sound _sound;
@@ -18,19 +23,25 @@ class SoundController {
   }
 
   void playerAppliedThrust() {
-    _soundModel.playerAppliedThrustVolume = 0.4;
+    _soundModel.playerAppliedThrustVolume = GameProps.appliedThrustVolume;
   }
 
   void bulletExplodedAt(TilePosition tilePosition) {
     assert(_soundModel.playerPosition != null,
         'need player position to calculate explosion volume');
-    // TODO: calculate volume depending on how far away from player
-    _soundModel.bulletExplodedVolume = 1.0;
+    final player = _soundModel.playerPosition.toWorldOffset();
+    final bullet = tilePosition.toWorldOffset();
+    final diff = player - bullet;
+    final distance = diff.distanceSquared;
+    final volume = min(60e3 / distance, GameProps.maxBulletExplodedVolume);
+    if (volume < 0.01) return;
+    _soundModel.bulletExplodedVolume = volume;
   }
 
   void playerHitWallWithForce(double force) {
-    // TODO: calculate volume from health toll
-    _soundModel.playerHitWallVolume = 1.0;
+    final volume = min(force, GameProps.maxPlayerHitWallVolume);
+    if (volume < 0.01) return;
+    _soundModel.playerHitWallVolume = volume;
   }
 
   void processSounds() {
