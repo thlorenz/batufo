@@ -67,7 +67,7 @@ class GameController {
     final players = _gameState.players;
     _log.finest('game loop ${players.length} players');
     for (final player in players.values) {
-      _playerController.update(dt, player);
+      _playerController.update(dt, player, player.id == clientID);
       if (player.shotBullet) _spawnBullet(player);
     }
     _bulletsController.update(dt, _gameState.players.values);

@@ -32,6 +32,7 @@ class PlayerController {
   void update(
     double dt,
     PlayerModel player,
+    bool isHero,
   ) {
     if (PlayerStatus.isDead(player)) return;
 
@@ -48,14 +49,17 @@ class PlayerController {
     final check = _checkWallCollision(player, dt);
     double healthToll = 0;
     if (check.second > 0) {
-      soundController.playerHitWallWithForce(check.second);
+      soundController.playerHitWallWithForce(player.tilePosition, check.second);
       healthToll = check.second * wallHitHealthTollFactor;
     }
     player
       ..velocity = _normalizeVelocity(check.first)
       ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt)
       ..health = max(player.health - healthToll, 0.0);
-    soundController.setPlayerPosition(player.tilePosition);
+
+    if (isHero) {
+      soundController.setPlayerPosition(player.tilePosition);
+    }
   }
 
   void cleanup(PlayerModel player) {

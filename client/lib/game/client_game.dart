@@ -196,6 +196,11 @@ class ClientGame extends Game {
   }
 
   void updateBullets(ClientSpawnedBulletUpdate update) {
+    // this method is invoked for bullets spawned by opponents
+    // bullets of the hero are handled inside InputProcessor
+    soundController.playerFiredBullet(
+      bulletPosition: update.spawnedBullet.tilePosition,
+    );
     _gameController.addBullet(update.spawnedBullet);
   }
 

@@ -7,6 +7,8 @@ import 'package:batufo/models/sound_model.dart';
 
 // final _log = Log<SoundController>();
 
+const audibleDistanceFactor = 60e3;
+
 class SoundController {
   final Sound _sound;
   final SoundModel _soundModel;
@@ -17,29 +19,35 @@ class SoundController {
     _soundModel.playerPosition = position;
   }
 
-  void playerFiredBullet({TilePosition position}) {
-    _soundModel.playerFiredBulletVolume =
-        position == null ? 0.8 : _firedBulletVolumeFromPosition(position);
+  void playerFiredBullet({TilePosition bulletPosition}) {
+    if (!GameProps.soundEnabled) return;
+    _soundModel.playerFiredBulletVolume = bulletPosition == null
+        ? GameProps.maxFiredBulletVolume
+        : _firedBulletVolumeFromPosition(bulletPosition);
   }
 
   void playerAppliedThrust() {
+    if (!GameProps.soundEnabled) return;
     _soundModel.playerAppliedThrustVolume = GameProps.appliedThrustVolume;
   }
 
-  void bulletExplodedAt(TilePosition tilePosition) {
-    assert(_soundModel.playerPosition != null,
-        'need player position to calculate explosion volume');
-    final player = _soundModel.playerPosition.toWorldOffset();
-    final bullet = tilePosition.toWorldOffset();
-    final diff = player - bullet;
-    final distance = diff.distanceSquared;
-    final volume = min(60e3 / distance, GameProps.maxBulletExplodedVolume);
+  void bulletExplodedAt(TilePosition bulletPosition) {
+    if (!GameProps.soundEnabled) return;
+    final distance = _distanceToPlayer(bulletPosition);
+    final volume = min(
+        audibleDistanceFactor / distance, GameProps.maxBulletExplodedVolume);
     if (volume < 0.01) return;
     _soundModel.bulletExplodedVolume = volume;
   }
 
-  void playerHitWallWithForce(double force) {
-    final volume = min(force, GameProps.maxPlayerHitWallVolume);
+  void playerHitWallWithForce(TilePosition playerPosition, double force) {
+    if (!GameProps.soundEnabled) return;
+    final distance = _distanceToPlayer(playerPosition);
+    final fullForceVolume = audibleDistanceFactor / distance;
+    final volume = min(
+      fullForceVolume * force,
+      GameProps.maxPlayerHitWallVolume,
+    );
     if (volume < 0.01) return;
     _soundModel.playerHitWallVolume = volume;
   }
@@ -56,7 +64,19 @@ class SoundController {
     _soundModel.clear();
   }
 
-  double _firedBulletVolumeFromPosition(TilePosition position) {
-    return 0.4;
+  double _distanceToPlayer(TilePosition position) {
+    assert(_soundModel.playerPosition != null,
+        'need player position to calculate distance');
+    final player = _soundModel.playerPosition.toWorldOffset();
+    final wp = position.toWorldOffset();
+    final diff = player - wp;
+    return diff.distanceSquared;
+  }
+
+  double _firedBulletVolumeFromPosition(TilePosition bulletPosition) {
+    final distance = _distanceToPlayer(bulletPosition);
+    final volume =
+        min(audibleDistanceFactor / distance, GameProps.maxFiredBulletVolume);
+    return volume < 0.01 ? null : volume;
   }
 }

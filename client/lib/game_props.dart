@@ -111,6 +111,7 @@ class GameProps {
   static const planetsFrontLerpFactor =
       GameProps.planetsBackLerpFactor + GameProps.planetsFrontLerp * 2.0;
 
+  static bool get soundEnabled => true;
   static const maxFiredBulletVolume = 0.8;
   static const maxBulletExplodedVolume = 1.0;
   static const maxPlayerHitWallVolume = 0.8;
