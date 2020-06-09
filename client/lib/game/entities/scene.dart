@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 
 final _imagePaint = Paint();
 
-abstract class Recordable {
+abstract class Scene {
   final bool enableRecording;
   final double sizeFactor;
 
-  Recordable({@required this.enableRecording, this.sizeFactor = 1.0});
+  Scene({@required this.enableRecording, this.sizeFactor = 1.0});
 
   Picture _recordedPicture;
   Image _recordedImage;

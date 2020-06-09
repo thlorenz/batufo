@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game/entities/floor.dart';
-import 'package:batufo/game/entities/recordable.dart';
+import 'package:batufo/game/entities/scene.dart';
 import 'package:batufo/game/entities/walls.dart';
 import 'package:flutter/foundation.dart';
 
-class Buildings extends Recordable {
+class Buildings extends Scene {
   final Floor _floor;
   final Walls _walls;
 

@@ -117,9 +117,11 @@ class ClientGame extends Game {
           maxRadius: 1.2,
           density: parallaxProps.starsFrontDensity,
         ),
+        // Recording planets makes performance considerably worse
         _planetsBack = Planets(
           arena.tileSize.toDouble(),
           lerpFactor: GameProps.planetsBackLerpFactor,
+          enableRecording: false,
           minRadius: 0.05,
           maxRadius: 0.25,
           density: parallaxProps.planetsBackDensity,
@@ -127,6 +129,7 @@ class ClientGame extends Game {
         _planetsFront = Planets(
           arena.tileSize.toDouble(),
           lerpFactor: GameProps.planetsFrontLerpFactor,
+          enableRecording: false,
           minRadius: 0.3,
           maxRadius: 0.5,
           density: parallaxProps.planetsFrontDensity,

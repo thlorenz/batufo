@@ -1,7 +1,7 @@
 import 'dart:ui' show Canvas, Paint;
 
 import 'package:batufo/engine/tile_position.dart';
-import 'package:batufo/game/entities/recordable.dart';
+import 'package:batufo/game/entities/scene.dart';
 import 'package:batufo/util/math.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors, PaintingStyle, Size;
@@ -12,7 +12,7 @@ class Star {
   const Star(this.tilePosition, this.radius);
 }
 
-class Stars extends Recordable {
+class Stars extends Scene {
   final double lerpFactor;
   final int density;
   final double _tileSize;

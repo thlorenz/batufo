@@ -4,6 +4,7 @@ import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/sprite_sheet.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game/assets/assets.dart';
+import 'package:batufo/game/entities/scene.dart';
 import 'package:batufo/util/math.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +15,7 @@ class Planet {
   const Planet(this.tilePosition, this.sprite, this.radius);
 }
 
-class Planets {
-  final double lerpFactor;
+class Planets extends Scene {
   final int density;
   final double _tileSize;
   final double _tileRangeMin;
@@ -25,17 +25,23 @@ class Planets {
   final List<Planet> _planets = [];
   final RandomNumber _rnd;
   final SpriteSheet planets;
+  final bool _skipRender;
 
   Planets(
     this._tileSize, {
-    @required this.lerpFactor,
+    @required double lerpFactor,
+    @required bool enableRecording,
     @required this.minRadius,
     @required this.maxRadius,
     @required this.density,
   })  : _rnd = RandomNumber(),
         _tileRangeMin = -(_tileSize / 2),
         _tileRangeMax = _tileSize / 2,
-        planets = SpriteSheet.fromImageAsset(assets.planets);
+        planets = SpriteSheet.fromImageAsset(assets.planets),
+        _skipRender = density <= 0,
+        super(enableRecording: enableRecording, sizeFactor: lerpFactor);
+
+  bool get skipRender => _skipRender;
 
   Sprite _randomPlanetSprite() {
     // purposely generating a number too large most of the time which means we
@@ -72,16 +78,11 @@ class Planets {
     planet.sprite.renderRect(canvas, rect);
   }
 
-  void resize(Size size) {
-    if (density == 0) return;
-    final fullWidth = size.width * lerpFactor;
-    final fullHeight = size.height * lerpFactor;
-    final fullSize = Size(fullWidth, fullHeight);
+  void resizeScene(Size fullSize) {
     _initPlanets(fullSize);
   }
 
-  void render(Canvas canvas, Size size) {
-    if (density == 0) return;
+  void renderScene(Canvas canvas, Size size) {
     for (final planet in _planets) _renderPlanet(canvas, planet);
   }
 }
