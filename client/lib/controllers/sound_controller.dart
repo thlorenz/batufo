@@ -4,12 +4,14 @@ import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game/sound/sound.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/sound_model.dart';
+import 'package:batufo/universe.dart';
 
 // final _log = Log<SoundController>();
 
 const audibleDistanceFactor = 60e3;
 
 class SoundController {
+  Universe universe;
   final Sound _sound;
   final SoundModel _soundModel;
 
@@ -20,19 +22,19 @@ class SoundController {
   }
 
   void playerFiredBullet({TilePosition bulletPosition}) {
-    if (!GameProps.soundEnabled) return;
+    if (!universe.userSettings.soundEffectsEnabled) return;
     _soundModel.playerFiredBulletVolume = bulletPosition == null
         ? GameProps.maxFiredBulletVolume
         : _firedBulletVolumeFromPosition(bulletPosition);
   }
 
   void playerAppliedThrust() {
-    if (!GameProps.soundEnabled) return;
+    if (!universe.userSettings.soundEffectsEnabled) return;
     _soundModel.playerAppliedThrustVolume = GameProps.appliedThrustVolume;
   }
 
   void bulletExplodedAt(TilePosition bulletPosition) {
-    if (!GameProps.soundEnabled) return;
+    if (!universe.userSettings.soundEffectsEnabled) return;
     final distance = _distanceToPlayer(bulletPosition);
     final volume = min(
         audibleDistanceFactor / distance, GameProps.maxBulletExplodedVolume);
@@ -41,7 +43,7 @@ class SoundController {
   }
 
   void playerHitWallWithForce(TilePosition playerPosition, double force) {
-    if (!GameProps.soundEnabled) return;
+    if (!universe.userSettings.soundEffectsEnabled) return;
     final distance = min(_distanceToPlayer(playerPosition), 1.0);
     final fullForceVolume = min(audibleDistanceFactor / distance, 1.0);
     final volume = min(

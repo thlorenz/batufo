@@ -26,7 +26,15 @@ It'd be nice to collect stats about which device/OS players are using when playi
 
 ** Experience
 
-*** Sound Effects
+*** Screens
+
+- [ ] welcome screen
+- [ ] link from welcome to game
+- [ ] instruction screen
+- [ ] link from welcome to instruction
+- [ ] link at bottom of level screen to instruction
+
+*** DONE Sound Effects
 
 Use the ~audioplayers: ^0.15.1~ package to play sounds on supported platforms.
 It seems to support all platforms now, just that only [[https://github.com/luanpotter/audioplayers#supported-formats][specific formats are available]] for each.
@@ -45,10 +53,10 @@ I see folders for all but ~web~, so not sure if it is really supported.
 - [X] implement shooting sound
 - [X] implement sound when hitting a wall
 - [X] implement sound when bullet explodes
-- [ ] add option to turn sound off
+- [X] add option to turn sound off
 
 
-**** Resources
+**** DONE Resources
 
 - [[https://github.com/thlorenz/ufo_2d/blob/96bde3749da1102394b2b8dbec85435e6a9d818b/lib/audio/audio.dart][ufo_2d sounds relying on flame]]
 - [[https://github.com/flame-engine/flame/blob/master/lib/audio_pool.dart][flame: audio_pool.dart]]

@@ -16,6 +16,7 @@ import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart';
 import 'package:batufo/rpc/server_stats.dart';
 import 'package:batufo/setup/config.dart';
+import 'package:batufo/setup/user_settings.dart';
 import 'package:batufo/states/connection_state.dart';
 import 'package:batufo/states/stats_state.dart';
 import 'package:batufo/states/user_state.dart';
@@ -34,6 +35,7 @@ class Universe {
   Client client;
 
   final _userState$ = BehaviorSubject<UserState>();
+  final _userSettings$ = BehaviorSubject<UserSettings>();
   final _connectionState$ = BehaviorSubject<ConnectionState>();
   final _statsState$ = BehaviorSubject<StatsState>();
   final _serverStats$ = BehaviorSubject<ServerStats>();
@@ -56,15 +58,19 @@ class Universe {
   }
 
   UserState get initialUserState => UserRequestingInfoState();
+  UserSettings get initialUserSettings => UserSettings.initial();
   ConnectionState get initialConnectionState =>
       ConnectionState(ConnectionStates.Initializing);
   ServerStats get initialServerStats => ServerStats.empty();
 
   Stream<UserState> get userState$ => _userState$.stream.distinct();
+  Stream<UserSettings> get userSettings$ => _userSettings$.stream.distinct();
   Stream<ConnectionState> get connectionState$ => _connectionState$.distinct();
   Stream<StatsState> get statsState$ =>
       _statsState$.throttleTime(statsThrottle).distinct();
   Stream<ServerStats> get serverStats$ => _serverStats$.stream.distinct();
+
+  UserSettings get userSettings => _userSettings$.value ?? initialUserSettings;
 
   static Universe _instance;
   static Universe create({
@@ -83,7 +89,7 @@ class Universe {
       timeBetweenThrusts: GameProps.timeBetweenThrustsMs,
       timeBetweenBullets: GameProps.timeBetweenBulletsMs,
     );
-    return _instance = Universe._(
+    _instance = Universe._(
       appTitle: appTitle,
       soundController: soundController,
       serverHost: serverHost,
@@ -92,6 +98,8 @@ class Universe {
       statsThrottle: statsThrottle,
       platform: platform,
     );
+    soundController.universe = _instance;
+    return _instance;
   }
 
   static Universe get instance {
@@ -319,9 +327,20 @@ class Universe {
     _clientSpawnedBulletUpdateSub?.cancel();
   }
 
+  //
+  // UserSettings
+  //
+  void toggleSoundEffects() {
+    final current = _userSettings$.value ?? initialUserSettings;
+    final enabled = current.soundEffectsEnabled;
+    final settings = current.copyWith(soundEffectsEnabled: !enabled);
+    _userSettings$.add(settings);
+  }
+
   void dispose() {
     _disposeCurrentGame();
     if (!_userState$.isClosed) _userState$.close();
+    if (!_userSettings$.isClosed) _userSettings$.close();
     if (!_statsState$.isClosed) _statsState$.close();
     if (!_serverStats$.isClosed) _serverStats$.close();
   }

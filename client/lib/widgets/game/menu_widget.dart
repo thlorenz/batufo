@@ -1,4 +1,5 @@
 import 'package:batufo/rpc/server_stats.dart';
+import 'package:batufo/setup/user_settings.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/game/level_widget.dart';
@@ -29,7 +30,6 @@ class TotalStatsWidget extends StatelessWidget {
       decoration: TextDecoration.underline,
     );
     return Container(
-      color: Color(0x66000000),
       height: 40,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -62,12 +62,15 @@ class MenuWidget extends StatelessWidget {
     final levelBoxes = levels.map(_levelBox).toList();
     return Scaffold(
       backgroundColor: Colors.blueGrey,
+      appBar: AppBar(
+        backgroundColor: Colors.black.withAlpha(0x66),
+        title: TotalStatsWidget(
+            appTitle: universe.appTitle,
+            totalGames: serverStats.totalGames,
+            totalPlayers: serverStats.totalPlayers),
+      ),
       body: Column(
         children: [
-          TotalStatsWidget(
-              appTitle: universe.appTitle,
-              totalGames: serverStats.totalGames,
-              totalPlayers: serverStats.totalPlayers),
           Expanded(
             child: Container(
               child: ListView(
@@ -76,6 +79,37 @@ class MenuWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: StreamBuilder<UserSettings>(
+        stream: universe.userSettings$,
+        initialData: universe.initialUserSettings,
+        builder: (context, snapshot) {
+          final effectsIcon =
+              snapshot.hasData && snapshot.data.soundEffectsEnabled
+                  ? Icons.volume_up
+                  : Icons.volume_off;
+          return BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text('Home'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(effectsIcon),
+                title: Text('Effects'),
+              ),
+            ],
+            onTap: (idx) {
+              switch (idx) {
+                case 1:
+                  universe.toggleSoundEffects();
+                  break;
+                default:
+                  throw UnimplementedError('menu item $idx');
+              }
+            },
+          );
+        },
       ),
     );
   }
