@@ -47,10 +47,7 @@ Future<void> mainEntry({
       debugShowCheckedModeBanner: false,
       title: config.title,
       home: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.grey,
-          body: UniverseWidget(universe: universe),
-        ),
+        child: UniverseWidget(universe: universe),
       )));
 
   _log.info('Connecting to $serverIP');

@@ -13,21 +13,23 @@ class GameCreatedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      GameWidget(game),
-      Container(
-        color: Colors.black.withAlpha(0x55),
-        child: Center(
-          child: Text(
-            'Waiting for players ...',
-            style: TextStyle(
-              color: Colors.lightBlueAccent,
-              fontSize: 18,
+    return Scaffold(
+      body: Stack(children: [
+        GameWidget(game),
+        Container(
+          color: Colors.black.withAlpha(0x55),
+          child: Center(
+            child: Text(
+              'Waiting for players ...',
+              style: TextStyle(
+                color: Colors.lightBlueAccent,
+                fontSize: 18,
+              ),
             ),
           ),
         ),
-      ),
-      HudWidget(universe: universe),
-    ]);
+        HudWidget(universe: universe),
+      ]),
+    );
   }
 }

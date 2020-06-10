@@ -13,12 +13,14 @@ class GameRunningWidget extends StatelessWidget {
       : super();
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      GestureDetector(
-          onPanUpdate: GameGestures.instance.onPanUpdate,
-          onTap: GameGestures.instance.onTap,
-          child: GameWidget(game)),
-      HudWidget(universe: universe)
-    ]);
+    return Scaffold(
+      body: Stack(children: [
+        GestureDetector(
+            onPanUpdate: GameGestures.instance.onPanUpdate,
+            onTap: GameGestures.instance.onTap,
+            child: GameWidget(game)),
+        HudWidget(universe: universe)
+      ]),
+    );
   }
 }

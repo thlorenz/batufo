@@ -60,20 +60,23 @@ class MenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final levelBoxes = levels.map(_levelBox).toList();
-    return Column(
-      children: [
-        TotalStatsWidget(
-            appTitle: universe.appTitle,
-            totalGames: serverStats.totalGames,
-            totalPlayers: serverStats.totalPlayers),
-        Expanded(
-          child: Container(
-            child: ListView(
-              children: levelBoxes,
+    return Scaffold(
+      backgroundColor: Colors.blueGrey,
+      body: Column(
+        children: [
+          TotalStatsWidget(
+              appTitle: universe.appTitle,
+              totalGames: serverStats.totalGames,
+              totalPlayers: serverStats.totalPlayers),
+          Expanded(
+            child: Container(
+              child: ListView(
+                children: levelBoxes,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -20,14 +20,16 @@ class GameOutcomeWidget extends StatelessWidget {
   }) : super();
 
   Widget build(BuildContext context) {
-    return Stack(children: [
-      GameWidget(game),
-      Container(
-        color: Colors.black.withAlpha(0xAA),
-        child: Center(child: _overlay(context)),
-      ),
-      HudWidget(universe: universe)
-    ]);
+    return Scaffold(
+      body: Stack(children: [
+        GameWidget(game),
+        Container(
+          color: Colors.black.withAlpha(0xAA),
+          child: Center(child: _overlay(context)),
+        ),
+        HudWidget(universe: universe)
+      ]),
+    );
   }
 
   Widget _overlay(BuildContext context) {
