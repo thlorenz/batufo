@@ -28,11 +28,11 @@ It'd be nice to collect stats about which device/OS players are using when playi
 
 *** Screens
 
-- [ ] welcome screen
-- [ ] link from welcome to game
+- [X] welcome screen
+- [X] link from welcome to game
 - [ ] instruction screen
-- [ ] link from welcome to instruction
-- [ ] link at bottom of level screen to instruction
+- [X] link from welcome to instruction
+- [X] link at bottom of level screen to instruction
 
 *** DONE Sound Effects
 

@@ -1,3 +1,4 @@
+import 'package:batufo/widgets/screens/router.dart';
 import 'package:flutter/material.dart';
 
 class HomeWidget extends StatelessWidget {
@@ -5,10 +6,6 @@ class HomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
-      appBar: AppBar(
-        backgroundColor: Colors.black.withAlpha(0x66),
-        title: Text('batufo'),
-      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -36,19 +33,34 @@ class HomeWidget extends StatelessWidget {
             title: Text('Instructions'),
           ),
         ],
-        onTap: (idx) {},
+        onTap: (idx) {
+          switch (idx) {
+            case 0:
+              Navigator.of(context).pushReplacementNamed(Routes.UNIVERSE);
+              break;
+            case 1:
+              Navigator.of(context).pushNamed(Routes.INSTRUCTIONS);
+              break;
+            default:
+              throw UnimplementedError('menu item $idx');
+          }
+        },
       ),
     );
   }
 }
 
 class _GameStoryWidget extends StatelessWidget {
-  final defaultStyle = TextStyle(fontSize: 16, color: Colors.yellowAccent);
+  final defaultStyle = TextStyle(
+    fontSize: 16,
+    color: Colors.yellowAccent,
+    fontStyle: FontStyle.italic,
+  );
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.fromLTRB(10, 10, 10, 18),
       margin: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
         color: Colors.blue.withAlpha(0x66),
@@ -57,7 +69,10 @@ class _GameStoryWidget extends StatelessWidget {
       ),
       child: RichText(
         text: TextSpan(
-            style: defaultStyle.copyWith(fontSize: 24),
+            style: defaultStyle.copyWith(
+              fontSize: 24,
+              fontStyle: FontStyle.normal,
+            ),
             text: 'When the universe began ... ',
             children: [
               TextSpan(text: '\n\n'),
@@ -73,7 +88,6 @@ class _GameStoryWidget extends StatelessWidget {
                 text: 'You are one of them and know that you have'
                     ' exactly two options.',
               ),
-              TextSpan(style: defaultStyle, text: '\n'),
             ]),
       ),
     );

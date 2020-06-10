@@ -3,6 +3,7 @@ import 'package:batufo/setup/user_settings.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/game/level_widget.dart';
+import 'package:batufo/widgets/screens/router.dart';
 import 'package:flutter/material.dart';
 
 class TotalStatsWidget extends StatelessWidget {
@@ -96,13 +97,23 @@ class MenuWidget extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Icon(effectsIcon),
-                title: Text('Effects'),
+                title: Text('Sound Effects'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.help),
+                title: Text('Instructions'),
               ),
             ],
             onTap: (idx) {
               switch (idx) {
+                case 0:
+                  Navigator.of(context).pushReplacementNamed(Routes.HOME);
+                  break;
                 case 1:
                   universe.toggleSoundEffects();
+                  break;
+                case 2:
+                  Navigator.of(context).pushNamed(Routes.INSTRUCTIONS);
                   break;
                 default:
                   throw UnimplementedError('menu item $idx');
