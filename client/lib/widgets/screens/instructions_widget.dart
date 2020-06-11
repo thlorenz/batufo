@@ -157,8 +157,8 @@ class _Gesture extends StatelessWidget {
       : super();
 
   Widget build(BuildContext context) {
-    final Color textColor = Colors.white;
-    final Color iconColor = Colors.greenAccent;
+    const Color textColor = Colors.white;
+    const Color iconColor = Colors.greenAccent;
     return Column(
       children: [
         Icon(
