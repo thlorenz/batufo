@@ -30,9 +30,10 @@ It'd be nice to collect stats about which device/OS players are using when playi
 
 - [X] welcome screen
 - [X] link from welcome to game
-- [ ] instruction screen
+- [X] instruction screen
 - [X] link from welcome to instruction
 - [X] link at bottom of level screen to instruction
+- [ ] prettier connection screen
 
 *** DONE Sound Effects
 

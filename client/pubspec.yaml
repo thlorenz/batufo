@@ -4,7 +4,7 @@ description: UFO multi-player game using Flutter.
 version: 0.0.4
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -19,6 +19,8 @@ dependencies:
   http: ^0.12.1
 
   audioplayers: ^0.15.1
+
+  material_design_icons_flutter: ^4.0.5345
 
 dev_dependencies:
   flutter_test:

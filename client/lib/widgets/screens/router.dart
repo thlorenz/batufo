@@ -35,7 +35,9 @@ class Router {
       case Routes.INSTRUCTIONS:
         return MaterialPageRoute<void>(
           builder: (_) => SafeArea(
-            child: InstructionsWidget(),
+            child: InstructionsWidget(
+              platform: universe.platform,
+            ),
           ),
         );
       default:

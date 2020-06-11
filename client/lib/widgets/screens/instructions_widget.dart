@@ -1,13 +1,38 @@
 import 'dart:math';
 
 import 'package:batufo/game/assets/assets.dart';
+import 'package:batufo/setup/config.dart';
+import 'package:batufo/types.dart';
 import 'package:batufo/widgets/screens/router.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+Tuple<bool, bool> _controlsToShow(PlatformType platform) {
+  switch (platform) {
+    case PlatformType.MacOS:
+    case PlatformType.Linux:
+    case PlatformType.Windows:
+      return Tuple(true, false);
+    case PlatformType.Android:
+    case PlatformType.IOS:
+      return Tuple(false, true);
+    case PlatformType.Fuchsia:
+    case PlatformType.Web:
+      return Tuple(true, true);
+    default:
+      throw UnimplementedError('Do not know platform $platform');
+  }
+}
 
 class InstructionsWidget extends StatelessWidget {
+  final PlatformType platform;
+  const InstructionsWidget({@required this.platform}) : super();
+
   @override
   Widget build(BuildContext context) {
+    final show = _controlsToShow(platform);
+    final showKeyboard = show.first;
+    final showGestures = show.second;
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
@@ -45,7 +70,8 @@ class InstructionsWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Expanded(child: _Keyboard()),
+            if (showKeyboard) Expanded(child: _Keyboard()),
+            if (showGestures) Expanded(child: _Gestures()),
             _Description(),
           ],
         ),
@@ -74,6 +100,79 @@ class _Description extends StatelessWidget {
           color: Colors.white,
         ),
       ),
+    );
+  }
+}
+
+class _Gestures extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final width = min(MediaQuery.of(context).size.width * 0.8, 300.0);
+    return Container(
+      width: width,
+      margin: EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+        color: Colors.black.withAlpha(0xaa),
+        border: Border.all(width: 1.0, color: Colors.black),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      ),
+      child: GridView.count(
+        padding: const EdgeInsets.all(10),
+        childAspectRatio: 1.0,
+        crossAxisSpacing: 0,
+        mainAxisSpacing: 0,
+        crossAxisCount: 3,
+        children: <Widget>[
+          Container(),
+          _Gesture(icon: MdiIcons.gestureSwipeUp, label: 'Apply Thrust'),
+          Container(),
+          _Gesture(icon: MdiIcons.gestureSwipeLeft, label: 'Rotate Left'),
+          RotatedBox(
+            quarterTurns: -1,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(assets.player.imagePath),
+            ),
+          ),
+          _Gesture(icon: MdiIcons.gestureSwipeRight, label: 'Rotate Right'),
+          Container(),
+          _Gesture(icon: Icons.touch_app, label: 'Fire Bullet'),
+        ],
+      ),
+    );
+  }
+}
+
+class _Gesture extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final double iconSize;
+  final double labelSize;
+
+  const _Gesture(
+      {@required this.icon,
+      @required this.label,
+      this.iconSize = 56.0,
+      this.labelSize = 12.0})
+      : super();
+
+  Widget build(BuildContext context) {
+    final Color textColor = Colors.white;
+    final Color iconColor = Colors.greenAccent;
+    return Column(
+      children: [
+        Icon(
+          icon,
+          size: iconSize,
+          color: iconColor,
+        ),
+        Text(label,
+            style: TextStyle(
+              fontSize: labelSize,
+              fontStyle: FontStyle.italic,
+              color: textColor,
+            )),
+      ],
     );
   }
 }
@@ -148,7 +247,7 @@ class _Keyboard extends StatelessWidget {
           ),
           _KeyboardKey(
             letter: 'Space',
-            instruction: 'Fire',
+            instruction: 'Fire Bullet',
             keyFontSize: keyFontSize,
             labelFontSize: labelFontSize,
             borderRadius: 0.0,
