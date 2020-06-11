@@ -310,7 +310,8 @@ class ClientGame extends Game {
     for (final entry in gameState.players.entries) {
       final player = _players[entry.key];
       if (player == null) continue;
-      _players[entry.key].render(canvas, entry.value);
+      _players[entry.key]
+          .render(canvas, entry.value, entry.value.id == clientID);
     }
     _bullets.render(canvas, gameState.bullets);
 

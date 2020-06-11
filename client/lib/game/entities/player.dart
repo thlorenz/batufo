@@ -1,9 +1,11 @@
+import 'dart:math';
 import 'dart:ui' show Canvas, Offset, Paint, PaintingStyle, Rect;
 
 import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/engine/sprite.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/sprites/thrust_sprite.dart';
+import 'package:batufo/game/visuals.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +14,10 @@ import 'package:flutter/material.dart' show Colors;
 Paint _debugHitTilePaint = Paint()
   ..color = Colors.amberAccent
   ..strokeWidth = 0.5
+  ..style = PaintingStyle.stroke;
+
+Paint _healthPaint = Paint()
+  ..strokeWidth = 3.0
   ..style = PaintingStyle.stroke;
 
 class Player {
@@ -43,7 +49,7 @@ class Player {
     thrustSprite.update(dt);
   }
 
-  void render(Canvas canvas, PlayerModel player) {
+  void render(Canvas canvas, PlayerModel player, bool isHero) {
     final playerTilePosition = player.tilePosition;
     final center = WorldPosition.fromTilePosition(playerTilePosition);
     final playerSprite =
@@ -53,14 +59,18 @@ class Player {
       canvas
         ..translate(center.x, center.y)
         ..rotate(player.angle);
+
+      if (!isHero) _renderPlayerHealth(canvas, player);
+
       playerSprite.render(
         canvas,
         Offset.zero,
         width: tileSize,
         height: tileSize,
       );
-      thrustSprite.render(canvas, Offset.zero, tileSize);
       _renderDebugHitTile(canvas, player);
+
+      thrustSprite.render(canvas, Offset.zero, tileSize);
     }
     canvas.restore();
   }
@@ -70,5 +80,23 @@ class Player {
     final radius = hitSize / 2;
     final rect = Rect.fromLTWH(-radius, -radius, hitSize, hitSize);
     canvas.drawRect(rect, _debugHitTilePaint);
+  }
+
+  void _renderPlayerHealth(Canvas canvas, PlayerModel player) {
+    final color = healthColor(player.health);
+    _renderArcIndicatingPercent(
+      canvas,
+      hitSize / 2 * 1.1,
+      player.health / GameProps.playerTotalHealth,
+      _healthPaint..color = color,
+    );
+  }
+
+  void _renderArcIndicatingPercent(
+      Canvas canvas, double radius, double percent, Paint paint) {
+    final remaining = 2 * pi * percent;
+    final missing = 2 * pi - remaining;
+    final rect = Rect.fromCircle(center: Offset.zero, radius: radius);
+    canvas.drawArc(rect, missing / 2, remaining, false, paint);
   }
 }
