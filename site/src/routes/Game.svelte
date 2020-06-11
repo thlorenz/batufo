@@ -26,7 +26,7 @@
 
   <p>
     <a href="{latestReleaseURL}" target="_blank">Latest Release</a>
-    <span class="italic">now with multi player support and a beautiful universe!</span>
+    <span class="italic">now with sound effects and a beautiful universe!</span>
   </p>
   <p>
     <a href="{githubSourceURL}" target="_blank">Source on Github</a>
