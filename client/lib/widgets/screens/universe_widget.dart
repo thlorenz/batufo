@@ -2,6 +2,7 @@ import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/rpc/server_stats.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/game/game_connecting_widget.dart';
 import 'package:batufo/widgets/game/game_created_widget.dart';
 import 'package:batufo/widgets/game/game_outcome_widget.dart';
 import 'package:batufo/widgets/game/game_running_widget.dart';
@@ -33,7 +34,7 @@ class UniverseWidget extends StatelessWidget {
 
         switch (snapshot.data.kind) {
           case UserStates.RequestingInfo:
-            return Container(child: Text('Connecting ...'));
+            return GameConnectingWidget(appTitle: universe.appTitle);
           case UserStates.SelectingLevel:
             {
               final serverInfo = snapshot.data.serverInfo;

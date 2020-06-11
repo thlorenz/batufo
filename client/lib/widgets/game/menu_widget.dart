@@ -4,6 +4,7 @@ import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/game/level_widget.dart';
 import 'package:batufo/widgets/screens/router.dart';
+import 'package:batufo/widgets/styles.dart';
 import 'package:flutter/material.dart';
 
 class TotalStatsWidget extends StatelessWidget {
@@ -23,12 +24,6 @@ class TotalStatsWidget extends StatelessWidget {
       color: Colors.green,
       fontSize: 14,
       fontWeight: FontWeight.bold,
-    );
-    final headerStyle = TextStyle(
-      color: Colors.blue,
-      fontSize: 18,
-      fontWeight: FontWeight.bold,
-      decoration: TextDecoration.underline,
     );
     return Container(
       height: 40,

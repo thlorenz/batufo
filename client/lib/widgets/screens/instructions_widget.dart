@@ -92,7 +92,7 @@ class _Description extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(2.0)),
       ),
       child: Text(
-        'Rotate the UFO into the desired direction'
+        'Rotate the UFO into the desired direction and '
         ' then accelerate by applying thrust'
         ' or fire a bullet.',
         style: TextStyle(
