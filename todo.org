@@ -9,6 +9,23 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [X] dispose picture when creating a new one
 - [X] alternatively test perf improvements when storing and ~Image~ vs. a ~Picture~ - do for stars only first [[https://github.com/flutter/flutter/issues/41731][related issue]]
 
+* Level Editor
+
+** Text Based Version
+
+- [X] setup TypeScript project
+- [ ] render an empty Canvas with a Grid
+- [ ] find a way to reuse Arena from Tilemap from Level String code
+  - [ ] reach into server module or pull out common package
+- [ ] convert string to arena and render it in Canvas
+- [ ] use simple rects with different colors initially
+- [ ] open file and watch it
+- [ ] load initial string and pass it to renderer
+- [ ] how can we load and render an image in Canvas
+
+** WAIT Interactive Version
+
+This version would allow editing level via drag/drop interface instead of writing to a file.
 
 * Server Side
 
