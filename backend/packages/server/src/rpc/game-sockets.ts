@@ -1,9 +1,12 @@
 import { Server } from 'socket.io'
-import { ServerGame } from '../server-game'
-import { PlayerDeparted, PlayerJoined } from '../generated/message_bus_pb'
+import {
+  PlayerDeparted,
+  PlayerJoined,
+} from '@batufo/core'
 
 import socketio from 'socket.io'
 import debug from 'debug'
+import { ServerGame } from '../server-game'
 const logDebug = debug('game-socket:debug')
 const logError = debug('game-socket:error')
 const logTrace = debug('game-socket:trace')

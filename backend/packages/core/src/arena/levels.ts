@@ -1,8 +1,8 @@
 import { strict as assert } from 'assert'
-import largeLevel from './levels/large'
-import simpleLevel from './levels/simple'
-import crowdedLevel from './levels/crowded'
-import singlePlayerLevel from './levels/single-player'
+import largeLevel from './builtins/large'
+import simpleLevel from './builtins/simple'
+import crowdedLevel from './builtins/crowded'
+import singlePlayerLevel from './builtins/single-player'
 import { Tilemap } from './tilemap'
 import { Level } from './level'
 

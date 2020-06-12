@@ -1,6 +1,5 @@
 import { Grid } from './grid'
-// @ts-ignore
-import { Arena } from '../../server/dist/arena'
+import { Arena } from '@batufo/core'
 
 class Level {
   readonly _grid: Grid

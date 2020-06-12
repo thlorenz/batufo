@@ -1,13 +1,7 @@
 import debug from 'debug'
 import http from 'http'
 import socketio from 'socket.io'
-import { levels } from './arena'
-import {
-  GameCreated,
-  PlayRequest,
-  InfoResponse,
-  LevelInfo,
-} from './generated/message_bus_pb'
+import { GameCreated, PlayRequest, InfoResponse, levels, LevelInfo } from '@batufo/core'
 import { games } from './server-game'
 import { GameSockets } from './rpc/game-sockets'
 import { StatsUpdates } from './rpc/stats-updates'

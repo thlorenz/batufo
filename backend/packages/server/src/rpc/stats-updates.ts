@@ -1,7 +1,7 @@
 import socketio from 'socket.io'
-import { ServerGames } from '../server-game'
-import { ServerStatsUpdate } from '../generated/message_bus_pb'
 import debug from 'debug'
+import { ServerGames } from '../server-game'
+import { ServerStatsUpdate } from '@batufo/core'
 
 const logTrace = debug('stats:trace')
 const logInfo = debug('stats:info')

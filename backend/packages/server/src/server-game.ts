@@ -1,6 +1,5 @@
 import { strict as assert } from 'assert'
-import { Arena, levelNames } from './arena'
-import { Level } from './arena/level'
+import { Arena, levelNames, Level } from '@batufo/core'
 import { EventEmitter } from 'events'
 import debug from 'debug'
 import { Platforms } from './types'

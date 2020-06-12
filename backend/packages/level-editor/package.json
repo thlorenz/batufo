@@ -1,26 +1,27 @@
 {
-  "name": "level-editor",
+  "name": "@batufo/level-editor",
   "version": "0.0.0",
   "description": "Socket.io server for batufo game.",
-  "main": "src/level-editor.ts",
-  "types": "dist/level-editor.d.ts",
+  "main": "dist/level-editor.js",
+  "types": "src/level-editor.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
     "dev": "rollup -c -w"
   },
+  "browserslist": {
+    "development": [
+      "last 1 chrome version"
+    ]
+  },
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "debug": "^4.1.1",
-    "supports-color": "^7.1.0",
-    "tslib": "^2.0.0"
+    "@batufo/core": "*",
+    "debug": "^4.1.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
-    "@types/node": "^14.0.13",
-    "rollup": "^2.15.0",
-    "rollup-plugin-typescript": "^1.0.1",
-    "typescript": "^3.9.5"
+    "parcel-bundler": "^1.12.4"
   }
 }

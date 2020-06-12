@@ -1,23 +1,10 @@
 {
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "target": "ES2018",
-    "module": "commonjs",
-    "sourceMap": true,
-    "declaration": false,
-    "declarationMap": false,
-    "noEmit": true,
-    "preserveWatchOutput": true,
-    "emitDeclarationOnly": false,
-    "importHelpers": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noFallthroughCasesInSwitch": true,
-    "types": ["node"],
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "incremental": false,
-    "lib": ["es2015", "dom"]
-  }
+    "lib": ["es2015", "dom"],
+    "types": ["es2015"]
+  },
+  "references": [{ "path": "../core" }]
 }

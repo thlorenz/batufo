@@ -1,7 +1,7 @@
-import { PackedArena } from '../generated/message_bus_pb'
 import { Levels } from './levels'
 import { TilePosition } from './tile-position'
 import { Tile, Tilemap } from './tilemap'
+import { PackedArena } from '../generated/message_bus_pb'
 
 export class Arena {
   constructor(
