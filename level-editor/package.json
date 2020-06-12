@@ -2,7 +2,8 @@
   "name": "level-editor",
   "version": "0.0.0",
   "description": "Socket.io server for batufo game.",
-  "main": "app.js",
+  "main": "src/level-editor.ts",
+  "types": "dist/level-editor.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",

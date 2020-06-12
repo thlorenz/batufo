@@ -1,5 +1,3 @@
-type Canvas = CanvasRenderingContext2D
-
 export class Grid {
   constructor(
     readonly _tileSize: number,

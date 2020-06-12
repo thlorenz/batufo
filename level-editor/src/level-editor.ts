@@ -1,30 +1,31 @@
 import { Grid } from './grid'
+// @ts-ignore
+import { Arena } from '../../server/dist/arena'
 
 class Level {
   readonly _grid: Grid
-  _nrows: number
-  _ncols: number
+  arena: Arena
 
   constructor(
     readonly canvasElement: HTMLCanvasElement,
     readonly canvas: CanvasRenderingContext2D,
-    readonly _tileSize: number
   ) {
     this._grid = new Grid(tileSize)
-    this._nrows = 0
-    this._ncols = 0
+    this.arena = Arena.empty()
   }
 
-  update(nrows: number, ncols: number) {
-    this._nrows = nrows
-    this._ncols = ncols
-    this.canvasElement.width = this._ncols * this._tileSize
-    this.canvasElement.height = this._nrows * this._tileSize
+  update(arena: Arena) {
+    this.arena = arena
+    const ncols = arena.ncols
+    const nrows = arena.nrows
+    const tileSize = arena.tileSize
+    this.canvasElement.width = ncols * tileSize
+    this.canvasElement.height = nrows * tileSize
   }
 
   render() {
     this._renderBackground()
-    this._grid.render(this.canvas, this._nrows, this._ncols)
+    this._grid.render(this.canvas, this.arena.nrows, this.arena.ncols)
   }
 
   _renderBackground() {
@@ -39,8 +40,8 @@ class Editor {
     readonly level: Level,
   ) {}
 
-  update(nrows: number, ncols: number) {
-    this.level.update(nrows, ncols)
+  update(arena: Arena) {
+    this.level.update(arena)
     this.level.render()
   }
 }
@@ -51,10 +52,9 @@ const canvasElement: HTMLCanvasElement = document.getElementById(
   'canvas',
 ) as HTMLCanvasElement
 const canvas = canvasElement.getContext('2d')!
-const level = new Level(canvasElement, canvas, tileSize)
+const level = new Level(canvasElement, canvas)
 const editor = new Editor(level)
-const nrows = 20
-const ncols = 10
-editor.update(nrows, ncols)
+const arena = Arena.forLevel('single player', tileSize)
+editor.update(arena)
 
 console.log('running')
