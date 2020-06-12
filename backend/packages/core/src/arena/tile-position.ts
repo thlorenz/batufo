@@ -1,6 +1,7 @@
 import { strict as assert } from 'assert'
 import { PackedTilePosition } from '../generated/message_bus_pb'
 import { FractionalPoint, Point } from '../rpc/packing-types'
+import { WorldPosition } from './world-position'
 
 export class TilePosition {
   constructor(
@@ -9,6 +10,8 @@ export class TilePosition {
     readonly relX: number,
     readonly relY: number
   ) {}
+
+  toWorldPosition = (tileSize: number) => WorldPosition.fromTilePosition(this, tileSize)
 
   pack(): PackedTilePosition {
     const colRow = new Point(this.col, this.row).pack()

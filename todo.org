@@ -4,6 +4,10 @@
 
 Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #TypeScript
 
+- show off level editor
+- explain encoder/decoder of level content
+- create level using editor
+
 * Fixes
 
 - [X] dispose picture when creating a new one
@@ -15,17 +19,37 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 - [X] setup TypeScript project
 - [X] render an empty Canvas with a Grid
-- [ ] find a way to reuse Arena from Tilemap from Level String code
-  - [ ] reach into server module or pull out common package
-- [ ] convert string to arena and render it in Canvas
-- [ ] use simple rects with different colors initially
-- [ ] open file and watch it
-- [ ] load initial string and pass it to renderer
-- [ ] how can we load and render an image in Canvas
+- [X] find a way to reuse Arena from Tilemap from Level String code
+  - [X] reach into server module or pull out common package
+- [X] convert string to arena and render it in Canvas
+- [X] use simple rects with different colors initially
+- [X] load initial string and pass it to renderer
+- [X] how can we load and render an image in Canvas
 
-** WAIT Interactive Version
+** Interactive Version
 
 This version would allow editing level via drag/drop interface instead of writing to a file.
+Lots has been implemented at this point
+
+- [X] keyboard shortcuts to switch paint type
+- [X] black image to remove floor and show universe
+- [X] layout menu better (most likely to right of canvas)
+- [X] update coordinates also on hover select
+- [X] try to scroll selected tile into view when cursor change originated in editor
+- [ ] store current state in local storage so on page refresh (in case things crash) we can get our current level back
+- [ ] have a empty + sample button to load canned levels
+- [ ] vim/emacs/normal mode selectors
+- [X] undo icon which just invokes editor undo
+
+** Saving Encoding
+
+Figure out a way to save level content in URL so we can share them with others.
+Think about how people could play their levels, i.e. by adding them to the server for a limited time or so.
+
+- [ ] base64 encoding with 16bits per tile
+- [ ] update url query on each /valid/ change
+- [ ] load from query string during init
+- [ ] script that takes text file, converts it to query + opens in browser to be invoked from emacs or other editor on demand (i.e. via compile command) or on each save
 
 * Server Side
 

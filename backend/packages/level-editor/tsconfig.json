@@ -4,7 +4,7 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "lib": ["es2015", "dom"],
-    "types": ["es2015"]
+    "jsx": "react"
   },
   "references": [{ "path": "../core" }]
 }
