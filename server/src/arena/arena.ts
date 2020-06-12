@@ -83,6 +83,10 @@ export class Arena {
     return Arena.fromTilemap(tilemap, tileSize)
   }
 
+  static empty(): Arena {
+    return new Arena([], [], [], 0, 0, 0)
+  }
+
   static TILE_SIZE = 40
 
   toString(): string {
