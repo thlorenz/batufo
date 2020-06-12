@@ -11,9 +11,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Make sure to run this from the root of the project"
 
 # typescript
-protoc_gen_ts_path="$DIR/../server/node_modules/.bin/protoc-gen-ts"
+protoc_gen_ts_path="$DIR/../backend/packages/server/node_modules/.bin/protoc-gen-ts"
 
-ts_generated_dir=$DIR/../server/src/generated
+ts_generated_dir=$DIR/../backend/packages/common/src/generated
 rm -f "${ts_generated_dir}/*"
 
 # dart
