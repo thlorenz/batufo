@@ -7,7 +7,7 @@
     "sourceMap": true,
     "declaration": false,
     "declarationMap": false,
-    "noEmit": false,
+    "noEmit": true,
     "preserveWatchOutput": true,
     "emitDeclarationOnly": false,
     "importHelpers": true,
@@ -17,6 +17,7 @@
     "types": ["node"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "incremental": false
+    "incremental": false,
+    "lib": ["es2015", "dom"]
   }
 }
