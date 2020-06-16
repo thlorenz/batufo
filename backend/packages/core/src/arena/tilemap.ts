@@ -12,17 +12,14 @@ export enum Tile {
   /* 7 */ Medkit,
 }
 
-const EMPTY = ' '
+export const EMPTY = ' '
 
-const TileKeys = [EMPTY, 'x', '1', '2', 'p', '=', 'd', '+'] as const
-
-type TileKey = typeof TileKeys[number]
+export const TileKeys = [EMPTY, 'x', 'p', '=', 'd', '+'] as const
+export type TileKey = typeof TileKeys[number]
 
 const charToTile: Map<TileKey, Tile> = new Map([
   [EMPTY, Tile.Empty],
   ['x', Tile.Hole],
-  ['1', Tile.Player],
-  ['2', Tile.Player],
   ['p', Tile.Player],
   ['=', Tile.Wall],
   ['d', Tile.Diamond],

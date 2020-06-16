@@ -10,6 +10,8 @@
   },
   "license": "MIT",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "6bit-encoder": "^0.2.0"
+  },
   "devDependencies": {}
 }

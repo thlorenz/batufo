@@ -38,7 +38,7 @@ Lots has been implemented at this point
 - [X] try to scroll selected tile into view when cursor change originated in editor
 - [ ] store current state in local storage so on page refresh (in case things crash) we can get our current level back
 - [ ] have a empty + sample button to load canned levels
-- [ ] vim/emacs/normal mode selectors
+- [X] vim/emacs/normal mode selectors
 - [X] undo icon which just invokes editor undo
 
 ** Saving Encoding
@@ -46,7 +46,7 @@ Lots has been implemented at this point
 Figure out a way to save level content in URL so we can share them with others.
 Think about how people could play their levels, i.e. by adding them to the server for a limited time or so.
 
-- [ ] base64 encoding with 16bits per tile
+- [X] base64 encoding + packing level
 - [ ] update url query on each /valid/ change
 - [ ] load from query string during init
 - [ ] script that takes text file, converts it to query + opens in browser to be invoked from emacs or other editor on demand (i.e. via compile command) or on each save
