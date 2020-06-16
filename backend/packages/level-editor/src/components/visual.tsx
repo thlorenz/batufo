@@ -36,7 +36,7 @@ export function VisualComponent({ app }: VisualProps): ReactElement {
 
   return (
     <div
-      style={{ cursor: cursorIcon, overflow: 'scroll', height: '80vh' }}
+      style={{ cursor: cursorIcon, overflow: 'scroll', height: '90vh' }}
       ref={containerElement}
     >
       <canvas ref={canvasElement} />

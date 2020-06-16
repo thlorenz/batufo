@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+const { LevelEncoder } = require('@batufo/core')
+const { readFileSync } = require('fs')
+const { execSync } = require('child_process')
+const { resolve } = require('path')
+const FILE = process.argv[2]
+const ROOT_URL = process.argv[3] || 'https://thlorenz/batufo/editor'
+
+console.error({ FILE, ROOT_URL })
+
+try {
+  const src = readFileSync(resolve(FILE), 'utf8')
+  const encoded = new LevelEncoder().encode(src)
+  execSync(`open ${ROOT_URL}?l=${encoded}`)
+} catch (err) {
+  console.error(err)
+}

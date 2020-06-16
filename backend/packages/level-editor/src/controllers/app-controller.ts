@@ -1,13 +1,16 @@
 import { Canvas, Images, Level, TileSelectedEventArgs } from '../visual'
 import EventEmitter from 'eventemitter3'
 import { Arena, Tilemap } from '@batufo/core'
-import { EditorMode, KeyEvent, PaintType } from '../types'
+import { EditorLevel, EditorMode, KeyEvent, PaintType } from '../types'
 import { TextController } from './text-controller'
-import { Cursor, Offset } from '../models'
+import { Cursor, levels, Offset } from '../models'
 import { Ace } from 'ace-builds'
 import { WindowController } from './window-controller'
 import { eventEffect } from './event-effect'
+import { StorageController } from './storage-controller'
+import { QueryController } from './query-controller'
 
+const EDITOR_MODE = 'editor-mode'
 export class AppController extends EventEmitter {
   private _cursor: Cursor
   private _paintType: PaintType
@@ -17,7 +20,10 @@ export class AppController extends EventEmitter {
   constructor(
     private readonly _windowController: WindowController,
     private readonly _textController: TextController,
+    private readonly _storageController: StorageController,
+    private readonly _queryController: QueryController,
     private readonly _level: Level,
+    private _currentLevel: EditorLevel,
     private _tileSize: number,
     readonly images: Images
   ) {
@@ -29,9 +35,10 @@ export class AppController extends EventEmitter {
       .on('tile-hover', this._onEditorTileHover)
 
     this._windowController.on('keypress', this._onKeyPress)
+    this._storageController.on('synced-level', this._queryController.syncLevel)
 
     this._paintType = 'none'
-    this._editorMode = 'default'
+    this._editorMode = this._storageController.getConfig(EDITOR_MODE, 'vscode')
   }
 
   handleAceEditorLoaded = (aceEditor: Ace.Editor) => {
@@ -66,6 +73,10 @@ export class AppController extends EventEmitter {
       (text: string) => {
         this._textController.text = text
         this._updateLevelArena()
+        if (this._currentLevel === 'custom') return
+        if (text !== levels.get(this._currentLevel)) {
+          this.setCurrentLevel('custom')
+        }
       }
     )
   }
@@ -144,7 +155,7 @@ export class AppController extends EventEmitter {
     this.emit('painttype-changed', paintType)
   }
 
-  private _onKeyPress = ({ code, key, ctrl, meta, event }: KeyEvent) => {
+  private _onKeyPress = ({ code, key }: KeyEvent) => {
     if (this.isEditorFocused) return
     switch (key) {
       case 'q':
@@ -178,12 +189,37 @@ export class AppController extends EventEmitter {
       this,
       'editormode-changed',
       this._editorMode,
-      (mode: EditorMode) => (this._editorMode = mode)
+      (mode: EditorMode) => {
+        this._editorMode = mode
+        this._storageController.setConfig(EDITOR_MODE, mode)
+      }
     )
   }
 
   setEditorMode = (mode: EditorMode) => {
     this.emit('editormode-changed', mode)
+  }
+
+  //
+  // Editor Current Level
+  //
+  useEditorCurrentLevel = () => {
+    return eventEffect(
+      this,
+      'currentlevel-changed',
+      this._currentLevel,
+      (level: EditorLevel) => {
+        this._currentLevel = level
+        const cannedLevel = levels.get(level)
+        if (cannedLevel != null && cannedLevel != this._textController.text) {
+          this.setEditorText(cannedLevel)
+        }
+      }
+    )
+  }
+
+  setCurrentLevel(level: EditorLevel) {
+    this.emit('currentlevel-changed', level)
   }
 
   //
@@ -222,10 +258,12 @@ export class AppController extends EventEmitter {
   //
   _updateLevelArena() {
     try {
-      const tilemap = Tilemap.build(this._textController.text)
+      const level = this._textController.text
+      const tilemap = Tilemap.build(level)
       const arena = Arena.fromTilemap(tilemap, this._tileSize)
       this._level.updateArena(arena)
       this._level.render()
+      this._storageController.setCurrentLevel(level)
     } catch (err) {
       // TODO: surface this error in the UI
       console.error(err)

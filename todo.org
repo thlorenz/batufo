@@ -36,8 +36,8 @@ Lots has been implemented at this point
 - [X] layout menu better (most likely to right of canvas)
 - [X] update coordinates also on hover select
 - [X] try to scroll selected tile into view when cursor change originated in editor
-- [ ] store current state in local storage so on page refresh (in case things crash) we can get our current level back
-- [ ] have a empty + sample button to load canned levels
+- [X] store current state in local storage so on page refresh (in case things crash) we can get our current level back
+- [X] have a empty + sample button to load canned levels
 - [X] vim/emacs/normal mode selectors
 - [X] undo icon which just invokes editor undo
 
@@ -47,8 +47,8 @@ Figure out a way to save level content in URL so we can share them with others.
 Think about how people could play their levels, i.e. by adding them to the server for a limited time or so.
 
 - [X] base64 encoding + packing level
-- [ ] update url query on each /valid/ change
-- [ ] load from query string during init
+- [X] update url query on each /valid/ change
+- [X] load from query string during init
 - [ ] script that takes text file, converts it to query + opens in browser to be invoked from emacs or other editor on demand (i.e. via compile command) or on each save
 
 * Server Side
@@ -64,6 +64,10 @@ It'd be nice to collect stats about which device/OS players are using when playi
 - [X] server maintains map of currently active devices and logs that regularly whenever totals are calculated
 
 * Client Side
+
+** Performance
+
+Investigate if we can draw only parts of the Canvas in order to improve perf, i.e. the part that is actually visible.
 
 ** Pickups
 

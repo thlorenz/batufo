@@ -14,4 +14,6 @@ export type KeyEvent = {
   event: KeyboardEvent
 }
 
-export type EditorMode = 'vim' | 'emacs' | 'default'
+export type EditorMode = 'vim' | 'emacs' | 'vscode'
+
+export type EditorLevel = 'custom' | 'square'
