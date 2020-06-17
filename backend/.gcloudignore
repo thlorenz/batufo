@@ -18,4 +18,5 @@ node_modules/
 
 # source
 src/
+level-editor/
 tsconfig.json

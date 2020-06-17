@@ -7,12 +7,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "start": "DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' node ./dist/app.js",
-    "start:dev": "DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' ts-node ./src/app.ts",
-    "gc:init": "gcloud config set project batufo-game",
-    "gc:deploy": "gcloud app deploy",
-    "gc:console": "gcloud app open-console",
-    "gc:log": "gcloud app logs read",
-    "gc:tail": "gcloud app logs tail"
+    "start:dev": "DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' ts-node ./src/app.ts"
   },
   "license": "MIT",
   "private": true,
