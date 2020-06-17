@@ -128,16 +128,26 @@ class Universe {
     Arena arena,
   ) {
     WorldPosition.tileSize = arena.tileSize.toDouble();
+    final List<List<bool>> coveredTiles = List<List<bool>>.generate(
+        arena.nrows, (_) => List.generate(arena.ncols, (_) => false));
+    for (final tile in arena.floorTiles) {
+      coveredTiles[tile.row][tile.col] = true;
+    }
+    for (final tile in arena.walls) {
+      coveredTiles[tile.row][tile.col] = true;
+    }
+
     final game = ClientGame(
       arena: arena,
       soundController: soundController,
       inputProcessor: inputProcessor,
-      enableRecording: platform != PlatformType.Web,
+      enableRecording: false, // platform != PlatformType.Web,
       clientID: clientID,
       playerIndex: playerIndex,
       onGameStateUpdated: _onGameStateUpdated,
       onScored: _onScored,
       parallaxProps: ParallaxProps.forPlatForm(platform),
+      coveredTiles: coveredTiles,
     );
     _addStatsState(StatsState.initial(arena.players.length));
     final state = UserGameCreatedState.from(_userState$.value, game);

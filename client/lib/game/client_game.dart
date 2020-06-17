@@ -56,11 +56,17 @@ class ClientGame extends Game {
   Map<int, Player> _players;
   Bullets _bullets;
 
-  Offset _camera;
-  Offset _starsMiddleCamera;
-  Offset _starsFrontCamera;
-  Offset _planetsBackCamera;
-  Offset _planetsFrontCamera;
+  Offset _z10Camera;
+  Offset _z20Camera;
+  Offset _z30Camera;
+  Offset _z40Camera;
+  Offset _z100Camera;
+  Rect _z0VisibleRect;
+  Rect _z10VisibleRect;
+  Rect _z20VisibleRect;
+  Rect _z30VisibleRect;
+  Rect _z40VisibleRect;
+  Rect _z100VisibleRect;
   Size _size;
   bool _disposed;
   bool _started;
@@ -84,6 +90,7 @@ class ClientGame extends Game {
     @required this.onGameStateUpdated,
     @required this.soundController,
     @required void Function(int score) onScored,
+    @required List<List<bool>> coveredTiles,
     @required int playerIndex,
     @required ParallaxProps parallaxProps,
     @required bool enableRecording,
@@ -100,27 +107,33 @@ class ClientGame extends Game {
           minRadius: 0.1,
           maxRadius: 0.4,
           density: parallaxProps.starsBackDensity,
+          coveredTiles: coveredTiles,
+          debugVisibleRect: GameProps.debugStarsBackVisibleRect,
         ),
         _starsMiddle = Stars(
           arena.tileSize.toDouble(),
-          lerpFactor: GameProps.starsMiddleLerpFactor,
+          lerpFactor: GameProps.z10LerpFactor,
           enableRecording: enableRecording,
           minRadius: 0.3,
           maxRadius: 0.7,
           density: parallaxProps.starsMiddleDensity,
+          coveredTiles: coveredTiles,
+          debugVisibleRect: GameProps.debugStarsMiddleVisibleRect,
         ),
         _starsFront = Stars(
           arena.tileSize.toDouble(),
-          lerpFactor: GameProps.starsFrontLerpFactor,
+          lerpFactor: GameProps.z20LerpFactor,
           enableRecording: enableRecording,
           minRadius: 0.8,
           maxRadius: 1.2,
           density: parallaxProps.starsFrontDensity,
+          coveredTiles: coveredTiles,
+          debugVisibleRect: GameProps.debugStarsFrontVisibleRect,
         ),
         // Recording planets makes performance considerably worse
         _planetsBack = Planets(
           arena.tileSize.toDouble(),
-          lerpFactor: GameProps.planetsBackLerpFactor,
+          lerpFactor: GameProps.z30LerpFactor,
           enableRecording: false,
           minRadius: 0.05,
           maxRadius: 0.25,
@@ -128,7 +141,7 @@ class ClientGame extends Game {
         ),
         _planetsFront = Planets(
           arena.tileSize.toDouble(),
-          lerpFactor: GameProps.planetsFrontLerpFactor,
+          lerpFactor: GameProps.z40LerpFactor,
           enableRecording: false,
           minRadius: 0.3,
           maxRadius: 0.5,
@@ -136,17 +149,17 @@ class ClientGame extends Game {
         ),
         _buildings = Buildings(
           floorTiles: arena.floorTiles,
-          lerpFactor: GameProps.platformLerpFactor,
+          lerpFactor: GameProps.z100LerpFactor,
           walls: arena.walls,
           tileSize: arena.tileSize.toDouble(),
           isFloorActive: GameProps.renderFloor,
           enableRecording: false,
         ),
-        _camera = Offset.zero,
-        _starsMiddleCamera = Offset.zero,
-        _starsFrontCamera = Offset.zero,
-        _planetsBackCamera = Offset.zero,
-        _planetsFrontCamera = Offset.zero {
+        _z10Camera = Offset.zero,
+        _z20Camera = Offset.zero,
+        _z30Camera = Offset.zero,
+        _z40Camera = Offset.zero,
+        _z100Camera = Offset.zero {
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
       tileSize: arena.tileSize.toDouble(),
@@ -242,6 +255,20 @@ class ClientGame extends Game {
       clientPlayer.tilePosition.toWorldPosition(),
       dt,
     );
+    final z10FullTranslate = _z10Camera;
+    final z20FullTranslate = _z20Camera.translate(_z10Camera.dx, _z10Camera.dy);
+    final z30FullTranslate = _z30Camera.translate(_z20Camera.dx, _z20Camera.dy);
+    final z40FullTranslate = _z40Camera.translate(_z30Camera.dx, _z30Camera.dy);
+
+    _z0VisibleRect = _visibleRectForCamera(Offset.zero);
+    _z10VisibleRect = _visibleRectForCamera(z10FullTranslate);
+    _z20VisibleRect = _visibleRectForCamera(z20FullTranslate);
+    _z30VisibleRect = _visibleRectForCamera(z30FullTranslate);
+    _z40VisibleRect = _visibleRectForCamera(z40FullTranslate);
+    _z100VisibleRect = _visibleRectForCamera(_z100Camera);
+    _starsBack.updateOffset(_z100Camera);
+    _starsMiddle.updateOffset(_z100Camera - z10FullTranslate);
+    _starsFront.updateOffset(_z100Camera - z20FullTranslate);
     if (!started) return;
 
     for (final entry in gameState.players.entries) {
@@ -252,6 +279,15 @@ class ClientGame extends Game {
     _bullets.updateSprites(gameState.bullets, dt);
   }
 
+  Rect _visibleRectForCamera(Offset camera) {
+    return Rect.fromLTWH(
+      camera.dx,
+      camera.dy,
+      _size.width,
+      _size.height,
+    );
+  }
+
   void _renderArena(Canvas canvas) {
     if (GameProps.debugGrid) {
       _renderGrid(canvas);
@@ -259,15 +295,15 @@ class ClientGame extends Game {
       _renderUniverse(canvas);
     }
 
-    canvas.translate(-_camera.dx, -_camera.dy);
-    _buildings.render(canvas, _size);
+    canvas.translate(-_z100Camera.dx, -_z100Camera.dy);
+    _buildings.render(canvas, _z100VisibleRect, _size);
   }
 
   void _renderGrid(Canvas canvas) {
     canvas.save();
     {
-      canvas.translate(-_starsMiddleCamera.dx, -_starsMiddleCamera.dy);
-      _grid.render(canvas, arena.nrows, arena.ncols);
+      canvas.translate(-_z10Camera.dx, -_z10Camera.dy);
+      _grid.render(canvas, _z10VisibleRect, arena.nrows, arena.ncols);
     }
     canvas.restore();
   }
@@ -276,15 +312,15 @@ class ClientGame extends Game {
     canvas.save();
     {
       _drawBackground(canvas);
-      _starsBack.render(canvas, _size);
-      canvas.translate(-_starsMiddleCamera.dx, -_starsMiddleCamera.dy);
-      _starsMiddle.render(canvas, _size);
-      canvas.translate(-_starsFrontCamera.dx, -_starsFrontCamera.dy);
-      _starsFront.render(canvas, _size);
-      canvas.translate(-_planetsBackCamera.dx, -_planetsBackCamera.dy);
-      _planetsBack.render(canvas, _size);
-      canvas.translate(-_planetsFrontCamera.dx, -_planetsFrontCamera.dy);
-      _planetsFront.render(canvas, _size);
+      _starsBack.render(canvas, _z0VisibleRect, _size);
+      canvas.translate(-_z10Camera.dx, -_z10Camera.dy);
+      _starsMiddle.render(canvas, _z10VisibleRect, _size);
+      canvas.translate(-_z20Camera.dx, -_z20Camera.dy);
+      _starsFront.render(canvas, _z20VisibleRect, _size);
+      canvas.translate(-_z30Camera.dx, -_z30Camera.dy);
+      //  _planetsBack.render(canvas, _z30VisibleRect, _size);
+      canvas.translate(-_z40Camera.dx, -_z40Camera.dy);
+      // _planetsFront.render(canvas, _z40VisibleRect, _size);
     }
     canvas.restore();
   }
@@ -339,26 +375,26 @@ class ClientGame extends Game {
     final centerScreen = Offset(_size.width / 2, _size.height / 2);
     final moved = Offset(pos.dx - centerScreen.dx, pos.dy - centerScreen.dy);
 
-    final lerp = min(0.0025 * dt, GameProps.platformLerp);
-    final dx = (moved.dx - _camera.dx) * lerp;
-    final dy = (moved.dy - _camera.dy) * lerp;
-    _camera = _camera.translate(dx, dy);
-    _starsMiddleCamera = _starsMiddleCamera.translate(
-      dx * GameProps.starsMiddleLerp,
-      dy * GameProps.starsMiddleLerp,
+    final lerp = min(0.0025 * dt, GameProps.z100Lerp);
+    final dx = (moved.dx - _z100Camera.dx) * lerp;
+    final dy = (moved.dy - _z100Camera.dy) * lerp;
+    _z10Camera = _z10Camera.translate(
+      dx * GameProps.z10Lerp,
+      dy * GameProps.z10Lerp,
     );
-    _starsFrontCamera = _starsFrontCamera.translate(
-      dx * GameProps.starsFrontLerp,
-      dy * GameProps.starsFrontLerp,
+    _z20Camera = _z20Camera.translate(
+      dx * GameProps.z20Lerp,
+      dy * GameProps.z20Lerp,
     );
-    _planetsBackCamera = _planetsBackCamera.translate(
-      dx * GameProps.planetsBackLerp,
-      dy * GameProps.planetsBackLerp,
+    _z30Camera = _z30Camera.translate(
+      dx * GameProps.z30Lerp,
+      dy * GameProps.z30Lerp,
     );
-    _planetsFrontCamera = _planetsFrontCamera.translate(
-      dx * GameProps.planetsFrontLerp,
-      dy * GameProps.planetsFrontLerp,
+    _z40Camera = _z40Camera.translate(
+      dx * GameProps.z40Lerp,
+      dy * GameProps.z40Lerp,
     );
+    _z100Camera = _z100Camera.translate(dx, dy);
   }
 
   void _lowerLeftCanvas(Canvas canvas, double height) {

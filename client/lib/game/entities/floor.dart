@@ -28,10 +28,10 @@ class Floor {
     _initTiles();
   }
 
-  void render(Canvas canvas) {
+  void render(Canvas canvas, Rect visibleRect) {
     if (!_isActive) return;
     for (final bs in _backgroundSprites) {
-      bs.render(canvas);
+      if (bs.rect.overlaps(visibleRect)) bs.render(canvas);
     }
   }
 

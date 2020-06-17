@@ -49,7 +49,7 @@ Think about how people could play their levels, i.e. by adding them to the serve
 - [X] base64 encoding + packing level
 - [X] update url query on each /valid/ change
 - [X] load from query string during init
-- [ ] script that takes text file, converts it to query + opens in browser to be invoked from emacs or other editor on demand (i.e. via compile command) or on each save
+- [X] script that takes text file, converts it to query + opens in browser to be invoked from emacs or other editor on demand (i.e. via compile command) or on each save
 
 * Server Side
 
@@ -68,6 +68,14 @@ It'd be nice to collect stats about which device/OS players are using when playi
 ** Performance
 
 Investigate if we can draw only parts of the Canvas in order to improve perf, i.e. the part that is actually visible.
+
+- [X] determine visible rect for each camera
+- [X] only drawing stars inside visible rect
+- [X] pass covered tiles to stars and do not draw below them
+- [ ] offset covered tiles correctly
+- [ ] re-enable picture recording and make it work
+  - [ ] record entire game area and record
+  - [ ] cut out rect matching the visible area from src when drawing it
 
 ** Pickups
 

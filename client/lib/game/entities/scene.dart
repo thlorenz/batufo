@@ -16,7 +16,7 @@ abstract class Scene {
   @protected
   void resizeScene(Size fullSize) {}
   @protected
-  void renderScene(Canvas canvas, Size size);
+  void renderScene(Canvas canvas, Rect visibleRect, Size size);
   @protected
   bool get skipRender;
 
@@ -37,8 +37,8 @@ abstract class Scene {
     }
   }
 
-  void render(Canvas canvas, Size size) {
-    if (skipRender) return;
+  void render(Canvas canvas, Rect visibleRect, Size size) {
+    if (skipRender || visibleRect == null) return;
     if (enableRecording) {
       if (_recordedImage != null) {
         canvas.drawImage(_recordedImage, Offset.zero, _imagePaint);
@@ -46,14 +46,15 @@ abstract class Scene {
         canvas.drawPicture(_recordedPicture);
       }
     } else {
-      renderScene(canvas, size);
+      renderScene(canvas, visibleRect, size);
     }
   }
 
   Picture _recordPicture(Size size) {
     final recorder = PictureRecorder();
     final canvas = Canvas(recorder);
-    renderScene(canvas, size);
+    // TODO: most likely should record all and render only parts
+    // renderScene(canvas, size);
     return recorder.endRecording();
   }
 }

@@ -85,6 +85,9 @@ class GameProps {
   static bool get debugPlayerHitTile => false;
   static bool get debugWallHitTile => false;
   static bool get debugGrid => false;
+  static bool get debugStarsBackVisibleRect => false;
+  static bool get debugStarsMiddleVisibleRect => false;
+  static bool get debugStarsFrontVisibleRect => true;
 
   static bool get renderFloor => true;
 
@@ -98,20 +101,17 @@ class GameProps {
   static const scoreOnHit = 100;
   static const scoreOnKill = 500;
 
-  static const platformLerp = 1.0;
-  static const starsMiddleLerp = 0.15;
-  static const starsFrontLerp = 0.15;
-  static const planetsBackLerp = 0.15;
-  static const planetsFrontLerp = 0.15;
+  static const z10Lerp = 0.15;
+  static const z20Lerp = 0.15;
+  static const z30Lerp = 0.15;
+  static const z40Lerp = 0.15;
+  static const z100Lerp = 1.0;
 
-  static const platformLerpFactor = (1.0 + platformLerp) * 2.0;
-  static const starsMiddleLerpFactor = (1.0 + starsMiddleLerp) * 2.0;
-  static const starsFrontLerpFactor =
-      starsMiddleLerpFactor + starsFrontLerp * 2.0;
-  static const planetsBackLerpFactor =
-      starsFrontLerpFactor + planetsBackLerp * 2.0;
-  static const planetsFrontLerpFactor =
-      planetsBackLerpFactor + planetsFrontLerp * 2.0;
+  static const z10LerpFactor = (1.0 + z10Lerp) * 2.0;
+  static const z20LerpFactor = z10LerpFactor + z20Lerp * 2.0;
+  static const z30LerpFactor = z20LerpFactor + z30Lerp * 2.0;
+  static const z40LerpFactor = z30LerpFactor + z40Lerp * 2.0;
+  static const z100LerpFactor = (1.0 + z100Lerp) * 2.0;
 
   static const maxFiredBulletVolume = 0.8;
   static const maxBulletExplodedVolume = 1.0;

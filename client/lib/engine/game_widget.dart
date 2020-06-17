@@ -53,7 +53,7 @@ class _GameRenderBox extends RenderBox with WidgetsBindingObserver {
 
   void performResize() {
     super.performResize();
-    game.resize(constraints.biggest);
+    game.resize(constraints.smallest);
   }
 
   void attach(PipelineOwner owner) {

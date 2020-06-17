@@ -10,9 +10,10 @@ import 'package:flutter/material.dart';
 
 class Planet {
   final TilePosition tilePosition;
+  final Rect rect;
   final Sprite sprite;
   final double radius;
-  const Planet(this.tilePosition, this.sprite, this.radius);
+  const Planet(this.tilePosition, this.rect, this.sprite, this.radius);
 }
 
 class Planets extends Scene {
@@ -57,7 +58,10 @@ class Planets extends Scene {
     final dy = _rnd.nextDouble(_tileRangeMin, _tileRangeMax);
     final tp = TilePosition(col, row, dx, dy);
     final radiusFactor = _rnd.nextDouble(minRadius, maxRadius);
-    final planet = Planet(tp, sprite, radiusFactor * planets.spriteWidth);
+    final wp = tp.toWorldOffset();
+    final radius = radiusFactor * planets.spriteWidth;
+    final rect = Rect.fromCircle(center: wp, radius: radius);
+    final planet = Planet(tp, rect, sprite, radius);
     _planets.add(planet);
   }
 
@@ -72,17 +76,17 @@ class Planets extends Scene {
     }
   }
 
-  void _renderPlanet(Canvas canvas, Planet planet) {
-    final worldOffset = planet.tilePosition.toWorldOffset();
-    final rect = Rect.fromCircle(center: worldOffset, radius: planet.radius);
-    planet.sprite.renderRect(canvas, rect);
+  void _renderPlanet(Canvas canvas, Rect visibleRect, Planet planet) {
+    if (planet.rect.overlaps(visibleRect)) {
+      planet.sprite.renderRect(canvas, planet.rect);
+    }
   }
 
   void resizeScene(Size fullSize) {
     _initPlanets(fullSize);
   }
 
-  void renderScene(Canvas canvas, Size size) {
-    for (final planet in _planets) _renderPlanet(canvas, planet);
+  void renderScene(Canvas canvas, Rect visibleRect, Size size) {
+    for (final planet in _planets) _renderPlanet(canvas, visibleRect, planet);
   }
 }

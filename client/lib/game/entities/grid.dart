@@ -1,4 +1,4 @@
-import 'dart:ui' show Canvas, Paint, Offset;
+import 'dart:ui' show Canvas, Offset, Paint, Rect;
 
 import 'package:flutter/material.dart' show Colors, PaintingStyle;
 
@@ -14,16 +14,12 @@ class Grid {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 0.2;
 
-  void render(Canvas canvas, int nrows, int ncols) {
+  void render(Canvas canvas, Rect visibleRect, int nrows, int ncols) {
     final delta = _tileSize;
-    final gameWidth = ncols * delta;
-    final gameHeight = nrows * delta;
-    final marginX = marginCols * delta;
-    final marginY = marginRows * delta;
-    final startX = -marginX;
-    final endX = gameWidth + marginX;
-    final startY = -marginY;
-    final endY = gameHeight + marginY;
+    final startX = visibleRect.left;
+    final endX = visibleRect.right;
+    final startY = visibleRect.top;
+    final endY = visibleRect.bottom;
 
     for (double col = startX; col <= endX; col += delta) {
       canvas.drawLine(Offset(col, startY), Offset(col, endY), _gridPaint);

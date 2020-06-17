@@ -23,8 +23,9 @@ class Walls {
     _initRects();
   }
 
-  void render(Canvas canvas) {
+  void render(Canvas canvas, Rect visibleRect) {
     for (final rect in _rects) {
+      if (!rect.overlaps(visibleRect)) continue;
       _sprite.renderRect(canvas, rect);
       _renderDebugHitTile(canvas, rect);
     }
