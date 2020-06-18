@@ -256,9 +256,18 @@ class ClientGame extends Game {
       dt,
     );
     final z10FullTranslate = _z10Camera;
-    final z20FullTranslate = _z20Camera.translate(_z10Camera.dx, _z10Camera.dy);
-    final z30FullTranslate = _z30Camera.translate(_z20Camera.dx, _z20Camera.dy);
-    final z40FullTranslate = _z40Camera.translate(_z30Camera.dx, _z30Camera.dy);
+    final z20FullTranslate = _z20Camera.translate(
+      z10FullTranslate.dx,
+      z10FullTranslate.dy,
+    );
+    final z30FullTranslate = _z30Camera.translate(
+      z20FullTranslate.dx,
+      z20FullTranslate.dy,
+    );
+    final z40FullTranslate = _z40Camera.translate(
+      z30FullTranslate.dx,
+      z30FullTranslate.dy,
+    );
 
     _z0VisibleRect = _visibleRectForCamera(Offset.zero);
     _z10VisibleRect = _visibleRectForCamera(z10FullTranslate);
@@ -266,6 +275,7 @@ class ClientGame extends Game {
     _z30VisibleRect = _visibleRectForCamera(z30FullTranslate);
     _z40VisibleRect = _visibleRectForCamera(z40FullTranslate);
     _z100VisibleRect = _visibleRectForCamera(_z100Camera);
+
     _starsBack.updateOffset(_z100Camera);
     _starsMiddle.updateOffset(_z100Camera - z10FullTranslate);
     _starsFront.updateOffset(_z100Camera - z20FullTranslate);
@@ -318,9 +328,9 @@ class ClientGame extends Game {
       canvas.translate(-_z20Camera.dx, -_z20Camera.dy);
       _starsFront.render(canvas, _z20VisibleRect, _size);
       canvas.translate(-_z30Camera.dx, -_z30Camera.dy);
-      //  _planetsBack.render(canvas, _z30VisibleRect, _size);
+      _planetsBack.render(canvas, _z30VisibleRect, _size);
       canvas.translate(-_z40Camera.dx, -_z40Camera.dy);
-      // _planetsFront.render(canvas, _z40VisibleRect, _size);
+      _planetsFront.render(canvas, _z40VisibleRect, _size);
     }
     canvas.restore();
   }

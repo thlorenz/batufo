@@ -86,7 +86,7 @@ class Planets extends Scene {
     _initPlanets(fullSize);
   }
 
-  void renderScene(Canvas canvas, Rect visibleRect, Size size) {
+  void renderScene(Canvas canvas, Rect visibleRect) {
     for (final planet in _planets) _renderPlanet(canvas, visibleRect, planet);
   }
 }

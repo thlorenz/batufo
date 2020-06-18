@@ -23,7 +23,7 @@ class Buildings extends Scene {
 
   bool get skipRender => false;
 
-  void renderScene(Canvas canvas, Rect visibleRect, Size size) {
+  void renderScene(Canvas canvas, Rect visibleRect) {
     _floor.render(canvas, visibleRect);
     _walls.render(canvas, visibleRect);
   }

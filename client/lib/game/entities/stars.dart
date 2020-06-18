@@ -77,6 +77,11 @@ class Stars extends Scene {
   }
 
   void _initStars(Size size) {
+    // TODO: for further perf improvements  we could group stars by tiles,
+    // i.e. one group per row/col.
+    // Then we'd process those groups when determining if we should render
+    // stars in that group thus making less calls to `visibleRect.contains` and
+    // `_covered`
     final ncols = size.width ~/ _tileSize + 1;
     final nrows = size.height ~/ _tileSize + 1;
     _stars.clear();
@@ -114,9 +119,9 @@ class Stars extends Scene {
     Rect visibleRect,
     Star star,
   ) {
-    if (!_covered(star.tilePosition) &&
-        visibleRect.contains(star.worldPosition)) {
-      // bottleneck
+    if (recording ||
+        (visibleRect.contains(star.worldPosition) &&
+            !_covered(star.tilePosition))) {
       canvas.drawCircle(star.worldPosition, star.radius, _starPaint);
     }
   }
@@ -130,11 +135,7 @@ class Stars extends Scene {
     _initStars(fullSize);
   }
 
-  void renderScene(
-    Canvas canvas,
-    Rect visibleRect,
-    Size size,
-  ) {
+  void renderScene(Canvas canvas, Rect visibleRect) {
     for (final star in _stars) {
       _renderStar(canvas, visibleRect, star);
     }

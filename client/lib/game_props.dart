@@ -87,7 +87,7 @@ class GameProps {
   static bool get debugGrid => false;
   static bool get debugStarsBackVisibleRect => false;
   static bool get debugStarsMiddleVisibleRect => false;
-  static bool get debugStarsFrontVisibleRect => true;
+  static bool get debugStarsFrontVisibleRect => false;
 
   static bool get renderFloor => true;
 

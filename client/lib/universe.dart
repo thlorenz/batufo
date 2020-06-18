@@ -141,7 +141,7 @@ class Universe {
       arena: arena,
       soundController: soundController,
       inputProcessor: inputProcessor,
-      enableRecording: false, // platform != PlatformType.Web,
+      enableRecording: platform != PlatformType.Web,
       clientID: clientID,
       playerIndex: playerIndex,
       onGameStateUpdated: _onGameStateUpdated,

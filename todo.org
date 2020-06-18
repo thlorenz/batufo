@@ -72,10 +72,11 @@ Investigate if we can draw only parts of the Canvas in order to improve perf, i.
 - [X] determine visible rect for each camera
 - [X] only drawing stars inside visible rect
 - [X] pass covered tiles to stars and do not draw below them
-- [ ] offset covered tiles correctly
-- [ ] re-enable picture recording and make it work
-  - [ ] record entire game area and record
-  - [ ] cut out rect matching the visible area from src when drawing it
+- [X] offset covered tiles correctly
+- [X] re-enable picture recording and make it work
+  - [X] record entire game area and record
+  - [X] cut out rect matching the visible area from src when drawing it
+- [ ] render only visible planets (don't worry about being covered up)
 
 ** Pickups
 
