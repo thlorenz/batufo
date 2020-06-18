@@ -30,17 +30,20 @@ class Planets extends Scene {
 
   Planets(
     this._tileSize, {
-    @required double lerpFactor,
     @required bool enableRecording,
     @required this.minRadius,
     @required this.maxRadius,
     @required this.density,
+    bool debugVisibleRect,
   })  : _rnd = RandomNumber(),
         _tileRangeMin = -(_tileSize / 2),
         _tileRangeMax = _tileSize / 2,
         planets = SpriteSheet.fromImageAsset(assets.planets),
         _skipRender = density <= 0,
-        super(enableRecording: enableRecording, sizeFactor: lerpFactor);
+        super(
+          enableRecording: enableRecording,
+          debugVisibleRect: debugVisibleRect,
+        );
 
   bool get skipRender => _skipRender;
 

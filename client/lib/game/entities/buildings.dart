@@ -13,13 +13,16 @@ class Buildings extends Scene {
   Buildings({
     @required List<TilePosition> floorTiles,
     @required List<TilePosition> walls,
-    @required double lerpFactor,
     @required double tileSize,
     @required bool isFloorActive,
     @required bool enableRecording,
+    bool debugVisibleRect,
   })  : _walls = Walls(walls, tileSize),
         _floor = Floor(floorTiles, tileSize, isFloorActive),
-        super(enableRecording: enableRecording, sizeFactor: lerpFactor);
+        super(
+          enableRecording: enableRecording,
+          debugVisibleRect: debugVisibleRect,
+        );
 
   bool get skipRender => false;
 

@@ -85,9 +85,12 @@ class GameProps {
   static bool get debugPlayerHitTile => false;
   static bool get debugWallHitTile => false;
   static bool get debugGrid => false;
-  static bool get debugStarsBackVisibleRect => false;
-  static bool get debugStarsMiddleVisibleRect => false;
-  static bool get debugStarsFrontVisibleRect => false;
+  static bool get debugZ0VisibleRect => false;
+  static bool get debugZ10VisibleRect => false;
+  static bool get debugZ20VisibleRect => false;
+  static bool get debugZ30VisibleRect => false;
+  static bool get debugZ40VisibleRect => false;
+  static bool get debugZ100VisibleRect => false;
 
   static bool get renderFloor => true;
 
@@ -106,12 +109,6 @@ class GameProps {
   static const z30Lerp = 0.15;
   static const z40Lerp = 0.15;
   static const z100Lerp = 1.0;
-
-  static const z10LerpFactor = (1.0 + z10Lerp) * 2.0;
-  static const z20LerpFactor = z10LerpFactor + z20Lerp * 2.0;
-  static const z30LerpFactor = z20LerpFactor + z30Lerp * 2.0;
-  static const z40LerpFactor = z30LerpFactor + z40Lerp * 2.0;
-  static const z100LerpFactor = (1.0 + z100Lerp) * 2.0;
 
   static const maxFiredBulletVolume = 0.8;
   static const maxBulletExplodedVolume = 1.0;

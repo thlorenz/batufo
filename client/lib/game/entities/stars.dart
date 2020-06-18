@@ -13,13 +13,7 @@ class Star {
   const Star(this.tilePosition, this.worldPosition, this.radius);
 }
 
-final Paint _debugVisibleRectPaint = Paint()
-  ..color = Colors.blue
-  ..style = PaintingStyle.stroke
-  ..strokeWidth = 4.0;
-
 class Stars extends Scene {
-  final double lerpFactor;
   final int density;
   final double _tileSize;
   final double _tileRangeMin;
@@ -28,7 +22,6 @@ class Stars extends Scene {
   final List<Star> _stars;
   final double minRadius;
   final double maxRadius;
-  final bool debugVisibleRect;
   final RandomNumber _rnd;
   final bool _skipRender;
 
@@ -40,13 +33,12 @@ class Stars extends Scene {
 
   Stars(
     this._tileSize, {
-    @required this.lerpFactor,
     @required bool enableRecording,
     @required this.minRadius,
     @required this.maxRadius,
     @required this.density,
     @required this.coveredTiles,
-    this.debugVisibleRect = false,
+    bool debugVisibleRect,
   })  : _starPaint = Paint()
           ..color = Colors.yellowAccent
           ..style = PaintingStyle.fill,
@@ -57,7 +49,10 @@ class Stars extends Scene {
         _skipRender = density <= 0,
         _tiledx = 0,
         _tiledy = 0,
-        super(enableRecording: enableRecording, sizeFactor: lerpFactor);
+        super(
+          enableRecording: enableRecording,
+          debugVisibleRect: debugVisibleRect,
+        );
 
   bool get skipRender => _skipRender;
 
@@ -138,9 +133,6 @@ class Stars extends Scene {
   void renderScene(Canvas canvas, Rect visibleRect) {
     for (final star in _stars) {
       _renderStar(canvas, visibleRect, star);
-    }
-    if (debugVisibleRect) {
-      canvas.drawRect(visibleRect, _debugVisibleRectPaint);
     }
   }
 }

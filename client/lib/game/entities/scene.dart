@@ -1,15 +1,32 @@
-import 'dart:ui';
+import 'dart:ui'
+    show
+        Canvas,
+        Image,
+        Paint,
+        PaintingStyle,
+        Picture,
+        PictureRecorder,
+        Rect,
+        Size;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' show Colors;
 
 final _imagePaint = Paint();
 
+final Paint _debugVisibleRectPaint = Paint()
+  ..color = Colors.blue
+  ..style = PaintingStyle.stroke
+  ..strokeWidth = 4.0;
+
 abstract class Scene {
   final bool enableRecording;
-  final double sizeFactor;
+  final bool debugVisibleRect;
 
-  Scene({@required this.enableRecording, this.sizeFactor = 1.0})
-      : recording = false;
+  Scene({
+    @required this.enableRecording,
+    this.debugVisibleRect = false,
+  }) : recording = false;
 
   Picture _recordedPicture;
   Image _recordedImage;
@@ -24,17 +41,14 @@ abstract class Scene {
 
   void resize(Size size) {
     if (skipRender) return;
-    final fullWidth = size.width * sizeFactor;
-    final fullHeight = size.height * sizeFactor;
-    final fullSize = Size(fullWidth, fullHeight);
-    resizeScene(fullSize);
+    resizeScene(size);
 
     if (enableRecording) {
       _recordedImage = null;
       _recordedPicture?.dispose();
-      _recordedPicture = _recordPicture(fullSize);
+      _recordedPicture = _recordPicture(size);
       _recordedPicture
-          .toImage(fullWidth.ceil(), fullHeight.ceil())
+          .toImage(size.width.ceil(), size.height.ceil())
           .then((x) => _recordedImage = x);
     }
   }
@@ -54,6 +68,9 @@ abstract class Scene {
       }
     } else {
       renderScene(canvas, visibleRect);
+    }
+    if (debugVisibleRect && !recording) {
+      canvas.drawRect(visibleRect, _debugVisibleRectPaint);
     }
   }
 

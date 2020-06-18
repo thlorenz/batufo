@@ -102,58 +102,55 @@ class ClientGame extends Game {
         _grid = Grid(arena.tileSize.toDouble()),
         _starsBack = Stars(
           arena.tileSize.toDouble(),
-          lerpFactor: 1.0,
           enableRecording: enableRecording,
           minRadius: 0.1,
           maxRadius: 0.4,
           density: parallaxProps.starsBackDensity,
           coveredTiles: coveredTiles,
-          debugVisibleRect: GameProps.debugStarsBackVisibleRect,
+          debugVisibleRect: GameProps.debugZ0VisibleRect,
         ),
         _starsMiddle = Stars(
           arena.tileSize.toDouble(),
-          lerpFactor: GameProps.z10LerpFactor,
           enableRecording: enableRecording,
           minRadius: 0.3,
           maxRadius: 0.7,
           density: parallaxProps.starsMiddleDensity,
           coveredTiles: coveredTiles,
-          debugVisibleRect: GameProps.debugStarsMiddleVisibleRect,
+          debugVisibleRect: GameProps.debugZ10VisibleRect,
         ),
         _starsFront = Stars(
           arena.tileSize.toDouble(),
-          lerpFactor: GameProps.z20LerpFactor,
           enableRecording: enableRecording,
           minRadius: 0.8,
           maxRadius: 1.2,
           density: parallaxProps.starsFrontDensity,
           coveredTiles: coveredTiles,
-          debugVisibleRect: GameProps.debugStarsFrontVisibleRect,
+          debugVisibleRect: GameProps.debugZ20VisibleRect,
         ),
         // Recording planets makes performance considerably worse
         _planetsBack = Planets(
           arena.tileSize.toDouble(),
-          lerpFactor: GameProps.z30LerpFactor,
           enableRecording: false,
           minRadius: 0.05,
           maxRadius: 0.25,
           density: parallaxProps.planetsBackDensity,
+          debugVisibleRect: GameProps.debugZ30VisibleRect,
         ),
         _planetsFront = Planets(
           arena.tileSize.toDouble(),
-          lerpFactor: GameProps.z40LerpFactor,
           enableRecording: false,
           minRadius: 0.3,
           maxRadius: 0.5,
           density: parallaxProps.planetsFrontDensity,
+          debugVisibleRect: GameProps.debugZ40VisibleRect,
         ),
         _buildings = Buildings(
           floorTiles: arena.floorTiles,
-          lerpFactor: GameProps.z100LerpFactor,
           walls: arena.walls,
           tileSize: arena.tileSize.toDouble(),
           isFloorActive: GameProps.renderFloor,
-          enableRecording: false,
+          enableRecording: enableRecording,
+          debugVisibleRect: GameProps.debugZ100VisibleRect,
         ),
         _z10Camera = Offset.zero,
         _z20Camera = Offset.zero,
@@ -371,12 +368,24 @@ class ClientGame extends Game {
 
   void resize(Size size) {
     _size = size;
-    _starsBack.resize(size);
-    _starsMiddle.resize(size);
-    _starsFront.resize(size);
-    _planetsBack.resize(size);
-    _planetsFront.resize(size);
-    _buildings.resize(size);
+    final ncols = arena.ncols;
+    final nrows = arena.nrows;
+    final tileSize = arena.tileSize;
+    final arenaSize = Size(
+      ncols * tileSize.toDouble(),
+      nrows * tileSize.toDouble(),
+    );
+
+    final fullWidth = max(ncols * tileSize, size.width.ceil());
+    final fullHeight = max(nrows * tileSize, size.height.ceil());
+    final fullSize = Size(fullWidth.toDouble(), fullHeight.toDouble());
+    _log.info('size:$size, arena: $arenaSize => $fullSize');
+    _starsBack.resize(fullSize);
+    _starsMiddle.resize(fullSize);
+    _starsFront.resize(fullSize);
+    _planetsBack.resize(fullSize);
+    _planetsFront.resize(fullSize);
+    _buildings.resize(fullSize);
   }
 
   void _cameraFollow(WorldPosition wp, double dt) {
