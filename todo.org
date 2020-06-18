@@ -13,70 +13,10 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [X] dispose picture when creating a new one
 - [X] alternatively test perf improvements when storing and ~Image~ vs. a ~Picture~ - do for stars only first [[https://github.com/flutter/flutter/issues/41731][related issue]]
 
-* Level Editor
-
-** Text Based Version
-
-- [X] setup TypeScript project
-- [X] render an empty Canvas with a Grid
-- [X] find a way to reuse Arena from Tilemap from Level String code
-  - [X] reach into server module or pull out common package
-- [X] convert string to arena and render it in Canvas
-- [X] use simple rects with different colors initially
-- [X] load initial string and pass it to renderer
-- [X] how can we load and render an image in Canvas
-
-** Interactive Version
-
-This version would allow editing level via drag/drop interface instead of writing to a file.
-Lots has been implemented at this point
-
-- [X] keyboard shortcuts to switch paint type
-- [X] black image to remove floor and show universe
-- [X] layout menu better (most likely to right of canvas)
-- [X] update coordinates also on hover select
-- [X] try to scroll selected tile into view when cursor change originated in editor
-- [X] store current state in local storage so on page refresh (in case things crash) we can get our current level back
-- [X] have a empty + sample button to load canned levels
-- [X] vim/emacs/normal mode selectors
-- [X] undo icon which just invokes editor undo
-
-** Saving Encoding
-
-Figure out a way to save level content in URL so we can share them with others.
-Think about how people could play their levels, i.e. by adding them to the server for a limited time or so.
-
-- [X] base64 encoding + packing level
-- [X] update url query on each /valid/ change
-- [X] load from query string during init
-- [X] script that takes text file, converts it to query + opens in browser to be invoked from emacs or other editor on demand (i.e. via compile command) or on each save
-
 * Server Side
 
-** DONE Device Stats
-
-It'd be nice to collect stats about which device/OS players are using when playing.
-
-- [X] client needs a reliable way to send device via an enum
-- [X] OSX, Android, iOS and Linux use ~Platform~
-- [X] web is assumed when platform query fails
-- [X] client send that enum as part of request info attempt
-- [X] server maintains map of currently active devices and logs that regularly whenever totals are calculated
 
 * Client Side
-
-** Performance
-
-Investigate if we can draw only parts of the Canvas in order to improve perf, i.e. the part that is actually visible.
-
-- [X] determine visible rect for each camera
-- [X] only drawing stars inside visible rect
-- [X] pass covered tiles to stars and do not draw below them
-- [X] offset covered tiles correctly
-- [X] re-enable picture recording and make it work
-  - [X] record entire game area and record
-  - [X] cut out rect matching the visible area from src when drawing it
-- [ ] render only visible planets (don't worry about being covered up)
 
 ** Pickups
 
@@ -104,6 +44,143 @@ After going to 150% felt more comfortable. Resolution was ~1280*960~.
 - [ ] most likely for mobile keep things the same
 - [ ] another idea is to determine size from window dimensions
 - [ ] so instead of showing more of the arena we show things bigger
+
+** Running Out of Bullets
+
+In order to not get stuck in the game we need a way to repleat bullets.
+One way would be to just refill everyone once all players have used up all their bullets.
+Another way is to make bullet packets appear randomly, i.e. not only the ones defined in Arena.
+
+** Fixes
+
+*** Web Performance
+
+Performance in the browser is lacking since the five level parallax effect was introduced.
+It is to the point of unplayability.
+The browser also doesn't support recording a picture.
+
+Things are much better inside the iframe since that limits the size of the game.
+Improvements could be had by either limiting the density of stars and planets drastically and/or only drawing parts of the effect in the browser.
+
+In the worst case we'll have to disable that effect in the browser all together.
+Alternatively just remove the full screen link to force people to play inside the iframe, which I did for now.
+
+Improved by lowering density of stars + planets via parallax options for web.
+
+- [ ] limit size of game widget and thus of the canvas, see [[file:client/lib/engine/game_widget.dart::bool get sizedByParent => true;][sizing strategy]]
+
+*** Ghost in Single Player Game
+
+Sometimes two players are in the same spot when we start the single player level.
+Only one player is controlled by us, the other one just sits there and never dies.
+
+*** Bullets Getting Stuck
+
+I've seen that some bullets get stuck at times, i.e. they stick around and stop moving.
+So far this is only an issue in the browser, most likely due to the game loop not updating when the browser looses focus.
+
+When a player runs into those he takes damage.
+
+A quick fix could be to just collect all those bullets by checking the ones with velocity zero.
+
+*** [ ] Out of Game Bounds Problem
+
+When game is inactive for a while the ~dt~ is so large that the player position is calculated to be outside of the game boundaries.
+Since colission detection is simple it misses that player flew thru the wall.
+
+- fix 1: provide some ray-casting like feature to prevent flying thru walls
+- fix 2: detect if player is out of bounds and return him to the nearest in bounds tile
+
+Fix1 is some work but catches flying thru any kind of wall as well.
+Fix2 is very simple to implement (in minutes) but would theoretically allow players to jump across walls that are in bounds.
+
+* WAIT Nice to Have
+
+** WAIT Improve Perf by Recording Building Images
+
+Most front camera ~z100~ is a bit different than the other cameras.
+As a result recording images cuts off on the right when the device is narrow (like a phone).
+However if we can get this to work we can get CPU usage to ~15% vs 25% when we're not recording buildings.
+
+** WAIT Background Music
+
+So far [[https://www.youtube.com/watch?v=thCE35jUgA8&feature=youtu.be][this song]] was recommended, but license is unclear.
+** WAIT Visual Cues
+
+- [ ] make any player who is almost dying blink
+
+** WAIT Game Features
+
+*** WAIT Different Weapons
+
+- [ ] plant mines (bombs) in path
+- [ ] volleys (shots that spread out) (slow to recharge)
+- [ ] laser beam that reflects of walls (slow to recharge)
+- [ ] possibly switch via back arrow | 's' | draw back
+- [ ] other option is you pick up that weapon and then can use it once (different icons)
+- [ ] if you have no special weapon shoot normal bullets
+
+*** WAIT Shields and Armor
+
+- [ ] pickup one type of shield in order to be protected from bullets
+- [ ] pickup another type of shield to protect from walls
+- [ ] shields last only a certain amount of time
+- [ ] for each type of shield player needs to be rendered slightly diffently and/or something around the player (could be similar to hit debug feature except round)
+- [ ] shield could also be signified via color change to player
+- [ ] empty circle in player center could have color changed
+- [ ] or shield icons can be rendered on top player
+
+** WAIT Devices and Fairness
+
+Considering that players on Desktop are at an advantage we could try to match up players by device. Obviously this only works/becomes an issue once we have a certain amount of players online.
+
+The [[https://github.com/google/flutter-desktop-embedding/tree/master/plugins/window_size][window size plugin]] could provide a way to enforce a max window size.
+
+This would be fixed if we make things larger on desktop
+
+** WAIT God View
+
+This god view shows all games going on in their own canvas box.
+Each canvas would be downsized to show the entire level view.
+Most likely this would be a hidden admin feature.
+
+It could help in detecting problems with game recycling.
+
+- [ ] show all games going on by selecting this in main menu
+- [ ] server sends all game IDs of active games
+- [ ] open view rendering canvas for each game that is active
+- [ ] each sub game subscribes to the respective namespace
+
+** WAIT Optimizations
+
+*** [ ] Smoothing Prediction Correction
+
+Right now whenever a player's position is synced that is different from the predicted one we just directly jump to it.
+It would be better to smooth this out by adapting the velocity so that eventually prediction and reality converge.
+
+- [ ] send updates immediately on thrust and spawned bullet while sending others like angle change + position changes at an interval
+
+*** [ ] Playability
+
+Multiple tweaks to enhance playability.
+
+- [X] assuming we show time to shoot in hud experiment with increasing it in order to avoid players just shooting randomly all over the place
+
+
+* DONE Client Side
+
+** DONE Performance
+
+Investigate if we can draw only parts of the Canvas in order to improve perf, i.e. the part that is actually visible.
+
+- [X] determine visible rect for each camera
+- [X] only drawing stars inside visible rect
+- [X] pass covered tiles to stars and do not draw below them
+- [X] offset covered tiles correctly
+- [X] re-enable picture recording and make it work
+  - [X] record entire game area and record
+  - [X] cut out rect matching the visible area from src when drawing it
+- [X] render only visible planets (don't worry about being covered up)
 
 ** Experience
 
@@ -162,61 +239,6 @@ A better solution would be to randomly create stars on a black background, possi
 - [X] support levels to have no floor tiles in the middle to get more of a star effect
 
 
-** Running Out of Bullets
-
-In order to not get stuck in the game we need a way to repleat bullets.
-One way would be to just refill everyone once all players have used up all their bullets.
-Another way is to make bullet packets appear randomly, i.e. not only the ones defined in Arena.
-
-** Fixes
-
-*** Web Performance
-
-Performance in the browser is lacking since the five level parallax effect was introduced.
-It is to the point of unplayability.
-The browser also doesn't support recording a picture.
-
-Things are much better inside the iframe since that limits the size of the game.
-Improvements could be had by either limiting the density of stars and planets drastically and/or only drawing parts of the effect in the browser.
-
-In the worst case we'll have to disable that effect in the browser all together.
-Alternatively just remove the full screen link to force people to play inside the iframe, which I did for now.
-
-Improved by lowering density of stars + planets via parallax options for web.
-
-- [ ] limit size of game widget and thus of the canvas, see [[file:client/lib/engine/game_widget.dart::bool get sizedByParent => true;][sizing strategy]]
-
-*** Ghost in Single Player Game
-
-Sometimes two players are in the same spot when we start the single player level.
-Only one player is controlled by us, the other one just sits there and never dies.
-
-*** Bullets Getting Stuck
-
-I've seen that some bullets get stuck at times, i.e. they stick around and stop moving.
-So far this is only an issue in the browser, most likely due to the game loop not updating when the browser looses focus.
-
-When a player runs into those he takes damage.
-
-A quick fix could be to just collect all those bullets by checking the ones with velocity zero.
-
-*** [ ] Out of Game Bounds Problem
-
-When game is inactive for a while the ~dt~ is so large that the player position is calculated to be outside of the game boundaries.
-Since colission detection is simple it misses that player flew thru the wall.
-
-- fix 1: provide some ray-casting like feature to prevent flying thru walls
-- fix 2: detect if player is out of bounds and return him to the nearest in bounds tile
-
-Fix1 is some work but catches flying thru any kind of wall as well.
-Fix2 is very simple to implement (in minutes) but would theoretically allow players to jump across walls that are in bounds.
-
-*** DONE Focus on Exit Button Issue
-
-The exit button gets focused when entering a game and activates when the space bar is hit. We need to find a way to prevent that.
-This seems to only happen when using arrow keys. It seems we need to do either of the two below points and/or eat up the arrow keys or somehow prevent the hud from accepting keyboard input.
-
-Fixed by replacing ~IconButton~ with a ~GestureDetector~ with an ~Icon~. The ~GestureDetector~ doesn't receive focus via the keyboard.
 
 *** DONE Bullet Killing Shooter Problem
 
@@ -258,6 +280,13 @@ jspb.BinaryConstants.TWO_TO_64 = 1.8446744073709552E19;
 
 - [X] fix1: ensuring that we never send a negative angle
 - [X] fix2: ensuring that health is never negative
+
+*** DONE Focus on Exit Button Issue
+
+The exit button gets focused when entering a game and activates when the space bar is hit. We need to find a way to prevent that.
+This seems to only happen when using arrow keys. It seems we need to do either of the two below points and/or eat up the arrow keys or somehow prevent the hud from accepting keyboard input.
+
+Fixed by replacing ~IconButton~ with a ~GestureDetector~ with an ~Icon~. The ~GestureDetector~ doesn't receive focus via the keyboard.
 
 
 ** DONE Issues
@@ -364,75 +393,56 @@ However when we hit someone else we score. We calculate prospected health and if
 - [X] ensure this works on phone
 
  
-* WAIT Nice to Have
+* DONE Level Editor
 
-** WAIT Background Music
+** DONE Text Based Version
 
-So far [[https://www.youtube.com/watch?v=thCE35jUgA8&feature=youtu.be][this song]] was recommended, but license is unclear.
+- [X] setup TypeScript project
+- [X] render an empty Canvas with a Grid
+- [X] find a way to reuse Arena from Tilemap from Level String code
+  - [X] reach into server module or pull out common package
+- [X] convert string to arena and render it in Canvas
+- [X] use simple rects with different colors initially
+- [X] load initial string and pass it to renderer
+- [X] how can we load and render an image in Canvas
 
-** WAIT Visual Cues
+** DONE Interactive Version
 
-- [ ] make any player who is almost dying blink
+This version would allow editing level via drag/drop interface instead of writing to a file.
+Lots has been implemented at this point
 
-** WAIT Game Features
+- [X] keyboard shortcuts to switch paint type
+- [X] black image to remove floor and show universe
+- [X] layout menu better (most likely to right of canvas)
+- [X] update coordinates also on hover select
+- [X] try to scroll selected tile into view when cursor change originated in editor
+- [X] store current state in local storage so on page refresh (in case things crash) we can get our current level back
+- [X] have a empty + sample button to load canned levels
+- [X] vim/emacs/normal mode selectors
+- [X] undo icon which just invokes editor undo
 
-*** WAIT Different Weapons
+** DONE Saving Encoding
 
-- [ ] plant mines (bombs) in path
-- [ ] volleys (shots that spread out) (slow to recharge)
-- [ ] laser beam that reflects of walls (slow to recharge)
-- [ ] possibly switch via back arrow | 's' | draw back
-- [ ] other option is you pick up that weapon and then can use it once (different icons)
-- [ ] if you have no special weapon shoot normal bullets
+Figure out a way to save level content in URL so we can share them with others.
+Think about how people could play their levels, i.e. by adding them to the server for a limited time or so.
 
-*** WAIT Shields and Armor
-
-- [ ] pickup one type of shield in order to be protected from bullets
-- [ ] pickup another type of shield to protect from walls
-- [ ] shields last only a certain amount of time
-- [ ] for each type of shield player needs to be rendered slightly diffently and/or something around the player (could be similar to hit debug feature except round)
-- [ ] shield could also be signified via color change to player
-- [ ] empty circle in player center could have color changed
-- [ ] or shield icons can be rendered on top player
-
-** WAIT Devices and Fairness
-
-Considering that players on Desktop are at an advantage we could try to match up players by device. Obviously this only works/becomes an issue once we have a certain amount of players online.
-
-The [[https://github.com/google/flutter-desktop-embedding/tree/master/plugins/window_size][window size plugin]] could provide a way to enforce a max window size.
-
-This would be fixed if we make things larger on desktop
-
-** WAIT God View
-
-This god view shows all games going on in their own canvas box.
-Each canvas would be downsized to show the entire level view.
-Most likely this would be a hidden admin feature.
-
-It could help in detecting problems with game recycling.
-
-- [ ] show all games going on by selecting this in main menu
-- [ ] server sends all game IDs of active games
-- [ ] open view rendering canvas for each game that is active
-- [ ] each sub game subscribes to the respective namespace
-
-** WAIT Optimizations
-
-*** [ ] Smoothing Prediction Correction
-
-Right now whenever a player's position is synced that is different from the predicted one we just directly jump to it.
-It would be better to smooth this out by adapting the velocity so that eventually prediction and reality converge.
-
-- [ ] send updates immediately on thrust and spawned bullet while sending others like angle change + position changes at an interval
-
-*** [ ] Playability
-
-Multiple tweaks to enhance playability.
-
-- [X] assuming we show time to shoot in hud experiment with increasing it in order to avoid players just shooting randomly all over the place
+- [X] base64 encoding + packing level
+- [X] update url query on each /valid/ change
+- [X] load from query string during init
+- [X] script that takes text file, converts it to query + opens in browser to be invoked from emacs or other editor on demand (i.e. via compile command) or on each save
 
 
 * DONE Server Side
+
+** DONE Device Stats
+
+It'd be nice to collect stats about which device/OS players are using when playing.
+
+- [X] client needs a reliable way to send device via an enum
+- [X] OSX, Android, iOS and Linux use ~Platform~
+- [X] web is assumed when platform query fails
+- [X] client send that enum as part of request info attempt
+- [X] server maintains map of currently active devices and logs that regularly whenever totals are calculated
 
 ** DONE Rooms
 
@@ -448,21 +458,21 @@ That is much closer to what our games are.
 - [X] restore current functionality
 
 
-* DONE Networking
+** DONE Networking
 
-** DONE Server Relays Player Updates to other Players
+*** DONE Server Relays Player Updates to other Players
 
  - [X] players need to send updates to server
  - [X] server needs to propagate them
  - [X] figure out why ~Offset~ is always ~Offset.zero~
  - [X] clients need to sync other players accordingly
 
-** DONE Server Relays Spawned Bullest to other Players
+*** DONE Server Relays Spawned Bullest to other Players
 
  - [X] when player shoots bullet it updates server either as part of player update or separate event
  - [X] server updates all clients with spawned bullet info
 
-** DONE PlayerRequest -> PlayingClient Init [7/7]
+*** DONE PlayerRequest -> PlayingClient Init [7/7]
 :LOGBOOK:
 CLOCK: [2020-05-22 Fri 18:35]--[2020-05-22 Fri 19:59] =>  1:24
 CLOCK: [2020-05-21 Thu 19:50]--[2020-05-21 Thu 20:20] =>  0:30
@@ -477,7 +487,7 @@ CLOCK: [2020-05-21 Thu 18:37]--[2020-05-21 Thu 19:42] =>  1:05
 - [X] server reponds with ids + arena
 - [X] client prints out arena info
 
-** DONE Init Client from Server Arena
+*** DONE Init Client from Server Arena
 :LOGBOOK:
 CLOCK: [2020-05-25 Mon 18:47]--[2020-05-25 Mon 20:03] =>  1:16
 :END:
@@ -487,15 +497,15 @@ CLOCK: [2020-05-25 Mon 18:47]--[2020-05-25 Mon 20:03] =>  1:16
 - [X] server responds with playing client including arena
 - [X] client renders arena with current player and is in a playable state
 
-*** Resources
+**** Resources
 
 - [[https://github.com/carlostse/nodejs-protobuf-socketio][socket.io sample]]
 - [[https://github.com/rikulo/socket.io-client-dart][dart socket.io client lib]]
 - [[https://github.com/improbable-eng/ts-protoc-gen][ts-protoc-gen]]
 
-** DONE Add Stream based State Management
+*** DONE Add Stream based State Management
 
-*** Universe  [6/6]
+**** Universe  [6/6]
 
 Manages states and emits them so stream controllers can be used to render appropriate widgets.
 
@@ -506,7 +516,7 @@ Manages states and emits them so stream controllers can be used to render approp
 - [X] server needs to send ~ServerInfo~
 - [X] server needs to include client index in arena players
 
-** DONE Socket.io Spike [0/0]
+*** DONE Socket.io Spike [0/0]
 :LOGBOOK:
 CLOCK: [2020-05-20 Wed 18:41]--[2020-05-20 Wed 19:42] =>  1:01
 CLOCK: [2020-05-15 Fri 18:40]--[2020-05-15 Fri 20:17] =>  1:37
@@ -522,14 +532,14 @@ CLOCK: [2020-05-14 Thu 18:40]--[2020-05-14 Thu 20:20] =>  1:40
 - [X] write proto generator script
 - [X] communicate proto messages and declare it impossible for now
 
-*** Status
+**** Status
 
 - communicating between server and client, but dart client is unable to deserialize message
 - Node.js server + client class have static ~(de)serialize~ methods, but dart classes don't
 - also data received is not a ~List~ either
 - possibly include a string in the payload to understand data format better
 
-** KILL Using JSON format
+*** KILL Using JSON format
 :LOGBOOK:
 CLOCK: [2020-05-20 Wed 19:51]--[2020-05-20 Wed 20:11] =>  0:20
 :END:
