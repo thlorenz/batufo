@@ -8,7 +8,7 @@ export default Level.fromLevelString(
 =                     =
 =====             =====
 =     ====        =
-=   d =  =        =
+=   s =  =        =
 =     ====        =
 =====             ========
 =   +                    =
