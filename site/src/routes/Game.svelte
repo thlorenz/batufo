@@ -2,6 +2,12 @@
   .italic {
     font-style: italic;
   }
+  .release-link {
+    background-color: yellow;
+    border-radius: 3px;
+    text-decoration: underline;
+    padding: 5px 10px;
+  }
 </style>
 
 <script>
@@ -16,27 +22,29 @@
 
   onMount(() => iframe.focus())
 
-  $: videoWidth = Math.min(windowWidth * 0.66, 560)
-  $: videoHeight = videoWidth / 1.77
+  $: gameWidth = Math.min(windowWidth * 0.66, 560)
+  $: gameHeight = gameWidth
 </script>
 
 <main>
   <h1>{title}</h1>
-  <h2>Source and Releases</h2>
-
   <p>
-    <a href="{latestReleaseURL}" target="_blank">Latest Release</a>
-    <span class="italic">now with sound effects and a beautiful universe!</span>
+    Get the
+    <a class="release-link" href="{latestReleaseURL}" target="_blank">
+      Latest Release
+    </a>
+    <span class="italic">with sound effects and a beautiful universe!</span>
   </p>
+  <p>You can also try the web version below.</p>
   <p>
-    <a href="{githubSourceURL}" target="_blank">Source on Github</a>
+    However keep in mind that the performance of the native apps is far
+    superior.
   </p>
-  <h2>Play the Web Version</h2>
   <iframe
     title="game"
     class="center"
-    width="{videoWidth}"
-    height="{videoHeight}"
+    width="{gameWidth}"
+    height="{gameHeight}"
     src="{gameWebURL}"
     frameborder="0"
     allow="accelerometer; autoplay; encrypted-media; gyroscope;
@@ -44,8 +52,7 @@
     allowfullscreen
     bind:this="{iframe}"
   ></iframe>
- <p>
-   <a href="{gameWebURL}" target="_blank">Full Screen</a>
-   <em>Make sure to keep the window small or performance will suffer.</em>
- </p>
+  <p>
+    <a href="{githubSourceURL}" target="_blank">Source on Github</a>
+  </p>
 </main>

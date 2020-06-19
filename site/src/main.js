@@ -48,7 +48,7 @@ const app = new App({
     state: {
       currentRoute: startingRoute,
     },
-    rootURL
+    rootURL,
   },
 })
 
