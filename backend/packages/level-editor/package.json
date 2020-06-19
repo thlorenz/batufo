@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "watch": "tsc --watch",
     "dev": "parcel index.html",
-    "build": "parcel build index.html -d ./build -o index.html"
+    "build": "./scripts/build.sh"
   },
   "browserslist": {
     "development": [
