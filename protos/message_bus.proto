@@ -64,6 +64,16 @@ message GameCreated {
   PackedArena arena = 4;
 }
 
+enum PackedPickupType {
+  Medkit = 0;
+  Shield = 1;
+}
+
+message PackedPickup {
+  PackedPickupType type = 1;
+  PackedTilePosition tilePosition = 2;
+}
+
 message PackedArena {
   repeated PackedTilePosition floorTiles = 1;
   repeated PackedTilePosition walls = 2;
@@ -71,6 +81,7 @@ message PackedArena {
   uint32 nrows = 4;
   uint32 ncols = 5;
   uint32 tileSize = 6;
+  repeated PackedPickup pickups = 7;
 }
 
 message PackedPlayerModel {

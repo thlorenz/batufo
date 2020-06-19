@@ -34,3 +34,18 @@ class Platform extends $pb.ProtobufEnum {
   const Platform._($core.int v, $core.String n) : super(v, n);
 }
 
+class PackedPickupType extends $pb.ProtobufEnum {
+  static const PackedPickupType Medkit = PackedPickupType._(0, 'Medkit');
+  static const PackedPickupType Shield = PackedPickupType._(1, 'Shield');
+
+  static const $core.List<PackedPickupType> values = <PackedPickupType> [
+    Medkit,
+    Shield,
+  ];
+
+  static final $core.Map<$core.int, PackedPickupType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static PackedPickupType valueOf($core.int value) => _byValue[value];
+
+  const PackedPickupType._($core.int v, $core.String n) : super(v, n);
+}
+

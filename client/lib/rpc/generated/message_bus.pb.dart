@@ -391,6 +391,49 @@ class GameCreated extends $pb.GeneratedMessage {
   PackedArena ensureArena() => $_ensure(3);
 }
 
+class PackedPickup extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedPickup', createEmptyInstance: create)
+    ..e<PackedPickupType>(1, 'type', $pb.PbFieldType.OE, defaultOrMaker: PackedPickupType.Medkit, valueOf: PackedPickupType.valueOf, enumValues: PackedPickupType.values)
+    ..aOM<PackedTilePosition>(2, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
+    ..hasRequiredFields = false
+  ;
+
+  PackedPickup._() : super();
+  factory PackedPickup() => create();
+  factory PackedPickup.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedPickup.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedPickup clone() => PackedPickup()..mergeFromMessage(this);
+  PackedPickup copyWith(void Function(PackedPickup) updates) => super.copyWith((message) => updates(message as PackedPickup));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PackedPickup create() => PackedPickup._();
+  PackedPickup createEmptyInstance() => create();
+  static $pb.PbList<PackedPickup> createRepeated() => $pb.PbList<PackedPickup>();
+  @$core.pragma('dart2js:noInline')
+  static PackedPickup getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedPickup>(create);
+  static PackedPickup _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PackedPickupType get type => $_getN(0);
+  @$pb.TagNumber(1)
+  set type(PackedPickupType v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasType() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearType() => clearField(1);
+
+  @$pb.TagNumber(2)
+  PackedTilePosition get tilePosition => $_getN(1);
+  @$pb.TagNumber(2)
+  set tilePosition(PackedTilePosition v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTilePosition() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTilePosition() => clearField(2);
+  @$pb.TagNumber(2)
+  PackedTilePosition ensureTilePosition() => $_ensure(1);
+}
+
 class PackedArena extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedArena', createEmptyInstance: create)
     ..pc<PackedTilePosition>(1, 'floorTiles', $pb.PbFieldType.PM, protoName: 'floorTiles', subBuilder: PackedTilePosition.create)
@@ -399,6 +442,7 @@ class PackedArena extends $pb.GeneratedMessage {
     ..a<$core.int>(4, 'nrows', $pb.PbFieldType.OU3)
     ..a<$core.int>(5, 'ncols', $pb.PbFieldType.OU3)
     ..a<$core.int>(6, 'tileSize', $pb.PbFieldType.OU3, protoName: 'tileSize')
+    ..pc<PackedPickup>(7, 'pickups', $pb.PbFieldType.PM, subBuilder: PackedPickup.create)
     ..hasRequiredFields = false
   ;
 
@@ -452,6 +496,9 @@ class PackedArena extends $pb.GeneratedMessage {
   $core.bool hasTileSize() => $_has(5);
   @$pb.TagNumber(6)
   void clearTileSize() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.List<PackedPickup> get pickups => $_getList(6);
 }
 
 class PackedPlayerModel extends $pb.GeneratedMessage {

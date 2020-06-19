@@ -241,6 +241,32 @@ export namespace GameCreated {
   }
 }
 
+export class PackedPickup extends jspb.Message {
+  getType(): PackedPickupTypeMap[keyof PackedPickupTypeMap];
+  setType(value: PackedPickupTypeMap[keyof PackedPickupTypeMap]): void;
+
+  hasTileposition(): boolean;
+  clearTileposition(): void;
+  getTileposition(): PackedTilePosition | undefined;
+  setTileposition(value?: PackedTilePosition): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PackedPickup.AsObject;
+  static toObject(includeInstance: boolean, msg: PackedPickup): PackedPickup.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PackedPickup, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PackedPickup;
+  static deserializeBinaryFromReader(message: PackedPickup, reader: jspb.BinaryReader): PackedPickup;
+}
+
+export namespace PackedPickup {
+  export type AsObject = {
+    type: PackedPickupTypeMap[keyof PackedPickupTypeMap],
+    tileposition?: PackedTilePosition.AsObject,
+  }
+}
+
 export class PackedArena extends jspb.Message {
   clearFloortilesList(): void;
   getFloortilesList(): Array<PackedTilePosition>;
@@ -266,6 +292,11 @@ export class PackedArena extends jspb.Message {
   getTilesize(): number;
   setTilesize(value: number): void;
 
+  clearPickupsList(): void;
+  getPickupsList(): Array<PackedPickup>;
+  setPickupsList(value: Array<PackedPickup>): void;
+  addPickups(value?: PackedPickup, index?: number): PackedPickup;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PackedArena.AsObject;
   static toObject(includeInstance: boolean, msg: PackedArena): PackedArena.AsObject;
@@ -284,6 +315,7 @@ export namespace PackedArena {
     nrows: number,
     ncols: number,
     tilesize: number,
+    pickupsList: Array<PackedPickup.AsObject>,
   }
 }
 
@@ -482,4 +514,11 @@ export interface PlatformMap {
 }
 
 export const Platform: PlatformMap;
+
+export interface PackedPickupTypeMap {
+  MEDKIT: 0;
+  SHIELD: 1;
+}
+
+export const PackedPickupType: PackedPickupTypeMap;
 
