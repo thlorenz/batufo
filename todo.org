@@ -22,12 +22,28 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 We wanna add some pickups back in. Most importantly are health packets, but some diamonds to up the score would be nice as well.
 
-- [ ] limit amount of bullets which deplete whe we shoot (show above health bar)
-- [ ] add bullet pickups to level
+*** Health
+
 - [ ] add health packets to level
 - [ ] detect colission with health packets
-- [ ] remove health packet on colission
 - [ ] up players health after colission
+- [ ] remove health packet on colission
+
+*** Shields and Armor
+
+- [ ] pickup one type of shield in order to be protected from bullets and walls
+- [ ] player needs to be rendered slightly diffently render a circle around it similarly as we do with health but larger radius
+- [ ] shields last only a certain amount of time
+- [ ] when shield is active player hit box extends to it, affecting wall and bullet colissions
+- [ ] when shield is active player receives no damage
+
+*** Bullets
+
+- [ ] limit amount of bullets which deplete whe we shoot (show above health bar)
+- [ ] add bullet pickups to level
+
+*** Diamonds
+
 - [ ] add diamonds to level
 - [ ] detect colission + remove like with health packets
 - [ ] increase score on colission
@@ -105,6 +121,7 @@ However if we can get this to work we can get CPU usage to ~15% vs 25% when we'r
 ** WAIT Background Music
 
 So far [[https://www.youtube.com/watch?v=thCE35jUgA8&feature=youtu.be][this song]] was recommended, but license is unclear.
+
 ** WAIT Visual Cues
 
 - [ ] make any player who is almost dying blink
@@ -120,15 +137,6 @@ So far [[https://www.youtube.com/watch?v=thCE35jUgA8&feature=youtu.be][this song
 - [ ] other option is you pick up that weapon and then can use it once (different icons)
 - [ ] if you have no special weapon shoot normal bullets
 
-*** WAIT Shields and Armor
-
-- [ ] pickup one type of shield in order to be protected from bullets
-- [ ] pickup another type of shield to protect from walls
-- [ ] shields last only a certain amount of time
-- [ ] for each type of shield player needs to be rendered slightly diffently and/or something around the player (could be similar to hit debug feature except round)
-- [ ] shield could also be signified via color change to player
-- [ ] empty circle in player center could have color changed
-- [ ] or shield icons can be rendered on top player
 
 ** WAIT Devices and Fairness
 
