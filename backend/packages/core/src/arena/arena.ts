@@ -2,12 +2,15 @@ import { Levels } from './levels'
 import { TilePosition } from './tile-position'
 import { Tile, Tilemap } from './tilemap'
 import { PackedArena } from '../generated/message_bus_pb'
+import { Pickup, PickupType } from './pickup'
+import { UnreachableCaseError } from '../types'
 
 export class Arena {
   constructor(
     readonly floorTiles: TilePosition[],
     readonly walls: TilePosition[],
     readonly players: TilePosition[],
+    readonly pickups: Pickup[],
     readonly nrows: number,
     readonly ncols: number,
     readonly tileSize: number
@@ -23,6 +26,7 @@ export class Arena {
     const center = tileSize / 2
     const floorTiles: TilePosition[] = []
     const walls: TilePosition[] = []
+    const pickups: Pickup[] = []
     const initialPlayers: TilePosition[] = []
 
     for (let row = 0; row < nrows; row++) {
@@ -31,21 +35,54 @@ export class Arena {
         if (Tilemap.needsFloorTile(tile)) {
           floorTiles.push(new TilePosition(col, row, center, center))
         }
-        if (tile === Tile.Wall || tile === Tile.Boundary) {
-          walls.push(new TilePosition(col, row, center, center))
-        }
-        if (tile === Tile.Player) {
-          initialPlayers.push(new TilePosition(col, row, center, center))
+        switch (tile) {
+          case Tile.Wall:
+            walls.push(new TilePosition(col, row, center, center))
+            break
+          case Tile.Player:
+            initialPlayers.push(new TilePosition(col, row, center, center))
+            break
+          case Tile.Shield:
+            pickups.push(
+              new Pickup(
+                PickupType.Shield,
+                new TilePosition(col, row, center, center)
+              )
+            )
+            break
+          case Tile.Medkit:
+            pickups.push(
+              new Pickup(
+                PickupType.Medkit,
+                new TilePosition(col, row, center, center)
+              )
+            )
+            break
+          case Tile.OutOfBounds:
+          case Tile.Empty:
+          case Tile.Hole:
+            break
+          default:
+            throw new UnreachableCaseError(tile)
         }
       }
     }
-    return new Arena(floorTiles, walls, initialPlayers, nrows, ncols, tileSize)
+    return new Arena(
+      floorTiles,
+      walls,
+      initialPlayers,
+      pickups,
+      nrows,
+      ncols,
+      tileSize
+    )
   }
 
   pack(): PackedArena {
     const packedFloorTiles = this.floorTiles.map((x) => x.pack())
     const packedWalls = this.walls.map((x) => x.pack())
     const packedPlayerPositions = this.players.map((x) => x.pack())
+    const packedPickups = this.pickups.map((x) => x.pack())
 
     const packedArena = new PackedArena()
     packedArena.setNrows(this.nrows)
@@ -55,23 +92,24 @@ export class Arena {
     packedArena.setFloortilesList(packedFloorTiles)
     packedArena.setWallsList(packedWalls)
     packedArena.setPlayerpositionsList(packedPlayerPositions)
+    packedArena.setPickupsList(packedPickups)
 
     return packedArena
   }
 
   unpack(data: PackedArena): Arena {
-    const floorTiles = data
-      .getFloortilesList()
-      .map((x) => TilePosition.unpack(x))
-    const walls = data.getWallsList().map((x) => TilePosition.unpack(x))
+    const floorTiles = data.getFloortilesList().map(TilePosition.unpack)
+    const walls = data.getWallsList().map(TilePosition.unpack)
     const playerPositions = data
       .getPlayerpositionsList()
-      .map((x) => TilePosition.unpack(x))
+      .map(TilePosition.unpack)
+    const pickups = data.getPickupsList().map(Pickup.unpack)
 
     return new Arena(
       floorTiles,
       walls,
       playerPositions,
+      pickups,
       data.getNrows(),
       data.getNcols(),
       data.getTilesize()
@@ -84,7 +122,7 @@ export class Arena {
   }
 
   static empty(): Arena {
-    return new Arena([], [], [], 0, 0, 0)
+    return new Arena([], [], [], [], 0, 0, 0)
   }
 
   static TILE_SIZE = 40
@@ -94,6 +132,7 @@ export class Arena {
 Arena: ${this.nrows}x${this.ncols}
   players: {this.players}
   walls: {this.walls}
+  pickups: {this.pickups}
 `
   }
 }

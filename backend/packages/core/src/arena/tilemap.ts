@@ -5,16 +5,15 @@ export enum Tile {
   /* 0 */ OutOfBounds,
   /* 1 */ Empty,
   /* 2 */ Hole,
-  /* 3 */ Boundary,
-  /* 4 */ Wall,
-  /* 5 */ Player,
-  /* 6 */ Diamond,
-  /* 7 */ Medkit,
+  /* 3 */ Wall,
+  /* 4 */ Player,
+  /* 5 */ Medkit,
+  /* 6 */ Shield,
 }
 
 export const EMPTY = ' '
 
-export const TileKeys = [EMPTY, 'x', 'p', '=', 'd', '+'] as const
+export const TileKeys = [EMPTY, 'x', 'p', '=', 's', '+'] as const
 export type TileKey = typeof TileKeys[number]
 
 const charToTile: Map<TileKey, Tile> = new Map([
@@ -22,7 +21,7 @@ const charToTile: Map<TileKey, Tile> = new Map([
   ['x', Tile.Hole],
   ['p', Tile.Player],
   ['=', Tile.Wall],
-  ['d', Tile.Diamond],
+  ['s', Tile.Shield],
   ['+', Tile.Medkit],
 ])
 
@@ -93,13 +92,12 @@ export class Tilemap {
   static needsFloorTile(tile: Tile): boolean {
     switch (tile) {
       case Tile.OutOfBounds:
-      case Tile.Boundary:
       case Tile.Wall:
       case Tile.Hole:
         return false
       case Tile.Empty:
       case Tile.Player:
-      case Tile.Diamond:
+      case Tile.Shield:
       case Tile.Medkit:
         return true
       default:

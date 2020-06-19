@@ -9,8 +9,8 @@ const tileToHex: Map<LevelTile, number> = new Map([
   ['x', 0x2],
   ['p', 0x3],
   ['=', 0x4],
-  ['d', 0x5],
   ['+', 0x6],
+  ['s', 0x5],
 ])
 
 // @ts-ignore
@@ -111,7 +111,7 @@ const terrain: string = `=======================
 =                     =
 =====           p     =
     =     ====        =
-    =   d =  =        =
+    =   s =  =        =
     =     ====        =
 =====                 ====
 =   +   p       p        =
