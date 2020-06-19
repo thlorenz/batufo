@@ -19,6 +19,8 @@ class Pickup {
   final PickupType type;
   final TilePosition tilePosition;
 
+  String get id => '$type:[${tilePosition.col},${tilePosition.row}]';
+
   Pickup(this.type, this.tilePosition);
 
   PackedPickup pack() {
@@ -34,6 +36,10 @@ class Pickup {
     final type = unpackPickupType(data.type);
     final tilePosition = TilePosition.unpack(data.tilePosition);
 
+    return Pickup(type, tilePosition);
+  }
+
+  Pickup clone() {
     return Pickup(type, tilePosition);
   }
 }

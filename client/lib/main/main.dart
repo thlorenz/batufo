@@ -29,6 +29,8 @@ Future<void> mainEntry({
     assets.wallMetal.imagePath,
     assets.bulletExplosion.imagePath,
     assets.skull.imagePath,
+    assets.medkit.imagePath,
+    assets.shield.imagePath,
   ]);
 
   sound.disableLog();

@@ -12,6 +12,7 @@ import 'package:batufo/game/assets/assets.dart';
 import 'package:batufo/game/entities/buildings.dart';
 import 'package:batufo/game/entities/bullets.dart';
 import 'package:batufo/game/entities/grid.dart';
+import 'package:batufo/game/entities/pickups.dart';
 import 'package:batufo/game/entities/planets.dart';
 import 'package:batufo/game/entities/player.dart';
 import 'package:batufo/game/entities/stars.dart';
@@ -55,6 +56,7 @@ class ClientGame extends Game {
   GameController _gameController;
   Map<int, Player> _players;
   Bullets _bullets;
+  Pickups _pickups;
 
   Offset _z10Camera;
   Offset _z20Camera;
@@ -172,6 +174,7 @@ class ClientGame extends Game {
       clientID,
       soundController,
     );
+    _pickups = Pickups(_gameController.gameState.pickups, arena.tileSize);
   }
 
   ClientGameState get gameState => _gameController.gameState;
@@ -193,6 +196,7 @@ class ClientGame extends Game {
     return ClientGameState(
       clientID: clientID,
       bullets: [],
+      pickups: arena.pickups,
       totalPlayers: arena.players.length,
       players: {clientID: hero},
     );
@@ -350,6 +354,7 @@ class ClientGame extends Game {
 
     _renderArena(canvas);
 
+    _pickups.render(canvas, _z100VisibleRect);
     for (final entry in gameState.players.entries) {
       final player = _players[entry.key];
       if (player == null) continue;

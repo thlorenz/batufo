@@ -48,6 +48,20 @@ class _Assets {
     rows: 1,
     cols: 1,
   );
+  final ImageAsset medkit = ImageAsset(
+    'assets/images/sprites/medkit.png',
+    188,
+    188,
+    rows: 1,
+    cols: 1,
+  );
+  final ImageAsset shield = ImageAsset(
+    'assets/images/sprites/shield.png',
+    188,
+    188,
+    rows: 1,
+    cols: 1,
+  );
 
   final AudioAsset audioThrust = AudioAsset('audio/thrust.wav');
   final AudioAsset audioBullet = AudioAsset('audio/bullet.wav');
