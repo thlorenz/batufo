@@ -5,6 +5,7 @@ import gameUpdate from '../data/game-update.json'
 const routes = {
   home: { id: 'home', hash: '' },
   game: { id: 'game', hash: '#game' },
+  editor: { id: 'editor', hash: '#editor' },
   watch: { id: 'watch', hash: '#watch' },
   devlog: { id: 'devlog', hash: '#devlog' },
 }
@@ -18,6 +19,8 @@ const hash = location.hash
 const startingRoute =
   hash === routes.game.hash
     ? routes.game
+    : hash === routes.editor.hash
+    ? routes.editor
     : hash === routes.watch.hash
     ? routes.watch
     : isOnDevlogPage()
@@ -37,6 +40,7 @@ const app = new App({
       'https://www.youtube.com/embed/videoseries?list=PL4k64WemroGlTDHJzVo_O1l6C0nuwRc6G',
     subChannelURL: 'https://www.youtube.com/user/thlorenz10?sub_confirmation=1',
     gameWebURL: 'https://thlorenz.github.io/batufo/webgame',
+    editorURL: 'https://thlorenz.github.io/batufo/editor',
     latestReleaseURL: gameUpdate.release.url,
     githubSourceURL: 'https://github.com/thlorenz/batufo',
     youtubePlaylistURL:

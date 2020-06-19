@@ -38,6 +38,7 @@
 <script>
   import Home from './routes/Home.svelte'
   import Game from './routes/Game.svelte'
+  import Editor from './routes/Editor.svelte'
   import Watch from './routes/Watch.svelte'
   import Devlog from './routes/Devlog.svelte'
 
@@ -45,6 +46,7 @@
   export let embedPlaylist
   export let subChannelURL
   export let gameWebURL
+  export let editorURL
   export let twitchChannel
   export let twitchChannelURL
   export let latestReleaseURL
@@ -65,6 +67,7 @@
 
   $: homeClass = state.currentRoute === routes.home ? 'underline' : ''
   $: gameClass = state.currentRoute === routes.game ? 'underline' : ''
+  $: editorClass = state.currentRoute === routes.editor ? 'underline' : ''
   $: watchClass = state.currentRoute === routes.watch ? 'underline' : ''
   $: devlogClass = isOnDevlogPage() ? 'underline' : ''
   $: windowWidth = getWindowWidth()
@@ -78,6 +81,11 @@
   }
   const navigateGame = () => {
     state.currentRoute = routes.game
+    state = state
+  }
+
+  const navigateEditor = () => {
+    state.currentRoute = routes.editor
     state = state
   }
 
@@ -116,6 +124,9 @@
     <a href="{rootURL + routes.devlog.hash }"
        class="{devlogClass}"
        on:click={navigateDevlog}>Devlog</a>
+    <a href="{rootURL + routes.editor.hash}"
+       class="{editorClass}"
+       on:click={navigateEditor}>Editor</a>
   </nav>
   <div>
     {#if state.currentRoute === routes.home}
@@ -131,6 +142,8 @@
       />
     {:else if state.currentRoute === routes.game}
       <Game {title} {gameWebURL} {latestReleaseURL} {githubSourceURL} {windowWidth} />
+    {:else if state.currentRoute === routes.editor}
+      <Editor {title} {editorURL} {windowWidth} {windowHeight} />
     {:else if state.currentRoute === routes.watch}
       <Watch {title} {twitchChannelURL} {twitchChannel} {youtubePlaylistURL} {windowWidth} />
     {:else if state.currentRoute === routes.devlog || isOnDevlogPage()}
