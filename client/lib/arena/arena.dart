@@ -1,4 +1,4 @@
-import 'package:batufo/arena/tilemap.dart';
+import 'package:batufo/arena/pickup.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart' show PackedArena;
 import 'package:flutter/foundation.dart';
@@ -7,6 +7,7 @@ class Arena {
   final List<TilePosition> floorTiles;
   final List<TilePosition> walls;
   final List<TilePosition> players;
+  final List<Pickup> pickups;
   final int nrows;
   final int ncols;
   final int tileSize;
@@ -15,56 +16,11 @@ class Arena {
     @required this.floorTiles,
     @required this.walls,
     @required this.players,
+    @required this.pickups,
     @required this.nrows,
     @required this.ncols,
     @required this.tileSize,
   });
-
-  bool isFull(int registeredPlayers) => players.length == registeredPlayers;
-  TilePosition playerPosition(int idx) => players[idx];
-  bool isCoveredAt(int col, int row) {
-    final wall = walls.firstWhere((tp) => tp.col == col && tp.row == row,
-        orElse: () => null);
-    if (wall != null) return true;
-    final floorTile = floorTiles
-        .firstWhere((tp) => tp.col == col && tp.row == row, orElse: () => null);
-    if (floorTile != null) return true;
-    return false;
-  }
-
-  factory Arena.fromTilemap(Tilemap tilemap, int tileSize) {
-    final nrows = tilemap.nrows;
-    final ncols = tilemap.ncols;
-    final center = tileSize / 2;
-    final floorTiles = <TilePosition>[];
-    final walls = <TilePosition>[];
-    final initialPlayers = <TilePosition>[];
-
-    for (int row = 0; row < nrows; row++) {
-      for (int col = 0; col < ncols; col++) {
-        final tile = tilemap.tiles[row * ncols + col];
-        if (!Tilemap.coversBackground(tile)) {
-          floorTiles.add(TilePosition(col, row, center, center));
-        }
-        if (tile == Tile.Wall || tile == Tile.Boundary) {
-          walls.add(TilePosition(col, row, center, center));
-        }
-        if (tile == Tile.Player) {
-          initialPlayers.add(
-            TilePosition(col, row, center, center),
-          );
-        }
-      }
-    }
-    return Arena(
-      floorTiles: floorTiles,
-      walls: walls,
-      players: initialPlayers,
-      nrows: nrows,
-      ncols: ncols,
-      tileSize: tileSize,
-    );
-  }
 
   PackedArena pack() {
     final packedFloorTiles = floorTiles.map((x) => x.pack());
@@ -87,11 +43,13 @@ class Arena {
     final walls = data.walls.map((x) => TilePosition.unpack(x)).toList();
     final playerPositions =
         data.playerPositions.map((x) => TilePosition.unpack(x)).toList();
+    final pickups = data.pickups.map(Pickup.unpack).toList();
 
     return Arena(
       floorTiles: floorTiles,
       walls: walls,
       players: playerPositions,
+      pickups: pickups,
       nrows: data.nrows,
       ncols: data.ncols,
       tileSize: data.tileSize,
@@ -103,6 +61,7 @@ class Arena {
     Arena: ${nrows}x$ncols {
       players: $players
       walls: $walls
+      pickups: $pickups
     }
 ''';
   }
