@@ -4,6 +4,7 @@ import 'package:batufo/arena/arena.dart';
 import 'package:batufo/controllers/bullets_controller.dart';
 import 'package:batufo/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/controllers/helpers/colliders.dart';
+import 'package:batufo/controllers/helpers/pickups_controller.dart';
 import 'package:batufo/controllers/player_controller.dart';
 import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
@@ -24,6 +25,7 @@ class GameController {
 
   PlayerController _playerController;
   BulletsController _bulletsController;
+  PickupsController _pickupsController;
 
   GameController(
     this._arena,
@@ -59,6 +61,12 @@ class GameController {
       onPlayerHitByBullet: _onPlayerHitByBullet,
       tileSize: _arena.tileSize.toDouble(),
     );
+
+    _pickupsController = PickupsController(
+      pickups: _gameState.pickups,
+      colliders: colliders,
+      soundController: soundController,
+    );
   }
 
   ClientGameState get gameState => _gameState;
@@ -71,6 +79,7 @@ class GameController {
       if (player.shotBullet) _spawnBullet(player);
     }
     _bulletsController.update(dt, _gameState.players.values);
+    _pickupsController.update(_gameState.hero);
 
     return _gameState;
   }

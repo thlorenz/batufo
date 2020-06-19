@@ -20,7 +20,7 @@
 - [url](https://opengameart.org/content/pickup-items-icons)
 - CC0
 
-# sounds
+# audio
 
 ## audio/bullet.wav
 
@@ -41,3 +41,9 @@
 
 - [url](https://opengameart.org/content/50-cc0-sci-fi-sfx)
 - CC0
+
+## audio/pickup-shield.wav
+
+- [url](https://opengameart.org/content/8-bit-sound-effect-pack-vol-001)
+- CC0
+

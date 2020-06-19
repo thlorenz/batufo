@@ -3,6 +3,7 @@ abstract class Sound {
   Future<void> playBullet(double volume);
   Future<void> playBulletExploded(double volume);
   Future<void> playPlayerHitWall(double volume);
+  Future<void> playPickupShield(double volume);
 
   void disableLog();
 }
@@ -21,6 +22,10 @@ class DisabledSound extends Sound {
   }
 
   Future<void> playPlayerHitWall(double volume) {
+    return Future.value();
+  }
+
+  Future<void> playPickupShield(double volume) {
     return Future.value();
   }
 

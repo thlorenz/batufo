@@ -1,6 +1,8 @@
+import 'package:batufo/arena/pickup.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 bool didBulletHitPlayer(
   TilePosition player,
@@ -32,15 +34,28 @@ class Colliders {
   final int nrows;
   final int ncols;
   final List<bool> _walls;
+  final List<Pickup> _pickups;
   final double playerRadius;
   Colliders(
     this.nrows,
     this.ncols, {
     @required List<TilePosition> walls,
     @required this.playerRadius,
-  }) : _walls = List<bool>(nrows * ncols)..fillRange(0, nrows * ncols, false) {
+  })  : _walls = List<bool>(nrows * ncols)..fillRange(0, nrows * ncols, false),
+        _pickups = List<Pickup>(nrows * ncols)
+          ..fillRange(0, nrows * ncols, null) {
     for (final wall in walls) {
       _walls[wall.row * ncols + wall.col] = true;
+    }
+  }
+
+  void updatePickups(List<Pickup> pickups) {
+    _pickups
+      ..clear()
+      ..fillRange(0, nrows * ncols, null);
+    for (final pickup in pickups) {
+      _pickups[pickup.tilePosition.row * ncols + pickup.tilePosition.col] =
+          pickup;
     }
   }
 
@@ -68,5 +83,10 @@ class Colliders {
   bool _wallAt(TilePosition tp) {
     final idx = tp.row * ncols + tp.col;
     return idx >= _walls.length || _walls[idx];
+  }
+
+  Pickup playerPickingUpAt(TilePosition tp) {
+    final idx = tp.row * ncols + tp.col;
+    return idx >= _pickups.length ? null : _pickups[idx];
   }
 }

@@ -1,7 +1,7 @@
-import 'package:batufo/arena/pickup.dart';
 import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/models/bullet_model.dart';
+import 'package:batufo/models/pickups_model.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
 
@@ -12,7 +12,7 @@ class ClientGameState {
   final int totalPlayers;
   final Map<int, PlayerModel> players;
   final List<BulletModel> bullets;
-  final List<Pickup> pickups;
+  final PickupsModel pickups;
 
   bool synced = false;
 
@@ -48,7 +48,7 @@ class ClientGameState {
   }
 
   void removePickup(String id) {
-    pickups.removeWhere((x) => x.id == id);
+    pickups.removePickup(id);
   }
 
   ClientGameState clone() {
@@ -59,7 +59,7 @@ class ClientGameState {
     }
 
     final clonedBullets = bullets.map((x) => x.clone()).toList();
-    final clonedPickups = pickups.map((x) => x.clone()).toList();
+    final clonedPickups = pickups.clone();
     return ClientGameState(
       totalPlayers: totalPlayers,
       clientID: clientID,

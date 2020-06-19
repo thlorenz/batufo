@@ -43,6 +43,13 @@ class EnabledSound implements Sound {
     );
   }
 
+  Future<AudioPlayer> playPickupShield(double volume) {
+    return _audio.playSound(
+      _audioAssets['pickup-shield'].audioPath,
+      volume: volume,
+    );
+  }
+
   void disableLog() {
     _audio.disableLog();
   }

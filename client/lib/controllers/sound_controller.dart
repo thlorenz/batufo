@@ -17,6 +17,12 @@ class SoundController {
 
   SoundController(this._sound) : _soundModel = SoundModel();
 
+  double _volumeForPosition(TilePosition position, double maxVolume) {
+    final distance = _distanceToPlayer(position);
+    final volume = min(audibleDistanceFactor / distance, maxVolume);
+    return volume < 0.01 ? null : volume;
+  }
+
   void setPlayerPosition(TilePosition position) {
     _soundModel.playerPosition = position;
   }
@@ -35,11 +41,8 @@ class SoundController {
 
   void bulletExplodedAt(TilePosition bulletPosition) {
     if (!universe.userSettings.soundEffectsEnabled) return;
-    final distance = _distanceToPlayer(bulletPosition);
-    final volume = min(
-        audibleDistanceFactor / distance, GameProps.maxBulletExplodedVolume);
-    if (volume < 0.01) return;
-    _soundModel.bulletExplodedVolume = volume;
+    _soundModel.bulletExplodedVolume =
+        _volumeForPosition(bulletPosition, GameProps.maxBulletExplodedVolume);
   }
 
   void playerHitWallWithForce(TilePosition playerPosition, double force) {
@@ -54,6 +57,11 @@ class SoundController {
     _soundModel.playerHitWallVolume = volume;
   }
 
+  void playerPickedUpShield(TilePosition playerPosition) {
+    _soundModel.playerPickedUpShieldVolume =
+        _volumeForPosition(playerPosition, GameProps.maxPickupShieldVolume);
+  }
+
   void processSounds() {
     if (_soundModel.playerFiredBullet)
       _sound.playBullet(_soundModel.playerFiredBulletVolume);
@@ -63,6 +71,8 @@ class SoundController {
       _sound.playThrust(_soundModel.playerAppliedThrustVolume);
     if (_soundModel.playerHitWall)
       _sound.playPlayerHitWall(_soundModel.playerHitWallVolume);
+    if (_soundModel.playerPickedUpShield)
+      _sound.playPickupShield(GameProps.maxPickupShieldVolume);
     _soundModel.clear();
   }
 

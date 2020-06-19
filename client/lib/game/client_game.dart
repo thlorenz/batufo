@@ -21,6 +21,7 @@ import 'package:batufo/game/inputs/input_processor.dart';
 import 'package:batufo/game/inputs/keyboard.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
+import 'package:batufo/models/pickups_model.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
@@ -196,7 +197,7 @@ class ClientGame extends Game {
     return ClientGameState(
       clientID: clientID,
       bullets: [],
-      pickups: arena.pickups,
+      pickups: PickupsModel(arena.pickups),
       totalPlayers: arena.players.length,
       players: {clientID: hero},
     );
