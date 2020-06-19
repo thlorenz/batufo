@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "(cd ./packages/core && tsc) && (cd ./packages/server && tsc) && (cd ./packages/level-editor && tsc)",
+    "build": "(cd ./packages/core && yarn tsc) && (cd ./packages/server && yarn tsc) && (cd ./packages/level-editor && yarn tsc)",
     "start": "cd ./packages/server && DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' node ./dist/app.js",
     "start:dev": "cd ./packages/server && DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' ts-node ./src/app.ts",
     "gc:init": "gcloud config set project batufo-game",

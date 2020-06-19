@@ -5,7 +5,7 @@
   "main": "dist/core.js",
   "types": "src/core.ts",
   "scripts": {
-    "build": "tsc && cp -R ./src/generated ./dist/generated",
+    "tsc": "tsc && rm -rf ./dist/generated && cp -R ./src/generated ./dist/generated",
     "watch": "tsc --watch"
   },
   "license": "MIT",

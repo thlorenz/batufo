@@ -4,7 +4,7 @@
   "description": "Socket.io server for batufo game.",
   "main": "app.js",
   "scripts": {
-    "build": "tsc",
+    "tsc": "tsc",
     "watch": "tsc --watch",
     "start": "DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' node ./dist/app.js",
     "start:dev": "DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' ts-node ./src/app.ts"
