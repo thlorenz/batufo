@@ -6,7 +6,7 @@ ROOT=$DIR/..
 CLIENT=$ROOT/client
 BUILD=$ROOT/build/github
 
-(mkdir -p $BUILD && rm -f $BUILD/*)
+(mkdir -p $BUILD && rm -rf $BUILD/batufo.app && rm -f $BUILD/*)
 
 $DIR/release-android.sh
 $DIR/release-macos.sh
