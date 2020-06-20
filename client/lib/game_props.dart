@@ -117,5 +117,5 @@ class GameProps {
 
   static const localhost = 'http://localhost:$PORT';
   static const localbox = 'http://192.168.1.7:$PORT';
-  static const cloudbox = 'https://batufo-game.appspot.com';
+  static const cloudbox = 'http://socket.batufo.space';
 }
