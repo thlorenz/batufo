@@ -39,7 +39,7 @@ const app = new App({
     embedPlaylist:
       'https://www.youtube.com/embed/videoseries?list=PL4k64WemroGlTDHJzVo_O1l6C0nuwRc6G',
     subChannelURL: 'https://www.youtube.com/user/thlorenz10?sub_confirmation=1',
-    gameWebURL: 'https://thlorenz.github.io/batufo/webgame',
+    gameWebURL: 'http://thlorenz.com/batufo/webgame',
     editorURL: 'https://thlorenz.github.io/batufo/editor',
     latestReleaseURL: gameUpdate.release.url,
     githubSourceURL: 'https://github.com/thlorenz/batufo',
