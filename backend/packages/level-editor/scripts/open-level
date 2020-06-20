@@ -5,7 +5,7 @@ const { readFileSync } = require('fs')
 const { execSync } = require('child_process')
 const { resolve } = require('path')
 const FILE = process.argv[2]
-const ROOT_URL = process.argv[3] || 'https://thlorenz/batufo/editor'
+const ROOT_URL = process.argv[3] || 'https://thlorenz.com/batufo/editor'
 
 console.error({ FILE, ROOT_URL })
 
