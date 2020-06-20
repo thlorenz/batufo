@@ -9896,7 +9896,7 @@ t=2
 return P.aw(P.aiW(),$async$Ik)
 case 2:if($.bk==null){q=u.e
 r=u.l7
-new N.ut(null,H.b([],u.Ba),!0,new P.aG(new P.Q($.K,u.D),u.Q),!1,null,!1,null,null,null,0,!1,null,null,new N.w1(P.bU(u.B)),null,H.b([],u.hZ),null,N.a7X(),Y.a4Q(N.a7W(),u.ox),!1,0,P.t(q,u.dn),P.bh(q),H.b([],r),H.b([],r),null,!1,C.bH,!0,!1,null,C.J,C.J,null,0,null,!1,P.nk(null,u.kt),new O.B6(P.t(q,u.ml),P.t(u.kF,u.h3)),new D.z1(P.t(q,u.Di)),new G.B7(),P.t(q,u.D5)).y4()}F.a0a(T.ahU(C.f6),"https://batufo-game.appspot.com",new Z.KW())
+new N.ut(null,H.b([],u.Ba),!0,new P.aG(new P.Q($.K,u.D),u.Q),!1,null,!1,null,null,null,0,!1,null,null,new N.w1(P.bU(u.B)),null,H.b([],u.hZ),null,N.a7X(),Y.a4Q(N.a7W(),u.ox),!1,0,P.t(q,u.dn),P.bh(q),H.b([],r),H.b([],r),null,!1,C.bH,!0,!1,null,C.J,C.J,null,0,null,!1,P.nk(null,u.kt),new O.B6(P.t(q,u.ml),P.t(u.kF,u.h3)),new D.z1(P.t(q,u.Di)),new G.B7(),P.t(q,u.D5)).y4()}F.a0a(T.ahU(C.f6),"http://socket.batufo.space",new Z.KW())
 return P.ak(null,s)}})
 return P.al($async$Ik,s)}},Q={mV:function mV(a,b){this.c=a
 this.a=b},EK:function EK(a,b){this.d=a
