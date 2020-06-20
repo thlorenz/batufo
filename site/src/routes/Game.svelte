@@ -8,22 +8,19 @@
     text-decoration: underline;
     padding: 5px 10px;
   }
+  .narrow {
+    max-width: 500px; 
+    padding: 20px;
+    margin: auto;
+  }
 </style>
 
 <script>
-  import { onMount } from 'svelte'
-
   export let title
   export let gameWebURL
   export let latestReleaseURL
   export let githubSourceURL
-  export let iframe = null
   export let windowWidth
-
-  onMount(() => iframe.focus())
-
-  $: gameWidth = Math.min(windowWidth * 0.66, 560)
-  $: gameHeight = gameWidth
 </script>
 
 <main>
@@ -35,23 +32,11 @@
     </a>
     <span class="italic">with sound effects and a beautiful universe!</span>
   </p>
-  <p>You can also try the web version below.</p>
-  <p>
+  <a href="{gameWebURL}">You can also try the web version.</a>
+  <p class="narrow">
     However keep in mind that the performance of the native apps is far
-    superior.
+    superior and make sure to keep your browser window small for better game play.
   </p>
-  <iframe
-    title="game"
-    class="center"
-    width="{gameWidth}"
-    height="{gameHeight}"
-    src="{gameWebURL}"
-    frameborder="0"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope;
-    picture-in-picture"
-    allowfullscreen
-    bind:this="{iframe}"
-  ></iframe>
   <p>
     <a href="{githubSourceURL}" target="_blank">Source on Github</a>
   </p>
