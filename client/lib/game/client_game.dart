@@ -165,8 +165,10 @@ class ClientGame extends Game {
       tileSize: arena.tileSize.toDouble(),
     );
 
-    assert(playerIndex < arena.players.length,
-        '$playerIndex is out of range for ${arena.players}');
+    assert(
+      playerIndex < arena.players.length,
+      '$playerIndex is out of range for ${arena.players}',
+    );
     _players = <int, Player>{clientID: _initPlayer()};
     _gameController = GameController(
       arena,
@@ -289,6 +291,8 @@ class ClientGame extends Game {
       player.updateSprites(entry.value, dt);
     }
     _bullets.updateSprites(gameState.bullets, dt);
+
+    _pickups.update();
   }
 
   Rect _visibleRectForCamera(Offset camera) {

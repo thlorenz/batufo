@@ -47,10 +47,6 @@ class ClientGameState {
     bullets.clear();
   }
 
-  void removePickup(String id) {
-    pickups.removePickup(id);
-  }
-
   ClientGameState clone() {
     final clonedPlayers = <int, PlayerModel>{};
 

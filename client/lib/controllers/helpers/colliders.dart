@@ -34,7 +34,7 @@ class Colliders {
   final int nrows;
   final int ncols;
   final List<bool> _walls;
-  final List<Pickup> _pickups;
+  final List<Pickup> _pickupTiles;
   final double playerRadius;
   Colliders(
     this.nrows,
@@ -42,21 +42,23 @@ class Colliders {
     @required List<TilePosition> walls,
     @required this.playerRadius,
   })  : _walls = List<bool>(nrows * ncols)..fillRange(0, nrows * ncols, false),
-        _pickups = List<Pickup>(nrows * ncols)
-          ..fillRange(0, nrows * ncols, null) {
+        _pickupTiles = List<Pickup>(nrows * ncols) {
     for (final wall in walls) {
       _walls[wall.row * ncols + wall.col] = true;
     }
   }
 
-  void updatePickups(List<Pickup> pickups) {
-    _pickups
-      ..clear()
-      ..fillRange(0, nrows * ncols, null);
+  void initPickups(List<Pickup> pickups) {
+    _pickupTiles.fillRange(0, nrows * ncols, null);
     for (final pickup in pickups) {
-      _pickups[pickup.tilePosition.row * ncols + pickup.tilePosition.col] =
+      _pickupTiles[pickup.tilePosition.row * ncols + pickup.tilePosition.col] =
           pickup;
     }
+  }
+
+  void removePickup(Pickup pickup) {
+    _pickupTiles[pickup.tilePosition.row * ncols + pickup.tilePosition.col] =
+        null;
   }
 
   BulletTarget bulletCollidingAt(
@@ -87,6 +89,6 @@ class Colliders {
 
   Pickup playerPickingUpAt(TilePosition tp) {
     final idx = tp.row * ncols + tp.col;
-    return idx >= _pickups.length ? null : _pickups[idx];
+    return idx >= _pickupTiles.length ? null : _pickupTiles[idx];
   }
 }

@@ -39,6 +39,7 @@ class Pickups {
   }
 
   void update() {
+    if (_pickups.pickups.length == _pickupEntities.length) return;
     _initRects();
   }
 
