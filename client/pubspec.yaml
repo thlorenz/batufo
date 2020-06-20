@@ -1,7 +1,7 @@
 name: batufo
 description: UFO multi-player game using Flutter.
 
-version: 0.0.6
+version: 0.0.7
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
