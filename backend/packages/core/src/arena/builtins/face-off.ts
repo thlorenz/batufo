@@ -3,25 +3,26 @@ import { Level } from '../level'
 export default Level.fromLevelString(
   'face off',
   `
-         ======================
-         =         p          =
-          =                  =
-           =                =
-            =              =
-             =            =
-              =          =
-               =        =
-                =      =
-                =      =
-                =      =
-                =      =
-                =      =
-                =      =
+         =======================
+         =         p           =
+          =                   =
+           =                 =
+            =               =
+             =             =
+              =           =
+               =         =
+                =       =
+                =       =
+                =       =
+                =       =
+                =       =
+                =       =
         =========       =========
        =                         =
       =                           =
       =                           =
-      =            ===            =====xxxxxxxxxxxxxx========
+      =                           =====xxxxxxxxxxxxxxx=======
+      =            ===                 =xxxxxxxxxxxxx=      =
       =         ===xxx===               =xxxxxxxxxxx=       =
       =        =xxxxxxxxx=               =xxxxxxxxx=        =
       =       =xxxxxxxxxxx=       ===     =xxxxxxx=         =
@@ -41,18 +42,18 @@ export default Level.fromLevelString(
       =                           =
        =                         =
         =========       =========
-                =      =
-                =      =
-                =      =
-                =      =
-                =      =
-                =      =
-               =        =
-              =          =
-             =            =
-            =              =
-           =                =
-          =                  =
-         =        p           =
-         ======================`
+                =       =
+                =       =
+                =       =
+                =       =
+                =       =
+                =       =
+               =         =
+              =           =
+             =             =
+            =               =
+           =                 =
+          =                   =
+         =        p            =
+         =======================`
 )
