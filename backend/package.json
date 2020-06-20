@@ -8,8 +8,10 @@
     "build": "(cd ./packages/core && yarn tsc) && (cd ./packages/server && yarn tsc) && (cd ./packages/level-editor && yarn tsc)",
     "start": "cd ./packages/server && DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' node ./dist/app.js",
     "start:dev": "cd ./packages/server && DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' ts-node ./src/app.ts",
-    "gc:log": "ssh batufo 'sudo journalctl -u batufo.service",
-    "gc:tail": "ssh batufo 'sudo journalctl -f -u batufo.service'"
+    "gc:log": "ssh batufo 'sudo journalctl -u batufo.service'",
+    "gc:tail": "ssh batufo 'sudo journalctl -f -u batufo.service'",
+    "gc:update": "ssh batufo 'sudo ~/app/batufo/backend/gcloud/update.sh'",
+    "gc:metrics": "ssh batufo 'free -m -h'"
   },
   "workspaces": [
     "packages/*"
