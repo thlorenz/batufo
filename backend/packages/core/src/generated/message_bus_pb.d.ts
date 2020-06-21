@@ -365,6 +365,9 @@ export class PackedPlayerModel extends jspb.Message {
   getHealth(): DoubleTwoDecimals | undefined;
   setHealth(value?: DoubleTwoDecimals): void;
 
+  getFlags(): number;
+  setFlags(value: number): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PackedPlayerModel.AsObject;
   static toObject(includeInstance: boolean, msg: PackedPlayerModel): PackedPlayerModel.AsObject;
@@ -382,6 +385,7 @@ export namespace PackedPlayerModel {
     velocity?: PackedFractionalPoint.AsObject,
     angle?: DoubleFourDecimals.AsObject,
     health?: DoubleTwoDecimals.AsObject,
+    flags: number,
   }
 }
 

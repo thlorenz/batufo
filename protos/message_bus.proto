@@ -94,6 +94,7 @@ message PackedPlayerModel {
   PackedFractionalPoint velocity = 3;
   DoubleFourDecimals angle = 4;
   DoubleTwoDecimals health = 5;
+  uint32 flags = 6;
 }
 
 message PackedBulletModel {

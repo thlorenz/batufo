@@ -2871,7 +2871,8 @@ proto.PackedPlayerModel.toObject = function(includeInstance, msg) {
     tileposition: (f = msg.getTileposition()) && proto.PackedTilePosition.toObject(includeInstance, f),
     velocity: (f = msg.getVelocity()) && proto.PackedFractionalPoint.toObject(includeInstance, f),
     angle: (f = msg.getAngle()) && proto.DoubleFourDecimals.toObject(includeInstance, f),
-    health: (f = msg.getHealth()) && proto.DoubleTwoDecimals.toObject(includeInstance, f)
+    health: (f = msg.getHealth()) && proto.DoubleTwoDecimals.toObject(includeInstance, f),
+    flags: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -2931,6 +2932,10 @@ proto.PackedPlayerModel.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.DoubleTwoDecimals;
       reader.readMessage(value,proto.DoubleTwoDecimals.deserializeBinaryFromReader);
       msg.setHealth(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setFlags(value);
       break;
     default:
       reader.skipField();
@@ -2998,6 +3003,13 @@ proto.PackedPlayerModel.serializeBinaryToWriter = function(message, writer) {
       5,
       f,
       proto.DoubleTwoDecimals.serializeBinaryToWriter
+    );
+  }
+  f = message.getFlags();
+  if (f !== 0) {
+    writer.writeUint32(
+      6,
+      f
     );
   }
 };
@@ -3166,6 +3178,24 @@ proto.PackedPlayerModel.prototype.clearHealth = function() {
  */
 proto.PackedPlayerModel.prototype.hasHealth = function() {
   return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional uint32 flags = 6;
+ * @return {number}
+ */
+proto.PackedPlayerModel.prototype.getFlags = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.PackedPlayerModel} returns this
+ */
+proto.PackedPlayerModel.prototype.setFlags = function(value) {
+  return jspb.Message.setProto3IntField(this, 6, value);
 };
 
 
