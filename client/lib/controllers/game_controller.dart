@@ -72,6 +72,8 @@ class GameController {
       soundController: soundController,
       onPickedUp: onPickedUp,
       shieldDurationSeconds: GameProps.shieldDurationMs,
+      medkitPlayerHealthGain: GameProps.medkitPlayerHealthGain,
+      playerTotalHealth: GameProps.playerTotalHealth,
     );
   }
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:batufo/arena/pickup.dart';
 import 'package:batufo/controllers/helpers/colliders.dart';
 import 'package:batufo/controllers/sound_controller.dart';
@@ -11,6 +13,8 @@ class PickupsController {
   final Colliders colliders;
   final void Function(Pickup pickup) onPickedUp;
   final double shieldDurationSeconds;
+  final double playerTotalHealth;
+  final double medkitPlayerHealthGain;
 
   PickupsController({
     @required this.pickups,
@@ -18,6 +22,8 @@ class PickupsController {
     @required this.soundController,
     @required this.onPickedUp,
     @required this.shieldDurationSeconds,
+    @required this.playerTotalHealth,
+    @required this.medkitPlayerHealthGain,
   }) {
     colliders.initPickups(pickups.pickups);
   }
@@ -27,6 +33,10 @@ class PickupsController {
     if (pickup == null) return;
     switch (pickup.type) {
       case PickupType.Medkit:
+        player.health = min(
+          player.health + medkitPlayerHealthGain,
+          playerTotalHealth,
+        );
         break;
       case PickupType.Shield:
         player.shieldRemainingMs = shieldDurationSeconds;

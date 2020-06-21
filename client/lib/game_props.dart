@@ -65,8 +65,6 @@ class GameProps {
   static const keyboardPlayerRotationFactor = 0.004;
   static const playerThrustForce = 0.07; // Newton
 
-  // TODO(thlorenz): need to take those into account for above
-  // thrust force value
   static const playerMass = 4000.0; // kg
   static const playerThrustAcceleration =
       playerThrustForce / playerMass; // m/s2
@@ -76,6 +74,7 @@ class GameProps {
 
   static const playerHitsWallHealthFactor = 30.0;
   static const bulletHitsPlayerHealthToll = playerTotalHealth / 20;
+  static const medkitPlayerHealthGain = playerTotalHealth * 0.35;
 
   static const playerThrustAnimationDurationMs = 200.0;
 
@@ -97,9 +96,6 @@ class GameProps {
   static bool get debugZ100VisibleRect => false;
 
   static bool get renderFloor => true;
-
-  static const GAME_ID = 'gameid';
-  static const CLIENT_ID = 'clientid';
 
   static const playerInputSyncIntervalMs = 50.0;
   static const timeBetweenThrustsMs = 500.0;
