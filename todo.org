@@ -25,17 +25,16 @@ We wanna add some pickups back in. Most importantly are health packets, but some
 *** Health
 
 - [ ] add health packets to level
-- [ ] detect colission with health packets
-- [ ] up players health after colission
-- [ ] remove health packet on colission
+- [X] detect colission with health packets
+- [X] up players health after colission
+- [X] remove health packet on colission
 
 *** Shields and Armor
 
-- [ ] pickup one type of shield in order to be protected from bullets and walls
-- [ ] player needs to be rendered slightly diffently render a circle around it similarly as we do with health but larger radius
-- [ ] shields last only a certain amount of time
-- [ ] when shield is active player hit box extends to it, affecting wall and bullet colissions
-- [ ] when shield is active player receives no damage
+- [X] pickup one type of shield in order to be protected from bullets
+- [X] player needs to be rendered slightly diffently render a circle around it similarly as we do with health but larger radius
+- [X] shields last only a certain amount of time and decreases when hit by bullet
+- [X] when shield is active player receives no damage from bullets
 
 *** Bullets
 
