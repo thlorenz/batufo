@@ -85,6 +85,15 @@ sudo service batufo status
 sudo journalctl -u batufo.service
 ```
 
+### System Settings
+
+```sh
+# cat /etc/timezone --> Etc/UTC
+sudo ln -fs /usr/share/zoneinfo/US/Mountain /etc/localtime
+sudo dpkg-reconfigure -f noninteractive tzdata
+# cat /etc/timezone --> America/Denver
+```
+
 ## App Install
 
 ### First Time
