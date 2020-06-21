@@ -267,6 +267,28 @@ export namespace PackedPickup {
   }
 }
 
+export class PackedClientPickedUpUpdate extends jspb.Message {
+  hasColrow(): boolean;
+  clearColrow(): void;
+  getColrow(): PackedPoint | undefined;
+  setColrow(value?: PackedPoint): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PackedClientPickedUpUpdate.AsObject;
+  static toObject(includeInstance: boolean, msg: PackedClientPickedUpUpdate): PackedClientPickedUpUpdate.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PackedClientPickedUpUpdate, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PackedClientPickedUpUpdate;
+  static deserializeBinaryFromReader(message: PackedClientPickedUpUpdate, reader: jspb.BinaryReader): PackedClientPickedUpUpdate;
+}
+
+export namespace PackedClientPickedUpUpdate {
+  export type AsObject = {
+    colrow?: PackedPoint.AsObject,
+  }
+}
+
 export class PackedArena extends jspb.Message {
   clearFloortilesList(): void;
   getFloortilesList(): Array<PackedTilePosition>;

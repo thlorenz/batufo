@@ -74,6 +74,10 @@ message PackedPickup {
   PackedTilePosition tilePosition = 2;
 }
 
+message PackedClientPickedUpUpdate {
+  PackedPoint colRow = 1;
+}
+
 message PackedArena {
   repeated PackedTilePosition floorTiles = 1;
   repeated PackedTilePosition walls = 2;

@@ -1,8 +1,5 @@
 import { Server } from 'socket.io'
-import {
-  PlayerDeparted,
-  PlayerJoined,
-} from '@batufo/core'
+import { PlayerDeparted, PlayerJoined } from '@batufo/core'
 
 import socketio from 'socket.io'
 import debug from 'debug'
@@ -36,36 +33,37 @@ class GameSocket {
       checkIncommunicadosInterval
     )
   }
+  private _broadcastMessage(
+    socket: socketio.Socket,
+    msg: string,
+    data: Buffer
+  ) {
+    logTrace(`got ${msg} -> broadcasting`)
+    try {
+      const array = Uint8Array.from(data)
+      socket.broadcast.to(this._gameID).emit(msg, array.toString())
+    } catch (err) {
+      logError(msg, err)
+    }
+  }
 
   addSocket(socket: socketio.Socket, clientID: number, playerIndex: number) {
     this._tellClientsPlayerJoined(clientID, playerIndex)
     this.game.clientCommunicated(clientID)
 
     const onGameClientUpdate = (data: Buffer) => {
-      logTrace('got playing client message -> broadcasting')
       this.game.clientCommunicated(clientID)
-      try {
-        const array = Uint8Array.from(data)
-        socket.broadcast
-          .to(this._gameID)
-          .emit('game:client-update', array.toString())
-      } catch (err) {
-        logError('game:client-update', err)
-      }
+      this._broadcastMessage(socket, 'game:client-update', data)
     }
 
     const onGameSpawnedBullet = (data: Buffer) => {
-      logTrace('got spawned bullet message -> broadcasting')
       this.game.clientCommunicated(clientID)
-      try {
-        const array = Uint8Array.from(data)
-        socket.broadcast
-          .to(this._gameID)
-          .emit('game:spawned-bullet', array.toString())
-      } catch (err) {
-        logError('game:spawned-bullet', err)
-      } finally {
-      }
+      this._broadcastMessage(socket, 'game:spawned-bullet', data)
+    }
+
+    const onGamePickedUp = (data: Buffer) => {
+      this.game.clientCommunicated(clientID)
+      this._broadcastMessage(socket, 'game:picked-up', data)
     }
 
     const onGameLeave = (_data: Buffer) => {
@@ -99,6 +97,7 @@ class GameSocket {
         .leave(this._gameID)
         .off('game:client-update', onGameClientUpdate)
         .off('game:spawned-bullet', onGameSpawnedBullet)
+        .off('game:picked-up', onGamePickedUp)
         .off('game:leave', onGameLeave)
         .off('client:ping', onClientPing)
     }
@@ -106,6 +105,7 @@ class GameSocket {
     socket
       .on('game:client-update', onGameClientUpdate)
       .on('game:spawned-bullet', onGameSpawnedBullet)
+      .on('game:picked-up', onGamePickedUp)
       .on('game:leave', onGameLeave)
       .on('client:ping', onClientPing)
       .join(this._gameID, onJoined)
