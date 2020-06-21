@@ -36,7 +36,6 @@ class PlayerController {
   ) {
     if (PlayerStatus.isDead(player)) return;
 
-    final seconds = dt / 1000;
     if (player.appliedThrust) {
       final velocity = Physics.increaseVelocity(
         player.velocity,
@@ -57,8 +56,7 @@ class PlayerController {
       ..velocity = _normalizeVelocity(check.first)
       ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt)
       ..health = max(player.health - healthToll, 0.0)
-      ..shieldSecondsRemaining =
-          max(player.shieldSecondsRemaining - seconds, 0.0);
+      ..shieldRemainingMs = max(player.shieldRemainingMs - dt, 0.0);
 
     if (isHero) {
       soundController.setPlayerPosition(player.tilePosition);

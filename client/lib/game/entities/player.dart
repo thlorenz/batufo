@@ -68,7 +68,7 @@ class Player {
 
       if (!isHero) _renderPlayerHealth(canvas, player);
       if (player.hasShield) {
-        _renderShield(canvas, player.shieldSecondsRemaining);
+        _renderShield(canvas, player.shieldRemainingMs);
       }
 
       playerSprite.render(
@@ -109,12 +109,11 @@ class Player {
     canvas.drawArc(rect, missing / 2, remaining, false, paint);
   }
 
-  void _renderShield(Canvas canvas, double shieldSecondsRemaining) {
-    final width =
-        (shieldSecondsRemaining / GameProps.shieldDurationSeconds) * 5.0;
+  void _renderShield(Canvas canvas, double shieldRemainingMs) {
+    final width = (shieldRemainingMs / GameProps.shieldDurationMs) * 4.0;
     final paint = _shieldPaint..strokeWidth = width;
 
-    final radius = hitSize / 2 * 1.7;
+    final radius = hitSize / 2 * 1.6;
     final rect = Rect.fromCircle(center: Offset.zero, radius: radius);
     canvas.drawArc(rect, 0, pipi, false, paint);
   }

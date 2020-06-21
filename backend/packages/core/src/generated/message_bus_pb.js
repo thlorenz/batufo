@@ -2872,7 +2872,7 @@ proto.PackedPlayerModel.toObject = function(includeInstance, msg) {
     velocity: (f = msg.getVelocity()) && proto.PackedFractionalPoint.toObject(includeInstance, f),
     angle: (f = msg.getAngle()) && proto.DoubleFourDecimals.toObject(includeInstance, f),
     health: (f = msg.getHealth()) && proto.DoubleTwoDecimals.toObject(includeInstance, f),
-    flags: jspb.Message.getFieldWithDefault(msg, 6, 0)
+    shieldremainingms: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -2935,7 +2935,7 @@ proto.PackedPlayerModel.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 6:
       var value = /** @type {number} */ (reader.readUint32());
-      msg.setFlags(value);
+      msg.setShieldremainingms(value);
       break;
     default:
       reader.skipField();
@@ -3005,7 +3005,7 @@ proto.PackedPlayerModel.serializeBinaryToWriter = function(message, writer) {
       proto.DoubleTwoDecimals.serializeBinaryToWriter
     );
   }
-  f = message.getFlags();
+  f = message.getShieldremainingms();
   if (f !== 0) {
     writer.writeUint32(
       6,
@@ -3182,10 +3182,10 @@ proto.PackedPlayerModel.prototype.hasHealth = function() {
 
 
 /**
- * optional uint32 flags = 6;
+ * optional uint32 shieldRemainingMs = 6;
  * @return {number}
  */
-proto.PackedPlayerModel.prototype.getFlags = function() {
+proto.PackedPlayerModel.prototype.getShieldremainingms = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
@@ -3194,7 +3194,7 @@ proto.PackedPlayerModel.prototype.getFlags = function() {
  * @param {number} value
  * @return {!proto.PackedPlayerModel} returns this
  */
-proto.PackedPlayerModel.prototype.setFlags = function(value) {
+proto.PackedPlayerModel.prototype.setShieldremainingms = function(value) {
   return jspb.Message.setProto3IntField(this, 6, value);
 };
 

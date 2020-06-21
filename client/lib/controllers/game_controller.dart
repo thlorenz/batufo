@@ -70,7 +70,7 @@ class GameController {
       colliders: colliders,
       soundController: soundController,
       onPickedUp: onPickedUp,
-      shieldDurationSeconds: GameProps.shieldDurationSeconds,
+      shieldDurationSeconds: GameProps.shieldDurationMs,
     );
   }
 

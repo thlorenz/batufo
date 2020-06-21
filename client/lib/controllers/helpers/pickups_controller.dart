@@ -29,7 +29,7 @@ class PickupsController {
       case PickupType.Medkit:
         break;
       case PickupType.Shield:
-        player.shieldSecondsRemaining = shieldDurationSeconds;
+        player.shieldRemainingMs = shieldDurationSeconds;
         soundController.playerPickedUpShield(pickup.tilePosition);
         break;
       default:

@@ -541,7 +541,7 @@ class PackedPlayerModel extends $pb.GeneratedMessage {
     ..aOM<PackedFractionalPoint>(3, 'velocity', subBuilder: PackedFractionalPoint.create)
     ..aOM<DoubleFourDecimals>(4, 'angle', subBuilder: DoubleFourDecimals.create)
     ..aOM<DoubleTwoDecimals>(5, 'health', subBuilder: DoubleTwoDecimals.create)
-    ..a<$core.int>(6, 'flags', $pb.PbFieldType.OU3)
+    ..a<$core.int>(6, 'shieldRemainingMs', $pb.PbFieldType.OU3, protoName: 'shieldRemainingMs')
     ..hasRequiredFields = false
   ;
 
@@ -614,13 +614,13 @@ class PackedPlayerModel extends $pb.GeneratedMessage {
   DoubleTwoDecimals ensureHealth() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $core.int get flags => $_getIZ(5);
+  $core.int get shieldRemainingMs => $_getIZ(5);
   @$pb.TagNumber(6)
-  set flags($core.int v) { $_setUnsignedInt32(5, v); }
+  set shieldRemainingMs($core.int v) { $_setUnsignedInt32(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasFlags() => $_has(5);
+  $core.bool hasShieldRemainingMs() => $_has(5);
   @$pb.TagNumber(6)
-  void clearFlags() => clearField(6);
+  void clearShieldRemainingMs() => clearField(6);
 }
 
 class PackedBulletModel extends $pb.GeneratedMessage {
