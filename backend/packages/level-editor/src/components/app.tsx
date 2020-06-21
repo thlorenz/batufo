@@ -17,8 +17,7 @@ export function AppComponent({ app }: AppProps) {
     <SplitPane
       split="vertical"
       minSize={200}
-      defaultSize={'50%'}
-      pane1Style={{ overflow: 'scroll' }}
+      defaultSize={'30%'}
       pane2Style={{ overflow: 'scroll' }}
     >
       <EditorArea>

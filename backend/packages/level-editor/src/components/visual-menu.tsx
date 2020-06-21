@@ -12,7 +12,7 @@ const MenuContainer = styled.div`
 `
 
 const Zoom = styled.div`
-  padding: 5px 10px 0 20px;
+  padding: 5px 5px 0 5px;
 `
 const ZoomLabel = styled.span`
   padding: 0 10px 0 0;
@@ -20,10 +20,11 @@ const ZoomLabel = styled.span`
 const ZoomSlider = styled.input`
   cursor: pointer;
   margin: 10px 0 0 0;
+  max-width: 80px;
 `
 const Coordinates = styled.span`
   padding: 10px 10px 0 20px;
-  font-size: 22px;
+  font-size: 16px;
   font-family: monospace;
 `
 
