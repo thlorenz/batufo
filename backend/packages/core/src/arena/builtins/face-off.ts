@@ -4,9 +4,9 @@ export default Level.fromLevelString(
   'face off',
   `
          =======================
-         =         p           =
+         =          p          =
           =                   =
-           =                 =
+           =  s           +  =
             =               =
              =             =
               =           =
@@ -23,19 +23,19 @@ export default Level.fromLevelString(
       =                           =
       =                           =====xxxxxxxxxxxxxxx=======
       =            ===                 =xxxxxxxxxxxxx=      =
-      =         ===xxx===               =xxxxxxxxxxx=       =
+      =         ===xxx===               =xxxxxxxxxxx=    s  =
       =        =xxxxxxxxx=               =xxxxxxxxx=        =
       =       =xxxxxxxxxxx=       ===     =xxxxxxx=         =
       =       =xxxxxxxxxxx=       =xx=     =xxxxx=          =
-      =       =xxxxxxxxxxx=       =xxx=     =====           =
+      =       =xxxxxxxxxxx=       =xxx=     =====    +      =
       =      =xxxxxxxxxxxxx=      =xxxx=                    =
-      =      =xxxxxxxxxxxxx=      =xxxxx=                   =
+      =      =xxxxxxxxxxxxx=      =xxxxx=                s  =
       =      =xxxxxxxxxxxxx=      =xxxx=                    =
-      =       =xxxxxxxxxxx=       =xxx=     =====           =
+      =       =xxxxxxxxxxx=       =xxx=     =====    +      =
       =       =xxxxxxxxxxx=       =xx=     =xxxxx=          =
       =       =xxxxxxxxxxx=       ===     =xxxxxxx=         =
       =        =xxxxxxxxx=               =xxxxxxxxx=        =
-      =         ===xxx===               =xxxxxxxxxxx=       =
+      =         ===xxx===               =xxxxxxxxxxx=    s  =
       =            ===                 =xxxxxxxxxxxxx=      =
       =                           =====xxxxxxxxxxxxxxx=======
       =                           =
@@ -52,8 +52,8 @@ export default Level.fromLevelString(
               =           =
              =             =
             =               =
-           =                 =
+           =  +           s  =
           =                   =
-         =        p            =
+         =          p          =
          =======================`
 )
