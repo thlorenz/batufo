@@ -1,20 +1,21 @@
 import { Level } from '../level'
 
 export default Level.fromLevelString(
-  'single player',
+  'practice arena',
   `
 =================================================================
 =                                                               =
 =                                                               =
-=                                                               =
+=   +                                                       +   =
 =                   ==========================                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
 =                   =xxxxxxxx=========xxxxxxx=                  =
-=                   ==========       =xxxxxxx=                  =
+=                   ==========     + =xxxxxxx=                  =
 =                                    =xxxxxxx=                  =
-=                   ==========       =xxxxxxx=                  =
+=                                    =xxxxxxx=                  =
+=                   ==========     + =xxxxxxx=                  =
 =                   =xxxxxxxx=========xxxxxxx=                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
@@ -31,10 +32,9 @@ export default Level.fromLevelString(
 =           =xxxxxxxxxxxx=              =xxxxxxxxxxx=           =
 =           =xxxxxxxxxxxx=              =xxxxxxxxxxx=           =
 =           ==============              =============           =
-=         +                                                     =
-=                              p                                =
+=                                                               =
+=   +                           p                          +    =
 =                                                               =
 =                                                               =
-=================================================================
-`
+=================================================================`
 )
