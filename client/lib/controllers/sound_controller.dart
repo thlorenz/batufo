@@ -58,6 +58,7 @@ class SoundController {
   }
 
   void playerPickedUpShield(TilePosition playerPosition) {
+    if (!universe.userSettings.soundEffectsEnabled) return;
     _soundModel.playerPickedUpShieldVolume =
         _volumeForPosition(playerPosition, GameProps.maxPickupShieldVolume);
   }
