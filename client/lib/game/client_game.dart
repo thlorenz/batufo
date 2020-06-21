@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui' show Canvas, Offset, Paint, Rect, Size;
 
 import 'package:batufo/arena/arena.dart';
+import 'package:batufo/arena/pickup.dart';
 import 'package:batufo/controllers/game_controller.dart';
 import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/controllers/sound_controller.dart';
@@ -23,6 +24,7 @@ import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/pickups_model.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/rpc/client_picked_up_update.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:flutter/foundation.dart';
@@ -53,6 +55,7 @@ class ClientGame extends Game {
   final _clientPlayerUpdate$ = BehaviorSubject<ClientPlayerUpdate>();
   final _clientSpawnedBulletUpdate$ =
       BehaviorSubject<ClientSpawnedBulletUpdate>();
+  final _clientPickedUpUpdate$ = BehaviorSubject<ClientPickedUpUpdate>();
 
   GameController _gameController;
   Map<int, Player> _players;
@@ -85,6 +88,9 @@ class ClientGame extends Game {
       _clientPlayerUpdate$.stream;
   Stream<ClientSpawnedBulletUpdate> get clientSpawnedBulletUpdate$ =>
       _clientSpawnedBulletUpdate$.stream;
+
+  Stream<ClientPickedUpUpdate> get clientPickedUpUpdate$ =>
+      _clientPickedUpUpdate$.stream;
 
   ClientGame({
     @required this.inputProcessor,
@@ -174,6 +180,7 @@ class ClientGame extends Game {
       arena,
       _heroOnlyGameState(playerIndex),
       onScored,
+      _onPickedUp,
       clientID,
       soundController,
     );
@@ -209,6 +216,10 @@ class ClientGame extends Game {
     final id = player.id;
     _gameController.updatePlayer(player);
     _players.putIfAbsent(id, _initPlayer);
+  }
+
+  void removePickup(int col, int row) {
+    _gameController.removePickup(col, row);
   }
 
   void removePlayer(int clientID) {
@@ -458,6 +469,14 @@ class ClientGame extends Game {
         !_clientSpawnedBulletUpdate$.isClosed) {
       _clientSpawnedBulletUpdate$.close();
     }
+    if (_clientPickedUpUpdate$ != null && !_clientPickedUpUpdate$.isClosed) {
+      _clientPickedUpUpdate$.close();
+    }
     _disposed = true;
+  }
+
+  void _onPickedUp(Pickup pickup) {
+    final update = ClientPickedUpUpdate.fromPickup(pickup);
+    _clientPickedUpUpdate$.add(update);
   }
 }

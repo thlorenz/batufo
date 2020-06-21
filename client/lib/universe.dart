@@ -11,6 +11,7 @@ import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/client.dart';
+import 'package:batufo/rpc/client_picked_up_update.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart';
@@ -41,6 +42,7 @@ class Universe {
   final _serverStats$ = BehaviorSubject<ServerStats>();
   StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
   StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
+  StreamSubscription<ClientPickedUpUpdate> _clientPickedUpSub;
 
   String _currentLevel;
 
@@ -211,6 +213,8 @@ class Universe {
 
     _clientSpawnedBulletUpdateSub =
         game.clientSpawnedBulletUpdate$.listen(_onClientSpawnedBulletUpdate);
+    _clientPickedUpSub =
+        game.clientPickedUpUpdate$.listen(_onClientPickedUpUpdate);
   }
 
   void _onClientPlayerUpdate(ClientPlayerUpdate update) {
@@ -219,6 +223,10 @@ class Universe {
 
   void _onClientSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
     client.sendClientSpawnedBulletUpdate(update);
+  }
+
+  void _onClientPickedUpUpdate(ClientPickedUpUpdate update) {
+    client.sendClientPickedUpUpdate(update);
   }
 
   void _onGameStateUpdated(ClientGameState gameState) {
@@ -285,6 +293,12 @@ class Universe {
     game.updateBullets(update);
   }
 
+  void receivedClientPickedUpUpdate(ClientPickedUpUpdate update) {
+    final game = _userState$.value.game;
+    if (game == null) return;
+    game.removePickup(update.colRow.x, update.colRow.y);
+  }
+
   void receivedPlayerJoined(int clientID, int playerIndex) {
     final game = _userState$.value.game;
     if (game == null) return;
@@ -335,6 +349,7 @@ class Universe {
   void _disposeClientUpdateSubs() {
     _clientPlayerUpdateSub?.cancel();
     _clientSpawnedBulletUpdateSub?.cancel();
+    _clientPickedUpSub?.cancel();
   }
 
   //

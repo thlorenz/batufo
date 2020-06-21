@@ -4,6 +4,7 @@ import 'package:batufo/arena/arena.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/rpc/client_picked_up_update.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart'
@@ -11,6 +12,7 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart'
         GameCreated,
         InfoRequest,
         InfoResponse,
+        PackedClientPickedUpUpdate,
         PackedClientPlayerUpdate,
         PackedClientSpawnedBulletUpdate,
         PlayRequest,
@@ -74,6 +76,7 @@ class Client {
       ..on('server:stats', _onServerStatsMessage)
       ..on('game:client-update', _onClientPlayerUpdateMessage)
       ..on('game:spawned-bullet', _onClientSpawnedBulletMessage)
+      ..on('game:picked-up', _onClientPickedUpMessage)
       ..on('game:player-joined', _onPlayerJoinedMessage)
       ..on('game:player-departed', _onPlayerDepartedMessage)
       ..connect();
@@ -165,6 +168,13 @@ class Client {
     _socket.emitWithBinary('game:spawned-bullet', buf);
   }
 
+  void sendClientPickedUpUpdate(ClientPickedUpUpdate update) {
+    assert(update != null, 'need a valid non-null update');
+    final packed = update.pack();
+    final buf = packed.writeToBuffer();
+    _socket.emitWithBinary('game:picked-up', buf);
+  }
+
   void _onClientPlayerUpdateMessage(dynamic data) {
     final list = listFromData(data);
     final packed = PackedClientPlayerUpdate.fromBuffer(list);
@@ -181,6 +191,15 @@ class Client {
 
     _log.finest('received: $update');
     universe.receivedSpawnedBulletUpdate(update);
+  }
+
+  void _onClientPickedUpMessage(dynamic data) {
+    final list = listFromData(data);
+    final packed = PackedClientPickedUpUpdate.fromBuffer(list);
+    final update = ClientPickedUpUpdate.unpack(packed);
+
+    _log.finest('received: $update');
+    universe.receivedClientPickedUpUpdate(update);
   }
 
   void _onPlayerJoinedMessage(dynamic data) {

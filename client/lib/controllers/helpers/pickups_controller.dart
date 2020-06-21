@@ -9,11 +9,13 @@ class PickupsController {
   final SoundController soundController;
   final PickupsModel pickups;
   final Colliders colliders;
+  final void Function(Pickup pickup) onPickedUp;
 
   PickupsController({
     @required this.pickups,
     @required this.colliders,
     @required this.soundController,
+    @required this.onPickedUp,
   }) {
     colliders.initPickups(pickups.pickups);
   }
@@ -30,10 +32,16 @@ class PickupsController {
       default:
         throw Exception('Unknown pickup type ${pickup.type}');
     }
-    removePickup(pickup);
+    _removePickup(pickup);
+    onPickedUp(pickup);
   }
 
-  void removePickup(Pickup pickup) {
+  void removePickupAt(int col, int row) {
+    final pickup = pickups.findByColRow(col, row);
+    if (pickup != null) _removePickup(pickup);
+  }
+
+  void _removePickup(Pickup pickup) {
     pickups.removePickup(pickup.id);
     colliders.removePickup(pickup);
   }

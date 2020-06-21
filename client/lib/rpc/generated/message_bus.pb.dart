@@ -434,6 +434,39 @@ class PackedPickup extends $pb.GeneratedMessage {
   PackedTilePosition ensureTilePosition() => $_ensure(1);
 }
 
+class PackedClientPickedUpUpdate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedClientPickedUpUpdate', createEmptyInstance: create)
+    ..aOM<PackedPoint>(1, 'colRow', protoName: 'colRow', subBuilder: PackedPoint.create)
+    ..hasRequiredFields = false
+  ;
+
+  PackedClientPickedUpUpdate._() : super();
+  factory PackedClientPickedUpUpdate() => create();
+  factory PackedClientPickedUpUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedClientPickedUpUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedClientPickedUpUpdate clone() => PackedClientPickedUpUpdate()..mergeFromMessage(this);
+  PackedClientPickedUpUpdate copyWith(void Function(PackedClientPickedUpUpdate) updates) => super.copyWith((message) => updates(message as PackedClientPickedUpUpdate));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PackedClientPickedUpUpdate create() => PackedClientPickedUpUpdate._();
+  PackedClientPickedUpUpdate createEmptyInstance() => create();
+  static $pb.PbList<PackedClientPickedUpUpdate> createRepeated() => $pb.PbList<PackedClientPickedUpUpdate>();
+  @$core.pragma('dart2js:noInline')
+  static PackedClientPickedUpUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedClientPickedUpUpdate>(create);
+  static PackedClientPickedUpUpdate _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PackedPoint get colRow => $_getN(0);
+  @$pb.TagNumber(1)
+  set colRow(PackedPoint v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasColRow() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearColRow() => clearField(1);
+  @$pb.TagNumber(1)
+  PackedPoint ensureColRow() => $_ensure(0);
+}
+
 class PackedArena extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedArena', createEmptyInstance: create)
     ..pc<PackedTilePosition>(1, 'floorTiles', $pb.PbFieldType.PM, protoName: 'floorTiles', subBuilder: PackedTilePosition.create)

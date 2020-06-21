@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:batufo/arena/arena.dart';
+import 'package:batufo/arena/pickup.dart';
 import 'package:batufo/controllers/bullets_controller.dart';
 import 'package:batufo/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/controllers/helpers/colliders.dart';
@@ -18,6 +19,7 @@ final _log = Log<GameController>();
 class GameController {
   final BulletsSpawner _bulletsSpawner;
   final void Function(int score) onScored;
+  final void Function(Pickup pickup) onPickedUp;
   final int clientID;
   final SoundController soundController;
   final ClientGameState _gameState;
@@ -31,6 +33,7 @@ class GameController {
     this._arena,
     this._gameState,
     this.onScored,
+    this.onPickedUp,
     this.clientID,
     this.soundController,
   ) : _bulletsSpawner = BulletsSpawner(
@@ -66,6 +69,7 @@ class GameController {
       pickups: _gameState.pickups,
       colliders: colliders,
       soundController: soundController,
+      onPickedUp: onPickedUp,
     );
   }
 
@@ -109,6 +113,10 @@ class GameController {
   void updatePlayer(PlayerModel player) {
     assert(player != null, 'cannot add null as player');
     _gameState.updatePlayer(player);
+  }
+
+  void removePickup(int col, int row) {
+    _pickupsController.removePickupAt(col, row);
   }
 
   void removePlayer(int clientID) {
