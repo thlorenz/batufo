@@ -4,10 +4,14 @@ import { UnreachableCaseError } from '@batufo/core'
 const wallImageURL = require('../assets/wall-metal.png')
 const cursorWallURL = require('../assets/cursor.wall-metal.png')
 const playerImageURL = require('../assets/player.png')
+const shieldImageURL = require('../assets/shield.png')
+const medkitImageURL = require('../assets/medkit.png')
 const emptyImageURL = require('../assets/empty.png')
 const cursorPlayerURL = require('../assets/cursor.player.png')
 const cursorTrashURL = require('../assets/cursor.trash.png')
 const cursorArrowURL = require('../assets/cursor.arrow.png')
+const cursorShieldURL = require('../assets/cursor.shield.png')
+const cursorMedkitURL = require('../assets/cursor.medkit.png')
 const cursorEmptyURL = require('../assets/cursor.empty.png')
 
 export class Images {
@@ -26,8 +30,12 @@ export class Images {
         { img: 'wall', url: wallImageURL },
         { img: 'cursor:wall', url: cursorWallURL },
         { img: 'player', url: playerImageURL },
+        { img: 'shield', url: shieldImageURL },
+        { img: 'medkit', url: medkitImageURL },
         { img: 'empty', url: emptyImageURL },
         { img: 'cursor:player', url: cursorPlayerURL },
+        { img: 'cursor:shield', url: cursorShieldURL },
+        { img: 'cursor:medkit', url: cursorMedkitURL },
         { img: 'cursor:trash', url: cursorTrashURL },
         { img: 'cursor:arrow', url: cursorArrowURL },
         { img: 'cursor:empty', url: cursorEmptyURL },
@@ -43,6 +51,10 @@ export class Images {
         return this.getImage('cursor:wall')
       case 'player':
         return this.getImage('cursor:player')
+      case 'shield':
+        return this.getImage('cursor:shield')
+      case 'medkit':
+        return this.getImage('cursor:medkit')
       case 'erase':
         return this.getImage('cursor:trash')
       case 'empty':

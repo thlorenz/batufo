@@ -11,6 +11,10 @@ function charForPaint(paintType: PaintType) {
       return '='
     case 'player':
       return 'p'
+    case 'shield':
+      return 's'
+    case 'medkit':
+      return '+'
     case 'empty':
       return 'x'
     case 'erase':

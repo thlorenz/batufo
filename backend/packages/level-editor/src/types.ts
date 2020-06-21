@@ -1,4 +1,12 @@
-export const PaintTypes = ['none', 'wall', 'player', 'empty', 'erase'] as const
+export const PaintTypes = [
+  'none',
+  'wall',
+  'player',
+  'shield',
+  'medkit',
+  'empty',
+  'erase',
+] as const
 
 export type PaintType = typeof PaintTypes[number]
 

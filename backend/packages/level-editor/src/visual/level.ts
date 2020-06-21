@@ -1,11 +1,16 @@
 import { strict as assert } from 'assert'
 import { Floors, Grid } from '../entities'
 
-import { Arena, TilePosition } from '@batufo/core'
+import {
+  Arena,
+  Pickup,
+  PickupType,
+  TilePosition,
+  WorldPosition,
+} from '@batufo/core'
 import { Canvas } from './canvas'
 import { Images } from './images'
 import { Rect } from './rect'
-import { WorldPosition } from '@batufo/core/dist/arena/world-position'
 
 import EventEmitter from 'eventemitter3'
 import { relativeOffset } from './util'
@@ -16,6 +21,11 @@ import { PositionedSprites } from '../entities/positioned-sprites'
 export type TileSelectedEventArgs = { tile: Offset; cursor: Cursor }
 
 const origin: UpdateOrigin = 'visual'
+
+function pickupPositionsForType(pickups: Pickup[], type: PickupType) {
+  return pickups.filter((x) => x.type === type).map((x) => x.tilePosition)
+}
+
 export class Level extends EventEmitter {
   arena?: Arena
   highlightedPosition?: WorldPosition
@@ -24,6 +34,8 @@ export class Level extends EventEmitter {
   private readonly _walls: PositionedSprites
   private readonly _floors: Floors
   private readonly _players: PositionedSprites
+  private readonly _shields: PositionedSprites
+  private readonly _medkits: PositionedSprites
   private readonly _empties: PositionedSprites
 
   constructor(readonly images: Images) {
@@ -33,6 +45,8 @@ export class Level extends EventEmitter {
     this._walls = new PositionedSprites(images.getImage('wall'))
     this._floors = new Floors()
     this._players = new PositionedSprites(images.getImage('player'))
+    this._shields = new PositionedSprites(images.getImage('shield'))
+    this._medkits = new PositionedSprites(images.getImage('medkit'))
   }
 
   private _canvas?: Canvas
@@ -67,9 +81,14 @@ export class Level extends EventEmitter {
   updateArena(arena: Arena) {
     this.arena = arena
 
+    const shields = pickupPositionsForType(arena.pickups, PickupType.Shield);
+    const medkits = pickupPositionsForType(arena.pickups, PickupType.Medkit);
+
     this._walls.update(arena.walls, arena.tileSize)
     this._floors.update(arena.floorTiles, arena.tileSize)
     this._players.update(arena.players, arena.tileSize)
+    this._shields.update(shields, arena.tileSize)
+    this._medkits.update(medkits, arena.tileSize)
 
     const emptyTiles = this._determineEmptyTiles(arena)
     this._empties.update(emptyTiles, arena.tileSize)
@@ -100,6 +119,8 @@ export class Level extends EventEmitter {
     this._walls.render(this.canvas)
     this._floors.render(this.canvas)
     this._players.render(this.canvas)
+    this._shields.render(this.canvas)
+    this._medkits.render(this.canvas)
     this._grid.render(
       this.canvas,
       this.arena.tileSize,
