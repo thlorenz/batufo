@@ -37,6 +37,7 @@ class PickupsController {
           player.health + medkitPlayerHealthGain,
           playerTotalHealth,
         );
+        soundController.playerPickedUpMedkit(pickup.tilePosition);
         break;
       case PickupType.Shield:
         player.shieldRemainingMs = shieldDurationSeconds;

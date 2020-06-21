@@ -69,6 +69,7 @@ class _Assets {
       AudioAsset('audio/bullet-exploded.wav');
   final AudioAsset audioPlayerHitWall = AudioAsset('audio/player-hit-wall.wav');
   final AudioAsset audioPickupShield = AudioAsset('audio/pickup-shield.wav');
+  final AudioAsset audioPickupMedkit = AudioAsset('audio/pickup-medkit.wav');
 }
 
 final _Assets assets = _Assets();
@@ -79,4 +80,5 @@ final Map<String, AudioAsset> audioAssets = {
   'bullet-exploded': assets.audioBulletExploded,
   'player-hit-wall': assets.audioPlayerHitWall,
   'pickup-shield': assets.audioPickupShield,
+  'pickup-medkit': assets.audioPickupMedkit,
 };

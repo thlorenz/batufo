@@ -7,6 +7,7 @@ class SoundModel {
   double playerAppliedThrustVolume;
   double bulletExplodedVolume;
   double playerPickedUpShieldVolume;
+  double playerPickedUpMedkitVolume;
 
   SoundModel() {
     clear();
@@ -17,6 +18,7 @@ class SoundModel {
   bool get playerHitWall => playerHitWallVolume != null;
   bool get bulletExploded => bulletExplodedVolume != null;
   bool get playerPickedUpShield => playerPickedUpShieldVolume != null;
+  bool get playerPickedUpMedkit => playerPickedUpMedkitVolume != null;
 
   void clear() {
     playerHitWallVolume = null;
@@ -24,5 +26,6 @@ class SoundModel {
     playerFiredBulletVolume = null;
     bulletExplodedVolume = null;
     playerPickedUpShieldVolume = null;
+    playerPickedUpMedkitVolume = null;
   }
 }

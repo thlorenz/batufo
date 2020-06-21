@@ -50,6 +50,13 @@ class EnabledSound implements Sound {
     );
   }
 
+  Future<AudioPlayer> playPickupMedkit(double volume) {
+    return _audio.playSound(
+      _audioAssets['pickup-medkit'].audioPath,
+      volume: volume,
+    );
+  }
+
   void disableLog() {
     _audio.disableLog();
   }
