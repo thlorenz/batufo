@@ -56,7 +56,7 @@ class Pickups {
 
   void _initRects() {
     _pickupEntities.clear();
-    final w = _tileSize.toDouble();
+    final w = _tileSize.toDouble() * 0.7;
     for (final pickup in _pickups.pickups) {
       final wp = pickup.tilePosition.toWorldPosition();
       final rect = Rect.fromLTWH(wp.x - w / 2, wp.y - w / 2, w, w);
