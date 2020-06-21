@@ -46,6 +46,7 @@ class GameController {
       _arena.ncols,
       walls: _arena.walls,
       playerRadius: playerSize,
+      shieldRadiusFactor: GameProps.shieldRadiusFactor,
     );
 
     _playerController = PlayerController(
@@ -90,6 +91,22 @@ class GameController {
   }
 
   void _onPlayerHitByBullet(PlayerModel player) {
+    if (player.hasShield) {
+      _handleShieldedPlayerBulletHit(player);
+    } else {
+      _handleUnshieldedPlayerBulletHit(player);
+    }
+  }
+
+  void _handleShieldedPlayerBulletHit(PlayerModel player) {
+    if (player.id == _gameState.clientID) {
+      final remainingShieldMs =
+          max(player.shieldRemainingMs - GameProps.shieldBulletHitLostMs, 0.0);
+      player.shieldRemainingMs = remainingShieldMs;
+    }
+  }
+
+  void _handleUnshieldedPlayerBulletHit(PlayerModel player) {
     final health =
         max(player.health - GameProps.bulletHitsPlayerHealthToll, 0.0);
     if (player.id == _gameState.clientID) {

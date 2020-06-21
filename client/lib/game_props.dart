@@ -82,7 +82,9 @@ class GameProps {
   static const bulletForce = 0.4;
   static const bulletMsToExplode = 200.0;
 
-  static const shieldDurationMs = 60000.0;
+  static const shieldDurationMs = 30000.0;
+  static const shieldRadiusFactor = 1.4;
+  static const shieldBulletHitLostMs = 5000;
 
   static bool get debugPlayerHitTile => false;
   static bool get debugWallHitTile => false;

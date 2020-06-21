@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 bool didBulletHitPlayer(
   TilePosition player,
   TilePosition bullet,
-  double playerRadius,
+  double radius,
 ) {
   if (!player.isSameTileAs(bullet)) return false;
   final distanceX = (player.relX - bullet.relX).abs();
-  if (distanceX > playerRadius) return false;
+  if (distanceX > radius) return false;
   final distanceY = (player.relY - bullet.relY).abs();
-  return distanceY <= playerRadius;
+  return distanceY <= radius;
 }
 
 enum BulletTargets { Wall, Player, None }
@@ -36,13 +36,16 @@ class Colliders {
   final List<bool> _walls;
   final List<Pickup> _pickupTiles;
   final double playerRadius;
+  final double _radiusWithShield;
   Colliders(
     this.nrows,
     this.ncols, {
     @required List<TilePosition> walls,
     @required this.playerRadius,
+    @required double shieldRadiusFactor,
   })  : _walls = List<bool>(nrows * ncols)..fillRange(0, nrows * ncols, false),
-        _pickupTiles = List<Pickup>(nrows * ncols) {
+        _pickupTiles = List<Pickup>(nrows * ncols),
+        _radiusWithShield = playerRadius * shieldRadiusFactor {
     for (final wall in walls) {
       _walls[wall.row * ncols + wall.col] = true;
     }
@@ -67,11 +70,8 @@ class Colliders {
   ) {
     if (_wallAt(tp)) return BulletTarget.wall();
     for (final player in players) {
-      if (didBulletHitPlayer(
-        player.tilePosition,
-        tp,
-        playerRadius,
-      )) {
+      final radius = player.hasShield ? _radiusWithShield : playerRadius;
+      if (didBulletHitPlayer(player.tilePosition, tp, radius)) {
         return BulletTarget.player(player);
       }
     }
