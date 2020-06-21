@@ -14,6 +14,6 @@ class UserSettings extends Equatable {
   }
 
   factory UserSettings.initial() {
-    return UserSettings(soundEffectsEnabled: false);
+    return UserSettings(soundEffectsEnabled: true);
   }
 }
