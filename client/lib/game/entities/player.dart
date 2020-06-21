@@ -23,8 +23,8 @@ Paint _healthPaint = Paint()
   ..style = PaintingStyle.stroke;
 
 Paint _shieldPaint = Paint()
-  ..color = Colors.green
-  ..style = PaintingStyle.stroke;
+  ..style = PaintingStyle.stroke
+  ..strokeWidth = 10.0;
 
 class Player {
   Sprite alivePlayerSprite;
@@ -67,6 +67,7 @@ class Player {
         ..rotate(player.angle);
 
       if (!isHero) _renderPlayerHealth(canvas, player);
+
       if (player.hasShield) {
         _renderShield(canvas, player.shieldRemainingMs);
       }
@@ -110,10 +111,10 @@ class Player {
   }
 
   void _renderShield(Canvas canvas, double shieldRemainingMs) {
-    final width = (shieldRemainingMs / GameProps.shieldDurationMs) * 4.0;
-    final paint = _shieldPaint..strokeWidth = width;
+    final alpha = (shieldRemainingMs / GameProps.shieldDurationMs) * 220;
+    final paint = _shieldPaint..color = Colors.blue.withAlpha(alpha.floor());
 
-    final radius = hitSize / 2 * 1.6;
+    final radius = hitSize / 2 * 1.4;
     final rect = Rect.fromCircle(center: Offset.zero, radius: radius);
     canvas.drawArc(rect, 0, pipi, false, paint);
   }
