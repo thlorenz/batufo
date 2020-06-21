@@ -11,6 +11,8 @@ import 'package:batufo/models/player_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors;
 
+const pipi = 2 * pi;
+
 Paint _debugHitTilePaint = Paint()
   ..color = Colors.amberAccent
   ..strokeWidth = 0.5
@@ -18,6 +20,10 @@ Paint _debugHitTilePaint = Paint()
 
 Paint _healthPaint = Paint()
   ..strokeWidth = 3.0
+  ..style = PaintingStyle.stroke;
+
+Paint _shieldPaint = Paint()
+  ..color = Colors.green
   ..style = PaintingStyle.stroke;
 
 class Player {
@@ -61,6 +67,9 @@ class Player {
         ..rotate(player.angle);
 
       if (!isHero) _renderPlayerHealth(canvas, player);
+      if (player.hasShield) {
+        _renderShield(canvas, player.shieldSecondsRemaining);
+      }
 
       playerSprite.render(
         canvas,
@@ -98,5 +107,15 @@ class Player {
     final missing = 2 * pi - remaining;
     final rect = Rect.fromCircle(center: Offset.zero, radius: radius);
     canvas.drawArc(rect, missing / 2, remaining, false, paint);
+  }
+
+  void _renderShield(Canvas canvas, double shieldSecondsRemaining) {
+    final width =
+        (shieldSecondsRemaining / GameProps.shieldDurationSeconds) * 5.0;
+    final paint = _shieldPaint..strokeWidth = width;
+
+    final radius = hitSize / 2 * 1.7;
+    final rect = Rect.fromCircle(center: Offset.zero, radius: radius);
+    canvas.drawArc(rect, 0, pipi, false, paint);
   }
 }

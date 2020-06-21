@@ -10,12 +10,14 @@ class PickupsController {
   final PickupsModel pickups;
   final Colliders colliders;
   final void Function(Pickup pickup) onPickedUp;
+  final double shieldDurationSeconds;
 
   PickupsController({
     @required this.pickups,
     @required this.colliders,
     @required this.soundController,
     @required this.onPickedUp,
+    @required this.shieldDurationSeconds,
   }) {
     colliders.initPickups(pickups.pickups);
   }
@@ -27,6 +29,7 @@ class PickupsController {
       case PickupType.Medkit:
         break;
       case PickupType.Shield:
+        player.shieldSecondsRemaining = shieldDurationSeconds;
         soundController.playerPickedUpShield(pickup.tilePosition);
         break;
       default:

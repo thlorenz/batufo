@@ -58,6 +58,8 @@ class PlayerModel {
         shotBullet = shotBullet ?? false,
         shieldSecondsRemaining = shieldSecondsRemaining ?? 0.0;
 
+  bool get hasShield => shieldSecondsRemaining > 0.0;
+
   factory PlayerModel.forInitialPosition(
     int clientID,
     TilePosition tp,
