@@ -114,7 +114,7 @@ class Player {
     final alpha = (shieldRemainingMs / GameProps.shieldDurationMs) * 220;
     final paint = _shieldPaint..color = Colors.blue.withAlpha(alpha.floor());
 
-    final radius = hitSize / 2 * 1.4;
+    final radius = hitSize / 2 * GameProps.shieldRadiusFactor;
     final rect = Rect.fromCircle(center: Offset.zero, radius: radius);
     canvas.drawArc(rect, 0, pipi, false, paint);
   }
