@@ -20,8 +20,8 @@ class ClientGameState {
     @required this.totalPlayers,
     @required this.clientID,
     @required this.players,
-    @required this.bullets,
     @required this.pickups,
+    @required this.bullets,
   });
 
   PlayerModel get hero => players[clientID];
@@ -45,24 +45,6 @@ class ClientGameState {
 
   void clearBullets() {
     bullets.clear();
-  }
-
-  ClientGameState clone() {
-    final clonedPlayers = <int, PlayerModel>{};
-
-    for (final entry in players.entries) {
-      clonedPlayers[entry.key] = entry.value.clone();
-    }
-
-    final clonedBullets = bullets.map((x) => x.clone()).toList();
-    final clonedPickups = pickups.clone();
-    return ClientGameState(
-      totalPlayers: totalPlayers,
-      clientID: clientID,
-      players: clonedPlayers,
-      bullets: clonedBullets,
-      pickups: clonedPickups,
-    );
   }
 
   String toString() {

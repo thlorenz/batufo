@@ -15,9 +15,4 @@ class PickupsModel {
   void removePickup(String id) {
     pickups.removeWhere((x) => x.id == id);
   }
-
-  PickupsModel clone() {
-    final clonedPickups = pickups.map((x) => x.clone()).toList();
-    return PickupsModel(clonedPickups);
-  }
 }

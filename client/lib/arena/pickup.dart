@@ -38,8 +38,4 @@ class Pickup {
 
     return Pickup(type, tilePosition);
   }
-
-  Pickup clone() {
-    return Pickup(type, tilePosition);
-  }
 }

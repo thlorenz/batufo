@@ -40,14 +40,6 @@ class BulletModel {
     );
   }
 
-  BulletModel clone() {
-    return BulletModel(
-      clientID: clientID,
-      tilePosition: tilePosition.copyWith(),
-      velocity: Offset(velocity.dx, velocity.dy),
-    );
-  }
-
   String toString() {
     return 'BulletModel $clientID $tilePosition, $velocity, $collided';
   }
