@@ -6,10 +6,13 @@ class GameGestures {
   double _rotation;
   double _thrust;
   bool _fire;
+  bool _spawnBomb;
+  // TODO(bomb): add Down to plant bomb
   GameGestures._()
       : _rotation = 0.0,
         _thrust = 0.0,
-        _fire = false;
+        _fire = false,
+        _spawnBomb = false;
 
   void onPanUpdate(DragUpdateDetails details) {
     final delta = details.delta;
@@ -40,10 +43,12 @@ class GameGestures {
       rotation: _rotation,
       thrust: _thrust,
       fire: _fire,
+      spawnBomb: _spawnBomb,
     );
     _rotation = 0.0;
     _thrust = 0.0;
     _fire = false;
+    _spawnBomb = false;
     return gestures;
   }
 }

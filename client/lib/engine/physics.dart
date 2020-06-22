@@ -3,6 +3,9 @@ import 'dart:ui' show Offset;
 
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/engine/world_position.dart';
+import 'package:batufo/util/math.dart';
+
+final RandomNumber _rnd = RandomNumber();
 
 class Physics {
   static TilePosition move(
@@ -35,5 +38,16 @@ class Physics {
     final xa = cos(angle);
     final ya = sin(angle);
     return velocity.translate(xa * force, ya * force);
+  }
+
+  static Offset simulateExplosion(Offset camera, double explosionStrength) {
+    if (explosionStrength == 0) return camera;
+
+    final min = -explosionStrength;
+    final max = explosionStrength;
+    return camera.translate(
+      _rnd.nextDouble(min, max),
+      _rnd.nextDouble(min, max),
+    );
   }
 }

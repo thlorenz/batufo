@@ -1,5 +1,6 @@
 import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/diagnostics/logger.dart';
+import 'package:batufo/models/bomb_model.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/pickups_model.dart';
 import 'package:batufo/models/player_model.dart';
@@ -12,6 +13,7 @@ class ClientGameState {
   final int totalPlayers;
   final Map<int, PlayerModel> players;
   final List<BulletModel> bullets;
+  final List<BombModel> bombs;
   final PickupsModel pickups;
 
   bool synced = false;
@@ -22,6 +24,7 @@ class ClientGameState {
     @required this.players,
     @required this.pickups,
     @required this.bullets,
+    @required this.bombs,
   });
 
   PlayerModel get hero => players[clientID];
@@ -43,6 +46,10 @@ class ClientGameState {
     bullets.add(bullet);
   }
 
+  void addBomb(BombModel bomb) {
+    bombs.add(bomb);
+  }
+
   void clearBullets() {
     bullets.clear();
   }
@@ -52,6 +59,7 @@ class ClientGameState {
     player: $players
     bullets: $bullets
     pickups: $pickups
+    bombs: $bombs
     }''';
   }
 }

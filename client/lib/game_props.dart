@@ -85,6 +85,14 @@ class GameProps {
   static const shieldRadiusFactor = 1.4;
   static const shieldBulletHitLostMs = 5000;
 
+  static const bombStartExplosionStrength = 10.0;
+  static const bombTimeToExplodeMs = 5000.0;
+  static const bombTimeExplodingMs = 1000.0;
+  static const bombExplosionRadiusSquared = 100000.0;
+  static const bombDealtDamageFromStrengthFactor = playerTotalHealth /
+      (bombStartExplosionStrength * bombExplosionRadiusSquared) *
+      7500.0;
+
   static bool get debugPlayerHitTile => false;
   static bool get debugWallHitTile => false;
   static bool get debugGrid => false;
@@ -100,6 +108,7 @@ class GameProps {
   static const playerInputSyncIntervalMs = 50.0;
   static const timeBetweenThrustsMs = 500.0;
   static const timeBetweenBulletsMs = 250.0;
+  static const timeBetweenBombsMs = 1000.0;
 
   static const scoreOnHit = 100;
   static const scoreOnKill = 500;
@@ -112,6 +121,7 @@ class GameProps {
 
   static const maxFiredBulletVolume = 0.8;
   static const maxBulletExplodedVolume = 1.0;
+  static const maxBombExplodingVolume = 10.0;
   static const maxPlayerHitWallVolume = 0.8;
   static const appliedThrustVolume = 0.4;
   static const maxPickupShieldVolume = 0.5;

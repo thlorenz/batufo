@@ -328,6 +328,39 @@ class PackedClientSpawnedBulletUpdate extends $pb.GeneratedMessage {
   PackedBulletModel ensureSpawnedBullet() => $_ensure(0);
 }
 
+class PackedClientSpawnedBombUpdate extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedClientSpawnedBombUpdate', createEmptyInstance: create)
+    ..aOM<PackedTilePosition>(1, 'spawnPosition', protoName: 'spawnPosition', subBuilder: PackedTilePosition.create)
+    ..hasRequiredFields = false
+  ;
+
+  PackedClientSpawnedBombUpdate._() : super();
+  factory PackedClientSpawnedBombUpdate() => create();
+  factory PackedClientSpawnedBombUpdate.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedClientSpawnedBombUpdate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedClientSpawnedBombUpdate clone() => PackedClientSpawnedBombUpdate()..mergeFromMessage(this);
+  PackedClientSpawnedBombUpdate copyWith(void Function(PackedClientSpawnedBombUpdate) updates) => super.copyWith((message) => updates(message as PackedClientSpawnedBombUpdate));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PackedClientSpawnedBombUpdate create() => PackedClientSpawnedBombUpdate._();
+  PackedClientSpawnedBombUpdate createEmptyInstance() => create();
+  static $pb.PbList<PackedClientSpawnedBombUpdate> createRepeated() => $pb.PbList<PackedClientSpawnedBombUpdate>();
+  @$core.pragma('dart2js:noInline')
+  static PackedClientSpawnedBombUpdate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedClientSpawnedBombUpdate>(create);
+  static PackedClientSpawnedBombUpdate _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PackedTilePosition get spawnPosition => $_getN(0);
+  @$pb.TagNumber(1)
+  set spawnPosition(PackedTilePosition v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSpawnPosition() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSpawnPosition() => clearField(1);
+  @$pb.TagNumber(1)
+  PackedTilePosition ensureSpawnPosition() => $_ensure(0);
+}
+
 class GameCreated extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GameCreated', createEmptyInstance: create)
     ..a<$core.int>(1, 'gameID', $pb.PbFieldType.OU3, protoName: 'gameID')
@@ -676,6 +709,39 @@ class PackedBulletModel extends $pb.GeneratedMessage {
   void clearVelocity() => clearField(3);
   @$pb.TagNumber(3)
   PackedFractionalPoint ensureVelocity() => $_ensure(2);
+}
+
+class PackedBombModel extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedBombModel', createEmptyInstance: create)
+    ..aOM<PackedTilePosition>(1, 'tilePosition', protoName: 'tilePosition', subBuilder: PackedTilePosition.create)
+    ..hasRequiredFields = false
+  ;
+
+  PackedBombModel._() : super();
+  factory PackedBombModel() => create();
+  factory PackedBombModel.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedBombModel.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedBombModel clone() => PackedBombModel()..mergeFromMessage(this);
+  PackedBombModel copyWith(void Function(PackedBombModel) updates) => super.copyWith((message) => updates(message as PackedBombModel));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PackedBombModel create() => PackedBombModel._();
+  PackedBombModel createEmptyInstance() => create();
+  static $pb.PbList<PackedBombModel> createRepeated() => $pb.PbList<PackedBombModel>();
+  @$core.pragma('dart2js:noInline')
+  static PackedBombModel getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedBombModel>(create);
+  static PackedBombModel _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PackedTilePosition get tilePosition => $_getN(0);
+  @$pb.TagNumber(1)
+  set tilePosition(PackedTilePosition v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTilePosition() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTilePosition() => clearField(1);
+  @$pb.TagNumber(1)
+  PackedTilePosition ensureTilePosition() => $_ensure(0);
 }
 
 class PackedTilePosition extends $pb.GeneratedMessage {

@@ -6,6 +6,7 @@ import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/client_picked_up_update.dart';
 import 'package:batufo/rpc/client_player_update.dart';
+import 'package:batufo/rpc/client_spawned_bomb_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart'
     show
@@ -14,12 +15,13 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart'
         InfoResponse,
         PackedClientPickedUpUpdate,
         PackedClientPlayerUpdate,
+        PackedClientSpawnedBombUpdate,
         PackedClientSpawnedBulletUpdate,
         PlayRequest,
         PlayerDeparted,
         PlayerJoined,
         ServerStatsUpdate;
-import 'package:batufo/rpc/generated/message_bus.pbenum.dart';
+import 'package:batufo/rpc/generated/message_bus.pbenum.dart' show Platform;
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
 import 'package:flutter/foundation.dart';
@@ -76,6 +78,7 @@ class Client {
       ..on('server:stats', _onServerStatsMessage)
       ..on('game:client-update', _onClientPlayerUpdateMessage)
       ..on('game:spawned-bullet', _onClientSpawnedBulletMessage)
+      ..on('game:spawned-bomb', _onClientSpawnedBombMessage)
       ..on('game:picked-up', _onClientPickedUpMessage)
       ..on('game:player-joined', _onPlayerJoinedMessage)
       ..on('game:player-departed', _onPlayerDepartedMessage)
@@ -168,6 +171,13 @@ class Client {
     _socket.emitWithBinary('game:spawned-bullet', buf);
   }
 
+  void sendClientSpawnedBombUpdate(ClientSpawnedBombUpdate update) {
+    assert(update != null, 'need a valid non-null update');
+    final packed = update.pack();
+    final buf = packed.writeToBuffer();
+    _socket.emitWithBinary('game:spawned-bomb', buf);
+  }
+
   void sendClientPickedUpUpdate(ClientPickedUpUpdate update) {
     assert(update != null, 'need a valid non-null update');
     final packed = update.pack();
@@ -191,6 +201,15 @@ class Client {
 
     _log.finest('received: $update');
     universe.receivedSpawnedBulletUpdate(update);
+  }
+
+  void _onClientSpawnedBombMessage(dynamic data) {
+    final list = listFromData(data);
+    final packed = PackedClientSpawnedBombUpdate.fromBuffer(list);
+    final update = ClientSpawnedBombUpdate.unpack(packed);
+
+    _log.finest('received: $update');
+    universe.receivedSpawnedBombUpdate(update);
   }
 
   void _onClientPickedUpMessage(dynamic data) {

@@ -4,11 +4,13 @@ class AggregatedGestures {
   final double rotation;
   final double thrust;
   final bool fire;
+  final bool spawnBomb;
 
   AggregatedGestures({
     @required this.rotation,
     @required this.thrust,
     @required this.fire,
+    @required this.spawnBomb,
   });
 }
 
@@ -17,7 +19,8 @@ class GameKey {
   /* 0000 0001 */ static const Left = 0x1;
   /* 0000 0010 */ static const Right = 0x2;
   /* 0000 0100 */ static const Up = 0x4;
-  /* 0000 1000 */ static const Fire = 0x8;
+  /* 0000 1000 */ static const Down = 0x8;
+  /* 0001 0000 */ static const Fire = 0x10;
 }
 
 class GameKeys {

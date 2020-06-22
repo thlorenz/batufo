@@ -61,6 +61,11 @@ class GameSocket {
       this._broadcastMessage(socket, 'game:spawned-bullet', data)
     }
 
+    const onGameSpawnedBomb = (data: Buffer) => {
+      this.game.clientCommunicated(clientID)
+      this._broadcastMessage(socket, 'game:spawned-bomb', data)
+    }
+
     const onGamePickedUp = (data: Buffer) => {
       this.game.clientCommunicated(clientID)
       this._broadcastMessage(socket, 'game:picked-up', data)
@@ -97,6 +102,7 @@ class GameSocket {
         .leave(this._gameID)
         .off('game:client-update', onGameClientUpdate)
         .off('game:spawned-bullet', onGameSpawnedBullet)
+        .off('game:spawned-bomb', onGameSpawnedBomb)
         .off('game:picked-up', onGamePickedUp)
         .off('game:leave', onGameLeave)
         .off('client:ping', onClientPing)
@@ -105,6 +111,7 @@ class GameSocket {
     socket
       .on('game:client-update', onGameClientUpdate)
       .on('game:spawned-bullet', onGameSpawnedBullet)
+      .on('game:spawned-bomb', onGameSpawnedBomb)
       .on('game:picked-up', onGamePickedUp)
       .on('game:leave', onGameLeave)
       .on('client:ping', onClientPing)

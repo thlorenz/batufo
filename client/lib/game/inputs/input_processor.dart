@@ -12,10 +12,12 @@ class InputProcessor {
   final double keyboardRotationFactor;
   final double timeBetweenThrusts;
   final double timeBetweenBullets;
+  final double timeBetweenBombs;
   final SoundController soundController;
 
   double timeSinceLastThrust;
   double timeSinceLastBullet;
+  double timeSinceLastBomb;
 
   InputProcessor._({
     @required this.soundController,
@@ -23,9 +25,11 @@ class InputProcessor {
     @required this.keyboardRotationFactor,
     @required this.timeBetweenThrusts,
     @required this.timeBetweenBullets,
+    @required this.timeBetweenBombs,
   }) {
     timeSinceLastThrust = 0.0;
     timeSinceLastBullet = 0.0;
+    timeSinceLastBomb = 0.0;
   }
 
   bool get canApplyThrust {
@@ -34,6 +38,10 @@ class InputProcessor {
 
   bool get canShootBullet {
     return timeBetweenBullets <= timeSinceLastBullet;
+  }
+
+  bool get canSpawnBomb {
+    return timeBetweenBombs <= timeSinceLastBomb;
   }
 
   int get percentReadyToShoot =>
@@ -60,6 +68,7 @@ class InputProcessor {
     }
     timeSinceLastThrust = min(timeBetweenThrusts, timeSinceLastThrust + dt);
     timeSinceLastBullet = min(timeBetweenBullets, timeSinceLastBullet + dt);
+    timeSinceLastBomb = min(timeBetweenBombs, timeSinceLastBomb + dt);
 
     // bullets
     if (canShootBullet) {
@@ -76,6 +85,16 @@ class InputProcessor {
         soundController.playerAppliedThrust();
         player.appliedThrust = true;
         timeSinceLastThrust = 0.0;
+      }
+    }
+
+    // plant bomb
+    // TODO(bomb): check if player has one
+    if (canSpawnBomb) {
+      // TODO(bomb): support gesture as well
+      if (keys.contains(GameKey.Down)) {
+        player.spawnedBomb = true;
+        timeSinceLastBomb = 0.0;
       }
     }
   }
@@ -99,6 +118,7 @@ class InputProcessor {
     @required double keyboardRotationFactor,
     @required double timeBetweenThrusts,
     @required double timeBetweenBullets,
+    @required double timeBetweenBombs,
   }) {
     assert(_instance == null, 'input processor should only be created once');
     _instance = InputProcessor._(
@@ -107,6 +127,7 @@ class InputProcessor {
       keyboardRotationFactor: keyboardRotationFactor,
       timeBetweenThrusts: timeBetweenThrusts,
       timeBetweenBullets: timeBetweenBullets,
+      timeBetweenBombs: timeBetweenBombs,
     );
   }
 }

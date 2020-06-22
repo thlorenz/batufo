@@ -58,3 +58,8 @@
 
 - [url](https://opengameart.org/content/sfx-the-ultimate-2017-16-bit-mini-pack)
 - CC0
+
+## audio/bomb-exploding.wav
+
+- [url](https://opengameart.org/content/sfx-the-ultimate-2017-16-bit-mini-pack)
+- CC0

@@ -13,6 +13,7 @@ import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/client.dart';
 import 'package:batufo/rpc/client_picked_up_update.dart';
 import 'package:batufo/rpc/client_player_update.dart';
+import 'package:batufo/rpc/client_spawned_bomb_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart';
 import 'package:batufo/rpc/server_stats.dart';
@@ -42,6 +43,7 @@ class Universe {
   final _serverStats$ = BehaviorSubject<ServerStats>();
   StreamSubscription<ClientPlayerUpdate> _clientPlayerUpdateSub;
   StreamSubscription<ClientSpawnedBulletUpdate> _clientSpawnedBulletUpdateSub;
+  StreamSubscription<ClientSpawnedBombUpdate> _clientSpawnedBombUpdateSub;
   StreamSubscription<ClientPickedUpUpdate> _clientPickedUpSub;
 
   String _currentLevel;
@@ -90,6 +92,7 @@ class Universe {
       keyboardThrustForce: GameProps.playerThrustForce,
       timeBetweenThrusts: GameProps.timeBetweenThrustsMs,
       timeBetweenBullets: GameProps.timeBetweenBulletsMs,
+      timeBetweenBombs: GameProps.timeBetweenBombsMs,
     );
     _instance = Universe._(
       appTitle: appTitle,
@@ -213,6 +216,8 @@ class Universe {
 
     _clientSpawnedBulletUpdateSub =
         game.clientSpawnedBulletUpdate$.listen(_onClientSpawnedBulletUpdate);
+    _clientSpawnedBombUpdateSub =
+        game.clientSpawnedBombUpdate$.listen(_onClientSpawnedBombUpdate);
     _clientPickedUpSub =
         game.clientPickedUpUpdate$.listen(_onClientPickedUpUpdate);
   }
@@ -223,6 +228,10 @@ class Universe {
 
   void _onClientSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
     client.sendClientSpawnedBulletUpdate(update);
+  }
+
+  void _onClientSpawnedBombUpdate(ClientSpawnedBombUpdate update) {
+    client.sendClientSpawnedBombUpdate(update);
   }
 
   void _onClientPickedUpUpdate(ClientPickedUpUpdate update) {
@@ -290,7 +299,13 @@ class Universe {
   void receivedSpawnedBulletUpdate(ClientSpawnedBulletUpdate update) {
     final game = _userState$.value.game;
     if (game == null) return;
-    game.updateBullets(update);
+    game.updateBullet(update);
+  }
+
+  void receivedSpawnedBombUpdate(ClientSpawnedBombUpdate update) {
+    final game = _userState$.value.game;
+    if (game == null) return;
+    game.updateBomb(update);
   }
 
   void receivedClientPickedUpUpdate(ClientPickedUpUpdate update) {
@@ -349,6 +364,7 @@ class Universe {
   void _disposeClientUpdateSubs() {
     _clientPlayerUpdateSub?.cancel();
     _clientSpawnedBulletUpdateSub?.cancel();
+    _clientSpawnedBombUpdateSub?.cancel();
     _clientPickedUpSub?.cancel();
   }
 

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/arena/pickup.dart';
+import 'package:batufo/controllers/bombs_controller.dart';
 import 'package:batufo/controllers/bullets_controller.dart';
 import 'package:batufo/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/controllers/helpers/colliders.dart';
@@ -9,7 +10,9 @@ import 'package:batufo/controllers/helpers/pickups_controller.dart';
 import 'package:batufo/controllers/player_controller.dart';
 import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
+import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game_props.dart';
+import 'package:batufo/models/bomb_model.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/player_model.dart';
@@ -28,6 +31,7 @@ class GameController {
   PlayerController _playerController;
   BulletsController _bulletsController;
   PickupsController _pickupsController;
+  BombsController _bombsController;
 
   GameController(
     this._arena,
@@ -75,6 +79,16 @@ class GameController {
       medkitPlayerHealthGain: GameProps.medkitPlayerHealthGain,
       playerTotalHealth: GameProps.playerTotalHealth,
     );
+
+    _bombsController = BombsController(
+      _gameState.bombs,
+      soundController: soundController,
+      bombStartExplosionStrength: GameProps.bombStartExplosionStrength,
+      bombTimeExploding: GameProps.bombTimeExplodingMs,
+      bombExplosionRadiusSquared: GameProps.bombExplosionRadiusSquared,
+      bombDealtDamageFromStrengthFactor:
+          GameProps.bombDealtDamageFromStrengthFactor,
+    );
   }
 
   ClientGameState get gameState => _gameState;
@@ -88,6 +102,7 @@ class GameController {
     }
     _bulletsController.update(dt, _gameState.players.values);
     _pickupsController.update(_gameState.hero);
+    _bombsController.update(dt, _gameState.hero);
 
     return _gameState;
   }
@@ -124,6 +139,10 @@ class GameController {
     }
   }
 
+  double getExplosionStrength() {
+    return _bombsController.explosionStrength(gameState.hero.tilePosition);
+  }
+
   void cleanup() {
     for (final x in _gameState.players.entries) {
       _playerController.cleanup(x.value);
@@ -150,5 +169,14 @@ class GameController {
   void _spawnBullet(PlayerModel player) {
     final bullet = _bulletsSpawner.spawnFor(player);
     _gameState.addBullet(bullet);
+  }
+
+  void spawnBomb(TilePosition tilePosition) {
+    final bomb = BombModel(
+      tilePosition: tilePosition,
+      timeToExplodeMs: GameProps.bombTimeToExplodeMs,
+      timeLeftExplodingMs: GameProps.bombTimeExplodingMs,
+    );
+    _gameState.addBomb(bomb);
   }
 }

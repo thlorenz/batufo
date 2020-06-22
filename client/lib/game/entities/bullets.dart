@@ -1,10 +1,9 @@
-import 'dart:ui' show Canvas, Offset, Paint;
+import 'dart:ui' show Canvas, Offset, Paint, PaintingStyle;
 
 import 'package:batufo/game/sprites/bullet_explosion_sprite.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart'
-    show Canvas, Colors, Paint, PaintingStyle;
+import 'package:flutter/material.dart' show Colors;
 
 final _bulletPaint = Paint()
   ..style = PaintingStyle.fill

@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 const int VELOCITY_FACTOR = 1000;
 
 class PlayerModel {
-  // State
+  // State (transmitted)
   int id;
   TilePosition tilePosition;
   Offset velocity;
@@ -20,6 +20,7 @@ class PlayerModel {
   // Events
   bool appliedThrust;
   bool shotBullet;
+  bool spawnedBomb;
   PlayerModel({
     @required this.id,
     @required this.tilePosition,
@@ -29,10 +30,12 @@ class PlayerModel {
     @required double shieldRemainingMs,
     bool appliedThrust,
     bool shotBullet,
+    bool spawnedBomb,
   })  : angle = angle ?? 0.0,
         velocity = velocity ?? Offset.zero,
         appliedThrust = appliedThrust ?? false,
         shotBullet = shotBullet ?? false,
+        spawnedBomb = spawnedBomb ?? false,
         shieldRemainingMs = shieldRemainingMs ?? 0.0;
 
   bool get hasShield => shieldRemainingMs > 0.0;

@@ -57,6 +57,10 @@ message PackedClientSpawnedBulletUpdate {
   PackedBulletModel spawnedBullet = 1;
 }
 
+message PackedClientSpawnedBombUpdate {
+  PackedTilePosition spawnPosition = 1;
+}
+
 message GameCreated {
   uint32 gameID = 1;
   uint32 clientID = 2;
@@ -101,6 +105,10 @@ message PackedBulletModel {
   uint32 clientID = 1;
   PackedTilePosition tilePosition = 2;
   PackedFractionalPoint velocity = 3;
+}
+
+message PackedBombModel {
+  PackedTilePosition tilePosition = 1;
 }
 
 // colRow: tile column and row

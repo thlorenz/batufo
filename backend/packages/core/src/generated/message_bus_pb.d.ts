@@ -207,6 +207,28 @@ export namespace PackedClientSpawnedBulletUpdate {
   }
 }
 
+export class PackedClientSpawnedBombUpdate extends jspb.Message {
+  hasSpawnposition(): boolean;
+  clearSpawnposition(): void;
+  getSpawnposition(): PackedTilePosition | undefined;
+  setSpawnposition(value?: PackedTilePosition): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PackedClientSpawnedBombUpdate.AsObject;
+  static toObject(includeInstance: boolean, msg: PackedClientSpawnedBombUpdate): PackedClientSpawnedBombUpdate.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PackedClientSpawnedBombUpdate, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PackedClientSpawnedBombUpdate;
+  static deserializeBinaryFromReader(message: PackedClientSpawnedBombUpdate, reader: jspb.BinaryReader): PackedClientSpawnedBombUpdate;
+}
+
+export namespace PackedClientSpawnedBombUpdate {
+  export type AsObject = {
+    spawnposition?: PackedTilePosition.AsObject,
+  }
+}
+
 export class GameCreated extends jspb.Message {
   getGameid(): number;
   setGameid(value: number): void;
@@ -418,6 +440,28 @@ export namespace PackedBulletModel {
     clientid: number,
     tileposition?: PackedTilePosition.AsObject,
     velocity?: PackedFractionalPoint.AsObject,
+  }
+}
+
+export class PackedBombModel extends jspb.Message {
+  hasTileposition(): boolean;
+  clearTileposition(): void;
+  getTileposition(): PackedTilePosition | undefined;
+  setTileposition(value?: PackedTilePosition): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PackedBombModel.AsObject;
+  static toObject(includeInstance: boolean, msg: PackedBombModel): PackedBombModel.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PackedBombModel, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PackedBombModel;
+  static deserializeBinaryFromReader(message: PackedBombModel, reader: jspb.BinaryReader): PackedBombModel;
+}
+
+export namespace PackedBombModel {
+  export type AsObject = {
+    tileposition?: PackedTilePosition.AsObject,
   }
 }
 

@@ -45,6 +45,12 @@ class SoundController {
         _volumeForPosition(bulletPosition, GameProps.maxBulletExplodedVolume);
   }
 
+  void bombExplodingAt(TilePosition bombPosition) {
+    if (!universe.userSettings.soundEffectsEnabled) return;
+    _soundModel.bombExplodingVolume =
+        _volumeForPosition(bombPosition, GameProps.maxBombExplodingVolume);
+  }
+
   void playerHitWallWithForce(TilePosition playerPosition, double force) {
     if (!universe.userSettings.soundEffectsEnabled) return;
     final distance = min(_distanceToPlayer(playerPosition), 1.0);
@@ -74,6 +80,8 @@ class SoundController {
       _sound.playBullet(_soundModel.playerFiredBulletVolume);
     if (_soundModel.bulletExploded)
       _sound.playBulletExploded(_soundModel.bulletExplodedVolume);
+    if (_soundModel.bombExploding)
+      _sound.playBombExploding(_soundModel.bombExplodingVolume);
     if (_soundModel.playerAppliedThrust)
       _sound.playThrust(_soundModel.playerAppliedThrustVolume);
     if (_soundModel.playerHitWall)

@@ -21,6 +21,9 @@ class GameKeyboard {
     if (e == LogicalKeyboardKey.arrowUp || e == LogicalKeyboardKey.keyW) {
       return GameKey.Up;
     }
+    if (e == LogicalKeyboardKey.arrowDown || e == LogicalKeyboardKey.keyS) {
+      return GameKey.Down;
+    }
     if (e == LogicalKeyboardKey.space) {
       return GameKey.Fire;
     }

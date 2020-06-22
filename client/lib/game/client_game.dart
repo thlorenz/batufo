@@ -8,8 +8,10 @@ import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/game.dart';
+import 'package:batufo/engine/physics.dart';
 import 'package:batufo/engine/world_position.dart';
 import 'package:batufo/game/assets/assets.dart';
+import 'package:batufo/game/entities/bombs.dart';
 import 'package:batufo/game/entities/buildings.dart';
 import 'package:batufo/game/entities/bullets.dart';
 import 'package:batufo/game/entities/grid.dart';
@@ -26,6 +28,7 @@ import 'package:batufo/models/pickups_model.dart';
 import 'package:batufo/models/player_model.dart';
 import 'package:batufo/rpc/client_picked_up_update.dart';
 import 'package:batufo/rpc/client_player_update.dart';
+import 'package:batufo/rpc/client_spawned_bomb_update.dart';
 import 'package:batufo/rpc/client_spawned_bullet_update.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -52,27 +55,32 @@ class ClientGame extends Game {
   final int clientID;
   final ClientPlayerUpdate _clientPlayerUpdate;
   final ClientSpawnedBulletUpdate _clientSpawnedBulletUpdate;
+  final ClientSpawnedBombUpdate _clientSpawnedBombUpdate;
   final _clientPlayerUpdate$ = BehaviorSubject<ClientPlayerUpdate>();
   final _clientSpawnedBulletUpdate$ =
       BehaviorSubject<ClientSpawnedBulletUpdate>();
+  final _clientSpawnedBombUpdate$ = BehaviorSubject<ClientSpawnedBombUpdate>();
   final _clientPickedUpUpdate$ = BehaviorSubject<ClientPickedUpUpdate>();
 
   GameController _gameController;
   Map<int, Player> _players;
   Bullets _bullets;
   Pickups _pickups;
+  Bombs _bombs;
 
   Offset _z10Camera;
   Offset _z20Camera;
   Offset _z30Camera;
   Offset _z40Camera;
   Offset _z100Camera;
+  Offset _arenaCamera;
   Rect _z0VisibleRect;
   Rect _z10VisibleRect;
   Rect _z20VisibleRect;
   Rect _z30VisibleRect;
   Rect _z40VisibleRect;
   Rect _z100VisibleRect;
+  Rect _arenaVisibleRect;
   Size _size;
   bool _disposed;
   bool _started;
@@ -88,6 +96,8 @@ class ClientGame extends Game {
       _clientPlayerUpdate$.stream;
   Stream<ClientSpawnedBulletUpdate> get clientSpawnedBulletUpdate$ =>
       _clientSpawnedBulletUpdate$.stream;
+  Stream<ClientSpawnedBombUpdate> get clientSpawnedBombUpdate$ =>
+      _clientSpawnedBombUpdate$.stream;
 
   Stream<ClientPickedUpUpdate> get clientPickedUpUpdate$ =>
       _clientPickedUpUpdate$.stream;
@@ -108,6 +118,7 @@ class ClientGame extends Game {
         _disposed = false,
         _clientPlayerUpdate = ClientPlayerUpdate(),
         _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(),
+        _clientSpawnedBombUpdate = ClientSpawnedBombUpdate(),
         _grid = Grid(arena.tileSize.toDouble()),
         _starsBack = Stars(
           arena.tileSize.toDouble(),
@@ -165,11 +176,14 @@ class ClientGame extends Game {
         _z20Camera = Offset.zero,
         _z30Camera = Offset.zero,
         _z40Camera = Offset.zero,
-        _z100Camera = Offset.zero {
+        _z100Camera = Offset.zero,
+        _arenaCamera = Offset.zero {
+    final tileSize = arena.tileSize.toDouble();
     _bullets = Bullets(
       msToExplode: GameProps.bulletMsToExplode,
-      tileSize: arena.tileSize.toDouble(),
+      tileSize: tileSize,
     );
+    _bombs = Bombs(tileSize: tileSize);
 
     assert(
       playerIndex < arena.players.length,
@@ -206,6 +220,7 @@ class ClientGame extends Game {
     return ClientGameState(
       clientID: clientID,
       bullets: [],
+      bombs: [],
       pickups: PickupsModel(arena.pickups),
       totalPlayers: arena.players.length,
       players: {clientID: hero},
@@ -227,13 +242,17 @@ class ClientGame extends Game {
     _players.remove(clientID);
   }
 
-  void updateBullets(ClientSpawnedBulletUpdate update) {
+  void updateBullet(ClientSpawnedBulletUpdate update) {
     // this method is invoked for bullets spawned by opponents
     // bullets of the hero are handled inside InputProcessor
     soundController.playerFiredBullet(
       bulletPosition: update.spawnedBullet.tilePosition,
     );
     _gameController.addBullet(update.spawnedBullet);
+  }
+
+  void updateBomb(ClientSpawnedBombUpdate update) {
+    _gameController.spawnBomb(update.spawnPosition);
   }
 
   void start() {
@@ -251,7 +270,12 @@ class ClientGame extends Game {
       final pressedKeys = GameKeyboard.pressedKeys;
       final gestures = GameGestures.instance.aggregatedGestures;
 
-      inputProcessor.udate(dt, pressedKeys, gestures, player);
+      inputProcessor.udate(
+        dt,
+        pressedKeys,
+        gestures,
+        player,
+      );
     }
     _gameController.update(dt, ts);
     _clientPlayerUpdate.player = gameState.players[clientID];
@@ -261,6 +285,12 @@ class ClientGame extends Game {
       _clientSpawnedBulletUpdate.spawnedBullet = gameState.bullets.last;
       _clientSpawnedBulletUpdate$.add(_clientSpawnedBulletUpdate);
     }
+    if (player.spawnedBomb) {
+      _gameController.spawnBomb(player.tilePosition);
+      _clientSpawnedBombUpdate.spawnPosition = player.tilePosition;
+      _clientSpawnedBombUpdate$.add(_clientSpawnedBombUpdate);
+    }
+
     onGameStateUpdated(gameState);
   }
 
@@ -284,12 +314,18 @@ class ClientGame extends Game {
       z30FullTranslate.dy,
     );
 
+    _arenaCamera = Physics.simulateExplosion(
+      _z100Camera,
+      _gameController.getExplosionStrength(),
+    );
+
     _z0VisibleRect = _visibleRectForCamera(Offset.zero);
     _z10VisibleRect = _visibleRectForCamera(z10FullTranslate);
     _z20VisibleRect = _visibleRectForCamera(z20FullTranslate);
     _z30VisibleRect = _visibleRectForCamera(z30FullTranslate);
     _z40VisibleRect = _visibleRectForCamera(z40FullTranslate);
     _z100VisibleRect = _visibleRectForCamera(_z100Camera);
+    _arenaVisibleRect = _visibleRectForCamera(_arenaCamera);
 
     _starsBack.updateOffset(_z100Camera);
     _starsMiddle.updateOffset(_z100Camera - z10FullTranslate);
@@ -315,15 +351,27 @@ class ClientGame extends Game {
     );
   }
 
-  void _renderArena(Canvas canvas) {
+  void _renderBackdrop(Canvas canvas) {
     if (GameProps.debugGrid) {
       _renderGrid(canvas);
     } else {
       _renderUniverse(canvas);
     }
+  }
 
-    canvas.translate(-_z100Camera.dx, -_z100Camera.dy);
-    _buildings.render(canvas, _z100VisibleRect, _size);
+  void _renderArena(Canvas canvas) {
+    canvas.translate(-_arenaCamera.dx, -_arenaCamera.dy);
+    _buildings.render(canvas, _arenaVisibleRect, _size);
+
+    _pickups.render(canvas, _z100VisibleRect);
+    _bombs.render(canvas, gameState.bombs);
+    for (final entry in gameState.players.entries) {
+      final player = _players[entry.key];
+      if (player == null) continue;
+      _players[entry.key]
+          .render(canvas, entry.value, entry.value.id == clientID);
+    }
+    _bullets.render(canvas, gameState.bullets);
   }
 
   void _renderGrid(Canvas canvas) {
@@ -368,16 +416,8 @@ class ClientGame extends Game {
     if (disposed) return;
     _lowerLeftCanvas(canvas, _size.height);
 
+    _renderBackdrop(canvas);
     _renderArena(canvas);
-
-    _pickups.render(canvas, _z100VisibleRect);
-    for (final entry in gameState.players.entries) {
-      final player = _players[entry.key];
-      if (player == null) continue;
-      _players[entry.key]
-          .render(canvas, entry.value, entry.value.id == clientID);
-    }
-    _bullets.render(canvas, gameState.bullets);
 
     soundController.processSounds();
   }
@@ -468,6 +508,10 @@ class ClientGame extends Game {
     if (_clientSpawnedBulletUpdate$ != null &&
         !_clientSpawnedBulletUpdate$.isClosed) {
       _clientSpawnedBulletUpdate$.close();
+    }
+    if (_clientSpawnedBombUpdate$ != null &&
+        !_clientSpawnedBombUpdate$.isClosed) {
+      _clientSpawnedBombUpdate$.close();
     }
     if (_clientPickedUpUpdate$ != null && !_clientPickedUpUpdate$.isClosed) {
       _clientPickedUpUpdate$.close();

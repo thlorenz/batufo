@@ -36,6 +36,13 @@ class EnabledSound implements Sound {
     );
   }
 
+  Future<void> playBombExploding(double volume) {
+    return _audio.playSound(
+      _audioAssets['bomb-exploding'].audioPath,
+      volume: volume,
+    );
+  }
+
   Future<AudioPlayer> playPlayerHitWall(double volume) {
     return _audio.playSound(
       _audioAssets['player-hit-wall'].audioPath,

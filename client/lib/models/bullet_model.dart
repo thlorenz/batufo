@@ -7,9 +7,12 @@ import 'package:batufo/rpc/packing_types.dart';
 import 'package:flutter/foundation.dart';
 
 class BulletModel {
+  // Transmitted Properties
   final int clientID;
   TilePosition tilePosition;
   Offset velocity;
+
+  // Local Properties
   bool collided;
 
   BulletModel({
