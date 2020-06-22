@@ -20,7 +20,6 @@
   export let gameWebURL
   export let latestReleaseURL
   export let githubSourceURL
-  export let windowWidth
 </script>
 
 <main>
