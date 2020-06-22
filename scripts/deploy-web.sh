@@ -16,7 +16,8 @@ rm -rf $BUILD_WEB
 # build which requires us to link main.dart as dart2js runs into
 # issues if we point the build directly at the file we're building
 ln -s $CLIENT/lib/main/web.release.dart $CLIENT/lib/main.dart
-(cd $CLIENT && flutter build web)
+# add --dart-define=FLUTTER_WEB_USE_SKIA=true once Icons render correctly
+(cd $CLIENT && flutter build web --release)
 rm $CLIENT/lib/main.dart 
 
 # safe current index.html which does not load service worker and avoid
