@@ -21,6 +21,11 @@ dependencies:
   audioplayers: ^0.15.1
 
   material_design_icons_flutter: ^4.0.5345
+  window_size:
+    git:
+      url: git://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
+      ref: b0794faf2c000576515aee56ca6bb5bee64cece4
 
 dev_dependencies:
   flutter_test:
