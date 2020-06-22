@@ -62,6 +62,13 @@ class _Assets {
     rows: 1,
     cols: 1,
   );
+  final ImageAsset bomb = ImageAsset(
+    'assets/images/sprites/bomb.png',
+    188,
+    188,
+    rows: 1,
+    cols: 1,
+  );
 
   final AudioAsset audioThrust = AudioAsset('audio/thrust.wav');
   final AudioAsset audioBullet = AudioAsset('audio/bullet.wav');

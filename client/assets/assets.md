@@ -1,5 +1,12 @@
 # images
 
+## bullet explosion
+
+- images/sprites/bullet-explosion.png
+
+- [url](https://opengameart.org/content/explosion)
+- CC0
+
 ## planets level background
 
 - images/bg/level-icon.png
