@@ -14,6 +14,7 @@ class GameCreatedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(children: [
         GameWidget(game),
         Container(
