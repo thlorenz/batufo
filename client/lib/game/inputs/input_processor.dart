@@ -40,8 +40,8 @@ class InputProcessor {
     return timeBetweenBullets <= timeSinceLastBullet;
   }
 
-  bool get canSpawnBomb {
-    return timeBetweenBombs <= timeSinceLastBomb;
+  bool canSpawnBomb(PlayerModel hero) {
+    return hero.hasBomb && timeBetweenBombs <= timeSinceLastBomb;
   }
 
   int get percentReadyToShoot =>
@@ -89,11 +89,10 @@ class InputProcessor {
     }
 
     // plant bomb
-    // TODO(bomb): check if player has one
-    if (canSpawnBomb) {
-      // TODO(bomb): support gesture as well
-      if (keys.contains(GameKey.Down)) {
+    if (canSpawnBomb(player)) {
+      if (keys.contains(GameKey.Down) || gestures.spawnBomb) {
         player.spawnedBomb = true;
+        player.nbombs--;
         timeSinceLastBomb = 0.0;
       }
     }

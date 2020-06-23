@@ -216,6 +216,7 @@ class ClientGame extends Game {
       clientID,
       playerStartPosition,
       GameProps.playerTotalHealth,
+      GameProps.playerInitialBombs,
     );
     return ClientGameState(
       clientID: clientID,

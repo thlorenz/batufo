@@ -250,6 +250,7 @@ class Universe {
       playersAlive: gameState.playersAlive,
       percentReadyToShoot: inputProcessor.percentReadyToShoot,
       percentReadyToThrust: inputProcessor.percentReadyToThrust,
+      nbombs: hero.nbombs,
     );
     _addStatsState(stats);
     _detectGameOutcome(gameState, hero.health);
@@ -328,6 +329,7 @@ class Universe {
       clientID,
       initialPosition,
       GameProps.playerTotalHealth,
+      GameProps.playerInitialBombs,
     );
     game.updatePlayers(playerModel);
     _refreshAlivePlayers(game);

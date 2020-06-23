@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:batufo/game/assets/assets.dart';
 import 'package:batufo/setup/config.dart';
 import 'package:batufo/types.dart';
 import 'package:batufo/widgets/screens/router.dart';
@@ -94,7 +93,7 @@ class _Description extends StatelessWidget {
       child: Text(
         'Rotate the UFO into the desired direction and '
         ' then accelerate by applying thrust'
-        ' or fire a bullet.',
+        ' fire a bullet.',
         style: TextStyle(
           fontSize: 16,
           color: Colors.white,
@@ -127,16 +126,10 @@ class _Gestures extends StatelessWidget {
           _Gesture(icon: MdiIcons.gestureSwipeUp, label: 'Apply Thrust'),
           Container(),
           _Gesture(icon: MdiIcons.gestureSwipeLeft, label: 'Rotate Left'),
-          RotatedBox(
-            quarterTurns: -1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(assets.player.imagePath),
-            ),
-          ),
+          _Gesture(icon: Icons.touch_app, label: 'Fire Bullet'),
           _Gesture(icon: MdiIcons.gestureSwipeRight, label: 'Rotate Right'),
           Container(),
-          _Gesture(icon: Icons.touch_app, label: 'Fire Bullet'),
+          _Gesture(icon: MdiIcons.gestureSwipeDown, label: 'Plant Bomb'),
         ],
       ),
     );
@@ -207,8 +200,8 @@ class _Keyboard extends StatelessWidget {
             labelFontSize: labelFontSize,
           ),
           _KeyboardKey(
-            letter: 'W',
-            instruction: 'Apply Thrust',
+            icon: Icons.keyboard_arrow_down,
+            instruction: 'Plant Bomb',
             keyFontSize: keyFontSize,
             labelFontSize: labelFontSize,
           ),
@@ -218,18 +211,25 @@ class _Keyboard extends StatelessWidget {
             keyFontSize: keyFontSize,
             labelFontSize: labelFontSize,
           ),
+          Container(),
+          _KeyboardKey(
+            letter: 'W',
+            instruction: 'Apply Thrust',
+            keyFontSize: keyFontSize,
+            labelFontSize: labelFontSize,
+          ),
+          Container(),
           _KeyboardKey(
             letter: 'A',
             instruction: 'Rotate Left',
             keyFontSize: keyFontSize,
             labelFontSize: labelFontSize,
           ),
-          RotatedBox(
-            quarterTurns: -1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(assets.player.imagePath),
-            ),
+          _KeyboardKey(
+            letter: 'S',
+            instruction: 'Plant Bomb',
+            keyFontSize: keyFontSize,
+            labelFontSize: labelFontSize,
           ),
           _KeyboardKey(
             letter: 'D',

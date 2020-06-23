@@ -57,6 +57,13 @@ class EnabledSound implements Sound {
     );
   }
 
+  Future<AudioPlayer> playPickupBomb(double volume) {
+    return _audio.playSound(
+      _audioAssets['pickup-bomb'].audioPath,
+      volume: volume,
+    );
+  }
+
   Future<AudioPlayer> playPickupMedkit(double volume) {
     return _audio.playSound(
       _audioAssets['pickup-medkit'].audioPath,

@@ -32,6 +32,7 @@ Future<void> mainEntry({
     assets.medkit.imagePath,
     assets.shield.imagePath,
     assets.bomb.imagePath,
+    assets.circleRed.imagePath,
   ]);
 
   sound.disableLog();

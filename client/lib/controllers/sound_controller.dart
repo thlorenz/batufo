@@ -63,16 +63,22 @@ class SoundController {
     _soundModel.playerHitWallVolume = volume;
   }
 
+  void playerPickedUpMedkit(TilePosition playerPosition) {
+    if (!universe.userSettings.soundEffectsEnabled) return;
+    _soundModel.playerPickedUpMedkitVolume =
+        _volumeForPosition(playerPosition, GameProps.maxPickupMedkitVolume);
+  }
+
   void playerPickedUpShield(TilePosition playerPosition) {
     if (!universe.userSettings.soundEffectsEnabled) return;
     _soundModel.playerPickedUpShieldVolume =
         _volumeForPosition(playerPosition, GameProps.maxPickupShieldVolume);
   }
 
-  void playerPickedUpMedkit(TilePosition playerPosition) {
+  void playerPickedUpBomb(TilePosition playerPosition) {
     if (!universe.userSettings.soundEffectsEnabled) return;
-    _soundModel.playerPickedUpMedkitVolume =
-        _volumeForPosition(playerPosition, GameProps.maxPickupMedkitVolume);
+    _soundModel.playerPickedUpBombVolume =
+        _volumeForPosition(playerPosition, GameProps.maxPickupBombVolume);
   }
 
   void processSounds() {
@@ -86,10 +92,12 @@ class SoundController {
       _sound.playThrust(_soundModel.playerAppliedThrustVolume);
     if (_soundModel.playerHitWall)
       _sound.playPlayerHitWall(_soundModel.playerHitWallVolume);
-    if (_soundModel.playerPickedUpShield)
-      _sound.playPickupShield(_soundModel.playerPickedUpShieldVolume);
     if (_soundModel.playerPickedUpMedkit)
       _sound.playPickupMedkit(_soundModel.playerPickedUpMedkitVolume);
+    if (_soundModel.playerPickedUpShield)
+      _sound.playPickupShield(_soundModel.playerPickedUpShieldVolume);
+    if (_soundModel.playerPickedUpBomb)
+      _sound.playPickupBomb(_soundModel.playerPickedUpBombVolume);
     _soundModel.clear();
   }
 

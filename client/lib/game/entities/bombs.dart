@@ -13,7 +13,7 @@ class Bombs {
 
   void render(Canvas canvas, Iterable<BombModel> bombs) {
     for (final bomb in bombs) {
-      if (bomb.isExploding) return;
+      if (bomb.isExploding || bomb.hasExploded) return;
       _renderBomb(canvas, bomb);
     }
   }

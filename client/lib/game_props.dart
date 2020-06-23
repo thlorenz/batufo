@@ -61,6 +61,7 @@ class ParallaxProps {
 class GameProps {
   static const gesturePlayerRotationFactor = 0.04;
   static const gesturePlayerMinThrustDelta = 2.2;
+  static const gesturePlayerMinSpawnBombDelta = 2.2;
 
   static const keyboardPlayerRotationFactor = 0.004;
   static const playerThrustForce = 0.07; // Newton
@@ -71,6 +72,7 @@ class GameProps {
   static const playerHitsWallSlowdown = 0.3;
   static const playerSizeFactor = 0.75;
   static const playerTotalHealth = 100.0;
+  static const playerInitialBombs = 3;
 
   static const playerHitsWallHealthFactor = 30.0;
   static const bulletHitsPlayerHealthToll = playerTotalHealth / 20;
@@ -126,6 +128,7 @@ class GameProps {
   static const appliedThrustVolume = 0.4;
   static const maxPickupShieldVolume = 0.5;
   static const maxPickupMedkitVolume = 0.5;
+  static const maxPickupBombVolume = 0.4;
 
   static const localhost = 'http://localhost:$PORT';
   static const localbox = 'http://192.168.1.7:$PORT';

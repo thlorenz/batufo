@@ -49,16 +49,20 @@
 - [url](https://opengameart.org/content/50-cc0-sci-fi-sfx)
 - CC0
 
-## audio/pickup-shield.wav
-
-- [url](https://opengameart.org/content/8-bit-sound-effect-pack-vol-001)
-- CC0
-
 ## audio/pickup-medkit.wav
 
 - [url](https://opengameart.org/content/sfx-the-ultimate-2017-16-bit-mini-pack)
 - CC0
 
+## audio/pickup-shield.wav
+
+- [url](https://opengameart.org/content/8-bit-sound-effect-pack-vol-001)
+- CC0
+
+## audio/pickup-bomb.wav
+
+- [url](https://opengameart.org/content/8-bit-sound-effect-pack-vol-001)
+- CC0
 ## audio/bomb-exploding.wav
 
 - [url](https://opengameart.org/content/sfx-the-ultimate-2017-16-bit-mini-pack)

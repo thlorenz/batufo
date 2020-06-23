@@ -9,13 +9,16 @@ import 'package:flutter/foundation.dart';
 const int VELOCITY_FACTOR = 1000;
 
 class PlayerModel {
-  // State (transmitted)
+  // Transmitted State
   int id;
   TilePosition tilePosition;
   Offset velocity;
   double angle;
   double health;
   double shieldRemainingMs;
+
+  // Local State
+  int nbombs;
 
   // Events
   bool appliedThrust;
@@ -31,25 +34,30 @@ class PlayerModel {
     bool appliedThrust,
     bool shotBullet,
     bool spawnedBomb,
+    int nbombs,
   })  : angle = angle ?? 0.0,
         velocity = velocity ?? Offset.zero,
         appliedThrust = appliedThrust ?? false,
         shotBullet = shotBullet ?? false,
         spawnedBomb = spawnedBomb ?? false,
-        shieldRemainingMs = shieldRemainingMs ?? 0.0;
+        shieldRemainingMs = shieldRemainingMs ?? 0.0,
+        nbombs = nbombs ?? 0;
 
   bool get hasShield => shieldRemainingMs > 0.0;
+  bool get hasBomb => nbombs > 0;
 
   factory PlayerModel.forInitialPosition(
     int clientID,
     TilePosition tp,
     double initialHealth,
+    int nbombs,
   ) {
     return PlayerModel(
       id: clientID,
       health: initialHealth,
       velocity: Offset.zero,
       tilePosition: tp,
+      nbombs: nbombs,
       angle: 0,
       shieldRemainingMs: 0.0,
     );
@@ -102,6 +110,7 @@ class PlayerModel {
      health: $health
      appliedThrust: $appliedThrust
      shieldRemainingMs: $shieldRemainingMs
+     nbombs: $nbombs
    }''';
   }
 }

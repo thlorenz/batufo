@@ -69,14 +69,22 @@ class _Assets {
     rows: 1,
     cols: 1,
   );
+  final ImageAsset circleRed = ImageAsset(
+    'assets/images/sprites/circle.red.png',
+    186,
+    186,
+    rows: 1,
+    cols: 1,
+  );
 
   final AudioAsset audioThrust = AudioAsset('audio/thrust.wav');
   final AudioAsset audioBullet = AudioAsset('audio/bullet.wav');
   final AudioAsset audioBulletExploded =
       AudioAsset('audio/bullet-exploded.wav');
   final AudioAsset audioPlayerHitWall = AudioAsset('audio/player-hit-wall.wav');
-  final AudioAsset audioPickupShield = AudioAsset('audio/pickup-shield.wav');
   final AudioAsset audioPickupMedkit = AudioAsset('audio/pickup-medkit.wav');
+  final AudioAsset audioPickupShield = AudioAsset('audio/pickup-shield.wav');
+  final AudioAsset audioPickupBomb = AudioAsset('audio/pickup-bomb.wav');
   final AudioAsset audioBombExploding = AudioAsset('audio/bomb-exploding.wav');
 }
 
@@ -88,6 +96,7 @@ final Map<String, AudioAsset> audioAssets = {
   'bullet-exploded': assets.audioBulletExploded,
   'bomb-exploding': assets.audioBombExploding,
   'player-hit-wall': assets.audioPlayerHitWall,
-  'pickup-shield': assets.audioPickupShield,
   'pickup-medkit': assets.audioPickupMedkit,
+  'pickup-shield': assets.audioPickupShield,
+  'pickup-bomb': assets.audioPickupBomb,
 };

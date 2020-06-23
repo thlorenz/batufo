@@ -5,6 +5,7 @@ import 'package:batufo/rpc/generated/message_bus.pb.dart'
 enum PickupType {
   Medkit,
   Shield,
+  Bomb,
 }
 
 PickupType unpackPickupType(PackedPickupType data) {

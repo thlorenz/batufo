@@ -6,13 +6,12 @@ class GameGestures {
   double _rotation;
   double _thrust;
   bool _fire;
-  bool _spawnBomb;
-  // TODO(bomb): add Down to plant bomb
+  bool _spawnedBomb;
   GameGestures._()
       : _rotation = 0.0,
         _thrust = 0.0,
         _fire = false,
-        _spawnBomb = false;
+        _spawnedBomb = false;
 
   void onPanUpdate(DragUpdateDetails details) {
     final delta = details.delta;
@@ -20,6 +19,8 @@ class GameGestures {
       _addRotation(delta.dx);
     } else if (delta.dy < -GameProps.gesturePlayerMinThrustDelta) {
       _addThrust(delta.dy);
+    } else if (delta.dy > GameProps.gesturePlayerMinSpawnBombDelta) {
+      _spawnBomb();
     }
   }
 
@@ -38,17 +39,21 @@ class GameGestures {
     _thrust += -dy;
   }
 
+  void _spawnBomb() {
+    _spawnedBomb = true;
+  }
+
   AggregatedGestures get aggregatedGestures {
     final gestures = AggregatedGestures(
       rotation: _rotation,
       thrust: _thrust,
       fire: _fire,
-      spawnBomb: _spawnBomb,
+      spawnBomb: _spawnedBomb,
     );
     _rotation = 0.0;
     _thrust = 0.0;
     _fire = false;
-    _spawnBomb = false;
+    _spawnedBomb = false;
     return gestures;
   }
 }

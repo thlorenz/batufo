@@ -1,5 +1,6 @@
 import 'package:batufo/states/stats_state.dart';
 import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/hud/bombs_widget.dart';
 import 'package:batufo/widgets/hud/exit_game_widget.dart';
 import 'package:batufo/widgets/hud/health_widget.dart';
 import 'package:batufo/widgets/hud/players_alive_widget.dart';
@@ -34,6 +35,10 @@ class HudWidget extends StatelessWidget {
                 children: <Widget>[
                   ScoreWidget(
                     score: stats.score,
+                    screenWidthPercent: 0.1,
+                  ),
+                  BombsWidget(
+                    nbombs: stats.nbombs,
                     screenWidthPercent: 0.1,
                   ),
                   HealthWidget(health: stats.health),

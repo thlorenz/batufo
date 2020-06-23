@@ -43,6 +43,10 @@ class PickupsController {
         player.shieldRemainingMs = shieldDurationSeconds;
         soundController.playerPickedUpShield(pickup.tilePosition);
         break;
+      case PickupType.Bomb:
+        player.nbombs++;
+        soundController.playerPickedUpBomb(pickup.tilePosition);
+        break;
       default:
         throw Exception('Unknown pickup type ${pickup.type}');
     }
