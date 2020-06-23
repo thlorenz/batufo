@@ -42,6 +42,14 @@ export class Arena {
           case Tile.Player:
             initialPlayers.push(new TilePosition(col, row, center, center))
             break
+          case Tile.Medkit:
+            pickups.push(
+              new Pickup(
+                PickupType.Medkit,
+                new TilePosition(col, row, center, center)
+              )
+            )
+            break
           case Tile.Shield:
             pickups.push(
               new Pickup(
@@ -50,10 +58,10 @@ export class Arena {
               )
             )
             break
-          case Tile.Medkit:
+          case Tile.Bomb:
             pickups.push(
               new Pickup(
-                PickupType.Medkit,
+                PickupType.Bomb,
                 new TilePosition(col, row, center, center)
               )
             )

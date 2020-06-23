@@ -4517,7 +4517,8 @@ proto.Platform = {
  */
 proto.PackedPickupType = {
   MEDKIT: 0,
-  SHIELD: 1
+  SHIELD: 1,
+  BOMB: 2
 };
 
 goog.object.extend(exports, proto);

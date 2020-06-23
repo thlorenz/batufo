@@ -588,6 +588,7 @@ export const Platform: PlatformMap;
 export interface PackedPickupTypeMap {
   MEDKIT: 0;
   SHIELD: 1;
+  BOMB: 2;
 }
 
 export const PackedPickupType: PackedPickupTypeMap;

@@ -9,11 +9,12 @@ export enum Tile {
   /* 4 */ Player,
   /* 5 */ Medkit,
   /* 6 */ Shield,
+  /* 7 */ Bomb,
 }
 
 export const EMPTY = ' '
 
-export const TileKeys = [EMPTY, 'x', 'p', '=', 's', '+'] as const
+export const TileKeys = [EMPTY, 'x', 'p', '=', '+', 's', 'b'] as const
 export type TileKey = typeof TileKeys[number]
 
 const charToTile: Map<TileKey, Tile> = new Map([
@@ -21,8 +22,9 @@ const charToTile: Map<TileKey, Tile> = new Map([
   ['x', Tile.Hole],
   ['p', Tile.Player],
   ['=', Tile.Wall],
-  ['s', Tile.Shield],
   ['+', Tile.Medkit],
+  ['s', Tile.Shield],
+  ['b', Tile.Bomb],
 ])
 
 function tileFromChar(char: TileKey) {
@@ -99,6 +101,7 @@ export class Tilemap {
       case Tile.Player:
       case Tile.Shield:
       case Tile.Medkit:
+      case Tile.Bomb:
         return true
       default:
         throw new UnreachableCaseError(tile)

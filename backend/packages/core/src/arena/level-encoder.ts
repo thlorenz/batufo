@@ -9,8 +9,9 @@ const tileToHex: Map<LevelTile, number> = new Map([
   ['x', 0x2],
   ['p', 0x3],
   ['=', 0x4],
-  ['+', 0x6],
-  ['s', 0x5],
+  ['+', 0x5],
+  ['s', 0x6],
+  ['b', 0x7],
 ])
 
 // @ts-ignore
@@ -105,7 +106,7 @@ export class LevelEncoder {
   }
 }
 
-/* Testing
+/*
 const terrain: string = `=======================
 =         p           =
 =                     =
@@ -114,7 +115,7 @@ const terrain: string = `=======================
     =   s =  =        =
     =     ====        =
 =====                 ====
-=   +   p       p        =
+=   +   p  b    p        =
 =                     ====
 =======================
 `

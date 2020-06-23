@@ -71,6 +71,7 @@ message GameCreated {
 enum PackedPickupType {
   Medkit = 0;
   Shield = 1;
+  Bomb = 2;
 }
 
 message PackedPickup {

@@ -9,6 +9,7 @@ import {
 export enum PickupType {
   Medkit,
   Shield,
+  Bomb,
 }
 
 function unpackPickupType(
