@@ -13,6 +13,8 @@ function charForPaint(paintType: PaintType) {
       return 'p'
     case 'shield':
       return 's'
+    case 'bomb':
+      return 'b'
     case 'medkit':
       return '+'
     case 'empty':

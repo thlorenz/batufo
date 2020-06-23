@@ -5,12 +5,14 @@ const wallImageURL = require('../assets/wall-metal.png')
 const cursorWallURL = require('../assets/cursor.wall-metal.png')
 const playerImageURL = require('../assets/player.png')
 const shieldImageURL = require('../assets/shield.png')
+const bombImageURL = require('../assets/bomb.png')
 const medkitImageURL = require('../assets/medkit.png')
 const emptyImageURL = require('../assets/empty.png')
 const cursorPlayerURL = require('../assets/cursor.player.png')
 const cursorTrashURL = require('../assets/cursor.trash.png')
 const cursorArrowURL = require('../assets/cursor.arrow.png')
 const cursorShieldURL = require('../assets/cursor.shield.png')
+const cursorBombURL = require('../assets/cursor.bomb.png')
 const cursorMedkitURL = require('../assets/cursor.medkit.png')
 const cursorEmptyURL = require('../assets/cursor.empty.png')
 
@@ -31,10 +33,12 @@ export class Images {
         { img: 'cursor:wall', url: cursorWallURL },
         { img: 'player', url: playerImageURL },
         { img: 'shield', url: shieldImageURL },
+        { img: 'bomb', url: bombImageURL },
         { img: 'medkit', url: medkitImageURL },
         { img: 'empty', url: emptyImageURL },
         { img: 'cursor:player', url: cursorPlayerURL },
         { img: 'cursor:shield', url: cursorShieldURL },
+        { img: 'cursor:bomb', url: cursorBombURL },
         { img: 'cursor:medkit', url: cursorMedkitURL },
         { img: 'cursor:trash', url: cursorTrashURL },
         { img: 'cursor:arrow', url: cursorArrowURL },
@@ -53,6 +57,8 @@ export class Images {
         return this.getImage('cursor:player')
       case 'shield':
         return this.getImage('cursor:shield')
+      case 'bomb':
+        return this.getImage('cursor:bomb')
       case 'medkit':
         return this.getImage('cursor:medkit')
       case 'erase':
@@ -67,7 +73,7 @@ export class Images {
   cursorForPaintType(paintType: PaintType) {
     if (paintType == 'none') return 'auto'
     const icon = this.iconForPaintType(paintType)
-    return icon == null ? 'auto' :  `url('${icon.currentSrc}') 15 15, auto`
+    return icon == null ? 'auto' : `url('${icon.currentSrc}') 15 15, auto`
   }
 
   _load(img: string, url: string) {

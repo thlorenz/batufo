@@ -35,6 +35,7 @@ export class Level extends EventEmitter {
   private readonly _floors: Floors
   private readonly _players: PositionedSprites
   private readonly _shields: PositionedSprites
+  private readonly _bombs: PositionedSprites
   private readonly _medkits: PositionedSprites
   private readonly _empties: PositionedSprites
 
@@ -46,6 +47,7 @@ export class Level extends EventEmitter {
     this._floors = new Floors()
     this._players = new PositionedSprites(images.getImage('player'))
     this._shields = new PositionedSprites(images.getImage('shield'))
+    this._bombs = new PositionedSprites(images.getImage('bomb'))
     this._medkits = new PositionedSprites(images.getImage('medkit'))
   }
 
@@ -82,12 +84,14 @@ export class Level extends EventEmitter {
     this.arena = arena
 
     const shields = pickupPositionsForType(arena.pickups, PickupType.Shield);
+    const bombs = pickupPositionsForType(arena.pickups, PickupType.Bomb);
     const medkits = pickupPositionsForType(arena.pickups, PickupType.Medkit);
 
     this._walls.update(arena.walls, arena.tileSize)
     this._floors.update(arena.floorTiles, arena.tileSize)
     this._players.update(arena.players, arena.tileSize)
     this._shields.update(shields, arena.tileSize)
+    this._bombs.update(bombs, arena.tileSize)
     this._medkits.update(medkits, arena.tileSize)
 
     const emptyTiles = this._determineEmptyTiles(arena)
@@ -120,6 +124,7 @@ export class Level extends EventEmitter {
     this._floors.render(this.canvas)
     this._players.render(this.canvas)
     this._shields.render(this.canvas)
+    this._bombs.render(this.canvas)
     this._medkits.render(this.canvas)
     this._grid.render(
       this.canvas,

@@ -91,6 +91,7 @@ function PaintTypeSelectors({ app }: PaintTypeSelectorsProps) {
       <PaintTypeSelector app={app} paintType={'wall'} />
       <PaintTypeSelector app={app} paintType={'erase'} />
       <PaintTypeSelector app={app} paintType={'empty'} />
+      <PaintTypeSelector app={app} paintType={'bomb'} />
       <PaintTypeSelector app={app} paintType={'shield'} />
       <PaintTypeSelector app={app} paintType={'medkit'} />
       <PaintTypeSelector app={app} paintType={'player'} />

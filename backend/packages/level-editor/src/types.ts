@@ -3,6 +3,7 @@ export const PaintTypes = [
   'wall',
   'player',
   'shield',
+  'bomb',
   'medkit',
   'empty',
   'erase',

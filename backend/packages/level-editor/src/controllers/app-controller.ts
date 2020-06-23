@@ -170,6 +170,9 @@ export class AppController extends EventEmitter {
       case 'r':
         this.setPaintType('empty')
         break
+      case 'a':
+        this.setPaintType('bomb')
+        break
       case 's':
         this.setPaintType('shield')
         break
