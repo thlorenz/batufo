@@ -19,27 +19,27 @@ export default Level.fromLevelString(
                 =       =
         =========       =========
        =                         =
-      =                           =
+      =                       b   =
       =                           =
       =                           =====xxxxxxxxxxxxxxx=======
       =            ===                 =xxxxxxxxxxxxx=      =
       =         ===xxx===               =xxxxxxxxxxx=    s  =
       =        =xxxxxxxxx=               =xxxxxxxxx=        =
       =       =xxxxxxxxxxx=       ===     =xxxxxxx=         =
-      =       =xxxxxxxxxxx=       =xx=     =xxxxx=          =
+      =       =xxxxxxxxxxx=       =xx=     =xxxxx=       b  =
       =       =xxxxxxxxxxx=       =xxx=     =====    +      =
       =      =xxxxxxxxxxxxx=      =xxxx=                    =
       =      =xxxxxxxxxxxxx=      =xxxxx=                s  =
       =      =xxxxxxxxxxxxx=      =xxxx=                    =
       =       =xxxxxxxxxxx=       =xxx=     =====    +      =
-      =       =xxxxxxxxxxx=       =xx=     =xxxxx=          =
+      =       =xxxxxxxxxxx=       =xx=     =xxxxx=       b  =
       =       =xxxxxxxxxxx=       ===     =xxxxxxx=         =
       =        =xxxxxxxxx=               =xxxxxxxxx=        =
       =         ===xxx===               =xxxxxxxxxxx=    s  =
       =            ===                 =xxxxxxxxxxxxx=      =
       =                           =====xxxxxxxxxxxxxxx=======
       =                           =
-      =                           =
+      =   b                       =
        =                         =
         =========       =========
                 =       =

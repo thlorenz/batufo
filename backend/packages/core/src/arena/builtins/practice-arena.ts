@@ -12,10 +12,10 @@ export default Level.fromLevelString(
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
 =                   =xxxxxxxx=========xxxxxxx=                  =
-=                   ==========     + =xxxxxxx=                  =
+=                   ========== b   + =xxxxxxx=                  =
 =                                    =xxxxxxx=                  =
 =                                    =xxxxxxx=                  =
-=                   ==========     + =xxxxxxx=                  =
+=                   ========== b   + =xxxxxxx=                  =
 =                   =xxxxxxxx=========xxxxxxx=                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
