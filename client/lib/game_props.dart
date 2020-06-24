@@ -33,11 +33,11 @@ class ParallaxProps {
 
   factory ParallaxProps.forWeb() {
     return ParallaxProps(
-        starsBackDensity: 2,
-        starsMiddleDensity: 1,
-        starsFrontDensity: 1,
-        planetsBackDensity: 1,
-        planetsFrontDensity: 0);
+        starsBackDensity: 16,
+        starsMiddleDensity: 4,
+        starsFrontDensity: 2,
+        planetsBackDensity: 6,
+        planetsFrontDensity: 1);
   }
 
   factory ParallaxProps.forPlatForm(PlatformType platform) {
