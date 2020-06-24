@@ -2,6 +2,7 @@ import 'package:batufo/engine/game_widget.dart';
 import 'package:batufo/game/client_game.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/components/icon_widget.dart';
 import 'package:batufo/widgets/hud/hud_widget.dart';
 import 'package:batufo/widgets/hud/score_widget.dart';
 import 'package:flutter/material.dart';
@@ -60,15 +61,23 @@ class GameOverWidget extends StatelessWidget {
       : super();
 
   Widget build(BuildContext context) {
+    final lostIcon = IconWidget(icon: 'loudly-crying-face', size: 28);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          '😭 You Lost 😭',
-          style: TextStyle(
-            color: Colors.redAccent,
-            fontSize: 18,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            lostIcon,
+            Text(
+              '  You Lost  ',
+              style: TextStyle(
+                color: Colors.redAccent,
+                fontSize: 18,
+              ),
+            ),
+            lostIcon,
+          ],
         ),
         ScoreWidget(
           score: score,
@@ -93,15 +102,23 @@ class GameWonWidget extends StatelessWidget {
   const GameWonWidget({@required this.universe, @required this.score})
       : super();
   Widget build(BuildContext context) {
+    final wonIcon = IconWidget(icon: 'party', size: 28);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          '🎉 You Won 🎉',
-          style: TextStyle(
-            color: Colors.greenAccent,
-            fontSize: 18,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            wonIcon,
+            Text(
+              '  You Won  ',
+              style: TextStyle(
+                color: Colors.greenAccent,
+                fontSize: 18,
+              ),
+            ),
+            wonIcon,
+          ],
         ),
         ScoreWidget(
           score: score,

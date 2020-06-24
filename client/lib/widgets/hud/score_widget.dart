@@ -21,7 +21,7 @@ class ScoreWidget extends StatelessWidget {
       ),
       labelWidget: IconWidget(
         icon: 'trophy',
-        size: 16.0,
+        size: 20.0,
       ),
       labelFontSize: fontSize,
     );
