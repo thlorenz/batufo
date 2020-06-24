@@ -4,6 +4,7 @@ import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/images.dart';
 import 'package:batufo/game/assets/assets.dart';
 import 'package:batufo/game/sound/sound.dart';
+import 'package:batufo/generated_batufo_version.dart';
 import 'package:batufo/setup/config.dart';
 import 'package:batufo/universe.dart';
 import 'package:batufo/widgets/screens/router.dart';
@@ -20,6 +21,8 @@ Future<void> mainEntry({
   Log.activateConsole();
   Log.rootLevel = logLevel;
   Log.loggerFilter = (String s) => !s.contains('socket_io');
+
+  _log.info('batufo version $BATUFO_VERSION');
 
   await Images.instance.load([
     assets.floorTiles.imagePath,
