@@ -38,4 +38,5 @@ flutter:
     - assets/images/bg/
     - assets/images/sprites/
     - assets/images/static/
+    - assets/images/icons/
     - assets/audio/

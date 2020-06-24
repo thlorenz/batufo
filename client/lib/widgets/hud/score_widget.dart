@@ -1,3 +1,4 @@
+import 'package:batufo/widgets/components/icon_widget.dart';
 import 'package:batufo/widgets/hud/labeled_scalar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,10 @@ class ScoreWidget extends StatelessWidget {
         '$score',
         style: TextStyle(color: Colors.greenAccent, fontSize: fontSize),
       ),
-      label: '🏆',
+      labelWidget: IconWidget(
+        icon: 'trophy',
+        size: 16.0,
+      ),
       labelFontSize: fontSize,
     );
   }

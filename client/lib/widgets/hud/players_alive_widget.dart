@@ -1,3 +1,4 @@
+import 'package:batufo/widgets/components/icon_widget.dart';
 import 'package:batufo/widgets/hud/labeled_scalar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class PlayersAliveWidget extends StatelessWidget {
         '$playersAlive/$totalPlayers',
         style: TextStyle(color: Colors.amber, fontSize: 10),
       ),
-      label: '🎮',
+      labelWidget: IconWidget(icon: 'game-pad', size: 16),
     );
   }
 }

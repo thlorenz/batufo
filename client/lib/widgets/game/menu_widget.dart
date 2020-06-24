@@ -2,6 +2,7 @@ import 'package:batufo/rpc/server_stats.dart';
 import 'package:batufo/setup/user_settings.dart';
 import 'package:batufo/states/user_state.dart';
 import 'package:batufo/universe.dart';
+import 'package:batufo/widgets/components/text_icon_widget.dart';
 import 'package:batufo/widgets/game/level_widget.dart';
 import 'package:batufo/widgets/screens/router.dart';
 import 'package:batufo/widgets/styles.dart';
@@ -32,9 +33,13 @@ class TotalStatsWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('🎲  $totalGames', style: totalsStyle),
+            TextIconWidget(
+                iconName: 'dice', posttext: '$totalGames', style: totalsStyle),
             Text(appTitle, style: headerStyle),
-            Text('$totalPlayers  🎮', style: totalsStyle),
+            TextIconWidget(
+                pretext: '$totalPlayers',
+                iconName: 'game-pad',
+                style: totalsStyle),
           ],
         ),
       ),

@@ -28,7 +28,7 @@ class BombsWidget extends StatelessWidget {
           quarterTurns: 2,
           child: Image.asset(
             assets.bomb.imagePath,
-            width: 20.0,
+            width: 18.0,
           ),
         ),
       ),

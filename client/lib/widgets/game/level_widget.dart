@@ -1,4 +1,5 @@
 import 'package:batufo/states/user_state.dart';
+import 'package:batufo/widgets/components/text_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -45,11 +46,19 @@ class LevelWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                 ),
-                Text('$playersWaiting 🚀 ${level.nplayers}',
+                Center(
+                  child: TextIconWidget(
+                    pretext: '$playersWaiting',
+                    iconName: 'rocket',
+                    posttext: '${level.nplayers}',
+                    iconSize: 40,
                     style: TextStyle(
                       fontSize: 28,
                       color: textColor,
-                    )),
+                    ),
+                    itemsAlignment: MainAxisAlignment.center,
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                 ),
