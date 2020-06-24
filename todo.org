@@ -4,37 +4,28 @@
 
 Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #TypeScript
 
-- show off level editor
-- explain encoder/decoder of level content
+** Next Twitch Stream
+
+- show bombs and effect
+- explain how camera is used to simulate explosion
 - create level using editor
-
-* Fixes
-
-- [X] dispose picture when creating a new one
-- [X] alternatively test perf improvements when storing and ~Image~ vs. a ~Picture~ - do for stars only first [[https://github.com/flutter/flutter/issues/41731][related issue]]
 
 * Server Side
 
 
 * Client Side
 
+** Different Weapons
+
+- [X] plant mines (bombs) in path
+- [ ] if you have no special weapon shoot normal bullets
+- [ ] possibly switch via back arrow | 's' | draw back
+- [ ] volleys (shots that spread out) (slow to recharge)
+- [ ] laser beam that reflects of walls (slow to recharge)
+
 ** Pickups
 
 We wanna add some pickups back in. Most importantly are health packets, but some diamonds to up the score would be nice as well.
-
-*** Health
-
-- [ ] add health packets to level
-- [X] detect colission with health packets
-- [X] up players health after colission
-- [X] remove health packet on colission
-
-*** Shields and Armor
-
-- [X] pickup one type of shield in order to be protected from bullets
-- [X] player needs to be rendered slightly diffently render a circle around it similarly as we do with health but larger radius
-- [X] shields last only a certain amount of time and decreases when hit by bullet
-- [X] when shield is active player receives no damage from bullets
 
 *** Bullets
 
@@ -47,6 +38,20 @@ We wanna add some pickups back in. Most importantly are health packets, but some
 - [ ] detect colission + remove like with health packets
 - [ ] increase score on colission
 - [ ] show score animation as was present in single player version
+
+*** DONE Health
+
+- [X] add health packets to level
+- [X] detect colission with health packets
+- [X] up players health after colission
+- [X] remove health packet on colission
+
+*** DONE Shields and Armor
+
+- [X] pickup one type of shield in order to be protected from bullets
+- [X] player needs to be rendered slightly diffently render a circle around it similarly as we do with health but larger radius
+- [X] shields last only a certain amount of time and decreases when hit by bullet
+- [X] when shield is active player receives no damage from bullets
 
 ** Make Things Bigger
 
@@ -68,6 +73,31 @@ Another way is to make bullet packets appear randomly, i.e. not only the ones de
 
 ** Fixes
 
+*** [ ] Out of Game Bounds Problem
+
+When game is inactive for a while the ~dt~ is so large that the player position is calculated to be outside of the game boundaries.
+Since colission detection is simple it misses that player flew thru the wall.
+
+- fix 1: provide some ray-casting like feature to prevent flying thru walls
+- fix 2: detect if player is out of bounds and return him to the nearest in bounds tile
+
+Fix1 is some work but catches flying thru any kind of wall as well.
+Fix2 is very simple to implement (in minutes) but would theoretically allow players to jump across walls that are in bounds.
+
+*** Ghost in Single Player Game
+
+Sometimes two players are in the same spot when we start the single player level.
+Only one player is controlled by us, the other one just sits there and never dies.
+
+*** Bullets Getting Stuck
+
+I've seen that some bullets get stuck at times, i.e. they stick around and stop moving.
+So far this is only an issue in the browser, most likely due to the game loop not updating when the browser looses focus.
+
+When a player runs into those he takes damage.
+
+A quick fix could be to just collect all those bullets by checking the ones with velocity zero.
+
 *** Web Performance
 
 Performance in the browser is lacking since the five level parallax effect was introduced.
@@ -84,58 +114,15 @@ Improved by lowering density of stars + planets via parallax options for web.
 
 - [ ] limit size of game widget and thus of the canvas, see [[file:client/lib/engine/game_widget.dart::bool get sizedByParent => true;][sizing strategy]]
 
-*** Ghost in Single Player Game
-
-Sometimes two players are in the same spot when we start the single player level.
-Only one player is controlled by us, the other one just sits there and never dies.
-
-*** Bullets Getting Stuck
-
-I've seen that some bullets get stuck at times, i.e. they stick around and stop moving.
-So far this is only an issue in the browser, most likely due to the game loop not updating when the browser looses focus.
-
-When a player runs into those he takes damage.
-
-A quick fix could be to just collect all those bullets by checking the ones with velocity zero.
-
-*** [ ] Out of Game Bounds Problem
-
-When game is inactive for a while the ~dt~ is so large that the player position is calculated to be outside of the game boundaries.
-Since colission detection is simple it misses that player flew thru the wall.
-
-- fix 1: provide some ray-casting like feature to prevent flying thru walls
-- fix 2: detect if player is out of bounds and return him to the nearest in bounds tile
-
-Fix1 is some work but catches flying thru any kind of wall as well.
-Fix2 is very simple to implement (in minutes) but would theoretically allow players to jump across walls that are in bounds.
-
 * WAIT Nice to Have
-
-** WAIT Improve Perf by Recording Building Images
-
-Most front camera ~z100~ is a bit different than the other cameras.
-As a result recording images cuts off on the right when the device is narrow (like a phone).
-However if we can get this to work we can get CPU usage to ~15% vs 25% when we're not recording buildings.
-
-** WAIT Background Music
-
-So far [[https://www.youtube.com/watch?v=thCE35jUgA8&feature=youtu.be][this song]] was recommended, but license is unclear.
 
 ** WAIT Visual Cues
 
 - [ ] make any player who is almost dying blink
 
-** WAIT Game Features
+** WAIT Background Music
 
-*** WAIT Different Weapons
-
-- [ ] plant mines (bombs) in path
-- [ ] volleys (shots that spread out) (slow to recharge)
-- [ ] laser beam that reflects of walls (slow to recharge)
-- [ ] possibly switch via back arrow | 's' | draw back
-- [ ] other option is you pick up that weapon and then can use it once (different icons)
-- [ ] if you have no special weapon shoot normal bullets
-
+So far [[https://www.youtube.com/watch?v=thCE35jUgA8&feature=youtu.be][this song]] was recommended, but license is unclear.
 
 ** WAIT Devices and Fairness
 
@@ -173,6 +160,12 @@ Multiple tweaks to enhance playability.
 
 - [X] assuming we show time to shoot in hud experiment with increasing it in order to avoid players just shooting randomly all over the place
 
+
+** DONE Improve Perf by Recording Building Images
+
+Most front camera ~z100~ is a bit different than the other cameras.
+As a result recording images cuts off on the right when the device is narrow (like a phone).
+However if we can get this to work we can get CPU usage to ~15% vs 25% when we're not recording buildings.
 
 * DONE Client Side
 
@@ -554,12 +547,10 @@ CLOCK: [2020-05-20 Wed 19:51]--[2020-05-20 Wed 20:11] =>  0:20
 No longer necessary since we figured out how to work around the dart socket.io lib treating all incoming messages as JSON.
 This allows us to use proto definitions and smaller /albeit not ideal/ payloads (due to the workaround).
   
-- [X] ensure this works
-- [ ] declare TypeScript payload types only for play request for now
-- [ ] determine small format to send, most likely flat arrays
-  
-  
+*** DONE Fixes Picture Recording
 
+- [X] dispose picture when creating a new one
+- [X] alternatively test perf improvements when storing and ~Image~ vs. a ~Picture~ - do for stars only first [[https://github.com/flutter/flutter/issues/41731][related issue]]
 
 * Resources
 
