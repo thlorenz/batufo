@@ -81,6 +81,10 @@ class SoundController {
         _volumeForPosition(playerPosition, GameProps.maxPickupBombVolume);
   }
 
+  void playerSwitchedWeapon() {
+    _soundModel.playerSwitchedWeapon = true;
+  }
+
   void processSounds() {
     if (_soundModel.playerFiredBullet)
       _sound.playBullet(_soundModel.playerFiredBulletVolume);
@@ -98,6 +102,7 @@ class SoundController {
       _sound.playPickupShield(_soundModel.playerPickedUpShieldVolume);
     if (_soundModel.playerPickedUpBomb)
       _sound.playPickupBomb(_soundModel.playerPickedUpBombVolume);
+    if (_soundModel.playerSwitchedWeapon) _sound.playSwitchWeapon();
     _soundModel.clear();
   }
 

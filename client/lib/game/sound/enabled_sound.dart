@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:batufo/engine/audio.dart';
 import 'package:batufo/game/assets/audio_asset.dart';
 import 'package:batufo/game/sound/sound.dart';
+import 'package:batufo/game_props.dart';
 
 class EnabledSound implements Sound {
   final Audio _audio;
@@ -68,6 +69,13 @@ class EnabledSound implements Sound {
     return _audio.playSound(
       _audioAssets['pickup-medkit'].audioPath,
       volume: volume,
+    );
+  }
+
+  Future<AudioPlayer> playSwitchWeapon() {
+    return _audio.playSound(
+      _audioAssets['switch-weapon'].audioPath,
+      volume: GameProps.switchWeaponVolume,
     );
   }
 

@@ -131,6 +131,7 @@ class GameProps {
   static const maxPickupShieldVolume = 0.5;
   static const maxPickupMedkitVolume = 0.5;
   static const maxPickupBombVolume = 0.4;
+  static const switchWeaponVolume = 0.9;
 
   static const localhost = 'http://localhost:$PORT';
   static const localbox = 'http://192.168.1.7:$PORT';

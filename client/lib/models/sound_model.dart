@@ -10,6 +10,7 @@ class SoundModel {
   double playerPickedUpMedkitVolume;
   double playerPickedUpShieldVolume;
   double playerPickedUpBombVolume;
+  bool playerSwitchedWeapon = false;
 
   SoundModel() {
     clear();
@@ -33,5 +34,6 @@ class SoundModel {
     playerPickedUpShieldVolume = null;
     playerPickedUpMedkitVolume = null;
     playerPickedUpBombVolume = null;
+    playerSwitchedWeapon = false;
   }
 }

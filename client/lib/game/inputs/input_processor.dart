@@ -100,7 +100,7 @@ class InputProcessor {
     // switch weapon
     if (canSwitchWeapon) {
       if (keys.contains(GameKey.Down) || gestures.switchWeapon) {
-        // _soundController.switchedWeapon()
+        soundController.playerSwitchedWeapon();
         player.currentWeapon = nextWeapon(player.currentWeapon);
         timeSinceSwitchWeapon = 0.0;
       }
