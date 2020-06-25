@@ -4,6 +4,7 @@ import 'package:batufo/models/bomb_model.dart';
 import 'package:batufo/models/bullet_model.dart';
 import 'package:batufo/models/pickups_model.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/models/radar_model.dart';
 import 'package:flutter/foundation.dart';
 
 final _log = Log<ClientGameState>();
@@ -15,6 +16,7 @@ class ClientGameState {
   final List<BulletModel> bullets;
   final List<BombModel> bombs;
   final PickupsModel pickups;
+  final RadarModel radar;
 
   bool synced = false;
 
@@ -25,6 +27,7 @@ class ClientGameState {
     @required this.pickups,
     @required this.bullets,
     @required this.bombs,
+    @required this.radar,
   });
 
   PlayerModel get hero => players[clientID];

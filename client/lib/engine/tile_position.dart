@@ -17,8 +17,10 @@ class TilePosition {
 
   bool isSameTileAs(TilePosition other) => other.col == col && other.row == row;
 
-  WorldPosition toWorldPosition() => WorldPosition.fromTilePosition(this);
-  Offset toWorldOffset() => toWorldPosition().toOffset();
+  WorldPosition toWorldPosition({double tileSize, bool center = false}) =>
+      WorldPosition.fromTilePosition(this, tileSize: tileSize);
+  Offset toWorldOffset({double tileSize, bool center = false}) =>
+      toWorldPosition(tileSize: tileSize, center: center).toOffset();
 
   TilePosition copyWith({
     int col,

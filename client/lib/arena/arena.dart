@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:batufo/arena/pickup.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart' show PackedArena;
@@ -12,6 +14,10 @@ class Arena {
   final int ncols;
   final int tileSize;
 
+  // Local properties
+  final List<Offset> buildingWorldOffsets;
+  final Size size;
+
   Arena({
     @required this.floorTiles,
     @required this.walls,
@@ -20,7 +26,11 @@ class Arena {
     @required this.nrows,
     @required this.ncols,
     @required this.tileSize,
-  });
+  })  : buildingWorldOffsets = List.from(walls
+            .map<Offset>((x) => x.toWorldOffset(tileSize: tileSize.toDouble())))
+          ..addAll(floorTiles.map<Offset>(
+              (x) => x.toWorldOffset(tileSize: tileSize.toDouble()))),
+        size = Size(ncols * tileSize.toDouble(), nrows * tileSize.toDouble());
 
   PackedArena pack() {
     final packedFloorTiles = floorTiles.map((x) => x.pack());

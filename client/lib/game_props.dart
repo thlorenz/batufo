@@ -1,3 +1,5 @@
+import 'dart:math' show pi;
+
 import 'package:batufo/setup/config.dart';
 import 'package:flutter/foundation.dart';
 
@@ -132,6 +134,9 @@ class GameProps {
   static const maxPickupMedkitVolume = 0.5;
   static const maxPickupBombVolume = 0.4;
   static const switchWeaponVolume = 0.9;
+
+  static const radarDeltaAngle = pi / 5;
+  static const radarMaxLength = 1500.0;
 
   static const localhost = 'http://localhost:$PORT';
   static const localbox = 'http://192.168.1.7:$PORT';

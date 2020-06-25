@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:batufo/arena/arena.dart';
 import 'package:batufo/arena/pickup.dart';
@@ -8,6 +9,7 @@ import 'package:batufo/controllers/helpers/bullets_spawner.dart';
 import 'package:batufo/controllers/helpers/colliders.dart';
 import 'package:batufo/controllers/helpers/pickups_controller.dart';
 import 'package:batufo/controllers/player_controller.dart';
+import 'package:batufo/controllers/radar_controller.dart';
 import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
@@ -27,6 +29,7 @@ class GameController {
   final SoundController soundController;
   final ClientGameState _gameState;
   final Arena _arena;
+  final RadarController _radarController;
 
   PlayerController _playerController;
   BulletsController _bulletsController;
@@ -40,10 +43,11 @@ class GameController {
     this.onPickedUp,
     this.clientID,
     this.soundController,
-  ) : _bulletsSpawner = BulletsSpawner(
+  )   : _bulletsSpawner = BulletsSpawner(
           bulletForce: GameProps.bulletForce,
           playerSize: GameProps.playerSizeFactor * _arena.tileSize,
-        ) {
+        ),
+        _radarController = RadarController(radar: _gameState.radar) {
     final playerSize = GameProps.playerSizeFactor * _arena.tileSize;
     final colliders = Colliders(
       _arena.nrows,
@@ -93,8 +97,14 @@ class GameController {
 
   ClientGameState get gameState => _gameState;
 
+  void resize(Size size) {}
+
   ClientGameState update(double dt, double ts) {
     final players = _gameState.players;
+    final enemyWorldOffsets = players.values
+        .where((x) => x.id != clientID)
+        .map((x) => x.tilePosition.toWorldOffset(center: true));
+
     _log.finest('game loop ${players.length} players');
     for (final player in players.values) {
       _playerController.update(dt, player, player.id == clientID);
@@ -103,6 +113,12 @@ class GameController {
     _bulletsController.update(dt, _gameState.players.values);
     _pickupsController.update(_gameState.hero);
     _bombsController.update(dt, _gameState.hero);
+    _radarController.update(
+      dt,
+      _gameState.hero,
+      _arena.buildingWorldOffsets,
+      enemyWorldOffsets,
+    );
 
     return _gameState;
   }

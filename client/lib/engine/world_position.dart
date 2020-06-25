@@ -10,11 +10,19 @@ class WorldPosition {
 
   const WorldPosition(this.x, this.y);
 
-  static WorldPosition fromTilePosition(TilePosition tp) {
+  static WorldPosition fromTilePosition(
+    TilePosition tp, {
+    double tileSize,
+    bool center = false,
+  }) {
+    tileSize = tileSize ?? WorldPosition.tileSize;
+    final halfTileSize = tileSize / 2.0;
     assert(tileSize != null, 'init tileSize first');
     final t = tileSize;
-    final x = t * tp.col + tp.relX;
-    final y = t * tp.row + tp.relY;
+    final relX = center ? halfTileSize : tp.relX;
+    final relY = center ? halfTileSize : tp.relY;
+    final x = t * tp.col + relX;
+    final y = t * tp.row + relY;
     return WorldPosition(x, y);
   }
 

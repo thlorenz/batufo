@@ -18,6 +18,7 @@ import 'package:batufo/game/entities/grid.dart';
 import 'package:batufo/game/entities/pickups.dart';
 import 'package:batufo/game/entities/planets.dart';
 import 'package:batufo/game/entities/player.dart';
+import 'package:batufo/game/entities/radar.dart';
 import 'package:batufo/game/entities/stars.dart';
 import 'package:batufo/game/inputs/gestures.dart';
 import 'package:batufo/game/inputs/input_processor.dart';
@@ -26,6 +27,7 @@ import 'package:batufo/game_props.dart';
 import 'package:batufo/models/client_game_state.dart';
 import 'package:batufo/models/pickups_model.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/models/radar_model.dart';
 import 'package:batufo/rpc/client_picked_up_update.dart';
 import 'package:batufo/rpc/client_player_update.dart';
 import 'package:batufo/rpc/client_spawned_bomb_update.dart';
@@ -67,6 +69,7 @@ class ClientGame extends Game {
   Bullets _bullets;
   Pickups _pickups;
   Bombs _bombs;
+  Radar _radar;
 
   Offset _z10Camera;
   Offset _z20Camera;
@@ -199,6 +202,7 @@ class ClientGame extends Game {
       soundController,
     );
     _pickups = Pickups(_gameController.gameState.pickups, arena.tileSize);
+    _radar = Radar(_gameController.gameState.radar);
   }
 
   ClientGameState get gameState => _gameController.gameState;
@@ -219,6 +223,10 @@ class ClientGame extends Game {
       GameProps.playerInitialBombs,
       GameProps.playerInitialBullets,
     );
+    final radarLength = min(
+      max(arena.size.width / 2, arena.size.height / 2),
+      GameProps.radarMaxLength,
+    );
     return ClientGameState(
       clientID: clientID,
       bullets: [],
@@ -226,6 +234,10 @@ class ClientGame extends Game {
       pickups: PickupsModel(arena.pickups),
       totalPlayers: arena.players.length,
       players: {clientID: hero},
+      radar: RadarModel(
+        deltaAngle: GameProps.radarDeltaAngle,
+        radarLength: radarLength,
+      ),
     );
   }
 
@@ -361,19 +373,27 @@ class ClientGame extends Game {
     }
   }
 
-  void _renderArena(Canvas canvas) {
-    canvas.translate(-_arenaCamera.dx, -_arenaCamera.dy);
-    _buildings.render(canvas, _arenaVisibleRect, _size);
+  void _renderGadgets(Canvas canvas) {
+    _radar.render(canvas, _z100VisibleRect);
+  }
 
-    _pickups.render(canvas, _z100VisibleRect);
-    _bombs.render(canvas, gameState.bombs);
-    for (final entry in gameState.players.entries) {
-      final player = _players[entry.key];
-      if (player == null) continue;
-      _players[entry.key]
-          .render(canvas, entry.value, entry.value.id == clientID);
+  void _renderArena(Canvas canvas) {
+    canvas.save();
+    {
+      canvas.translate(-_arenaCamera.dx, -_arenaCamera.dy);
+      _buildings.render(canvas, _arenaVisibleRect, _size);
+
+      _pickups.render(canvas, _z100VisibleRect);
+      _bombs.render(canvas, gameState.bombs);
+      for (final entry in gameState.players.entries) {
+        final player = _players[entry.key];
+        if (player == null) continue;
+        _players[entry.key]
+            .render(canvas, entry.value, entry.value.id == clientID);
+      }
+      _bullets.render(canvas, gameState.bullets);
     }
-    _bullets.render(canvas, gameState.bullets);
+    canvas.restore();
   }
 
   void _renderGrid(Canvas canvas) {
@@ -419,7 +439,9 @@ class ClientGame extends Game {
     _lowerLeftCanvas(canvas, _size.height);
 
     _renderBackdrop(canvas);
+
     _renderArena(canvas);
+    _renderGadgets(canvas);
 
     soundController.processSounds();
   }
@@ -449,6 +471,8 @@ class ClientGame extends Game {
     _planetsBack.resize(fullSize);
     _planetsFront.resize(fullSize);
     _buildings.resize(fullSize);
+
+    _gameController.resize(size);
   }
 
   void _cameraFollow(WorldPosition wp, double dt) {

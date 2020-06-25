@@ -56,6 +56,20 @@ class Triangle {
   }
 }
 
+class Circle {
+  final double cx;
+  final double cy;
+  final double radius;
+
+  Circle(this.cx, this.cy, this.radius);
+
+  bool contains(double x, double y) {
+    final dx = x - cx;
+    final dy = y - cy;
+    return dx * dx + dy * dy <= radius * radius;
+  }
+}
+
 /*
 void main() {
   final triangle = Triangle(0, 0, 10, 4, 8, 5);
