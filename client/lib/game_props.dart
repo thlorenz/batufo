@@ -73,6 +73,7 @@ class GameProps {
   static const playerSizeFactor = 0.75;
   static const playerTotalHealth = 100.0;
   static const playerInitialBombs = 3;
+  static const playerInitialBullets = 100;
 
   static const playerHitsWallHealthFactor = 30.0;
   static const bulletHitsPlayerHealthToll = playerTotalHealth / 20;
@@ -111,6 +112,7 @@ class GameProps {
   static const timeBetweenThrustsMs = 500.0;
   static const timeBetweenBulletsMs = 250.0;
   static const timeBetweenBombsMs = 1000.0;
+  static const timeBetweenActionssMs = 200.0;
 
   static const scoreOnHit = 100;
   static const scoreOnKill = 500;

@@ -32,6 +32,7 @@ class PlayerModel {
 
   // Local State
   int nbombs;
+  int nbullets;
   Weapon currentWeapon;
 
   // Events
@@ -50,6 +51,7 @@ class PlayerModel {
     bool shotBullet,
     bool spawnedBomb,
     int nbombs,
+    int nbullets,
   })  : angle = angle ?? 0.0,
         velocity = velocity ?? Offset.zero,
         appliedThrust = appliedThrust ?? false,
@@ -57,7 +59,8 @@ class PlayerModel {
         spawnedBomb = spawnedBomb ?? false,
         shieldRemainingMs = shieldRemainingMs ?? 0.0,
         currentWeapon = currentWeapon ?? Weapon.Bullet,
-        nbombs = nbombs ?? 0;
+        nbombs = nbombs ?? 0,
+        nbullets = nbullets ?? 0;
 
   bool get hasShield => shieldRemainingMs > 0.0;
   bool get hasBomb => nbombs > 0;
@@ -67,6 +70,7 @@ class PlayerModel {
     TilePosition tp,
     double initialHealth,
     int nbombs,
+    int nbullets,
   ) {
     return PlayerModel(
       id: clientID,
@@ -74,6 +78,7 @@ class PlayerModel {
       velocity: Offset.zero,
       tilePosition: tp,
       nbombs: nbombs,
+      nbullets: nbullets,
       angle: 0,
       shieldRemainingMs: 0.0,
     );
@@ -128,6 +133,7 @@ class PlayerModel {
      shieldRemainingMs: $shieldRemainingMs
      weapon: $currentWeapon
      nbombs: $nbombs
+     nbullets: $nbullets
    }''';
   }
 }

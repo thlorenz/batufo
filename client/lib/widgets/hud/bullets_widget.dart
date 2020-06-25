@@ -1,16 +1,14 @@
-import 'dart:math';
-
-import 'package:batufo/game/assets/assets.dart';
+import 'package:batufo/widgets/components/icon_widget.dart';
 import 'package:batufo/widgets/hud/labeled_scalar_widget.dart';
 import 'package:flutter/material.dart';
 
-class BombsWidget extends StatelessWidget {
-  final int nbombs;
+class BulletsWidget extends StatelessWidget {
+  final int nbullets;
   final bool isActive;
   final double fontSize;
   final double screenWidthPercent;
-  const BombsWidget({
-    @required this.nbombs,
+  const BulletsWidget({
+    @required this.nbullets,
     @required this.isActive,
     this.screenWidthPercent = 1.0,
     this.fontSize = 10,
@@ -21,7 +19,7 @@ class BombsWidget extends StatelessWidget {
     return LabeledScalarWidget(
       screenWidthPercent: screenWidthPercent,
       scalar: Text(
-        '$nbombs',
+        '$nbullets',
         style: TextStyle(color: Colors.greenAccent, fontSize: fontSize),
       ),
       labelWidget: Container(
@@ -30,17 +28,7 @@ class BombsWidget extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         padding: EdgeInsets.all(2.0),
-        child: Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationY(pi),
-          child: RotatedBox(
-            quarterTurns: 2,
-            child: Image.asset(
-              assets.bomb.imagePath,
-              width: 18.0,
-            ),
-          ),
-        ),
+        child: IconWidget(icon: 'gun', size: 18),
       ),
       labelFontSize: fontSize,
     );

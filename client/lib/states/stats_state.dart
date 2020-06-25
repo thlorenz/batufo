@@ -1,4 +1,5 @@
 import 'package:batufo/game_props.dart';
+import 'package:batufo/models/player_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
@@ -10,6 +11,8 @@ class StatsState extends Equatable {
   final int percentReadyToThrust;
   final int score;
   final int nbombs;
+  final int nbullets;
+  final Weapon weapon;
 
   const StatsState({
     @required this.health,
@@ -19,6 +22,8 @@ class StatsState extends Equatable {
     @required this.percentReadyToThrust,
     @required this.score,
     @required this.nbombs,
+    @required this.nbullets,
+    @required this.weapon,
   });
 
   StatsState copyWith({
@@ -29,6 +34,8 @@ class StatsState extends Equatable {
     int percentReadyToThrust,
     int score,
     int nbombs,
+    int nbullets,
+    Weapon weapon,
   }) {
     return StatsState(
       health: health ?? this.health,
@@ -38,11 +45,17 @@ class StatsState extends Equatable {
       percentReadyToThrust: percentReadyToThrust ?? this.percentReadyToThrust,
       score: score ?? this.score,
       nbombs: nbombs ?? this.nbombs,
+      nbullets: nbullets ?? this.nbullets,
+      weapon: weapon ?? this.weapon,
     );
   }
 
   String toString() {
-    return 'Stats [ $health, $playersAlive/$totalPlayers, $score, $percentReadyToShoot, $percentReadyToThrust, $nbombs ]';
+    return '''Stats [
+     $health, $playersAlive/$totalPlayers, $score,
+     $percentReadyToShoot, $percentReadyToThrust,
+     $nbombs, $nbullets, $weapon
+    ]''';
   }
 
   static StatsState initial(int totalPlayers) {
@@ -54,6 +67,8 @@ class StatsState extends Equatable {
       percentReadyToThrust: 100,
       score: 0,
       nbombs: 0,
+      nbullets: 0,
+      weapon: Weapon.Bullet,
     );
   }
 
@@ -65,6 +80,8 @@ class StatsState extends Equatable {
         percentReadyToThrust: 0,
         score: 0,
         nbombs: 0,
+        nbullets: 0,
+        weapon: Weapon.Bullet,
       );
 
   @override
@@ -76,5 +93,7 @@ class StatsState extends Equatable {
         percentReadyToThrust,
         score,
         nbombs,
+        nbullets,
+        weapon,
       ];
 }

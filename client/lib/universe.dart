@@ -93,6 +93,7 @@ class Universe {
       timeBetweenThrusts: GameProps.timeBetweenThrustsMs,
       timeBetweenBullets: GameProps.timeBetweenBulletsMs,
       timeBetweenBombs: GameProps.timeBetweenBombsMs,
+      timeBetweenActions: GameProps.timeBetweenActionssMs,
     );
     _instance = Universe._(
       appTitle: appTitle,
@@ -251,6 +252,8 @@ class Universe {
       percentReadyToShoot: inputProcessor.percentReadyToShoot,
       percentReadyToThrust: inputProcessor.percentReadyToThrust,
       nbombs: hero.nbombs,
+      nbullets: hero.nbullets,
+      weapon: hero.currentWeapon,
     );
     _addStatsState(stats);
     _detectGameOutcome(gameState, hero.health);
@@ -330,6 +333,7 @@ class Universe {
       initialPosition,
       GameProps.playerTotalHealth,
       GameProps.playerInitialBombs,
+      GameProps.playerInitialBullets,
     );
     game.updatePlayers(playerModel);
     _refreshAlivePlayers(game);

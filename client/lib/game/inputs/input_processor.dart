@@ -14,11 +14,13 @@ class InputProcessor {
   final double timeBetweenThrusts;
   final double timeBetweenBullets;
   final double timeBetweenBombs;
+  final double timeBetweenActions;
   final SoundController soundController;
 
   double timeSinceLastThrust;
   double timeSinceLastBullet;
   double timeSinceLastBomb;
+  double timeSinceSwitchWeapon;
 
   InputProcessor._({
     @required this.soundController,
@@ -27,23 +29,23 @@ class InputProcessor {
     @required this.timeBetweenThrusts,
     @required this.timeBetweenBullets,
     @required this.timeBetweenBombs,
+    @required this.timeBetweenActions,
   }) {
     timeSinceLastThrust = 0.0;
     timeSinceLastBullet = 0.0;
     timeSinceLastBomb = 0.0;
+    timeSinceSwitchWeapon = 0.0;
   }
 
-  bool get canApplyThrust {
-    return timeBetweenThrusts <= timeSinceLastThrust;
-  }
+  bool get canApplyThrust => timeBetweenThrusts <= timeSinceLastThrust;
 
-  bool get canShootBullet {
-    return timeBetweenBullets <= timeSinceLastBullet;
-  }
+  bool get canShootBullet => timeBetweenBullets <= timeSinceLastBullet;
 
   bool canSpawnBomb(PlayerModel hero) {
     return hero.hasBomb && timeBetweenBombs <= timeSinceLastBomb;
   }
+
+  bool get canSwitchWeapon => timeBetweenActions <= timeSinceSwitchWeapon;
 
   int get percentReadyToShoot =>
       min((timeSinceLastBullet / timeBetweenBullets * 100).floor(), 100);
@@ -70,6 +72,7 @@ class InputProcessor {
     timeSinceLastThrust = min(timeBetweenThrusts, timeSinceLastThrust + dt);
     timeSinceLastBullet = min(timeBetweenBullets, timeSinceLastBullet + dt);
     timeSinceLastBomb = min(timeBetweenBombs, timeSinceLastBomb + dt);
+    timeSinceSwitchWeapon = min(timeBetweenActions, timeSinceSwitchWeapon + dt);
 
     // thrust
     if (canApplyThrust) {
@@ -85,6 +88,7 @@ class InputProcessor {
       if (player.currentWeapon == Weapon.Bullet && canShootBullet) {
         soundController.playerFiredBullet();
         player.shotBullet = true;
+        player.nbullets--;
         timeSinceLastBullet = 0.0;
       } else if (player.currentWeapon == Weapon.Bomb && canSpawnBomb(player)) {
         player.spawnedBomb = true;
@@ -92,10 +96,14 @@ class InputProcessor {
         timeSinceLastBomb = 0.0;
       }
     }
+
     // switch weapon
-    if (keys.contains(GameKey.Down) || gestures.switchWeapon) {
-      // _soundController.switchedWeapon()
-      player.currentWeapon = nextWeapon(player.currentWeapon);
+    if (canSwitchWeapon) {
+      if (keys.contains(GameKey.Down) || gestures.switchWeapon) {
+        // _soundController.switchedWeapon()
+        player.currentWeapon = nextWeapon(player.currentWeapon);
+        timeSinceSwitchWeapon = 0.0;
+      }
     }
   }
 
@@ -119,6 +127,7 @@ class InputProcessor {
     @required double timeBetweenThrusts,
     @required double timeBetweenBullets,
     @required double timeBetweenBombs,
+    @required double timeBetweenActions,
   }) {
     assert(_instance == null, 'input processor should only be created once');
     _instance = InputProcessor._(
@@ -128,6 +137,7 @@ class InputProcessor {
       timeBetweenThrusts: timeBetweenThrusts,
       timeBetweenBullets: timeBetweenBullets,
       timeBetweenBombs: timeBetweenBombs,
+      timeBetweenActions: timeBetweenActions,
     );
   }
 }
