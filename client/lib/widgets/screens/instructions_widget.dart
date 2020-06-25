@@ -93,7 +93,7 @@ class _Description extends StatelessWidget {
       child: Text(
         'Rotate the UFO into the desired direction and '
         ' then accelerate by applying thrust'
-        ' fire a bullet.',
+        ' or fire a weapon.',
         style: TextStyle(
           fontSize: 16,
           color: Colors.white,
@@ -126,10 +126,10 @@ class _Gestures extends StatelessWidget {
           _Gesture(icon: MdiIcons.gestureSwipeUp, label: 'Apply Thrust'),
           Container(),
           _Gesture(icon: MdiIcons.gestureSwipeLeft, label: 'Rotate Left'),
-          _Gesture(icon: Icons.touch_app, label: 'Fire Bullet'),
+          _Gesture(icon: Icons.touch_app, label: 'Fire Weapon'),
           _Gesture(icon: MdiIcons.gestureSwipeRight, label: 'Rotate Right'),
           Container(),
-          _Gesture(icon: MdiIcons.gestureSwipeDown, label: 'Plant Bomb'),
+          _Gesture(icon: MdiIcons.gestureSwipeDown, label: 'Switch Weapon'),
         ],
       ),
     );
@@ -201,7 +201,7 @@ class _Keyboard extends StatelessWidget {
           ),
           _KeyboardKey(
             icon: Icons.keyboard_arrow_down,
-            instruction: 'Plant Bomb',
+            instruction: 'Switch Weapon',
             keyFontSize: keyFontSize,
             labelFontSize: labelFontSize,
           ),
@@ -227,7 +227,7 @@ class _Keyboard extends StatelessWidget {
           ),
           _KeyboardKey(
             letter: 'S',
-            instruction: 'Plant Bomb',
+            instruction: 'Switch Weapon',
             keyFontSize: keyFontSize,
             labelFontSize: labelFontSize,
           ),
@@ -247,7 +247,7 @@ class _Keyboard extends StatelessWidget {
           ),
           _KeyboardKey(
             letter: 'Space',
-            instruction: 'Fire Bullet',
+            instruction: 'Fire Weapon',
             keyFontSize: keyFontSize,
             labelFontSize: labelFontSize,
             borderRadius: 0.0,
