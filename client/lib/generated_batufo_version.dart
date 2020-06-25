@@ -1,1 +1,1 @@
-const BATUFO_VERSION = '0.0.9+1';
+const BATUFO_VERSION = '0.1.0';
