@@ -8,6 +8,19 @@ import 'package:flutter/foundation.dart';
 
 const int VELOCITY_FACTOR = 1000;
 
+enum Weapon { Bullet, Bomb }
+
+Weapon nextWeapon(Weapon currentWeapon) {
+  switch (currentWeapon) {
+    case Weapon.Bullet:
+      return Weapon.Bomb;
+    case Weapon.Bomb:
+      return Weapon.Bullet;
+    default:
+      throw ArgumentError('unknown weapon type $currentWeapon');
+  }
+}
+
 class PlayerModel {
   // Transmitted State
   int id;
@@ -19,6 +32,7 @@ class PlayerModel {
 
   // Local State
   int nbombs;
+  Weapon currentWeapon;
 
   // Events
   bool appliedThrust;
@@ -31,6 +45,7 @@ class PlayerModel {
     @required double angle,
     @required Offset velocity,
     @required double shieldRemainingMs,
+    Weapon currentWeapon,
     bool appliedThrust,
     bool shotBullet,
     bool spawnedBomb,
@@ -41,6 +56,7 @@ class PlayerModel {
         shotBullet = shotBullet ?? false,
         spawnedBomb = spawnedBomb ?? false,
         shieldRemainingMs = shieldRemainingMs ?? 0.0,
+        currentWeapon = currentWeapon ?? Weapon.Bullet,
         nbombs = nbombs ?? 0;
 
   bool get hasShield => shieldRemainingMs > 0.0;
@@ -110,6 +126,7 @@ class PlayerModel {
      health: $health
      appliedThrust: $appliedThrust
      shieldRemainingMs: $shieldRemainingMs
+     weapon: $currentWeapon
      nbombs: $nbombs
    }''';
   }

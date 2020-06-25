@@ -4,13 +4,13 @@ class AggregatedGestures {
   final double rotation;
   final double thrust;
   final bool fire;
-  final bool spawnBomb;
+  final bool switchWeapon;
 
   AggregatedGestures({
     @required this.rotation,
     @required this.thrust,
     @required this.fire,
-    @required this.spawnBomb,
+    @required this.switchWeapon,
   });
 }
 

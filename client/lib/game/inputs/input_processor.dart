@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:batufo/controllers/sound_controller.dart';
 import 'package:batufo/game/inputs/input_types.dart';
-import 'package:batufo/models/player_model.dart';
+import 'package:batufo/models/player_model.dart'
+    show PlayerModel, Weapon, nextWeapon;
 import 'package:flutter/foundation.dart';
 
 const twopi = 2 * pi;
@@ -70,15 +71,6 @@ class InputProcessor {
     timeSinceLastBullet = min(timeBetweenBullets, timeSinceLastBullet + dt);
     timeSinceLastBomb = min(timeBetweenBombs, timeSinceLastBomb + dt);
 
-    // bullets
-    if (canShootBullet) {
-      if (keys.contains(GameKey.Fire) || gestures.fire) {
-        soundController.playerFiredBullet();
-        player.shotBullet = true;
-        timeSinceLastBullet = 0.0;
-      }
-    }
-
     // thrust
     if (canApplyThrust) {
       if (keys.contains(GameKey.Up) || gestures.thrust != 0.0) {
@@ -88,13 +80,22 @@ class InputProcessor {
       }
     }
 
-    // plant bomb
-    if (canSpawnBomb(player)) {
-      if (keys.contains(GameKey.Down) || gestures.spawnBomb) {
+    // plant bomb or shoot bullets
+    if (keys.contains(GameKey.Fire) || gestures.fire) {
+      if (player.currentWeapon == Weapon.Bullet && canShootBullet) {
+        soundController.playerFiredBullet();
+        player.shotBullet = true;
+        timeSinceLastBullet = 0.0;
+      } else if (player.currentWeapon == Weapon.Bomb && canSpawnBomb(player)) {
         player.spawnedBomb = true;
         player.nbombs--;
         timeSinceLastBomb = 0.0;
       }
+    }
+    // switch weapon
+    if (keys.contains(GameKey.Down) || gestures.switchWeapon) {
+      // _soundController.switchedWeapon()
+      player.currentWeapon = nextWeapon(player.currentWeapon);
     }
   }
 

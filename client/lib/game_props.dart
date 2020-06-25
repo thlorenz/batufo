@@ -61,7 +61,7 @@ class ParallaxProps {
 class GameProps {
   static const gesturePlayerRotationFactor = 0.04;
   static const gesturePlayerMinThrustDelta = 2.2;
-  static const gesturePlayerMinSpawnBombDelta = 2.2;
+  static const gesturePlayerMinSwitchWeaponDelta = 2.2;
 
   static const keyboardPlayerRotationFactor = 0.004;
   static const playerThrustForce = 0.07; // Newton

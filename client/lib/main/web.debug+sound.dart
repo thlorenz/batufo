@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 // The engine may not be running or you need to adjust
 // the buffer size if of the channel.
 Future<void> main() async {
-  final serverIP = GameProps.localhost;
+  const serverIP = GameProps.localhost;
   WidgetsFlutterBinding.ensureInitialized();
   final config = getConfig(platform: PlatformType.Web);
 

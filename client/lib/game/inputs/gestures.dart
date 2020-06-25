@@ -6,12 +6,12 @@ class GameGestures {
   double _rotation;
   double _thrust;
   bool _fire;
-  bool _spawnedBomb;
+  bool _switchedWeapon;
   GameGestures._()
       : _rotation = 0.0,
         _thrust = 0.0,
         _fire = false,
-        _spawnedBomb = false;
+        _switchedWeapon = false;
 
   void onPanUpdate(DragUpdateDetails details) {
     final delta = details.delta;
@@ -19,8 +19,8 @@ class GameGestures {
       _addRotation(delta.dx);
     } else if (delta.dy < -GameProps.gesturePlayerMinThrustDelta) {
       _addThrust(delta.dy);
-    } else if (delta.dy > GameProps.gesturePlayerMinSpawnBombDelta) {
-      _spawnBomb();
+    } else if (delta.dy > GameProps.gesturePlayerMinSwitchWeaponDelta) {
+      _switchWeapon();
     }
   }
 
@@ -39,8 +39,8 @@ class GameGestures {
     _thrust += -dy;
   }
 
-  void _spawnBomb() {
-    _spawnedBomb = true;
+  void _switchWeapon() {
+    _switchedWeapon = true;
   }
 
   AggregatedGestures get aggregatedGestures {
@@ -48,12 +48,12 @@ class GameGestures {
       rotation: _rotation,
       thrust: _thrust,
       fire: _fire,
-      spawnBomb: _spawnedBomb,
+      switchWeapon: _switchedWeapon,
     );
     _rotation = 0.0;
     _thrust = 0.0;
     _fire = false;
-    _spawnedBomb = false;
+    _switchedWeapon = false;
     return gestures;
   }
 }
