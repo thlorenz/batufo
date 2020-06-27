@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:batufo/game/assets/assets.dart';
 import 'package:batufo/widgets/hud/labeled_scalar_widget.dart';
 import 'package:flutter/material.dart';
@@ -30,15 +28,11 @@ class BombsWidget extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         padding: EdgeInsets.all(2.0),
-        child: Transform(
-          alignment: Alignment.center,
-          transform: Matrix4.rotationY(pi),
-          child: RotatedBox(
-            quarterTurns: 2,
-            child: Image.asset(
-              assets.bomb.imagePath,
-              width: 18.0,
-            ),
+        child: RotatedBox(
+          quarterTurns: 2,
+          child: Image.asset(
+            assets.bomb.imagePath,
+            width: 18.0,
           ),
         ),
       ),
