@@ -1,2 +1,5 @@
 .idea/
 build/
+
+# secrets
+client/android/key.properties
