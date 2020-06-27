@@ -116,6 +116,7 @@ class ClientGame extends Game {
     @required int playerIndex,
     @required ParallaxProps parallaxProps,
     @required bool enableRecording,
+    @required bool enableGradient,
   })  : _started = false,
         _finished = false,
         _disposed = false,
@@ -202,7 +203,10 @@ class ClientGame extends Game {
       soundController,
     );
     _pickups = Pickups(_gameController.gameState.pickups, arena.tileSize);
-    _radar = Radar(_gameController.gameState.radar);
+    _radar = Radar(
+      _gameController.gameState.radar,
+      enableGradient: enableGradient,
+    );
   }
 
   ClientGameState get gameState => _gameController.gameState;

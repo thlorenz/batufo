@@ -148,6 +148,7 @@ class Universe {
       soundController: soundController,
       inputProcessor: inputProcessor,
       enableRecording: platform != PlatformType.Web,
+      enableGradient: platform != PlatformType.Web,
       clientID: clientID,
       playerIndex: playerIndex,
       onGameStateUpdated: _onGameStateUpdated,

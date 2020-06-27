@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui' show Canvas, Offset, Paint, Rect;
 
 import 'package:batufo/models/radar_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors, PaintingStyle;
 import 'package:flutter/painting.dart';
 
@@ -18,9 +19,11 @@ class Radar {
   final Paint _backgroundInnerPaint;
   final Paint _outerCirclePaint;
   final Paint _buildingPaint;
+  final Paint _nonGradientRadarPaint;
   final Paint _enemyPaint;
   final RadarModel radar;
-  Radar(this.radar)
+  final bool enableGradient;
+  Radar(this.radar, {@required this.enableGradient})
       : _backgroundOuterPaint = Paint()
           ..color = Color(0xdd01112a)
           ..style = PaintingStyle.fill,
@@ -36,6 +39,9 @@ class Radar {
           ..style = PaintingStyle.fill,
         _enemyPaint = Paint()
           ..color = Colors.white
+          ..style = PaintingStyle.fill,
+        _nonGradientRadarPaint = Paint()
+          ..color = Color(0xdddfdfdf)
           ..style = PaintingStyle.fill;
 
   void render(Canvas canvas, Rect visibleRect) {
@@ -95,15 +101,32 @@ class Radar {
       center: center,
       radius: radius,
     );
+    final Paint paint = enableGradient
+        ? _gradientRadarPaint(
+            center,
+            rect,
+            radius,
+            startAngle,
+            deltaAngle,
+          )
+        : _nonGradientRadarPaint;
+
+    canvas.drawArc(rect, startAngle, deltaAngle, true, paint);
+  }
+
+  Paint _gradientRadarPaint(
+    Offset center,
+    Rect rect,
+    double radius,
+    double startAngle,
+    double deltaAngle,
+  ) {
     final Gradient gradient = SweepGradient(
       startAngle: 0.0,
       endAngle: deltaAngle,
       colors: _sweepGradientColors,
       transform: GradientRotation(startAngle),
     );
-
-    final Paint paint = Paint()..shader = gradient.createShader(rect);
-
-    canvas.drawArc(rect, startAngle, deltaAngle, true, paint);
+    return Paint()..shader = gradient.createShader(rect);
   }
 }
