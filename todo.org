@@ -10,6 +10,23 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - explain how camera is used to simulate explosion
 - create level using editor
 
+* Release v1.0.0
+
+- [ ] better intro prose
+- [ ] link to attributions
+- [ ] link to donations
+- [ ] add donations links to main web page
+- [ ] end game multi player game peacefully when no more bombs nor bullets
+- [ ] shield protects from bomb one time
+- [ ] three + four player levels
+- [ ] large single player level
+- [ ] play store release
+- [ ] instruction youtube video (or remove link)
+
+** Maybe
+
+- [ ] teleportation
+
 * Server Side
 
 
@@ -18,8 +35,11 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 ** Different Weapons
 
 - [X] plant mines (bombs) in path
+- [X] possibly switch via back arrow | 's' | draw back
+
+*** WAIT Deferred
+
 - [ ] if you have no special weapon shoot normal bullets
-- [ ] possibly switch via back arrow | 's' | draw back
 - [ ] volleys (shots that spread out) (slow to recharge)
 - [ ] laser beam that reflects of walls (slow to recharge)
 
@@ -27,12 +47,12 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 We wanna add some pickups back in. Most importantly are health packets, but some diamonds to up the score would be nice as well.
 
-*** Bullets
+*** WAIT Bullets
 
 - [ ] limit amount of bullets which deplete whe we shoot (show above health bar)
 - [ ] add bullet pickups to level
 
-*** Diamonds
+*** WAIT Diamonds
 
 - [ ] add diamonds to level
 - [ ] detect colission + remove like with health packets
@@ -53,7 +73,7 @@ We wanna add some pickups back in. Most importantly are health packets, but some
 - [X] shields last only a certain amount of time and decreases when hit by bullet
 - [X] when shield is active player receives no damage from bullets
 
-** Make Things Bigger
+** WAIT Make Things Bigger
 
 Players reported things appearing too small at least on desktop.
 After going to 150% felt more comfortable. Resolution was ~1280*960~.
