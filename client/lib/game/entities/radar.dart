@@ -45,6 +45,7 @@ class Radar {
           ..style = PaintingStyle.fill;
 
   void render(Canvas canvas, Rect visibleRect) {
+    if (visibleRect == null) return;
     final width = min(visibleRect.width, visibleRect.height) / 5;
     final outerRadius = width / 2;
     final innerRadius = outerRadius * 0.4;
