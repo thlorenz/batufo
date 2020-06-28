@@ -1,4 +1,7 @@
 import 'dart:math';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 
 class Triangle {
   final double x1;
@@ -70,14 +73,26 @@ class Circle {
   }
 }
 
-/*
-void main() {
-  final triangle = Triangle(0, 0, 10, 4, 8, 5);
-  final contained = triangle.contains(9, 1);
-  print('area: ${triangle.area}');
-  print('contained: $contained');
+class CircleSlice {
+  final double radius;
+  final double startAngle;
+  final double endAngle;
+  final double radiusSquared;
+  final Offset center;
 
-  final triangle1 = Triangle.fromOriginAndVectors(0, 0, 0, 10, 3.14 / 4, 10);
-  print(triangle1.toString());
+  CircleSlice({
+    @required this.center,
+    @required this.radius,
+    @required this.startAngle,
+    @required this.endAngle,
+  }) : radiusSquared = radius * radius;
+
+  bool contains(Offset point) {
+    final zeroBased = point - center;
+    if (zeroBased.distanceSquared > radiusSquared) return false;
+    final direction = zeroBased.direction;
+    if (direction < startAngle) return false;
+    if (direction > endAngle) return false;
+    return true;
+  }
 }
-*/

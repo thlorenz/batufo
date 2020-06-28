@@ -24,30 +24,23 @@ class RadarController {
     _msSinceLastChange += dt;
     if (_msSinceLastChange < _frameRateMs) return;
     radar.startAngle -= (_msSinceLastChange / 60) / _pipi;
-    if (radar.startAngle <= 0) radar.startAngle = _pipi;
+    if (radar.startAngle <= -pi) radar.startAngle += _pipi;
+    if (radar.startAngle >= pi) radar.startAngle -= _pipi;
     radar.origin = hero.tilePosition.toWorldOffset();
-    final triangle = Triangle.fromOriginAndVectors(
-      radar.origin.dx,
-      radar.origin.dy,
-      radar.startAngle,
-      radar.radarLength,
-      radar.endAngle,
-      radar.radarLength,
-    );
-    // TODO(radar): reliability could be improved if we consider tiles instead
-    // of world positions, i.e. which tiles are even just partially included
-    // in the triangle
-    final covered = radar.coveredCircle;
+
+    final slice = CircleSlice(
+        center: radar.origin,
+        radius: radar.radarLength,
+        startAngle: radar.startAngle,
+        endAngle: radar.endAngle);
 
     _updateVisibles(
-      triangle,
-      covered,
+      slice,
       buildingPositions,
       radar.buildings,
     );
     _updateVisibles(
-      triangle,
-      covered,
+      slice,
       enemyPositions,
       radar.enemies,
     );
@@ -55,18 +48,14 @@ class RadarController {
   }
 
   void _updateVisibles(
-    Triangle triangle,
-    Circle covered,
+    CircleSlice slice,
     Iterable<Offset> src,
     List<Offset> tgt,
   ) {
-    final visible = src
-        .where((x) =>
-            covered.contains(x.dx, x.dy) && triangle.contains(x.dx, x.dy))
-        .toList();
+    final visible = src.where((x) => slice.contains(x)).toList();
     tgt
       ..removeWhere(
-          (x) => !covered.contains(x.dx, x.dy) || triangle.contains(x.dx, x.dy))
+          (x) => !radar.coveredCircle.contains(x.dx, x.dy) || slice.contains(x))
       ..addAll(visible);
   }
 }
