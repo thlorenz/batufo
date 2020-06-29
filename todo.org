@@ -12,16 +12,16 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Release v1.0.0
 
-- [ ] better intro prose
+- [ ] end game multi player game peacefully when no more bombs nor bullets
 - [ ] link to attributions
 - [ ] link to donations
 - [ ] add donations links to main web page
-- [ ] end game multi player game peacefully when no more bombs nor bullets
-- [ ] shield protects from bomb one time
 - [ ] three + four player levels
 - [ ] large single player level
 - [ ] play store release
 - [ ] instruction youtube video (or remove link)
+- [X] better intro prose
+- [X] shield protects from bomb one time
  
 ** [ ] Out of Game Bounds Problem
 
@@ -29,7 +29,7 @@ When game is inactive for a while the ~dt~ is so large that the player position 
 Since colission detection is simple it misses that player flew thru the wall.
 
 - fix 1: provide some ray-casting like feature to prevent flying thru walls
-- fix 2: detect if player is out of bounds and return him to the nearest in bounds tile
+- fix 2: detect if player is out of bounds, more specifically is on top of a floor tile and return him to the nearest in bounds tile
 
 Fix1 is some work but catches flying thru any kind of wall as well.
 Fix2 is very simple to implement (in minutes) but would theoretically allow players to jump across walls that are in bounds.
