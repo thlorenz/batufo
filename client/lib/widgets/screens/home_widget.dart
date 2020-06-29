@@ -73,20 +73,31 @@ class _GameStoryWidget extends StatelessWidget {
               fontSize: 24,
               fontStyle: FontStyle.normal,
             ),
-            text: 'When the universe began ... ',
+            text: 'They\'re back ... ',
             children: [
               TextSpan(text: '\n\n'),
-              TextSpan(style: defaultStyle, text: 'there were no UFOs.'),
-              TextSpan(style: defaultStyle, text: '\n\n'),
+              TextSpan(
+                  style: defaultStyle,
+                  text: 'And this time they didn\'t come to negotiate.'),
+              TextSpan(text: '\n\n'),
               TextSpan(
                 style: defaultStyle,
-                text: 'Then there were many fighting fiercely for territory.',
+                text: 'Some say the Lekdas never '
+                    'wanted to negotiate. They just want to take, '
+                    'take more and wage war.',
               ),
               TextSpan(style: defaultStyle, text: '\n\n'),
               TextSpan(
                 style: defaultStyle,
-                text: 'You are one of them and know that you have'
-                    ' exactly two options.',
+                text: 'They entered the stratosphere of your planet, '
+                    'their ships disguised to look like yours.',
+              ),
+              TextSpan(style: defaultStyle, text: '\n\n'),
+              TextSpan(
+                style: defaultStyle,
+                text: 'All that remains now is to defend, defend ... '
+                    'and finally prevail or life as we know it '
+                    'will cease to exist.',
               ),
             ]),
       ),
