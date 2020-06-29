@@ -12,3 +12,5 @@ git add "$CLIENT/pubspec.yaml"
 git add "$CLIENT/lib/generated_batufo_version.dart"
 git commit -m "chore: update version v$VERSION"
 git tag "v$VERSION"
+
+echo "https://github.com/thlorenz/batufo/releases/new?tag=v$VERSION"
