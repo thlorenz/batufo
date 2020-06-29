@@ -10,7 +10,8 @@
     "start:dev": "cd ./packages/server && DEBUG_COLORS=1 DEBUG='(app|stats|game*):(debug|info|error)' ts-node ./src/app.ts",
     "gc:log": "ssh batufo 'sudo journalctl -u batufo.service'",
     "gc:tail": "ssh batufo 'sudo journalctl -f -u batufo.service'",
-    "gc:update": "ssh batufo 'sudo ~/app/batufo/backend/gcloud/update.sh'",
+    "gc:update": "ssh batufo 'sudo ~/app/batufo/backend/gcloud/update.sh' && yarn gc:status",
+    "gc:status": "ssh batufo 'sudo service batufo status' && yarn gc:metrics",
     "gc:metrics": "ssh batufo 'free -m -h'"
   },
   "workspaces": [
