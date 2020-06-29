@@ -13,6 +13,7 @@ class BombsController {
   final double bombTimeExploding;
   final double bombExplosionRadiusSquared;
   final double bombDealtDamageFromStrengthFactor;
+  final double bombReducedShieldFromStrengthFactor;
 
   BombsController(
     this._bombs, {
@@ -21,6 +22,7 @@ class BombsController {
     @required this.bombTimeExploding,
     @required this.bombExplosionRadiusSquared,
     @required this.bombDealtDamageFromStrengthFactor,
+    @required this.bombReducedShieldFromStrengthFactor,
   });
 
   void update(double dt, PlayerModel hero) {
@@ -63,9 +65,14 @@ class BombsController {
       final dst = (hero.tilePosition.toWorldOffset() - bomb.worldOffset)
           .distanceSquared;
       final strength = _strength(dst, bomb.timeLeftExplodingMs);
-      final damage = strength * bombDealtDamageFromStrengthFactor;
-      debugPrint('damage: $damage');
-      hero.health = max(hero.health - damage, 0.0);
+
+      if (hero.hasShield) {
+        final reduction = strength * bombReducedShieldFromStrengthFactor;
+        hero.shieldRemainingMs = max(hero.shieldRemainingMs - reduction, 0.0);
+      } else {
+        final damage = strength * bombDealtDamageFromStrengthFactor;
+        hero.health = max(hero.health - damage, 0.0);
+      }
       bomb.explosionHandled = true;
       soundController.bombExplodingAt(bomb.tilePosition);
     }

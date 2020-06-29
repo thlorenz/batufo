@@ -92,6 +92,8 @@ class GameController {
       bombExplosionRadiusSquared: GameProps.bombExplosionRadiusSquared,
       bombDealtDamageFromStrengthFactor:
           GameProps.bombDealtDamageFromStrengthFactor,
+      bombReducedShieldFromStrengthFactor:
+          GameProps.bombReducedShieldFromStrengthFactor,
     );
   }
 

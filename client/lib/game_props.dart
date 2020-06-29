@@ -97,6 +97,9 @@ class GameProps {
   static const bombDealtDamageFromStrengthFactor = playerTotalHealth /
       (bombStartExplosionStrength * bombExplosionRadiusSquared) *
       7500.0;
+  static const bombReducedShieldFromStrengthFactor = shieldDurationMs /
+      (bombStartExplosionStrength * bombExplosionRadiusSquared) *
+      8000.0;
 
   static bool get debugPlayerHitTile => false;
   static bool get debugWallHitTile => false;
