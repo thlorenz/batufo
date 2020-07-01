@@ -143,11 +143,13 @@ class Universe {
       coveredTiles[tile.row][tile.col] = true;
     }
 
+    final canRecord =
+        platform != PlatformType.Web && platform != PlatformType.Linux;
     final game = ClientGame(
       arena: arena,
       soundController: soundController,
       inputProcessor: inputProcessor,
-      enableRecording: platform != PlatformType.Web,
+      enableRecording: canRecord,
       enableGradient: platform != PlatformType.Web,
       clientID: clientID,
       playerIndex: playerIndex,
