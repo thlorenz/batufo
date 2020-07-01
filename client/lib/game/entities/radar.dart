@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors, PaintingStyle;
 import 'package:flutter/painting.dart';
 
+const _pipi = pi * 2;
+
 final _sweepGradientColors = <Color>[
   Colors.white.withOpacity(0.8),
   Colors.white.withOpacity(0.5),
@@ -17,6 +19,7 @@ final _sweepGradientColors = <Color>[
 class Radar {
   final Paint _backgroundOuterPaint;
   final Paint _backgroundInnerPaint;
+  final Paint _gridPaint;
   final Paint _outerCirclePaint;
   final Paint _buildingPaint;
   final Paint _nonGradientRadarPaint;
@@ -30,10 +33,14 @@ class Radar {
         _backgroundInnerPaint = Paint()
           ..color = Color(0xdd00386b)
           ..style = PaintingStyle.fill,
+        _gridPaint = Paint()
+          ..color = Color(0xdd00386b)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 0.8,
         _outerCirclePaint = Paint()
           ..color = Color(0xff0c55b4)
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 0.3,
+          ..strokeWidth = 2,
         _buildingPaint = Paint()
           ..color = Colors.grey
           ..style = PaintingStyle.fill,
@@ -48,14 +55,29 @@ class Radar {
     if (visibleRect == null) return;
     final width = min(visibleRect.width, visibleRect.height) / 5;
     final outerRadius = width / 2;
-    final innerRadius = outerRadius * 0.4;
+    final innerRadius = outerRadius * 0.25;
     final center = Offset(outerRadius, outerRadius);
 
     canvas.drawCircle(center, outerRadius, _backgroundOuterPaint);
     canvas.drawCircle(center, innerRadius, _backgroundInnerPaint);
     canvas.drawCircle(center, outerRadius, _outerCirclePaint);
+    _drawGrid(canvas, center, outerRadius);
     _drawObjects(canvas, center, outerRadius);
     _drawArc(canvas, center, outerRadius, radar.startAngle, radar.deltaAngle);
+  }
+
+  void _drawGrid(
+    Canvas canvas,
+    Offset center,
+    double radius,
+  ) {
+    for (double angle = 0; angle < _pipi; angle += _pipi / 24) {
+      final x = center.dx + radius * cos(angle);
+      final y = center.dy + radius * sin(angle);
+      canvas.drawLine(center, Offset(x, y), _gridPaint);
+    }
+    canvas.drawCircle(center, radius * 0.5, _gridPaint);
+    canvas.drawCircle(center, radius * 0.75, _gridPaint);
   }
 
   void _drawObjects(
