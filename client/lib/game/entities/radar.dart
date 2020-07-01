@@ -41,7 +41,7 @@ class Radar {
           ..color = Colors.white
           ..style = PaintingStyle.fill,
         _nonGradientRadarPaint = Paint()
-          ..color = Color(0xdddfdfdf)
+          ..color = Color(0x44ffffff)
           ..style = PaintingStyle.fill;
 
   void render(Canvas canvas, Rect visibleRect) {
