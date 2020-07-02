@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' show Offset;
 
+import 'package:batufo/controllers/helpers/collision_result.dart';
 import 'package:batufo/controllers/helpers/math_utils.dart';
 import 'package:batufo/controllers/helpers/player_status.dart';
 import 'package:batufo/controllers/sound_controller.dart';
@@ -19,6 +20,7 @@ class PlayerController {
   final double wallHitHealthTollFactor;
   final double hitSize;
   final double thrustForce;
+  final bool Function(TilePosition tp) isValidPosition;
 
   const PlayerController({
     @required this.soundController,
@@ -27,6 +29,7 @@ class PlayerController {
     @required this.wallHitSlowdown,
     @required this.wallHitHealthTollFactor,
     @required this.thrustForce,
+    @required this.isValidPosition,
   });
 
   void update(
@@ -46,20 +49,41 @@ class PlayerController {
       soundController.playerAppliedThrust();
     }
 
-    final check = _checkWallCollision(player, dt);
+    final result = _checkWallCollision(player, dt);
     double healthToll = 0;
-    if (check.second > 0) {
-      soundController.playerHitWallWithForce(player.tilePosition, check.second);
-      healthToll = check.second * wallHitHealthTollFactor;
+    if (result.collided) {
+      soundController.playerHitWallWithForce(player.tilePosition, result.force);
+      healthToll = result.force * wallHitHealthTollFactor;
     }
+    final nextVelocity = _normalizeVelocity(result.velocity);
+    final nextPosition = Physics.move(player.tilePosition, nextVelocity, dt);
+
+    _updateVelocityAndPositionEnsuringValidPosition(
+      nextPosition,
+      nextVelocity,
+      player,
+    );
+
     player
-      ..velocity = _normalizeVelocity(check.first)
-      ..tilePosition = Physics.move(player.tilePosition, player.velocity, dt)
       ..health = max(player.health - healthToll, 0.0)
       ..shieldRemainingMs = max(player.shieldRemainingMs - dt, 0.0);
 
     if (isHero) {
       soundController.setPlayerPosition(player.tilePosition);
+    }
+  }
+
+  void _updateVelocityAndPositionEnsuringValidPosition(
+    TilePosition nextPosition,
+    Offset velocity,
+    PlayerModel player,
+  ) {
+    if (isValidPosition(nextPosition)) {
+      player
+        ..tilePosition = nextPosition
+        ..velocity = velocity;
+    } else {
+      player.velocity = velocity.scale(-0.5, -0.5);
     }
   }
 
@@ -76,7 +100,7 @@ class PlayerController {
     return Offset(dx, dy);
   }
 
-  Tuple<Offset, double> _checkWallCollision(
+  CollisionResult _checkWallCollision(
     PlayerModel playerModel,
     double dt,
   ) {
@@ -89,23 +113,25 @@ class PlayerController {
         getHitTiles(playerModel.tilePosition.toWorldPosition(), hitSize);
     final nextHit = getHitTiles(next.toWorldPosition(), hitSize);
 
-    Tuple<Offset, double> hitOnAxisX() {
+    CollisionResult hitOnAxisX() {
       final hitForce = playerModel.velocity.dx.abs();
-      return Tuple(
+      return CollisionResult(
+        true,
         playerModel.velocity.scale(-wallHitSlowdown, wallHitSlowdown),
         hitForce,
       );
     }
 
-    Tuple<Offset, double> hitOnAxisY() {
+    CollisionResult hitOnAxisY() {
       final hitForce = playerModel.velocity.dy.abs();
-      return Tuple(
+      return CollisionResult(
+        true,
         playerModel.velocity.scale(wallHitSlowdown, -wallHitSlowdown),
         hitForce,
       );
     }
 
-    Tuple<Offset, double> handleHit(TilePosition tp, TilePosition nextTp) {
+    CollisionResult handleHit(TilePosition tp, TilePosition nextTp) {
       return tp.col == nextTp.col ? hitOnAxisY() : hitOnAxisX();
     }
 
@@ -127,6 +153,6 @@ class PlayerController {
       return handleHit(hit.topLeft, nextHit.topLeft);
     }
 
-    return Tuple(playerModel.velocity, 0.0);
+    return CollisionResult(false, playerModel.velocity, 0.0);
   }
 }

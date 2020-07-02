@@ -33,6 +33,7 @@ class BulletTarget {
 class Colliders {
   final int nrows;
   final int ncols;
+  final List<bool> _floorTiles;
   final List<bool> _walls;
   final List<Pickup> _pickupTiles;
   final double playerRadius;
@@ -41,13 +42,19 @@ class Colliders {
     this.nrows,
     this.ncols, {
     @required List<TilePosition> walls,
+    @required List<TilePosition> floorTiles,
     @required this.playerRadius,
     @required double shieldRadiusFactor,
   })  : _walls = List<bool>(nrows * ncols)..fillRange(0, nrows * ncols, false),
+        _floorTiles = List<bool>(nrows * ncols)
+          ..fillRange(0, nrows * ncols, false),
         _pickupTiles = List<Pickup>(nrows * ncols),
         _radiusWithShield = playerRadius * shieldRadiusFactor {
     for (final wall in walls) {
       _walls[wall.row * ncols + wall.col] = true;
+    }
+    for (final floorTile in floorTiles) {
+      _floorTiles[floorTile.row * ncols + floorTile.col] = true;
     }
   }
 
@@ -62,6 +69,13 @@ class Colliders {
   void removePickup(Pickup pickup) {
     _pickupTiles[pickup.tilePosition.row * ncols + pickup.tilePosition.col] =
         null;
+  }
+
+  bool isValidPosition(TilePosition tp) {
+    // TODO(thlorenz): if we ever have areas where players can go even though
+    // there is no floor tile then this needs to be adapted so that the arena
+    // tells us which tiles are valid.
+    return _floorTileAt(tp);
   }
 
   BulletTarget bulletCollidingAt(
@@ -85,6 +99,11 @@ class Colliders {
   bool _wallAt(TilePosition tp) {
     final idx = tp.row * ncols + tp.col;
     return idx >= _walls.length || _walls[idx];
+  }
+
+  bool _floorTileAt(TilePosition tp) {
+    final idx = tp.row * ncols + tp.col;
+    return idx < _floorTiles.length && _floorTiles[idx];
   }
 
   Pickup playerPickingUpAt(TilePosition tp) {

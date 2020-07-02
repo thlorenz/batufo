@@ -53,6 +53,7 @@ class GameController {
       _arena.nrows,
       _arena.ncols,
       walls: _arena.walls,
+      floorTiles: _arena.floorTiles,
       playerRadius: playerSize,
       shieldRadiusFactor: GameProps.shieldRadiusFactor,
     );
@@ -63,6 +64,7 @@ class GameController {
       wallHitSlowdown: GameProps.playerHitsWallSlowdown,
       wallHitHealthTollFactor: GameProps.playerHitsWallHealthFactor,
       playerCollidingAt: colliders.playerCollidingAt,
+      isValidPosition: colliders.isValidPosition,
       thrustForce: GameProps.playerThrustForce,
     );
 

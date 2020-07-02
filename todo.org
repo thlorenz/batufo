@@ -13,18 +13,22 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 * Release v1.0.0
 
 - [ ] end game multi player game peacefully when no more bombs nor bullets
-- [ ] alternatively provide player with more bullets over time, i.e. 1 / 5 secs
+  - [ ] alternatively provide player with more bullets over time, i.e. 1 / 5 secs
 - [ ] link to attributions
 - [ ] link to donations
 - [ ] add donations links to main web page
 - [ ] three + four player levels
 - [ ] large single player level
-- [ ] play store release
+- [X] play store release
 - [ ] instruction youtube video (or remove link)
 - [X] better intro prose
 - [X] shield protects from bomb one time
  
-** [ ] Out of Game Bounds Problem
+** Maybe
+
+- [ ] teleportation
+
+** DONE Out of Game Bounds Problem
 
 When game is inactive for a while the ~dt~ is so large that the player position is calculated to be outside of the game boundaries.
 Since colission detection is simple it misses that player flew thru the wall.
@@ -34,10 +38,6 @@ Since colission detection is simple it misses that player flew thru the wall.
 
 Fix1 is some work but catches flying thru any kind of wall as well.
 Fix2 is very simple to implement (in minutes) but would theoretically allow players to jump across walls that are in bounds.
-
-** Maybe
-
-- [ ] teleportation
 
 * Server Side
 
