@@ -13,6 +13,7 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 * Release v1.0.0
 
 - [ ] end game multi player game peacefully when no more bombs nor bullets
+- [ ] alternatively provide player with more bullets over time, i.e. 1 / 5 secs
 - [ ] link to attributions
 - [ ] link to donations
 - [ ] add donations links to main web page
