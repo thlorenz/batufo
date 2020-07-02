@@ -9,6 +9,7 @@ class BombModel {
 
   // Local Properties
   final Offset worldOffset;
+  final bool spawnedByHero;
   double timeToExplodeMs;
   double timeLeftExplodingMs;
   bool explosionHandled;
@@ -16,6 +17,7 @@ class BombModel {
   BombModel({
     @required this.tilePosition,
     @required this.timeToExplodeMs,
+    @required this.spawnedByHero,
     this.timeLeftExplodingMs = 0.0,
   })  : worldOffset = tilePosition.toWorldOffset(),
         explosionHandled = false;

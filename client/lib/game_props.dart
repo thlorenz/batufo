@@ -121,6 +121,8 @@ class GameProps {
 
   static const scoreOnHit = 100;
   static const scoreOnKill = 500;
+  static const bombScoreFromStrengthFactor =
+      bombDealtDamageFromStrengthFactor * 10.0;
 
   static const z10Lerp = 0.15;
   static const z20Lerp = 0.15;

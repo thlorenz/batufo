@@ -96,6 +96,8 @@ class GameController {
           GameProps.bombDealtDamageFromStrengthFactor,
       bombReducedShieldFromStrengthFactor:
           GameProps.bombReducedShieldFromStrengthFactor,
+      bombScoreFromStrengthFactor: GameProps.bombScoreFromStrengthFactor,
+      onScored: onScored,
     );
   }
 
@@ -105,9 +107,9 @@ class GameController {
 
   ClientGameState update(double dt, double ts) {
     final players = _gameState.players;
-    final enemyWorldOffsets = players.values
-        .where((x) => x.id != clientID)
-        .map((x) => x.tilePosition.toWorldOffset(center: true));
+    final opponents = players.values.where((x) => x.id != clientID);
+    final enemyWorldOffsets =
+        opponents.map((x) => x.tilePosition.toWorldOffset(center: true));
 
     _log.finest('game loop ${players.length} players');
     for (final player in players.values) {
@@ -116,7 +118,7 @@ class GameController {
     }
     _bulletsController.update(dt, _gameState.players.values);
     _pickupsController.update(_gameState.hero);
-    _bombsController.update(dt, _gameState.hero);
+    _bombsController.update(dt, _gameState.hero, opponents);
     _radarController.update(
       dt,
       _gameState.hero,
@@ -191,11 +193,12 @@ class GameController {
     _gameState.addBullet(bullet);
   }
 
-  void spawnBomb(TilePosition tilePosition) {
+  void spawnBomb(TilePosition tilePosition, bool spawnedByHero) {
     final bomb = BombModel(
       tilePosition: tilePosition,
       timeToExplodeMs: GameProps.bombTimeToExplodeMs,
       timeLeftExplodingMs: GameProps.bombTimeExplodingMs,
+      spawnedByHero: spawnedByHero,
     );
     _gameState.addBomb(bomb);
   }

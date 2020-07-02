@@ -270,7 +270,7 @@ class ClientGame extends Game {
   }
 
   void updateBomb(ClientSpawnedBombUpdate update) {
-    _gameController.spawnBomb(update.spawnPosition);
+    _gameController.spawnBomb(update.spawnPosition, false);
   }
 
   void start() {
@@ -304,7 +304,7 @@ class ClientGame extends Game {
       _clientSpawnedBulletUpdate$.add(_clientSpawnedBulletUpdate);
     }
     if (player.spawnedBomb) {
-      _gameController.spawnBomb(player.tilePosition);
+      _gameController.spawnBomb(player.tilePosition, true);
       _clientSpawnedBombUpdate.spawnPosition = player.tilePosition;
       _clientSpawnedBombUpdate$.add(_clientSpawnedBombUpdate);
     }

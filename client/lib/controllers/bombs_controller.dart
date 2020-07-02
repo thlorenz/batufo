@@ -14,6 +14,8 @@ class BombsController {
   final double bombExplosionRadiusSquared;
   final double bombDealtDamageFromStrengthFactor;
   final double bombReducedShieldFromStrengthFactor;
+  final double bombScoreFromStrengthFactor;
+  final void Function(int score) onScored;
 
   BombsController(
     this._bombs, {
@@ -23,13 +25,15 @@ class BombsController {
     @required this.bombExplosionRadiusSquared,
     @required this.bombDealtDamageFromStrengthFactor,
     @required this.bombReducedShieldFromStrengthFactor,
+    @required this.bombScoreFromStrengthFactor,
+    @required this.onScored,
   });
 
-  void update(double dt, PlayerModel hero) {
+  void update(double dt, PlayerModel hero, Iterable<PlayerModel> opponents) {
     final exploded = <BombModel>[];
     for (final bomb in _bombs) {
       if (bomb.hasExploded) exploded.add(bomb);
-      if (bomb.isExploding) _updateExplodingBomb(bomb, hero, dt);
+      if (bomb.isExploding) _updateExplodingBomb(bomb, hero, opponents, dt);
       _updateSpawnedBomb(bomb, dt);
     }
     for (final bomb in exploded) {
@@ -59,13 +63,30 @@ class BombsController {
     bomb.timeToExplodeMs -= dt;
   }
 
-  void _updateExplodingBomb(BombModel bomb, PlayerModel hero, double dt) {
+  double _bombStrengthOn(PlayerModel player, BombModel bomb) {
+    final dst = (player.tilePosition.toWorldOffset() - bomb.worldOffset)
+        .distanceSquared;
+    return _strength(dst, bomb.timeLeftExplodingMs);
+  }
+
+  int _calculateScore(Iterable<PlayerModel> opponents, BombModel bomb) {
+    double score = 0.0;
+    for (final player in opponents) {
+      final strength = _bombStrengthOn(player, bomb);
+      score += strength * bombScoreFromStrengthFactor;
+    }
+    return score.floor();
+  }
+
+  void _updateExplodingBomb(
+    BombModel bomb,
+    PlayerModel hero,
+    Iterable<PlayerModel> opponents,
+    double dt,
+  ) {
     bomb.timeLeftExplodingMs -= dt;
     if (!bomb.explosionHandled) {
-      final dst = (hero.tilePosition.toWorldOffset() - bomb.worldOffset)
-          .distanceSquared;
-      final strength = _strength(dst, bomb.timeLeftExplodingMs);
-
+      final strength = _bombStrengthOn(hero, bomb);
       if (hero.hasShield) {
         final reduction = strength * bombReducedShieldFromStrengthFactor;
         hero.shieldRemainingMs = max(hero.shieldRemainingMs - reduction, 0.0);
@@ -73,6 +94,12 @@ class BombsController {
         final damage = strength * bombDealtDamageFromStrengthFactor;
         hero.health = max(hero.health - damage, 0.0);
       }
+
+      if (bomb.spawnedByHero) {
+        final score = _calculateScore(opponents, bomb);
+        if (score > 0) onScored(score);
+      }
+
       bomb.explosionHandled = true;
       soundController.bombExplodingAt(bomb.tilePosition);
     }
