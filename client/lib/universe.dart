@@ -142,15 +142,28 @@ class Universe {
     for (final tile in arena.walls) {
       coveredTiles[tile.row][tile.col] = true;
     }
+    final ntiles = arena.nrows * arena.ncols;
 
     final canRecord =
         platform != PlatformType.Web && platform != PlatformType.Linux;
+
+    // Recording images when the level is large, i.e. has many floor tiles
+    // has detrimental effects especially for smaller desktop screen sizes.
+    // On mobile I've seen framerate drop to 2fps!!!
+    // Here we try to make this a bit more predictable by accepting higher
+    // CPU usage (due to more redraws) and avoiding the worst case scenarios
+    // where the game starts to lag noticeably.
+    final shouldRecord = canRecord && ntiles < 2500;
+    final addBottomRow = !shouldRecord &&
+        (platform == PlatformType.Android || platform == PlatformType.IOS);
+
     final game = ClientGame(
       arena: arena,
       soundController: soundController,
       inputProcessor: inputProcessor,
-      enableRecording: canRecord,
+      enableRecording: shouldRecord,
       enableGradient: platform != PlatformType.Web,
+      addBottomRow: addBottomRow,
       clientID: clientID,
       playerIndex: playerIndex,
       onGameStateUpdated: _onGameStateUpdated,

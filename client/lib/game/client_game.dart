@@ -66,6 +66,8 @@ class ClientGame extends Game {
   final _clientSpawnedBombUpdate$ = BehaviorSubject<ClientSpawnedBombUpdate>();
   final _clientPickedUpUpdate$ = BehaviorSubject<ClientPickedUpUpdate>();
 
+  final double _bottomMargin;
+
   GameController _gameController;
   Map<int, Player> _players;
   Bullets _bullets;
@@ -119,9 +121,11 @@ class ClientGame extends Game {
     @required ParallaxProps parallaxProps,
     @required bool enableRecording,
     @required bool enableGradient,
+    @required bool addBottomRow,
   })  : _started = false,
         _finished = false,
         _disposed = false,
+        _bottomMargin = addBottomRow ? arena.tileSize * 1.0 : 0.0,
         _clientPlayerUpdate = ClientPlayerUpdate(),
         _clientSpawnedBulletUpdate = ClientSpawnedBulletUpdate(),
         _clientSpawnedBombUpdate = ClientSpawnedBombUpdate(),
@@ -372,9 +376,9 @@ class ClientGame extends Game {
   Rect _visibleRectForCamera(Offset camera) {
     return Rect.fromLTWH(
       camera.dx,
-      camera.dy,
+      camera.dy - _bottomMargin,
       _size.width,
-      _size.height,
+      _size.height + _bottomMargin,
     );
   }
 
