@@ -85,6 +85,10 @@ class SoundController {
     _soundModel.playerSwitchedWeapon = true;
   }
 
+  void playerTeleported() {
+    _soundModel.playerTeleported = true;
+  }
+
   void processSounds() {
     if (_soundModel.playerFiredBullet)
       _sound.playBullet(_soundModel.playerFiredBulletVolume);
@@ -103,6 +107,7 @@ class SoundController {
     if (_soundModel.playerPickedUpBomb)
       _sound.playPickupBomb(_soundModel.playerPickedUpBombVolume);
     if (_soundModel.playerSwitchedWeapon) _sound.playSwitchWeapon();
+    if (_soundModel.playerTeleported) _sound.playTeleport();
     _soundModel.clear();
   }
 

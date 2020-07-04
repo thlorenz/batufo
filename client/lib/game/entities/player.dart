@@ -8,6 +8,7 @@ import 'package:batufo/game/sprites/thrust_sprite.dart';
 import 'package:batufo/game/visuals.dart';
 import 'package:batufo/game_props.dart';
 import 'package:batufo/models/player_model.dart';
+import 'package:batufo/models/teleportation_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors;
 
@@ -32,6 +33,8 @@ class Player {
   ThrustSprite thrustSprite;
   final double tileSize;
   final double hitSize;
+  final double teleportTotalTimeInMs;
+  final double teleportStepTimeInMs;
 
   Player({
     @required String playerImagePath,
@@ -39,7 +42,8 @@ class Player {
     @required this.tileSize,
     @required this.hitSize,
     @required double thrustAnimationDurationMs,
-  }) {
+    @required this.teleportTotalTimeInMs,
+  }) : teleportStepTimeInMs = teleportTotalTimeInMs / 2 {
     alivePlayerSprite = Sprite(playerImagePath);
     deadPlayerSprite = Sprite(deadPlayerImagePath);
     thrustSprite = ThrustSprite(
@@ -58,8 +62,6 @@ class Player {
   void render(Canvas canvas, PlayerModel player, bool isHero) {
     final playerTilePosition = player.tilePosition;
     final center = WorldPosition.fromTilePosition(playerTilePosition);
-    final playerSprite =
-        PlayerStatus.isDead(player) ? deadPlayerSprite : alivePlayerSprite;
     canvas.save();
     {
       canvas
@@ -72,12 +74,7 @@ class Player {
         _renderShield(canvas, player.shieldRemainingMs);
       }
 
-      playerSprite.render(
-        canvas,
-        Offset.zero,
-        width: tileSize,
-        height: tileSize,
-      );
+      _renderPlayer(canvas, player);
       _renderDebugHitTile(canvas, player);
 
       thrustSprite.render(canvas, Offset.zero, tileSize);
@@ -117,5 +114,29 @@ class Player {
     final radius = hitSize / 2 * GameProps.shieldRadiusFactor;
     final rect = Rect.fromCircle(center: Offset.zero, radius: radius);
     canvas.drawArc(rect, 0, pipi, false, paint);
+  }
+
+  void _renderPlayer(Canvas canvas, PlayerModel player) {
+    final playerSprite =
+        PlayerStatus.isDead(player) ? deadPlayerSprite : alivePlayerSprite;
+
+    final size = _playerSize(player.teleportation);
+
+    playerSprite.render(
+      canvas,
+      Offset.zero,
+      width: size,
+      height: size,
+    );
+  }
+
+  double _playerSize(TeleportationModel teleportation) {
+    if (!teleportation.isActive) return tileSize;
+    return teleportation.isEntering
+        ? tileSize *
+            (teleportation.timeLeftToEnterTeleport / teleportStepTimeInMs)
+        : tileSize *
+            ((teleportStepTimeInMs - teleportation.timeLeftToExitTeleport) /
+                teleportStepTimeInMs);
   }
 }

@@ -24,7 +24,7 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 - [X] better intro prose
 - [X] shield protects from bomb one time
  
-** Maybe
+** Next
 
 - [ ] teleportation
 

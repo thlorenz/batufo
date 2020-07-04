@@ -87,6 +87,7 @@ class _Assets {
   final AudioAsset audioPickupBomb = AudioAsset('audio/pickup-bomb.wav');
   final AudioAsset audioBombExploding = AudioAsset('audio/bomb-exploding.wav');
   final AudioAsset audioSwitchWeapon = AudioAsset('audio/switch-weapon.wav');
+  final AudioAsset audioTeleport = AudioAsset('audio/teleport.wav');
 }
 
 final _Assets assets = _Assets();
@@ -101,4 +102,5 @@ final Map<String, AudioAsset> audioAssets = {
   'pickup-shield': assets.audioPickupShield,
   'pickup-bomb': assets.audioPickupBomb,
   'switch-weapon': assets.audioSwitchWeapon,
+  'teleport': assets.audioTeleport,
 };

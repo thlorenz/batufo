@@ -139,9 +139,14 @@ class GameProps {
   static const maxPickupMedkitVolume = 0.5;
   static const maxPickupBombVolume = 0.4;
   static const switchWeaponVolume = 0.9;
+  static const teleportVolume = 0.9;
 
   static const radarDeltaAngle = pi / 5;
   static const radarMaxLength = 1500.0;
+
+  static const teleportRadiusFromTileSizeFactor = 1.5;
+  static const teleportTileHitRadius = 1;
+  static const teleportTotalTimeInMs = 2000.0;
 
   static const localhost = 'http://localhost:$PORT';
   static const localbox = 'http://192.168.1.7:$PORT';

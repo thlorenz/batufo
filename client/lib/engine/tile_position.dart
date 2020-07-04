@@ -15,6 +15,17 @@ class TilePosition {
 
   const TilePosition(this.col, this.row, this.relX, this.relY);
 
+  factory TilePosition.centered(int col, int row, [double tileSize]) {
+    tileSize = tileSize ?? WorldPosition.tileSize;
+    final relX = tileSize / 2;
+    final relY = tileSize / 2;
+    return TilePosition(col, row, relX, relY);
+  }
+
+  factory TilePosition.zero() {
+    return TilePosition(0, 0, 0.0, 0.0);
+  }
+
   bool isSameTileAs(TilePosition other) => other.col == col && other.row == row;
 
   WorldPosition toWorldPosition({double tileSize, bool center = false}) =>

@@ -20,6 +20,7 @@ import 'package:batufo/game/entities/planets.dart';
 import 'package:batufo/game/entities/player.dart';
 import 'package:batufo/game/entities/radar.dart';
 import 'package:batufo/game/entities/stars.dart';
+import 'package:batufo/game/entities/teleports.dart';
 import 'package:batufo/game/inputs/gestures.dart';
 import 'package:batufo/game/inputs/input_processor.dart';
 import 'package:batufo/game/inputs/keyboard.dart';
@@ -52,6 +53,7 @@ class ClientGame extends Game {
   final Stars _starsFront;
   final Planets _planetsBack;
   final Planets _planetsFront;
+  final Teleports _teleports;
   final InputProcessor inputProcessor;
   final SoundController soundController;
   final int clientID;
@@ -176,6 +178,11 @@ class ClientGame extends Game {
           enableRecording: enableRecording,
           debugVisibleRect: GameProps.debugZ100VisibleRect,
         ),
+        _teleports = Teleports(
+          arena.teleports,
+          arena.tileSize,
+          GameProps.teleportRadiusFromTileSizeFactor,
+        ),
         _z10Camera = Offset.zero,
         _z20Camera = Offset.zero,
         _z30Camera = Offset.zero,
@@ -288,12 +295,14 @@ class ClientGame extends Game {
       final pressedKeys = GameKeyboard.pressedKeys;
       final gestures = GameGestures.instance.aggregatedGestures;
 
-      inputProcessor.udate(
-        dt,
-        pressedKeys,
-        gestures,
-        player,
-      );
+      if (!player.teleportation.isActive) {
+        inputProcessor.udate(
+          dt,
+          pressedKeys,
+          gestures,
+          player,
+        );
+      }
     }
     _gameController.update(dt, ts);
     _clientPlayerUpdate.player = gameState.players[clientID];
@@ -386,6 +395,7 @@ class ClientGame extends Game {
     {
       canvas.translate(-_arenaCamera.dx, -_arenaCamera.dy);
       _buildings.render(canvas, _arenaVisibleRect, _size);
+      _teleports.render(canvas, _arenaVisibleRect);
 
       _pickups.render(canvas, _z100VisibleRect);
       _bombs.render(canvas, gameState.bombs);
@@ -521,6 +531,7 @@ class ClientGame extends Game {
       tileSize: arena.tileSize.toDouble(),
       hitSize: playerSize,
       thrustAnimationDurationMs: GameProps.playerThrustAnimationDurationMs,
+      teleportTotalTimeInMs: GameProps.teleportTotalTimeInMs,
     );
   }
 

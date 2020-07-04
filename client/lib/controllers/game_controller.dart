@@ -11,6 +11,7 @@ import 'package:batufo/controllers/helpers/pickups_controller.dart';
 import 'package:batufo/controllers/player_controller.dart';
 import 'package:batufo/controllers/radar_controller.dart';
 import 'package:batufo/controllers/sound_controller.dart';
+import 'package:batufo/controllers/teleports_controller.dart';
 import 'package:batufo/diagnostics/logger.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/game_props.dart';
@@ -30,6 +31,7 @@ class GameController {
   final ClientGameState _gameState;
   final Arena _arena;
   final RadarController _radarController;
+  final TeleportsController _teleportsController;
 
   PlayerController _playerController;
   BulletsController _bulletsController;
@@ -47,7 +49,13 @@ class GameController {
           bulletForce: GameProps.bulletForce,
           playerSize: GameProps.playerSizeFactor * _arena.tileSize,
         ),
-        _radarController = RadarController(radar: _gameState.radar) {
+        _radarController = RadarController(radar: _gameState.radar),
+        _teleportsController = TeleportsController(
+          teleports: _arena.teleports,
+          soundController: soundController,
+          tileHitRadius: GameProps.teleportTileHitRadius,
+          teleportTotalTimeInMs: GameProps.teleportTotalTimeInMs,
+        ) {
     final playerSize = GameProps.playerSizeFactor * _arena.tileSize;
     final colliders = Colliders(
       _arena.nrows,
@@ -125,6 +133,7 @@ class GameController {
       _arena.buildingWorldOffsets,
       enemyWorldOffsets,
     );
+    _teleportsController.update(dt, _gameState.hero);
 
     return _gameState;
   }

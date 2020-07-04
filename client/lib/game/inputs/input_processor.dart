@@ -6,7 +6,7 @@ import 'package:batufo/models/player_model.dart'
     show PlayerModel, Weapon, nextWeapon;
 import 'package:flutter/foundation.dart';
 
-const twopi = 2 * pi;
+const _pipi = 2 * pi;
 
 class InputProcessor {
   final double keyboardThrustForce;
@@ -112,8 +112,8 @@ class InputProcessor {
     // Make sure angle is never < 0 nor too large.
     // This is important for network communication as the double is packed
     // and sending negative value causes problems due to 31-bit limit in V8.
-    if (res > twopi) return res - twopi;
-    if (res < 0) return res + twopi;
+    if (res > _pipi) return res - _pipi;
+    if (res < 0) return res + _pipi;
     return res;
   }
 

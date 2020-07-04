@@ -1,6 +1,7 @@
 import 'dart:ui' show Offset;
 
 import 'package:batufo/engine/tile_position.dart';
+import 'package:batufo/models/teleportation_model.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart'
     show PackedPlayerModel;
 import 'package:batufo/rpc/packing_types.dart';
@@ -34,6 +35,7 @@ class PlayerModel {
   int nbombs;
   int nbullets;
   Weapon currentWeapon;
+  TeleportationModel teleportation;
 
   // Events
   bool appliedThrust;
@@ -60,7 +62,8 @@ class PlayerModel {
         shieldRemainingMs = shieldRemainingMs ?? 0.0,
         currentWeapon = currentWeapon ?? Weapon.Bullet,
         nbombs = nbombs ?? 0,
-        nbullets = nbullets ?? 0;
+        nbullets = nbullets ?? 0,
+        teleportation = TeleportationModel.empty();
 
   bool get hasShield => shieldRemainingMs > 0.0;
   bool get hasBomb => nbombs > 0;

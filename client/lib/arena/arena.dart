@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:batufo/arena/pickup.dart';
+import 'package:batufo/arena/teleport.dart';
 import 'package:batufo/engine/tile_position.dart';
 import 'package:batufo/rpc/generated/message_bus.pb.dart' show PackedArena;
 import 'package:flutter/foundation.dart';
@@ -10,6 +11,7 @@ class Arena {
   final List<TilePosition> walls;
   final List<TilePosition> players;
   final List<Pickup> pickups;
+  final List<Teleport> teleports;
   final int nrows;
   final int ncols;
   final int tileSize;
@@ -26,6 +28,7 @@ class Arena {
     @required this.nrows,
     @required this.ncols,
     @required this.tileSize,
+    @required this.teleports,
   })  : buildingWorldOffsets = List.from(walls
             .map<Offset>((x) => x.toWorldOffset(tileSize: tileSize.toDouble())))
           ..addAll(floorTiles.map<Offset>(

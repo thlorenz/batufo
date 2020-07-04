@@ -79,6 +79,13 @@ class EnabledSound implements Sound {
     );
   }
 
+  Future<AudioPlayer> playTeleport() {
+    return _audio.playSound(
+      _audioAssets['teleport'].audioPath,
+      volume: GameProps.teleportVolume,
+    );
+  }
+
   void disableLog() {
     _audio.disableLog();
   }
