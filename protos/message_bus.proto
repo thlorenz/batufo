@@ -91,6 +91,7 @@ message PackedArena {
   uint32 ncols = 5;
   uint32 tileSize = 6;
   repeated PackedPickup pickups = 7;
+  repeated PackedTeleport teleports = 8;
 }
 
 message PackedPlayerModel {
@@ -110,6 +111,11 @@ message PackedBulletModel {
 
 message PackedBombModel {
   PackedTilePosition tilePosition = 1;
+}
+
+message PackedTeleport {
+  PackedPoint portA = 1;
+  PackedPoint portB = 2;
 }
 
 // colRow: tile column and row

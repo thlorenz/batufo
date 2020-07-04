@@ -509,6 +509,7 @@ class PackedArena extends $pb.GeneratedMessage {
     ..a<$core.int>(5, 'ncols', $pb.PbFieldType.OU3)
     ..a<$core.int>(6, 'tileSize', $pb.PbFieldType.OU3, protoName: 'tileSize')
     ..pc<PackedPickup>(7, 'pickups', $pb.PbFieldType.PM, subBuilder: PackedPickup.create)
+    ..pc<PackedTeleport>(8, 'teleports', $pb.PbFieldType.PM, subBuilder: PackedTeleport.create)
     ..hasRequiredFields = false
   ;
 
@@ -565,6 +566,9 @@ class PackedArena extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(7)
   $core.List<PackedPickup> get pickups => $_getList(6);
+
+  @$pb.TagNumber(8)
+  $core.List<PackedTeleport> get teleports => $_getList(7);
 }
 
 class PackedPlayerModel extends $pb.GeneratedMessage {
@@ -742,6 +746,51 @@ class PackedBombModel extends $pb.GeneratedMessage {
   void clearTilePosition() => clearField(1);
   @$pb.TagNumber(1)
   PackedTilePosition ensureTilePosition() => $_ensure(0);
+}
+
+class PackedTeleport extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('PackedTeleport', createEmptyInstance: create)
+    ..aOM<PackedPoint>(1, 'portA', protoName: 'portA', subBuilder: PackedPoint.create)
+    ..aOM<PackedPoint>(2, 'portB', protoName: 'portB', subBuilder: PackedPoint.create)
+    ..hasRequiredFields = false
+  ;
+
+  PackedTeleport._() : super();
+  factory PackedTeleport() => create();
+  factory PackedTeleport.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PackedTeleport.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PackedTeleport clone() => PackedTeleport()..mergeFromMessage(this);
+  PackedTeleport copyWith(void Function(PackedTeleport) updates) => super.copyWith((message) => updates(message as PackedTeleport));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static PackedTeleport create() => PackedTeleport._();
+  PackedTeleport createEmptyInstance() => create();
+  static $pb.PbList<PackedTeleport> createRepeated() => $pb.PbList<PackedTeleport>();
+  @$core.pragma('dart2js:noInline')
+  static PackedTeleport getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PackedTeleport>(create);
+  static PackedTeleport _defaultInstance;
+
+  @$pb.TagNumber(1)
+  PackedPoint get portA => $_getN(0);
+  @$pb.TagNumber(1)
+  set portA(PackedPoint v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasPortA() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPortA() => clearField(1);
+  @$pb.TagNumber(1)
+  PackedPoint ensurePortA() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  PackedPoint get portB => $_getN(1);
+  @$pb.TagNumber(2)
+  set portB(PackedPoint v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPortB() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPortB() => clearField(2);
+  @$pb.TagNumber(2)
+  PackedPoint ensurePortB() => $_ensure(1);
 }
 
 class PackedTilePosition extends $pb.GeneratedMessage {

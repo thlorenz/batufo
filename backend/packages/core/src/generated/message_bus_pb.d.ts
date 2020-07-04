@@ -341,6 +341,11 @@ export class PackedArena extends jspb.Message {
   setPickupsList(value: Array<PackedPickup>): void;
   addPickups(value?: PackedPickup, index?: number): PackedPickup;
 
+  clearTeleportsList(): void;
+  getTeleportsList(): Array<PackedTeleport>;
+  setTeleportsList(value: Array<PackedTeleport>): void;
+  addTeleports(value?: PackedTeleport, index?: number): PackedTeleport;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): PackedArena.AsObject;
   static toObject(includeInstance: boolean, msg: PackedArena): PackedArena.AsObject;
@@ -360,6 +365,7 @@ export namespace PackedArena {
     ncols: number,
     tilesize: number,
     pickupsList: Array<PackedPickup.AsObject>,
+    teleportsList: Array<PackedTeleport.AsObject>,
   }
 }
 
@@ -462,6 +468,34 @@ export class PackedBombModel extends jspb.Message {
 export namespace PackedBombModel {
   export type AsObject = {
     tileposition?: PackedTilePosition.AsObject,
+  }
+}
+
+export class PackedTeleport extends jspb.Message {
+  hasPorta(): boolean;
+  clearPorta(): void;
+  getPorta(): PackedPoint | undefined;
+  setPorta(value?: PackedPoint): void;
+
+  hasPortb(): boolean;
+  clearPortb(): void;
+  getPortb(): PackedPoint | undefined;
+  setPortb(value?: PackedPoint): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): PackedTeleport.AsObject;
+  static toObject(includeInstance: boolean, msg: PackedTeleport): PackedTeleport.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: PackedTeleport, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): PackedTeleport;
+  static deserializeBinaryFromReader(message: PackedTeleport, reader: jspb.BinaryReader): PackedTeleport;
+}
+
+export namespace PackedTeleport {
+  export type AsObject = {
+    porta?: PackedPoint.AsObject,
+    portb?: PackedPoint.AsObject,
   }
 }
 

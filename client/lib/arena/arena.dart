@@ -51,21 +51,26 @@ class Arena {
   }
 
   factory Arena.unpack(PackedArena data) {
+    final tileSize = data.tileSize;
     final floorTiles =
         data.floorTiles.map((x) => TilePosition.unpack(x)).toList();
     final walls = data.walls.map((x) => TilePosition.unpack(x)).toList();
     final playerPositions =
         data.playerPositions.map((x) => TilePosition.unpack(x)).toList();
     final pickups = data.pickups.map(Pickup.unpack).toList();
+    final teleports = data.teleports
+        .map((x) => Teleport.unpack(x, tileSize.toDouble()))
+        .toList();
 
     return Arena(
       floorTiles: floorTiles,
       walls: walls,
       players: playerPositions,
       pickups: pickups,
+      teleports: teleports,
       nrows: data.nrows,
       ncols: data.ncols,
-      tileSize: data.tileSize,
+      tileSize: tileSize,
     );
   }
 
@@ -75,6 +80,7 @@ class Arena {
       players: $players
       walls: $walls
       pickups: $pickups
+      teleports: $teleports
     }
 ''';
   }

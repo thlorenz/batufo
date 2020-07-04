@@ -2,19 +2,43 @@ import { strict as assert } from 'assert'
 import { UnreachableCaseError } from '../types'
 
 export enum Tile {
-  /* 0 */ OutOfBounds,
-  /* 1 */ Empty,
-  /* 2 */ Hole,
-  /* 3 */ Wall,
-  /* 4 */ Player,
-  /* 5 */ Medkit,
-  /* 6 */ Shield,
-  /* 7 */ Bomb,
+  /*  0 */ OutOfBounds,
+  /*  1 */ Empty,
+  /*  2 */ Hole,
+  /*  3 */ Wall,
+  /*  4 */ Player,
+  /*  5 */ Medkit,
+  /*  6 */ Shield,
+  /*  7 */ Bomb,
+  /*  8 */ Teleport1,
+  /*  9 */ Teleport2,
+  /* 10 */ Teleport3,
+  /* 11 */ Teleport4,
+  /* 12 */ Teleport5,
+  /* 13 */ Teleport6,
+  /* 14 */ Teleport7,
+  /* 15 */ Teleport8,
 }
 
 export const EMPTY = ' '
 
-export const TileKeys = [EMPTY, 'x', 'p', '=', '+', 's', 'b'] as const
+export const TileKeys = [
+  EMPTY,
+  'x',
+  'p',
+  '=',
+  '+',
+  's',
+  'b',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+] as const
 export type TileKey = typeof TileKeys[number]
 
 const charToTile: Map<TileKey, Tile> = new Map([
@@ -25,6 +49,14 @@ const charToTile: Map<TileKey, Tile> = new Map([
   ['+', Tile.Medkit],
   ['s', Tile.Shield],
   ['b', Tile.Bomb],
+  ['1', Tile.Teleport1],
+  ['2', Tile.Teleport2],
+  ['3', Tile.Teleport3],
+  ['4', Tile.Teleport4],
+  ['5', Tile.Teleport5],
+  ['6', Tile.Teleport6],
+  ['7', Tile.Teleport7],
+  ['8', Tile.Teleport8],
 ])
 
 function tileFromChar(char: TileKey) {
@@ -103,6 +135,15 @@ export class Tilemap {
       case Tile.Medkit:
       case Tile.Bomb:
         return true
+      case Tile.Teleport1:
+      case Tile.Teleport2:
+      case Tile.Teleport3:
+      case Tile.Teleport4:
+      case Tile.Teleport5:
+      case Tile.Teleport6:
+      case Tile.Teleport7:
+      case Tile.Teleport8:
+        return true
       default:
         throw new UnreachableCaseError(tile)
     }
@@ -136,17 +177,17 @@ ${this._tilesString}
   }
 }
 
-/* Testing Area
+/* Testing area
 const terrain: string = `
 =======================
-=         p           =
+=    2                =
 =                     =
-=====           p     =
+=====            2    =
     =     ====        =
-    =   d =  =        =
+    =     =  =        =
     =     ====        =
 =====                 ====
-=   +   p       p        =
+= 1     p        1       =
 =                     ====
 =======================
 `

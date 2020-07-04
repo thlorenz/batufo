@@ -5,7 +5,7 @@ export default Level.fromLevelString(
   `
 =================================================================
 =                                                               =
-=                                                               =
+=                              1                                =
 =   +                                                       +   =
 =                   ==========================                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
@@ -22,13 +22,13 @@ export default Level.fromLevelString(
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
 =                   ==========================                  =
 =                                                               =
-=                                                               =
+=      2                                                 2      =
 =                                                               =
 =           ==============              =============           =
 =           =xxxxxxxxxxxx=              =xxxxxxxxxxx=           =
 =           =xxxxxxxxxxxx=              =xxxxxxxxxxx=           =
 =           =xxxxxxxxxxxx=              =xxxxxxxxxxx=           =
-=           =xxxxxxxxxxxx=              =xxxxxxxxxxx=           =
+=           =xxxxxxxxxxxx=      1       =xxxxxxxxxxx=           =
 =           =xxxxxxxxxxxx=              =xxxxxxxxxxx=           =
 =           =xxxxxxxxxxxx=              =xxxxxxxxxxx=           =
 =           ==============              =============           =

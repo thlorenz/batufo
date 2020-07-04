@@ -38,7 +38,7 @@ export default Level.fromLevelString(
       =         ===xxx===               =xxxxxxxxxxx=    s  =
       =            ===                 =xxxxxxxxxxxxx=      =
       =                           =====xxxxxxxxxxxxxxx=======
-      =                           =
+      =             1             =
       =   b                       =
        =                         =
         =========       =========
@@ -52,7 +52,7 @@ export default Level.fromLevelString(
               =           =
              =             =
             =               =
-           =  +           s  =
+           =  +     1     s  =
           =                   =
          =          p          =
          =======================`
