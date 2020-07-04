@@ -12,21 +12,20 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Release v1.0.0
 
-- [ ] end game multi player game peacefully when no more bombs nor bullets
-  - [ ] alternatively provide player with more bullets over time, i.e. 1 / 5 secs
-- [ ] link to attributions
+- [ ] link to attributions via [[https://pub.dev/packages/url_launcher][url_launcher]]
 - [ ] link to donations
 - [ ] add donations links to main web page
 - [ ] three + four player levels
 - [ ] large single player level
-- [X] play store release
 - [ ] instruction youtube video (or remove link)
+- [X] play store release
+- [X] when not recording bottom row is drawn a bit too late on mobile
 - [X] better intro prose
 - [X] shield protects from bomb one time
  
 ** Next
 
-- [ ] teleportation
+- [X] teleportation
 
 ** DONE Out of Game Bounds Problem
 
