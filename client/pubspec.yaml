@@ -27,6 +27,8 @@ dependencies:
       path: plugins/window_size
       ref: b0794faf2c000576515aee56ca6bb5bee64cece4
 
+  url_launcher: 5.4.11
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
