@@ -5,6 +5,10 @@ import 'package:batufo/types.dart';
 import 'package:batufo/widgets/screens/router.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const DESKTOP_INSTRUCTIONS = 'https://youtu.be/sk3bITPiSeA';
+const MOBILE_INSTRUCTIONS = 'https://youtu.be/fTOnVhHM0e4';
 
 Tuple<bool, bool> _controlsToShow(PlatformType platform) {
   switch (platform) {
@@ -23,6 +27,22 @@ Tuple<bool, bool> _controlsToShow(PlatformType platform) {
   }
 }
 
+String _instructionsURL(PlatformType platform) {
+  switch (platform) {
+    case PlatformType.MacOS:
+    case PlatformType.Linux:
+    case PlatformType.Windows:
+    case PlatformType.Web:
+      return DESKTOP_INSTRUCTIONS;
+    case PlatformType.Android:
+    case PlatformType.IOS:
+    case PlatformType.Fuchsia:
+      return MOBILE_INSTRUCTIONS;
+    default:
+      throw UnimplementedError('Do not know platform $platform');
+  }
+}
+
 class InstructionsWidget extends StatelessWidget {
   final PlatformType platform;
   const InstructionsWidget({@required this.platform}) : super();
@@ -32,6 +52,7 @@ class InstructionsWidget extends StatelessWidget {
     final show = _controlsToShow(platform);
     final showKeyboard = show.first;
     final showGestures = show.second;
+    final instructionsURL = _instructionsURL(platform);
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
@@ -51,15 +72,16 @@ class InstructionsWidget extends StatelessWidget {
             title: Text('Watch Instructions'),
           ),
         ],
-        onTap: (idx) {
+        onTap: (idx) async {
           switch (idx) {
             case 0:
               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed(Routes.UNIVERSE);
+              await Navigator.of(context).pushReplacementNamed(Routes.UNIVERSE);
               break;
             case 1:
-              throw UnimplementedError(
-                  'need to create and link instruction video');
+              if (await canLaunch(instructionsURL))
+                await launch(instructionsURL);
+              break;
             default:
               throw UnimplementedError('menu item $idx');
           }
