@@ -37,7 +37,6 @@
 
 <script>
   import Home from './routes/Home.svelte'
-  import Game from './routes/Game.svelte'
   import Editor from './routes/Editor.svelte'
   import Watch from './routes/Watch.svelte'
   import Devlog from './routes/Devlog.svelte'
@@ -47,7 +46,6 @@
   export let subChannelURL
   export let gameWebURL
   export let editorURL
-  export let twitchChannel
   export let twitchChannelURL
   export let latestReleaseURL
   export let twitterURL
@@ -79,11 +77,6 @@
     state = state
       window.history.state
   }
-  const navigateGame = () => {
-    state.currentRoute = routes.game
-    state = state
-  }
-
   const navigateEditor = () => {
     state.currentRoute = routes.editor
     state = state
@@ -115,9 +108,6 @@
     <a href="{rootURL + routes.home.hash }"
        class="{homeClass}"
        on:click={navigateHome}>Home</a>
-    <a href="{rootURL + routes.game.hash}"
-       class="{gameClass}"
-       on:click={navigateGame}>Game</a>
     <a href="{rootURL + routes.watch.hash }"
        class="{watchClass}"
        on:click={navigateWatch}>Watch</a>
@@ -133,19 +123,22 @@
       <Home
         {title}
         {embedPlaylist}
-        {subChannelURL}
         {gameWebURL}
         {twitterURL}
         {twitchChannelURL}
         {latestReleaseURL}
+        {githubSourceURL}
         {windowWidth}
       />
-    {:else if state.currentRoute === routes.game}
-      <Game {title} {gameWebURL} {latestReleaseURL} {githubSourceURL} {windowWidth} />
     {:else if state.currentRoute === routes.editor}
       <Editor {title} {editorURL} {windowWidth} {windowHeight} />
     {:else if state.currentRoute === routes.watch}
-      <Watch {title} {twitchChannelURL} {twitchChannel} {youtubePlaylistURL} {windowWidth} />
+      <Watch {title}
+        {subChannelURL}
+        {twitchChannelURL}
+        {youtubePlaylistURL}
+        {windowWidth}
+        {embedPlaylist} />
     {:else if state.currentRoute === routes.devlog || isOnDevlogPage()}
       <Devlog />
     {/if}

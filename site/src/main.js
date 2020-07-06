@@ -4,7 +4,6 @@ import gameUpdate from '../data/game-update.json'
 
 const routes = {
   home: { id: 'home', hash: '' },
-  game: { id: 'game', hash: '#game' },
   editor: { id: 'editor', hash: '#editor' },
   watch: { id: 'watch', hash: '#watch' },
   devlog: { id: 'devlog', hash: '#devlog' },
@@ -17,9 +16,7 @@ const isOnDevlogPage = () => {
 
 const hash = location.hash
 const startingRoute =
-  hash === routes.game.hash
-    ? routes.game
-    : hash === routes.editor.hash
+  hash === routes.editor.hash
     ? routes.editor
     : hash === routes.watch.hash
     ? routes.watch
