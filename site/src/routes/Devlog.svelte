@@ -34,12 +34,17 @@
   import Networking from '../devlog/networking.md'
   import BatufoNetworking from '../devlog/batufo-networking.md'
   import BatufoTodos from '../devlog/batufo-todos.md'
+  import BatufoAttrib from '../devlog/batufo-attrib.md'
   const bafuNetworkingID = 'devlog-applying-strategies'
   const multiplayerArchitectureID = 'devlog-multiplayer-architecture'
   const batufoTodosID = 'devlog-batufo-todos'
+  const batufoAttribID = 'devlog-batufo-attrib'
 </script>
 
 <main>
+  <article id="{batufoAttribID}">
+    <BatufoAttrib link="#{batufoAttribID}" />
+  </article>
   <article id="{batufoTodosID}">
     <BatufoTodos link="#{batufoTodosID}" />
   </article>
