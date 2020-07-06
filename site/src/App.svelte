@@ -39,6 +39,7 @@
   import Home from './routes/Home.svelte'
   import Editor from './routes/Editor.svelte'
   import Watch from './routes/Watch.svelte'
+  import Sponsor from './routes/Sponsor.svelte'
   import Devlog from './routes/Devlog.svelte'
 
   export let title
@@ -55,6 +56,10 @@
   export let rootURL
   export let githubSourceURL
 
+  export let githubSponsorURL
+  export let paypalSponsorURL
+  export let patreonSponsorURL
+
   const getWindowWidth = () => window.innerWidth
     || document.documentElement.clientWidth
     || document.body.clientWidth
@@ -64,9 +69,9 @@
     || document.body.clientHeight
 
   $: homeClass = state.currentRoute === routes.home ? 'underline' : ''
-  $: gameClass = state.currentRoute === routes.game ? 'underline' : ''
   $: editorClass = state.currentRoute === routes.editor ? 'underline' : ''
   $: watchClass = state.currentRoute === routes.watch ? 'underline' : ''
+  $: sponsorClass = state.currentRoute === routes.sponsor ? 'underline' : ''
   $: devlogClass = isOnDevlogPage() ? 'underline' : ''
   $: windowWidth = getWindowWidth()
   $: windowHeight = getWindowHeight()
@@ -84,6 +89,11 @@
 
   const navigateWatch = () => {
     state.currentRoute = routes.watch
+    state = state
+  }
+
+  const navigateSponsor = () => {
+    state.currentRoute = routes.sponsor
     state = state
   }
 
@@ -111,6 +121,9 @@
     <a href="{rootURL + routes.watch.hash }"
        class="{watchClass}"
        on:click={navigateWatch}>Watch</a>
+    <a href="{rootURL + routes.sponsor.hash }"
+       class="{sponsorClass}"
+       on:click={navigateSponsor}>Sponsor</a>
     <a href="{rootURL + routes.devlog.hash }"
        class="{devlogClass}"
        on:click={navigateDevlog}>Devlog</a>
@@ -139,6 +152,11 @@
         {youtubePlaylistURL}
         {windowWidth}
         {embedPlaylist} />
+    {:else if state.currentRoute === routes.sponsor}
+      <Sponsor {title}
+        {githubSponsorURL}
+        {paypalSponsorURL}
+        {patreonSponsorURL} />
     {:else if state.currentRoute === routes.devlog || isOnDevlogPage()}
       <Devlog />
     {/if}

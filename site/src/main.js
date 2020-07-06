@@ -6,6 +6,7 @@ const routes = {
   home: { id: 'home', hash: '' },
   editor: { id: 'editor', hash: '#editor' },
   watch: { id: 'watch', hash: '#watch' },
+  sponsor: { id: 'sponsor', hash: '#sponsor' },
   devlog: { id: 'devlog', hash: '#devlog' },
 }
 
@@ -20,6 +21,8 @@ const startingRoute =
     ? routes.editor
     : hash === routes.watch.hash
     ? routes.watch
+    : hash === routes.sponsor.hash
+    ? routes.sponsor
     : isOnDevlogPage()
     ? routes.devlog
     : routes.home
@@ -45,6 +48,9 @@ const app = new App({
     twitchChannel: 'thlorenz',
     twitchChannelURL: 'https://www.twitch.tv/thlorenz',
     twitterURL: 'https://twitter.com/thlorenz',
+    githubSponsorURL: 'https://github.com/sponsors/thlorenz',
+    paypalSponsorURL: 'https://www.paypal.me/thlorenz/5',
+    patreonSponsorURL: 'https://www.patreon.com/bePatron?u=8663953',
     routes,
     state: {
       currentRoute: startingRoute,
