@@ -1,5 +1,27 @@
 import 'package:batufo/widgets/screens/router.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const _ATTRIBUTIONS_URL = 'https://thlorenz.com/batufo/#devlog-batufo-attrib';
+const _SPONSOR_URL = 'https://thlorenz.com/batufo/#sponsor';
+const _HOME_URL = 'https://thlorenz.com/batufo/';
+const _EDITOR_URL = 'https://thlorenz.com/batufo/editor';
+final _linkStyle = TextStyle(
+  color: Colors.lightBlue[100],
+  fontStyle: FontStyle.italic,
+  fontSize: 18.0,
+  fontWeight: FontWeight.bold,
+  decoration: TextDecoration.underline,
+);
+
+Future<void> _maybeLaunch(String url) async {
+  if (await canLaunch(url))
+    await launch(
+      url,
+      forceWebView: true,
+      enableJavaScript: true,
+    );
+}
 
 class HomeWidget extends StatelessWidget {
   @override
@@ -9,17 +31,44 @@ class HomeWidget extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/bg/level-icon.png'),
-              fit: BoxFit.cover),
+            image: AssetImage('assets/images/bg/level-icon.png'),
+            fit: BoxFit.cover,
+          ),
           color: Colors.white,
         ),
-        child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(child: _GameStoryWidget()),
-          ],
+        child: Center(
+          child: Flex(
+            direction: Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _GameStoryWidget(),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+              ),
+              InkWell(
+                  child: Text('Home Page', style: _linkStyle),
+                  onTap: () => _maybeLaunch(_HOME_URL)),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+              ),
+              InkWell(
+                  child: Text('Attributions', style: _linkStyle),
+                  onTap: () => _maybeLaunch(_ATTRIBUTIONS_URL)),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+              ),
+              InkWell(
+                  child: Text('Donate', style: _linkStyle),
+                  onTap: () => _maybeLaunch(_SPONSOR_URL)),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+              ),
+              InkWell(
+                  child: Text('Level Editor', style: _linkStyle),
+                  onTap: () => _maybeLaunch(_EDITOR_URL)),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
