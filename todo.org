@@ -12,12 +12,12 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Release v1.0.0
 
-- [ ] link to attributions via [[https://pub.dev/packages/url_launcher][url_launcher]]
-- [ ] link to donations
-- [ ] add donations links to main web page
 - [ ] three + four player levels
 - [ ] large single player level
-- [ ] instruction youtube video (or remove link)
+- [X] link to attributions via [[https://pub.dev/packages/url_launcher][url_launcher]]
+- [X] link to donations
+- [X] add donations links to main web page
+- [X] instruction youtube video (or remove link)
 - [X] play store release
 - [X] when not recording bottom row is drawn a bit too late on mobile
 - [X] better intro prose
