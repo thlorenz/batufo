@@ -8,11 +8,16 @@
 </script>
 
 <style>
+  .gif {
+    max-width: 90vw;
+  }
 </style>
 
 <main class="main">
   <h1>{title}</h1>
-  <div class="installs">
+
+  <img class="gif" alt="Game in Action" src="assets/face-off.gif" />
+
   <h5>Android</h5>
   <a href='https://play.google.com/store/apps/details?id=com.thlorenz.batufo&utm_source=home-page&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
     <img width="208px" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>
@@ -29,7 +34,7 @@
   <a href="http://thlorenz.com/batufo/webgame">
     <img width="128px" alt="Play in the Browser" src="https://icons.iconarchive.com/icons/google/chrome/128/Google-Chrome-icon.png" />
   </a>
-  <div>
+
   <p>
     <a href="{twitterURL}" target="_blank">Follow on Twitter</a> |
     <a href="{githubSourceURL}" target="_blank">Source on Github</a>

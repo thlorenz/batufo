@@ -6,6 +6,7 @@
     padding: 0.3em;
     max-width: none;
     margin: 0 auto;
+    width: fit-content;
   }
 
   :global(h1) {
