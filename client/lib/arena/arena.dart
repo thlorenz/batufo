@@ -29,10 +29,8 @@ class Arena {
     @required this.ncols,
     @required this.tileSize,
     @required this.teleports,
-  })  : buildingWorldOffsets = List.from(walls
-            .map<Offset>((x) => x.toWorldOffset(tileSize: tileSize.toDouble())))
-          ..addAll(floorTiles.map<Offset>(
-              (x) => x.toWorldOffset(tileSize: tileSize.toDouble()))),
+  })  : buildingWorldOffsets = List.from(walls.map<Offset>(
+            (x) => x.toWorldOffset(tileSize: tileSize.toDouble()))),
         size = Size(ncols * tileSize.toDouble(), nrows * tileSize.toDouble());
 
   PackedArena pack() {
