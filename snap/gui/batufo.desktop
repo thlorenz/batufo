@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=UFO Multiplayer Space Battle
+Comment=2D Multiplayer Space Battle Game
+Icon=${SNAP}/meta/gui/icon.png
+Exec=batufo %U
+Terminal=false
+Type=Application
+Categories=Games;
+Keywords=Games;
+StartupNotify=false

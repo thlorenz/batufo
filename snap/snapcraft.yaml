@@ -1,0 +1,36 @@
+name: batufo
+adopt-info: batufo
+summary: 2D Multiplayer Space Battle Game
+description: |
+  They are back ...
+  And this time they didn't come to negotiate.
+
+  Some say the Lekdas never wanted to negotiate. They just want to take, take more and wage war.
+
+  They entered the stratosphere of your planet, their ships disguised to look like yours.
+  All that remains now is to defend, defend ... and finally prevail or life as we know it will cease to exist.
+
+  Join in with your ship and fight in this fun 2.5D game and compete against opponents and other players from all over the world.
+
+confinement: strict
+base: core18
+grade: stable
+architectures:
+  - build-on: amd64
+
+apps:
+  batufo:
+    command: bin/client
+    extensions: [flutter-master]
+    plugs:
+      - network
+
+parts:
+  batufo:
+    source: .
+    source-subdir: client
+    plugin: flutter
+    flutter-target: lib/main/desktop.release.dart
+    override-pull: |
+      snapcraftctl pull
+      snapcraftctl set-version "$(git describe --tags --abbrev=8)"
