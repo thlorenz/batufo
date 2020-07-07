@@ -31,6 +31,7 @@ parts:
     source-subdir: client
     plugin: flutter
     flutter-target: lib/main/desktop.release.dart
+    build-packages: [ git ]
     override-pull: |
       snapcraftctl pull
       snapcraftctl set-version "$(git describe --tags --abbrev=8)"
