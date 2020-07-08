@@ -12,8 +12,8 @@ Hacking on a Multiplayer 2D #Flutter Game with a Node.js backend written in #Typ
 
 * Release v1.0.0
 
-- [ ] three + four player levels
-- [ ] large single player level
+- [x] three + four player levels
+- [x] large two player level
 - [X] link to attributions via [[https://pub.dev/packages/url_launcher][url_launcher]]
 - [X] link to donations
 - [X] add donations links to main web page
