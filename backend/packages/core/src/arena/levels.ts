@@ -16,8 +16,8 @@ export class Levels {
 }
 
 export const levels: Map<string, Level> = new Map([
-  [practiceArenaLevel.name, practiceArenaLevel],
   [faceOffLevel.name, faceOffLevel],
+  [practiceArenaLevel.name, practiceArenaLevel],
   [mazeLevel.name, mazeLevel],
   [troikaRingLevel.name, troikaRingLevel],
   [coliseumLevel.name, coliseumLevel],
