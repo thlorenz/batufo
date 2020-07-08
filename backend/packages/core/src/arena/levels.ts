@@ -3,6 +3,7 @@ import faceOffLevel from './builtins/face-off'
 import practiceArenaLevel from './builtins/practice-arena'
 import troikaRingLevel from './builtins/troika-ring'
 import coliseumLevel from './builtins/coliseum'
+import mazeLevel from './builtins/the-maze'
 import { Tilemap } from './tilemap'
 import { Level } from './level'
 
@@ -17,6 +18,7 @@ export class Levels {
 export const levels: Map<string, Level> = new Map([
   [practiceArenaLevel.name, practiceArenaLevel],
   [faceOffLevel.name, faceOffLevel],
+  [mazeLevel.name, mazeLevel],
   [troikaRingLevel.name, troikaRingLevel],
   [coliseumLevel.name, coliseumLevel],
 ])
