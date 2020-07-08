@@ -1,5 +1,6 @@
 import { strict as assert } from 'assert'
 import { EMPTY, TileKey } from './tilemap'
+// @ts-ignore
 import { encode, decode, SEPARATOR } from '6bit-encoder'
 
 type LevelTile = TileKey | '\n'
@@ -12,6 +13,14 @@ const tileToHex: Map<LevelTile, number> = new Map([
   ['+', 0x5],
   ['s', 0x6],
   ['b', 0x7],
+  ['1', 0x8],
+  ['2', 0x9],
+  ['3', 0xa],
+  ['4', 0xb],
+  ['5', 0xc],
+  ['6', 0xd],
+  ['7', 0xe],
+  ['8', 0xf],
 ])
 
 // @ts-ignore
@@ -110,11 +119,11 @@ export class LevelEncoder {
 const terrain: string = `=======================
 =         p           =
 =                     =
-=====           p     =
+=====  1        p     =
     =     ====        =
     =   s =  =        =
     =     ====        =
-=====                 ====
+=====  1              ====
 =   +   p  b    p        =
 =                     ====
 =======================
