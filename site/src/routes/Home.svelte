@@ -20,7 +20,9 @@
 <main class="main">
   <h1>{title}</h1>
 
-  <img class="gif" alt="Game in Action" src="assets/face-off.gif" />
+  <a href="http://thlorenz.com/batufo/webgame">
+    <img class="gif" alt="Game in Action" src="assets/face-off.gif" />
+  </a>
 
   <h5>Android</h5>
   <a href='https://play.google.com/store/apps/details?id=com.thlorenz.batufo&utm_source=home-page&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
