@@ -9,7 +9,11 @@
 
 <style>
   .gif {
-    max-width: 90vw;
+    max-width: 80vw;
+  }
+  .subtext {
+    font-size: 12px;
+    font-style: italic;
   }
 </style>
 
@@ -30,11 +34,12 @@
   <a href="{macOSReleaseURL}">
     <img width="108px" alt="Install on macOS" src="https://cdn1.iconfinder.com/data/icons/system-black-circles/512/mac_os_X-512.png" />
   </a>
+  <br>
+  <a class="subtext" alt="Installation Instructions" target="_blank" href="pdfs/batufo-installation-macOS.pdf">Installation Instructions</a>
   <h5>Play Online</h5>
   <a href="http://thlorenz.com/batufo/webgame">
     <img width="128px" alt="Play in the Browser" src="https://icons.iconarchive.com/icons/google/chrome/128/Google-Chrome-icon.png" />
   </a>
-
   <p>
     <a href="{twitterURL}" target="_blank">Follow on Twitter</a> |
     <a href="{githubSourceURL}" target="_blank">Source on Github</a>
