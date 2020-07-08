@@ -94,6 +94,11 @@ sudo dpkg-reconfigure -f noninteractive tzdata
 # cat /etc/timezone --> America/Denver
 ```
 
+### Increasing Allowed Open File Handles
+
+- follow [this post](https://easyengine.io/tutorials/linux/increase-open-files-limit/)
+- additionally I ran `ulimit -Sn 500000` since otherwise `ulimit -Sn` kept returning `1024`
+
 ## App Install
 
 ### First Time
