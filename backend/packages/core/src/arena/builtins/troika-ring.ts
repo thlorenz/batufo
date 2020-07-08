@@ -6,12 +6,12 @@ export default Level.fromLevelString(
                            ============
                       =====            =====
                   ====          1           ====
-               ===                              ===
-            ===                                    ===
-           =                                          =
-           =                                          =
+               ===    +                    +    ===
+            ===   b                            b   ===
+           =   +                                  +   =
+           =s                                        s=
           =                ============                =
-        ==            =====xxxxxxxxxxxx=====            ==
+        ==         s  =====xxxxxxxxxxxx=====  s         ==
        =          ====xxxxxxxxxxxxxxxxxxxxxx====          =
       =        ===xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx===        =
      =       ==xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==       =
@@ -20,25 +20,25 @@ export default Level.fromLevelString(
     =      =xxxxxxxxxxxxxx====      ====xxxxxxxxxxxxxx=      =
    =       =xxxxxxxxxxx===      2       ===xxxxxxxxxxx=       =
    =      =xxxxxxxxx===                    ===xxxxxxxxx=      =
-   =      =xxxxxxx==                          ==xxxxxxx=      =
+   =      =xxxxxxx==     s              s     ==xxxxxxx=      =
   =       ==xxxxx=                              =xxxxx==       =
-  =         =xxxx=                              =xxxx=         =
+  =         =xxxx= b                          b =xxxx=         =
   =          =xx=                                =xx=          =
-  =           =x=              ====              =x=           =
+  =      p    =x=              ====              =x=    p      =
  =             ==           ===xxxx===           ==             =
  =      ==                ==xxxxxxxxxx==                ==      =
- =      =x==             =xxxxxxxxxxxxxx=             ==x=      =
+ =     +=x==             =xxxxxxxxxxxxxx=             ==x=+     =
  =      =xxx=           =xxxxxxxxxxxxxxxx=           =xxx=      =
- =      =xxxx=          =xxxxxxxxxxxxxxxx=          =xxxx=      =
+ =     b=xxxx=          =xxxxxxxxxxxxxxxx=          =xxxx=b     =
 =       =xxxxx=        =xxxxxxxxxxxxxxxxxx=        =xxxxx=       =
+=s     =xxxxxx=+       =xxxxxxxxxxxxxxxxxx=       +=xxxxxx=     s=
 =      =xxxxxx=        =xxxxxxxxxxxxxxxxxx=        =xxxxxx=      =
-=      =xxxxxx=        =xxxxxxxxxxxxxxxxxx=        =xxxxxx=      =
+=+     =xxxxxx=       =xxxxxxxxxxxxxxxxxxxx=       =xxxxxx=     +=
 =      =xxxxxx=       =xxxxxxxxxxxxxxxxxxxx=       =xxxxxx=      =
-= 3    =xxxxxx=       =xxxxxxxxxxxxxxxxxxxx=       =xxxxxx=      =
-=      =xxxxxx=       =xxxxxxxxxxxxxxxxxxxx=       =xxxxxx=    3 =
+= 3    =xxxxxx=+      =xxxxxxxxxxxxxxxxxxxx=      +=xxxxxx=    3 =
 =      =xxxxxx=       =xxxxxxxxxxxxxxxxxxxx=       =xxxxxx=      =
 =      =xxxxxx=        =xxxxxxxxxxxxxxxxxx=        =xxxxxx=      =
-=      =xxxxxxx=       =xxxxxxxxxxxxxxxxxx=       =xxxxxxx=      =
+=b     =xxxxxxx=       =xxxxxxxxxxxxxxxxxx=       =xxxxxxx=     b=
 =       =xxxxxx=       =xxxxxxxxxxxxxxxxxx=       =xxxxxx=       =
  =      =xxxxxx=        =xxxxxxxxxxxxxxxx=        =xxxxxx=      =
  =      =xxxxxx=        =xxxxxxxxxxxxxxxx=        =xxxxxx=      =
@@ -47,23 +47,23 @@ export default Level.fromLevelString(
  =       =xxxxxx=           ===xxxx===           =xxxxxx=       =
   =      =xxxxxx=              ====              =xxxxxx=      =
   =      =xxxxxx=                                =xxxxxx=      =
-  =      =xxxxxxx=              1               =xxxxxxx=      =
+  =      =xxxxxxx= b            1             b =xxxxxxx=      =
   =       =xxxxxx=                              =xxxxxx=       =
-   =      =xxxxxxx==                          ==xxxxxxx=      =
+   =     +=xxxxxxx==     s              s     ==xxxxxxx=+     =
    =      =xxxxxxxxx===                    ===xxxxxxxxx=      =
    =       =xxxxxxxxxxx===              ===xxxxxxxxxxx=       =
-    =      =xxxxxxxxxxxxxx====  p   ====xxxxxxxxxxxxxx=      =
+    =      =xxxxxxxxxxxxxx====      ====xxxxxxxxxxxxxx=      =
     =       =xxxxxxxxxxxxxxxxx=    =xxxxxxxxxxxxxxxxx=       =
      =      =xxxxxxxxxxxxxxxxx=    =xxxxxxxxxxxxxxxxx=      =
      =       ==xxxxxxxxxxxxxxx=    =xxxxxxxxxxxxxxx==       =
       =        ===xxxxxxxxxxxx=    =xxxxxxxxxxxx===        =
-       =          ====xxxxxxxx=    =xxxxxxxx====          =
-        ==            =====xxx=    =xxx=====            ==
+       =        s ====xxxxxxxx=    =xxxxxxxx==== s        =
+        ==            =====xxx= p  =xxx=====            ==
           =                ====    ====                =
-           =                                          =
-           =                                          =
-            ===                                    ===
-               ===                              ===
+           =s                                        s=
+           =   +                                  +   =
+            ===   b                            b   ===
+               ===    +                    +    ===
                   ====          2           ====
                       =====            =====
                            ============
