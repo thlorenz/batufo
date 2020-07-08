@@ -15,6 +15,7 @@ export default Level.fromLevelString(
 =                   ========== b   + =xxxxxxx=                  =
 =                                    =xxxxxxx=                  =
 =                                    =xxxxxxx=                  =
+=                                    =xxxxxxx=                  =
 =                   ========== b   + =xxxxxxx=                  =
 =                   =xxxxxxxx=========xxxxxxx=                  =
 =                   =xxxxxxxxxxxxxxxxxxxxxxxx=                  =
