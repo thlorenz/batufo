@@ -59,12 +59,6 @@ class HomeWidget extends StatelessWidget {
                 padding: EdgeInsets.only(top: 20.0),
               ),
               InkWell(
-                  child: Text('Donate', style: _linkStyle),
-                  onTap: () => _maybeLaunch(_SPONSOR_URL)),
-              Padding(
-                padding: EdgeInsets.only(top: 20.0),
-              ),
-              InkWell(
                   child: Text('Level Editor', style: _linkStyle),
                   onTap: () => _maybeLaunch(_EDITOR_URL)),
             ],
