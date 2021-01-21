@@ -15,7 +15,7 @@
     "@batufo/core": "*",
     "debug": "^4.1.1",
     "google-protobuf": "^3.12.0",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "supports-color": "^7.1.0"
   },
   "devDependencies": {
