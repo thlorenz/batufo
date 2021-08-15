@@ -122,9 +122,6 @@
     <a href="{rootURL + routes.watch.hash }"
        class="{watchClass}"
        on:click={navigateWatch}>Watch</a>
-    <a href="{rootURL + routes.sponsor.hash }"
-       class="{sponsorClass}"
-       on:click={navigateSponsor}>Sponsor</a>
     <a href="{rootURL + routes.devlog.hash }"
        class="{devlogClass}"
        on:click={navigateDevlog}>Devlog</a>
